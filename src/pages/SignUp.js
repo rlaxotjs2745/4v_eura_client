@@ -227,7 +227,7 @@ const SignUp = () => {
                     <div className="btn__box">
                         <div className="btn__group">
                             <Link to="/" className="btn btn__normal">취소</Link>
-                            <button type="button" onClick={isDirty(Sign2Open)} className="btn btn__able">다음</button>
+                            <button type="button" onClick={(Sign2Open)} className="btn btn__able">다음</button>
                         </div>
                     </div>
                 </div>
