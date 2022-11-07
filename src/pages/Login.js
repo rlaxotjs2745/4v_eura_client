@@ -49,7 +49,6 @@ const Login = (props) => {
                     console.log('---------', document.cookie)
                     console.log('======================',res.data.result_str);
                     alert(res.data.result_str)
-
                     navigate('/')
                 } else if(res.data.result_code === 'SUCCESS02') {
                     // 임시 비밀번호로 로그인 되었습니다.

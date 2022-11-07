@@ -9,8 +9,14 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 
 const SignUp = () => {
-    $('input[type="checkbox"]').change(function(){
-        this.value = this.checked ? 1 : 0;
+
+    document.addEventListener('DOMContentLoaded', e => {
+        for (let checkbox of document.querySelectorAll('input[type=checkbox]')) {
+            checkbox.value = checkbox.checked ? 1 : 0;
+            checkbox.addEventListener('change', e => {
+                e.target.value = e.target.checked ? 1 : 0;
+            });
+        }
     });
 
     const formSchema = yup.object({
@@ -43,11 +49,15 @@ const SignUp = () => {
             .required('비밀번호를 확인해주세요.')
             .oneOf([yup.ref('password')], '비밀번호가 동일하지 않습니다.'),
         user_phone: yup
-            .string()
-            .matches(
-                /^\d{3}\d{3,4}\d{4}$/,
-                '형식에 맞게 입력해주세요. 예) 01012345678'
-            ),
+            .mixed()
+            .nullable(true)
+            .transform((_, val) => val === Number(val) ? val : null),
+
+        // .matches(
+            //     /^\d{3}\d{3,4}\d{4}$/,
+            //     '형식에 맞게 입력해주세요. 예) 01012345678'
+            // )
+
         privacy_terms:yup
             .string()
             .required('개인정보 처리방침에 동의하셔야 합니다.'),
@@ -69,9 +79,13 @@ const SignUp = () => {
             //     return value && value[0].type === ("image/png" || "image/jpg" || "image/jpeg")
             // })
         eq_type01:yup
-            .string(),
+            .string()
+            .nullable(true)
+            .transform((_, val) => val === Number(val) ? val : null),
         eq_type02:yup
-            .string(),
+            .string()
+            .nullable(true)
+            .transform((_, val) => val === Number(val) ? val : null),
 
     });
     const {
@@ -112,9 +126,15 @@ const SignUp = () => {
         formData.append('user_name', data.user_name)
         formData.append('user_id', data.user_id)
         formData.append('user_pwd', data.user_pwd)
-        formData.append('user_phone', data.user_phone)
-        formData.append('eq_type01', data.eq_type01)
-        formData.append('eq_type02', data.eq_type02)
+        if (data.user_phone !== '') {
+            formData.append('user_phone', data.user_phone)
+        }
+        else if (data.eq_type01 !== '') {
+            formData.append('eq_type01', data.eq_type01)
+        }
+        else if (data.eq_type02 !== '') {
+            formData.append('eq_type02', data.eq_type02)
+        }
         formData.append('privacy_terms', data.privacy_terms)
         formData.append('service_use_terms', data.service_use_terms)
         console.log(formData)
@@ -129,10 +149,23 @@ const SignUp = () => {
                 }
             }
         ).then(res => {
-            console.log(res);
+            console.log(res)
+            console.log('res.data.userId :: ', res.data.result_code)
+            console.log('res.data.msg :: ', res.data.result_str)
+            if(res.data.result_code === 'FAIL'){
+                console.log('======================',res.data.result_str);
+                alert(res.data.result_str)
+                navigate('/')
+            } else if(res.data.result_code === 'SUCCESS'){
+                console.log('======================', res.data.result_str);
+                alert(res.data.result_str)
+                navigate('/signup_complete')
+            }
         }).catch(err => {
             console.log(err);
         });
+
+
     }
 
     const onError = (errors) => {
@@ -145,27 +178,70 @@ const SignUp = () => {
         $('#step2').removeClass('active')
     }
 
+
+
     const Sign2Open = (e) => {
+
         let user_name = $('#join_name')
-        if(user_name.value == '') {
-            $('.content').hide();
-            e.preventDefault();
-        } else {
+        let user_id = $('#join_email')
+        let join_password = $('#join_password')
+        let join_password2 = $('#join_password2')
+
+        if(user_name.val() == '') {
+
+            alert('이름을 입력해주세요.')
+        } else if (user_id.val() == '' || user_id.parent().hasClass('is-alert')) {
+            alert('아이디(이메일) 입력 사항을 확인해주세요.')
+        } else if (join_password.val() == '' || join_password.parent().hasClass('is-alert')) {
+            alert('비밀번호 입력 사항을 확인해주세요.')
+        } else if (join_password2.val() == '' || join_password2.parent().hasClass('is-alert')) {
+            alert('비밀번호 확인 입력 사항을 확인해주세요.')
+        }
+
+        else {
             $('#step1').removeClass('active')
             $('#step2').addClass('active')
         }
 
     }
 
-    const Sign3Open = () => {
+    const Sign3Open = (e) => {
+        // let join_tel = $('#join_tel')
+        // if (join_tel.val() == '' || join_tel.parent().hasClass('is-alert')) {
+        //     e.preventDefault();
+        //     alert('연락처 입력 사항을 확인해주세요.')
+        // }
         $('#step2').removeClass('active')
         $('#step3').addClass('active')
+
     }
 
-    const Sign4Open = () => {
-        $('#step3').removeClass('active')
-        $('#step4').addClass('active')
+    const Sign4Open = (e) => {
+        e.preventDefault();
+        let cb1 = $('#cb-1')
+        let cb2 = $('#cb-2')
+        if (cb1.val() === '0') {
+            alert('개인정보 처리방침에 동의하셔야 합니다.')
+        } else if (cb2.val() === '0'){
+            alert('서비스 이용약관에 동의하셔야 합니다.')
+        } else {
+            $('#step3').removeClass('active')
+            $('#step4').addClass('active')
+        }
+        console.log(cb1.val())
+        console.log(cb2.val(), '2번째')
+
     }
+
+    $('#cb-1').on('change', function(){
+        this.value = this.checked ? 1 : 0;
+        // alert(this.value);
+    }).change();
+
+    $('#cb-2').on('change', function(){
+        this.value = this.checked ? 1 : 0;
+        // alert(this.value);
+    }).change();
 
     const Sign_prev3 = () => {
         $('#step3').removeClass('active')
@@ -253,7 +329,7 @@ const SignUp = () => {
                     <div className="join__box">
                         <div className={'input__group ' + (errors.user_phone ? "is-alert " : "") + (watch().user_phone ? "is-success " : "")}>
                             <label htmlFor="join_tel">연락처</label>
-                            <input type="text" name="user_phone" className="text" id="join_tel" placeholder="연락처를 입력하세요"  {...register('user_phone')}/>
+                            <input type="text" name="user_phone" className="text" id="join_tel" placeholder="연락처를 입력하세요" {...register('user_phone')}/>
                             <div className="input__message">
                                 서비스오류 발생시 연락처로 알림이 수신됩니다.
                             </div>
@@ -324,8 +400,8 @@ const SignUp = () => {
 
                     <div className="btn__box">
                         <div className="btn__group">
-                            <button onClick={Sign1Open} href="join_case.html" className="btn btn__normal">이전</button>
-                            <button onClick={Sign3Open} href="join_terms.html" className="btn btn__able">다음</button>
+                            <button onClick={Sign1Open} className="btn btn__normal">이전</button>
+                            <button onClick={Sign3Open} className="btn btn__able">다음</button>
                         </div>
                     </div>
                 </div>
@@ -380,11 +456,11 @@ const SignUp = () => {
                                 sapiente, temporibus voluptatem voluptatibus? Consequatur.
                             </div>
                             <div className="checkbox">
-                                <input type="checkbox" value="0" name="privacy_terms" className="checkbox" id="cb-1" {...register('privacy_terms')}/>
+                                <input type="checkbox" name="privacy_terms" className="checkbox" id="cb-1" {...register('privacy_terms')}/>
                                 <label htmlFor="cb-1">위의 개인정보 처리방침에 동의합니다.</label>
                             </div>
                             <div className="checkbox">
-                                <input type="checkbox" value="0" name="service_use_terms" className="checkbox" id="cb-2" {...register('service_use_terms')}/>
+                                <input type="checkbox" name="service_use_terms" className="checkbox" id="cb-2" {...register('service_use_terms')}/>
                                 <label htmlFor="cb-2">위의 서비스 이용 약관에 동의합니다.</label>
                             </div>
                             {errors.privacy_terms && <div className="error_tip">{errors.privacy_terms.message}</div>}
