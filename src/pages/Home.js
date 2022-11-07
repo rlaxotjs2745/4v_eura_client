@@ -19,7 +19,7 @@ const Home = ({user}) => {
     return (
         <>
             <div className="page">
-                
+
                 <div className="main__board">
                     <div className="board__user">
                         <figure><img src={require('../assets/image/image_profile.png')} alt=""/></figure>
@@ -42,6 +42,7 @@ const Home = ({user}) => {
                             캘린더 보기
                     </a>
                 </div>
+
                 <div className="main__meetingroom">
                     <h3><img src={require('../assets/image/ic_video.png')} alt=""/> 나의 미팅룸 <em>(9)</em>
                         <a href="#none" className="btn btn__make"><img src={require('../assets/image/ic_plus.png')} alt=""/>새 미팅룸
@@ -56,6 +57,7 @@ const Home = ({user}) => {
                         </div>
                     </h3>
                     <div className="boxing">
+
                         <div className="box">
                             <div className="box__badge"><span className="type__live">LIVE</span></div>
                             <div className="box__title">연구참여 주간회의</div>
@@ -72,6 +74,7 @@ const Home = ({user}) => {
                                 <dd>9:00 - 11:00</dd>
                             </dl>
                         </div>
+                        
                         <div className="box">
                             <div className="box__badge"><span className="type__ready">3:00뒤 시작</span></div>
                             <div className="box__title">공업논리 및 논술</div>
