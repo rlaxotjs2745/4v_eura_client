@@ -1,6 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from "axios";
 
 const Home = ({user}) => {
+    useEffect(() => {
+        axios.get('/api/hello')
+            .then(response => console.log(response.data))
+    }, [])
 
     const [timer, setTimer] = useState("00:00")
     const currentTimer = () => {

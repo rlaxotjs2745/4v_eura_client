@@ -6,21 +6,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {useState, useEffect} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 const SignUp = () => {
     $('input[type="checkbox"]').change(function(){
         this.value = this.checked ? 1 : 0;
     });
-    // const [fileImage, setFileImage] = useState('../assets/image/image_upload-pic.png');
-    // const saveFileImage = (event) =>{
-    //     // const saveFileImage = (event: React.ChangeEvent<HTMLInputElement>) =>{
-    //     // @ts-ignore
-    //     setFileImage(URL.createObjectURL(event.target.files[0]));
-    // };
-    // const deleteFileImage = () =>{
-    //     URL.revokeObjectURL(fileImage);
-    //     setFileImage("");
-    // };
 
     const formSchema = yup.object({
         // 이름
@@ -49,6 +40,7 @@ const SignUp = () => {
         // 비밀번호 확인
         user_pwd: yup
             .string()
+            .required('비밀번호를 확인해주세요.')
             .oneOf([yup.ref('password')], '비밀번호가 동일하지 않습니다.'),
         user_phone: yup
             .string()
@@ -85,6 +77,8 @@ const SignUp = () => {
     const {
         register,
         handleSubmit,
+        handleBlur,
+        setError,
         watch,
         formState: { errors, isSubmitted, isSubmitting, isDirty },
         // isSubmitting 은 양식 제출 중 disabled 처리 하게 함.
@@ -97,58 +91,98 @@ const SignUp = () => {
         }
     });
 
-    console.log(watch("eq_type01"))
+    // console.log(watch("eq_type01"))
     const [imagePreview, setImagePreview] = useState('../assets/image/image_upload-pic.png');
     const image = watch("file");
     useEffect(() => {
         if (image && image.length > 0) {
             const file = image[0];
             setImagePreview(URL.createObjectURL(file));
+            $('#image_upload_btn').hide();
+            $('#img_on_submit').addClass('on')
         }
     }, [image]);
 
     const navigate = useNavigate();
-    // 백업용
-    // const Submit = async (data) => {
-    //     await axios.post('http://192.168.0.83:10000/join_mail', data)
-    //         .then(e => {
-    //             console.log(e);
-    //
-    //             navigate('/signup'); // 여기에 현재 주소 적으면 페이지 안넘어감
-    //         })
-    //         .catch(err => console.log(err))
-    // }
 
-
-    const Submit = async (data) => {
-        const formdata = new FormData();
-        const config = {
-            headers: {
-                'Content-Type': 'multipart/form-data'
+    const onSubmit = (data) => {
+        // e.preventDefault();
+        const formData = new FormData();
+        formData.append('file', data.file[0]);
+        formData.append('user_name', data.user_name)
+        formData.append('user_id', data.user_id)
+        formData.append('user_pwd', data.user_pwd)
+        formData.append('user_phone', data.user_phone)
+        formData.append('eq_type01', data.eq_type01)
+        formData.append('eq_type02', data.eq_type02)
+        formData.append('privacy_terms', data.privacy_terms)
+        formData.append('service_use_terms', data.service_use_terms)
+        console.log(formData)
+        axios.post('http://192.168.0.85:10000/join_mail'
+            , formData
+            , {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    // contentType: false,               // * 중요 *
+                    // processData: false,               // * 중요 *
+                    // enctype : 'multipart/form-data',  // * 중요 *
+                }
             }
-        }
-        formdata.append('eq_type01', data.eq_type01)
-        await axios
-            .post('http://192.168.0.83:10000/join_mail', formdata, config)
-            .then(e => {
-                console.log(e);
-                navigate('/signup'); // 여기에 현재 주소 적으면 페이지 안넘어감
-            })
-            .catch(err => console.log(err))
+        ).then(res => {
+            console.log(res);
+        }).catch(err => {
+            console.log(err);
+        });
     }
-
 
     const onError = (errors) => {
         console.log(errors);
         console.log('에러메세지 입니다. 제출 되지 않습니다.');
     };
+
+    const Sign1Open = () => {
+        $('#step1').addClass('active')
+        $('#step2').removeClass('active')
+    }
+
+    const Sign2Open = (e) => {
+        let user_name = $('#join_name')
+        if(user_name.value == '') {
+            $('.content').hide();
+            e.preventDefault();
+        } else {
+            $('#step1').removeClass('active')
+            $('#step2').addClass('active')
+        }
+
+    }
+
+    const Sign3Open = () => {
+        $('#step2').removeClass('active')
+        $('#step3').addClass('active')
+    }
+
+    const Sign4Open = () => {
+        $('#step3').removeClass('active')
+        $('#step4').addClass('active')
+    }
+
+    const Sign_prev3 = () => {
+        $('#step3').removeClass('active')
+        $('#step2').addClass('active')
+    }
+
+    const Sign_prev4 = () => {
+        $('#step4').removeClass('active')
+        $('#step3').addClass('active')
+    }
+
     return (
         <section className="content" id="content">
-            <form className="w100" id="signUpForm" action="" onSubmit={handleSubmit(Submit, onError)}>
+            <form name="signupForm" className="w100" id="signUpForm" onSubmit={handleSubmit(onSubmit, onError)}>
                 {/* step1 */}
-                <div id="step1" className="join">
+                <div id="step1" className="join active">
                     <h2>회원가입</h2>
-
                     <div className="desc__h2">아래의 정보를 기입해 주세요.</div>
                     <div className="step__box">
                         <div className="step is-active">
@@ -192,8 +226,8 @@ const SignUp = () => {
                     </div>
                     <div className="btn__box">
                         <div className="btn__group">
-                            <a href="join.html" className="btn btn__normal">취소</a>
-                            <a href="join_info.html" className="btn btn__able">다음</a>
+                            <Link to="/" className="btn btn__normal">취소</Link>
+                            <button type="button" onClick={(Sign2Open)} className="btn btn__able">다음</button>
                         </div>
                     </div>
                 </div>
@@ -290,8 +324,8 @@ const SignUp = () => {
 
                     <div className="btn__box">
                         <div className="btn__group">
-                            <a href="join_case.html" className="btn btn__normal">이전</a>
-                            <a href="join_terms.html" className="btn btn__able">다음</a>
+                            <button onClick={Sign1Open} href="join_case.html" className="btn btn__normal">이전</button>
+                            <button onClick={Sign3Open} href="join_terms.html" className="btn btn__able">다음</button>
                         </div>
                     </div>
                 </div>
@@ -360,8 +394,8 @@ const SignUp = () => {
 
                     <div className="btn__box">
                         <div className="btn__group">
-                            <a href="join_info.html" className="btn btn__normal">이전</a>
-                            <a href="join_photo.html" className="btn btn__able">다음</a>
+                            <button onClick={Sign_prev3} className="btn btn__normal">이전</button>
+                            <button onClick={Sign4Open} className="btn btn__able">다음</button>
                         </div>
                     </div>
                 </div>
@@ -385,9 +419,9 @@ const SignUp = () => {
 
                     <div className="btn__box">
                         <div className="btn__group">
-                            <a href="join_upload.html" className="btn btn__normal">지금은 넘어가기</a>
-                            <button type="submit" className="btn btn_able" disabled={isSubmitting}>
-                                폼양식제출
+                            <button id="image_upload_btn" type="submit" disabled={isSubmitting} className="btn btn__normal">지금은 넘어가기</button>
+                            <button id="img_on_submit" type="submit" className=" btn btn__able" disabled={isSubmitting}>
+                                완료
                             </button>
                         </div>
                     </div>
