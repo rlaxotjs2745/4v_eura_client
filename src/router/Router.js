@@ -4,10 +4,6 @@ import LayoutType1 from "../Layout/LayoutType1";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Error from "../pages/404";
-import SignUp1 from "../pages/SignUp1";
-import SignUp2 from "../pages/SignUp2";
-import SignUp3 from "../pages/SignUp3";
-import SignUp4 from "../pages/SignUp4";
 import FindPW from "../pages/FindPw";
 import SignUpComplete from "../pages/SignUpComplete";
 import FindPwMail from "../pages/FindPwMail";
@@ -27,10 +23,6 @@ const Routers = () => {
             </Route>
             <Route path="/" element={<PublickRoute><LayoutType1/></PublickRoute>}>
                 <Route path="signup" element={<SignUp/>}/>
-                <Route path="/signup1" element={<SignUp1/>}/>
-                <Route path="/signup2" element={<SignUp2/>}/>
-                <Route path="/signup3" element={<SignUp3/>}/>
-                <Route path="/signup4" element={<SignUp4/>}/>
                 <Route path="/signup_complete" element={<SignUpComplete/>}/>
                 <Route path="/find_pw" element={<FindPW/>}/>
                 <Route path="/find_pw_mail" element={<FindPwMail/>} />

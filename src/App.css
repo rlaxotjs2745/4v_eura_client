@@ -4506,4 +4506,9 @@ html.js-overflow {
     display: block
 }
 
-form.w100 {width:100%;}
+form.w100 {width:100%; position: relative; height:920px; margin:60px auto 0;}
+.join {position: absolute; left:0; right:0; margin:0px auto; opacity: 0; z-index: -1}
+.join.active {opacity: 1; z-index: 1;}
+
+#image_upload_btn + #img_on_submit {margin:0; display: none;}
+#image_upload_btn + #img_on_submit.on {display: inline-block;}
