@@ -19,6 +19,7 @@ const Home = ({user}) => {
     return (
         <>
             <div className="page">
+                
                 <div className="main__board">
                     <div className="board__user">
                         <figure><img src={require('../assets/image/image_profile.png')} alt=""/></figure>
@@ -27,6 +28,7 @@ const Home = ({user}) => {
                     </div>
                     <div className="board__time">{timer}</div>
                 </div>
+
                 <div className="main__schedule">
                     <h2>다음일정</h2>
                     <ul>
