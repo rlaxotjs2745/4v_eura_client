@@ -6,23 +6,19 @@ import MainMyMeetingRoom from "../Components/Cards/MainMyMeetingRoom";
 import {Link, Route} from "react-router-dom";
 
 const Home = ({user}) => {
-    useEffect(() => {
-        axios.get('/api/hello')
-            .then(response => console.log(response.data))
-    }, [])
+    // useEffect(() => {
+    //     axios.get('/api/hello')
+    //         .then(response => console.log(response.data))
+    // }, [])
 
 
     let schedule = [];
     let meeting = {};
     let lastMeeting = {};
 
-
-
-
     return (
         <>
             <div className="page">
-
                 <MainTimer user={user} />
 
                 <MainSchedule schedule={schedule} />
@@ -41,7 +37,6 @@ const Home = ({user}) => {
                         </div>
                     </h3>
                     <div className="boxing">
-
                         {
                             !meeting.mt_meetMyListCount ?
                             <div className="boxing">

@@ -110,7 +110,6 @@ const SignUp = () => {
         }
     });
 
-    // console.log(watch("eq_type01"))
     const [imagePreview, setImagePreview] = useState('../assets/image/image_upload-pic.png');
     const image = watch("file");
     useEffect(() => {
@@ -160,7 +159,7 @@ const SignUp = () => {
             if(res.data.result_code === 'FAIL'){
                 console.log('======================',res.data.result_str);
                 alert(res.data.result_str)
-                navigate('/')
+                // navigate('/')
             } else if(res.data.result_code === 'SUCCESS'){
                 console.log('======================', res.data.result_str);
                 alert(res.data.result_str)

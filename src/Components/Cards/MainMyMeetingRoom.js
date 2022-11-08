@@ -2,8 +2,6 @@ import React, {useEffect} from "react";
 
 const MainMyMeetingRoom = (room) => {
 
-
-
     const getSubtractionDate = () => {
         let thisTime = new Date();
         let thisYear = thisTime.getFullYear();
@@ -12,10 +10,6 @@ const MainMyMeetingRoom = (room) => {
 
         return Math.floor((new Date(room.mt_start_dt.split(' ')[0]) - new Date(`${thisYear}-${thisMonth}-${thisDate}`)) / 86400000);
     }
-
-
-
-
 
     return (
         <div className={room.mt_status === 0 ? 'box is-before' : room.mt_status === 2 ? 'box is-cancel' : 'box'}>

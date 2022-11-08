@@ -1,10 +1,7 @@
 import {Link} from "react-router-dom";
 const React = require("react");
 
-
-
 const MainSchedule = (schedule) => {
-
 
     return (
         <div className="main__schedule">
