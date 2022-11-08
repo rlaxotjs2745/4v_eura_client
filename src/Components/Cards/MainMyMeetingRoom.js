@@ -49,8 +49,22 @@ const MainMyMeetingRoom = (room) => {
             <div className="box__title">{room.mt_name}</div>
             <dl className="type__host">
                 <dt>호스트 이름</dt>
-                <dd>{room.mt_hostname}</dd>
+                <dd>
+                    {
+                        room.mt_status % 2 === 0 ? <img src={require('../../assets/image/ic_host.png')} alt="" /> : ''
+                    }
+                    {room.mt_hostname}
+                </dd>
             </dl>
+            {
+                room.mt_iDataDisplay && room.mt_iDataDisplay === 0 ?
+                <dl className="">
+                    <dt>참여도 {room.mt_iData}%</dt>
+                    <dd>
+                        <div className="graph"><span className="graph__gage" ></span></div>
+                    </dd>
+                </dl> : ''
+            }
             <dl>
                 <dt>날짜</dt>
                 <dd>{room.mt_start_dt.split(' ')[0]}</dd>

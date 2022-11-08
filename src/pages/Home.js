@@ -14,6 +14,7 @@ const Home = ({user}) => {
 
     let schedule = [];
     let meeting = {};
+    let lastMeeting = {};
 
 
 
@@ -78,46 +79,24 @@ const Home = ({user}) => {
                         </div>
                     </h3>
                     <div className="boxing">
-                        <div className="box">
-                            <div className="box__badge"><span className="type__ready">3:00뒤 시작</span></div>
-                            <div className="box__setup"><a href="#none" className="btn btn__setting">공개하기</a></div>
-                            <div className="box__title">공업교육론</div>
-                            <dl className="type__host">
-                                <dt>호스트 이름</dt>
-                                <dd><img src={require('../assets/image/ic_host.png')} alt=""/>강채연</dd>
-                            </dl>
-                            <dl>
-                                <dt>날짜</dt>
-                                <dd>2022. 08. 03</dd>
-                            </dl>
-                            <dl>
-                                <dt>시간</dt>
-                                <dd>9:00 - 11:00</dd>
-                            </dl>
-                        </div>
-                        <div className="box">
-                            <div className="box__badge"><span className="type__ready">3:00뒤 시작</span></div>
-                            <div className="box__title">전력전자공학</div>
-                            <dl className="">
-                                <dt>호스트 이름</dt>
-                                <dd>김춘배</dd>
-                            </dl>
-                            <dl className="">
-                                <dt>참여도 82%</dt>
-                                <dd>
-                                    <div className="graph"><span className="graph__gage"></span>
+                        {
+                            !lastMeeting.mt_meetMyListCount ?
+                                <div className="boxing">
+                                    <div className="msg__nodata">
+                                        <span>미팅 일정이 없습니다.</span>
                                     </div>
-                                </dd>
-                            </dl>
-                            <dl>
-                                <dt>날짜</dt>
-                                <dd>2022. 08. 04</dd>
-                            </dl>
-                            <dl>
-                                <dt>시간</dt>
-                                <dd>9:00 - 11:00</dd>
-                            </dl>
-                        </div>
+                                </div>
+                                :
+                                lastMeeting.mt_meetMyList.map(room => {
+                                    return (
+                                        <Link to="/meetingroom" state={{room: room.mt_idx}}>
+                                            <MainMyMeetingRoom room={room} />
+                                        </Link>
+                                    )
+                                })
+                        }
+
+
                         <div className="box">
                             <div className="box__badge"><span className="type__private">미참석</span></div>
                             <div className="box__setup"><a href="#none" className="btn btn__setting">공개하기</a></div>
