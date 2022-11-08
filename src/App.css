@@ -2591,7 +2591,9 @@ html.js-overflow {
 
 .join.temporary {
     height: 650px;
-    flex-direction: column
+    flex-direction: column;
+    z-index: 9;
+    opacity: 1;
 }
 
 .join.temporary figure {
