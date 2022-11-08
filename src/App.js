@@ -5,7 +5,7 @@ import Routers from "./router/Router";
 
 class App extends React.Component {
     componentDidMount(){
-        document.cookie = "user_id=sungwoong@4thevision.com";
+        // document.cookie = "user_id=sungwoong@4thevision.com";
         // (function () {
         //     var $window = $(window);
         //     var $document = $(document);

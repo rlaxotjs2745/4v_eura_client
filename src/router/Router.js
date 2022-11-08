@@ -6,7 +6,6 @@ import Login from "../pages/Login";
 import Error from "../pages/404";
 import FindPW from "../pages/FindPw";
 import SignUpComplete from "../pages/SignUpComplete";
-import FindPwMail from "../pages/FindPwMail";
 import Profile from "../pages/Profile";
 import PublickRoute from "./PublickRoute";
 import PrivateRoute from "./PrivateRoute";
@@ -27,7 +26,6 @@ const Routers = () => {
                 <Route path="signup" element={<SignUp/>}/>
                 <Route path="/signup_complete" element={<SignUpComplete/>}/>
                 <Route path="/find_pw" element={<FindPW/>}/>
-                <Route path="/find_pw_mail" element={<FindPwMail/>} />
                 {/* 404 페이지 */}
                 <Route path="*" element={<Error/>}/>
             </Route>

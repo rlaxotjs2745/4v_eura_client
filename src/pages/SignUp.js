@@ -7,6 +7,7 @@ import {useState, useEffect} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import {Link} from "react-router-dom";
+import {SERVER_URL, AXIOS_OPTION} from "../util/env";
 
 const SignUp = () => {
     const [userId, setUserId] = useState('www.eura.com');
@@ -57,18 +58,17 @@ const SignUp = () => {
             .mixed()
             .nullable(true)
             .transform((_, val) => val === Number(val) ? val : null),
-
-        // .matches(
+            // .matches(
             //     /^\d{3}\d{3,4}\d{4}$/,
             //     '형식에 맞게 입력해주세요. 예) 01012345678'
-            // )
+            // ),
 
         privacy_terms:yup
-            .string()
+            .number()
             .required('개인정보 처리방침에 동의하셔야 합니다.'),
             // .oneOf(["1"], '개인정보 처리방침에 동의하셔야 합니다.'),
         service_use_terms:yup
-            .string()
+            .number()
             .required('서비스 이용약관에 동의하셔야 합니다.'),
             // .oneOf(["1"], '서비스 이용약관에 동의하셔야 합니다.'),
         file:yup
@@ -125,7 +125,9 @@ const SignUp = () => {
 
     const onSubmit = (data) => {
         // e.preventDefault();
-        const formData = new FormData();
+        console.log(data.privacy_terms)
+        console.log(data.service_use_terms)
+        let formData = new FormData();
         formData.append('file', data.file[0]);
         formData.append('user_name', data.user_name)
         formData.append('user_id', data.user_id)
@@ -142,7 +144,7 @@ const SignUp = () => {
         formData.append('privacy_terms', data.privacy_terms)
         formData.append('service_use_terms', data.service_use_terms)
         console.log(formData)
-        axios.post('http://192.168.0.85:10000/join_mail'
+        axios.post(SERVER_URL + '/join_mail'
             , formData
             , {
                 headers: {
@@ -159,7 +161,7 @@ const SignUp = () => {
             if(res.data.result_code === 'FAIL'){
                 console.log('======================',res.data.result_str);
                 alert(res.data.result_str)
-                // navigate('/')
+                navigate('/')
             } else if(res.data.result_code === 'SUCCESS'){
                 console.log('======================', res.data.result_str);
                 alert(res.data.result_str)
@@ -237,15 +239,15 @@ const SignUp = () => {
 
     }
 
-    $('#cb-1').on('change', function(){
+    $('#cb-1').on('click', function(){
         this.value = this.checked ? 1 : 0;
         // alert(this.value);
-    }).change();
+    });
 
-    $('#cb-2').on('change', function(){
+    $('#cb-2').on('click', function(){
         this.value = this.checked ? 1 : 0;
         // alert(this.value);
-    }).change();
+    });
 
     const Sign_prev3 = () => {
         $('#step3').removeClass('active')
@@ -258,17 +260,11 @@ const SignUp = () => {
     }
 
     const reMailSubmit = (data) => {
-        console.log(data)
-        axios.post('http://192.168.0.85:10000/remail_join'
+        let formData = new FormData();
+        formData.append('user_id', data.user_id)
+        console.log(data.user_id)
+        axios.post(SERVER_URL + '/remail_join'
             , data
-            , {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    // contentType: false,               // * 중요 *
-                    // processData: false,               // * 중요 *
-                    // enctype : 'multipart/form-data',  // * 중요 *
-                }
-            }
         ).then(res => {
             console.log(res)
             console.log('res.data.userId :: ', res.data.result_code)
@@ -315,7 +311,7 @@ const SignUp = () => {
                         </div>
                         <div className={'input__group ' + (errors.user_id ? "is-alert " : "") + (watch().user_id ? "is-success " : "")}>
                             <label htmlFor="join_email">아이디(이메일)</label>
-                            <input onKeyPress={handleUserId} required type="text" className="text" id="join_email"  placeholder="이메일을 입력하세요" {...register('user_id')}/>
+                            <input onKeyUp={handleUserId} required type="text" className="text" id="join_email"  placeholder="이메일을 입력하세요" {...register('user_id')}/>
                             <div className="input__message">
                                 입력하신 이메일로 회원가입 인증메일이 발송됩니다.
                             </div>
@@ -496,8 +492,8 @@ const SignUp = () => {
                                 <input type="checkbox" name="service_use_terms" className="checkbox" id="cb-2" {...register('service_use_terms')}/>
                                 <label htmlFor="cb-2">위의 서비스 이용 약관에 동의합니다.</label>
                             </div>
-                            {errors.privacy_terms && <div className="error_tip">{errors.privacy_terms.message}</div>}
-                            {errors.service_use_terms && <div className="error_tip">{errors.service_use_terms.message}</div>}
+                            {/*{errors.privacy_terms && <div className="error_tip">{errors.privacy_terms.message}</div>}*/}
+                            {/*{errors.service_use_terms && <div className="error_tip">{errors.service_use_terms.message}</div>}*/}
                         </div>
                     </div>
 
@@ -536,7 +532,7 @@ const SignUp = () => {
                     </div>
                 </div>
             </form>
-            <form className="w100" id="sign_up_complete">
+            <form className="w100" id="sign_up_complete"  onSubmit={handleSubmit(reMailSubmit, onError)}>
                 <section className="content">
                     <div className="join temporary">
                         <figure><img src={require('../assets/image/img_mail.png')} alt=""/></figure>
@@ -552,7 +548,7 @@ const SignUp = () => {
                         </div>
 
                         <div className="anchor__box">
-                            인증메일을 받지 못 하셨나요? <button onClick={reMailSubmit} className="login__anchor">인증메일 재발송</button>
+                            인증메일을 받지 못 하셨나요? <button className="login__anchor">인증메일 재발송</button>
                         </div>
                     </div>
                 </section>
