@@ -9,7 +9,12 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 
 const SignUp = () => {
+    const [userId, setUserId] = useState('www.eura.com');
 
+    const handleUserId = (e) => {
+        console.log(e.target.value);
+        setUserId(e.target.value);
+    }
     document.addEventListener('DOMContentLoaded', e => {
         for (let checkbox of document.querySelectorAll('input[type=checkbox]')) {
             checkbox.value = checkbox.checked ? 1 : 0;
@@ -159,13 +164,13 @@ const SignUp = () => {
             } else if(res.data.result_code === 'SUCCESS'){
                 console.log('======================', res.data.result_str);
                 alert(res.data.result_str)
-                navigate('/signup_complete')
+                $('#signUpForm').addClass('off');
+                $('#sign_up_complete').addClass('on');
+                // navigate('/signup_complete')
             }
         }).catch(err => {
             console.log(err);
         });
-
-
     }
 
     const onError = (errors) => {
@@ -253,6 +258,35 @@ const SignUp = () => {
         $('#step3').addClass('active')
     }
 
+    const reMailSubmit = (data) => {
+        console.log(data)
+        axios.post('http://192.168.0.85:10000/remail_join'
+            , data
+            , {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    // contentType: false,               // * 중요 *
+                    // processData: false,               // * 중요 *
+                    // enctype : 'multipart/form-data',  // * 중요 *
+                }
+            }
+        ).then(res => {
+            console.log(res)
+            console.log('res.data.userId :: ', res.data.result_code)
+            console.log('res.data.msg :: ', res.data.result_str)
+            if(res.data.result_code === 'FAIL'){
+                console.log('======================',res.data.result_str);
+                alert(res.data.result_str)
+            } else if(res.data.result_code === 'SUCCESS'){
+                console.log('======================', res.data.result_str);
+                alert(res.data.result_str)
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+
+    }
+
     return (
         <section className="content" id="content">
             <form name="signupForm" className="w100" id="signUpForm" onSubmit={handleSubmit(onSubmit, onError)}>
@@ -282,7 +316,7 @@ const SignUp = () => {
                         </div>
                         <div className={'input__group ' + (errors.user_id ? "is-alert " : "") + (watch().user_id ? "is-success " : "")}>
                             <label htmlFor="join_email">아이디(이메일)</label>
-                            <input required type="text" className="text" id="join_email" placeholder="이메일을 입력하세요" {...register('user_id')}/>
+                            <input onKeyPress={handleUserId} required type="text" className="text" id="join_email"  placeholder="이메일을 입력하세요" {...register('user_id')}/>
                             <div className="input__message">
                                 입력하신 이메일로 회원가입 인증메일이 발송됩니다.
                             </div>
@@ -496,12 +530,33 @@ const SignUp = () => {
                     <div className="btn__box">
                         <div className="btn__group">
                             <button id="image_upload_btn" type="submit" disabled={isSubmitting} className="btn btn__normal">지금은 넘어가기</button>
-                            <button id="img_on_submit" type="submit" className=" btn btn__able" disabled={isSubmitting}>
+                            <button id="img_on_submit" type="submit" className="btn btn__able" disabled={isSubmitting}>
                                 완료
                             </button>
                         </div>
                     </div>
                 </div>
+            </form>
+            <form className="w100" id="sign_up_complete">
+                <section className="content">
+                    <div className="join temporary">
+                        <figure><img src={require('../assets/image/img_mail.png')} alt=""/></figure>
+                        <h3>인증메일 발송완료</h3>
+                        <div className="desc__message"><strong>{userId}<input name="user_id" type="hidden" value={userId}/></strong>로 임시 비밀번호가 발송되었습니다.<br/>
+                            이메일에서 확인 후 비밀번호를 재설정해주세요
+                        </div>
+
+                        <div className="btn__box">
+                            <div className="btn__group">
+                                <Link to="/login" className="btn btn__able">로그인 화면으로 돌아가기</Link>
+                            </div>
+                        </div>
+
+                        <div className="anchor__box">
+                            인증메일을 받지 못 하셨나요? <button onClick={reMailSubmit} className="login__anchor">인증메일 재발송</button>
+                        </div>
+                    </div>
+                </section>
             </form>
         </section>
 
