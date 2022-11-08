@@ -32,7 +32,10 @@ const Login = (props) => {
                 'user_id': inputId,
                 'user_pwd': inputPw,
                 'autoLogin': inputChk
-            }).then(res => {
+            }, {withCredentials: true}).then(res => {
+                // const {accessToken} = res.data;
+                // axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
                 console.log(res)
                 console.log('res.data.userId :: ', res.data.result_code)
                 console.log('res.data.msg :: ', res.data.result_str)
@@ -49,7 +52,7 @@ const Login = (props) => {
                     console.log('---------', document.cookie)
                     console.log('======================',res.data.result_str);
                     alert(res.data.result_str)
-                    navigate('/')
+                    // navigate('/')
                 } else if(res.data.result_code === 'SUCCESS02') {
                     // 임시 비밀번호로 로그인 되었습니다.
                     console.log('======================',res.data.result_str);

@@ -30,13 +30,11 @@ const SignUpComplete = () => {
             console.log(err);
         });
 
-
     }
 
 
     return (
         <section className="content" id="content">
-
             <div className="join temporary">
                 <figure><img src={require('../assets/image/img_mail.png')} alt=""/></figure>
                 <h3>인증메일 발송완료</h3>

@@ -4514,3 +4514,7 @@ form.w100 {width:100%; position: relative; height:920px; margin:60px auto 0;}
 
 #image_upload_btn + #img_on_submit {margin:0; display: none;}
 #image_upload_btn + #img_on_submit.on {display: inline-block;}
+
+#signUpForm.off {opacity: 0; position: absolute;}
+#sign_up_complete {position: absolute; opacity: 0; z-index: -1;}
+#sign_up_complete.on {position: relative; opacity:1; z-index: 9}
