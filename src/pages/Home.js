@@ -1,5 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
+import MainTimer from "../Components/Cards/MainTimer";
+import MainSchedule from "../Components/Cards/MainSchedule";
+import MainMyMeetingRoom from "../Components/Cards/MainMyMeetingRoom";
+import {Link, Route} from "react-router-dom";
 
 const Home = ({user}) => {
     useEffect(() => {
@@ -7,49 +11,23 @@ const Home = ({user}) => {
             .then(response => console.log(response.data))
     }, [])
 
-    const [timer, setTimer] = useState("00:00")
-    const currentTimer = () => {
-        const date = new Date();
-        const hours = String(date.getHours()).padStart(2, "0");
-        const minutes = String(date.getMinutes()).padStart(2, "0");
-        const seconds = String(date.getSeconds()).padStart(2, "0");
-        setTimer(`${hours}:${minutes}:${seconds}`)
-    }
 
-    const startTimer = () => {
-        setInterval(currentTimer, 1000)
-    }
-    startTimer()
+    let schedule = [];
+    let meeting = {};
+
+
+
 
     return (
         <>
             <div className="page">
 
-                <div className="main__board">
-                    <div className="board__user">
-                        <figure><img src={require('../assets/image/image_profile.png')} alt=""/></figure>
-                        <span>안녕하세요</span>
-                        <strong>강채연님</strong>
-                    </div>
-                    <div className="board__time">{timer}</div>
-                </div>
+                <MainTimer user={user} />
 
-                <div className="main__schedule">
-                    <h2>다음일정</h2>
-                    <ul>
-                        {/*<!--<li><strong>다음 일정이 없습니다.</strong></li>-->*/}
-                        <li><a href="#none"><strong>연구참여 주간회의</strong> <em>9:00 - 11:00</em></a></li>
-                        <li><a href="#none"><strong>공업논리 및 논술</strong> <em>12:00 - 13:00</em></a></li>
-                        <li><a href="#none"><strong>전자공학 응용실험</strong> <em>14:00 - 16:00</em></a></li>
-                    </ul>
-                    <a href="#none" className="btn btn__calendar">
-                        <img src={require('../assets/image/ic_arrow_light_circle_24.png')} alt=""/>
-                            캘린더 보기
-                    </a>
-                </div>
+                <MainSchedule schedule={schedule} />
 
                 <div className="main__meetingroom">
-                    <h3><img src={require('../assets/image/ic_video.png')} alt=""/> 나의 미팅룸 <em>(9)</em>
+                    <h3><img src={require('../assets/image/ic_video.png')} alt=""/> 나의 미팅룸 <em>({meeting.mt_meetMyListCount ? meeting.mt_meetMyListCount : 0})</em>
                         <a href="#none" className="btn btn__make"><img src={require('../assets/image/ic_plus.png')} alt=""/>새 미팅룸
                             만들기</a>
                         <div className="sorting">
@@ -63,143 +41,31 @@ const Home = ({user}) => {
                     </h3>
                     <div className="boxing">
 
-                        <div className="box">
-                            <div className="box__badge"><span className="type__live">LIVE</span></div>
-                            <div className="box__title">연구참여 주간회의</div>
-                            <dl className="type__host">
-                                <dt>호스트 이름</dt>
-                                <dd>박성하</dd>
-                            </dl>
-                            <dl>
-                                <dt>날짜</dt>
-                                <dd>2022. 08. 08</dd>
-                            </dl>
-                            <dl>
-                                <dt>시간</dt>
-                                <dd>9:00 - 11:00</dd>
-                            </dl>
-                        </div>
-                        
-                        <div className="box">
-                            <div className="box__badge"><span className="type__ready">3:00뒤 시작</span></div>
-                            <div className="box__title">공업논리 및 논술</div>
-                            <dl className="type__host">
-                                <dt>호스트 이름</dt>
-                                <dd>박길수</dd>
-                            </dl>
-                            <dl>
-                                <dt>날짜</dt>
-                                <dd>2022. 08. 08</dd>
-                            </dl>
-                            <dl>
-                                <dt>시간</dt>
-                                <dd>12:00 - 13:00</dd>
-                            </dl>
-                        </div>
-                        <div className="box is-before">
-                            <div className="box__badge"><span className="type__private">비공개</span></div>
-                            <div className="box__setup"><a href="#popup__notice"
-                                                           className="btn btn__setting js-modal-alert">공개하기</a></div>
-                            <div className="box__title">인간공학개론</div>
-                            <dl className="type__host">
-                                <dt>호스트 이름</dt>
-                                <dd><img src="../assets/image/ic_host.png" alt=""/>강채연</dd>
-                            </dl>
-                            <dl>
-                                <dt>날짜</dt>
-                                <dd>2022. 08. 08</dd>
-                            </dl>
-                            <dl>
-                                <dt>시간</dt>
-                                <dd>9:00 - 11:00</dd>
-                            </dl>
-                        </div>
-                        <div className="box">
-                            <div className="box__badge"><span className="type__ready">3:00뒤 시작</span></div>
-                            <div className="box__title">전자공학 응용실험</div>
-                            <dl className="type__host">
-                                <dt>호스트 이름</dt>
-                                <dd>박길수</dd>
-                            </dl>
-                            <dl>
-                                <dt>날짜</dt>
-                                <dd>2022. 08. 08</dd>
-                            </dl>
-                            <dl>
-                                <dt>시간</dt>
-                                <dd>12:00 - 13:00</dd>
-                            </dl>
-                        </div>
-                        <div className="box">
-                            <div className="box__badge"><span className="type__dday">D-3</span></div>
-                            <div className="box__title">UX/UI 디자인</div>
-                            <dl className="type__host">
-                                <dt>호스트 이름</dt>
-                                <dd>서가희</dd>
-                            </dl>
-                            <dl>
-                                <dt>날짜</dt>
-                                <dd>2022. 08. 12</dd>
-                            </dl>
-                            <dl>
-                                <dt>시간</dt>
-                                <dd>10:00 - 12:00</dd>
-                            </dl>
-                        </div>
-                        <div className="box">
-                            <div className="box__badge"><span className="type__dday">D-3</span></div>
-                            <div className="box__title">반도체 센서공학</div>
-                            <dl className="type__host">
-                                <dt>호스트 이름</dt>
-                                <dd>이유정</dd>
-                            </dl>
-                            <dl>
-                                <dt>날짜</dt>
-                                <dd>2022. 08. 12</dd>
-                            </dl>
-                            <dl>
-                                <dt>시간</dt>
-                                <dd>14:00 - 15:00</dd>
-                            </dl>
-                        </div>
-                        <div className="box">
-                            <div className="box__badge"><span className="type__dday">D-4</span></div>
-                            <div className="box__title">전기설비공학</div>
-                            <dl className="type__host">
-                                <dt>호스트 이름</dt>
-                                <dd>홍현수</dd>
-                            </dl>
-                            <dl>
-                                <dt>날짜</dt>
-                                <dd>2022. 08. 13</dd>
-                            </dl>
-                            <dl>
-                                <dt>시간</dt>
-                                <dd>14:00 - 15:00</dd>
-                            </dl>
-                        </div>
-                        <div className="box is-cancel">
-                            <div className="box__badge"><span className="type__cancel">취소된 미팅</span></div>
-                            <div className="box__setup"><a href="#none" className="btn btn__setting">재개설 하기</a></div>
-                            <div className="box__title">공학기초설계</div>
-                            <dl className="type__host">
-                                <dt>호스트 이름</dt>
-                                <dd><img src="../assets/image/ic_host.png" alt=""/>강채연</dd>
-                            </dl>
-                            <dl>
-                                <dt>날짜</dt>
-                                <dd>2022. 08. 13</dd>
-                            </dl>
-                            <dl>
-                                <dt>시간</dt>
-                                <dd>14:00 - 15:00</dd>
-                            </dl>
-                        </div>
+                        {
+                            !meeting.mt_meetMyListCount ?
+                            <div className="boxing">
+                                <div className="msg__nodata">
+                                    <span>미팅 일정이 없습니다.</span>
+                                </div>
+                            </div>
+                                :
+                            meeting.mt_meetMyList.map(room => {
+                                return (
+                                    <Link to="/meetingroom" state={{room: room.mt_idx}}>
+                                        <MainMyMeetingRoom room={room} />
+                                    </Link>
+                                )
+                            })
+                        }
                     </div>
-                    <div className="btn__group">
-                        <a href="#none" className="btn btn__more">더 보기</a>
-                    </div>
+                    {
+                        !meeting.mt_meetMyListCount ? '' :
+                            <div className="btn__group">
+                                <a href="#none" className="btn btn__more">더 보기</a>
+                            </div>
+                    }
                 </div>
+
                 <div className="main__history">
                     <h3><img src="" alt=""/><img src={require('../assets/image/ic_last.png')} alt=""/> 지난 미팅 <em>(2)</em>
                         <div className="sorting">
