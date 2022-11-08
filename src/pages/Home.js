@@ -4,17 +4,56 @@ import MainTimer from "../Components/Cards/MainTimer";
 import MainSchedule from "../Components/Cards/MainSchedule";
 import MainMyMeetingRoom from "../Components/Cards/MainMyMeetingRoom";
 import {Link, Route} from "react-router-dom";
+import {SERVER_URL, AXIOS_OPTION} from "../util/env";
 
-const Home = ({user}) => {
-    // useEffect(() => {
-    //     axios.get('/api/hello')
-    //         .then(response => console.log(response.data))
-    // }, [])
+const Home = () => {
+
+    const [user, setUser] = useState('');
+    const [schedule, setSchedule] = useState('');
+    const [meeting, setMeeting] = useState('');
+    const [lastMeeting, setLastMeeting] = useState('');
 
 
-    let schedule = [];
-    let meeting = {};
-    let lastMeeting = {};
+
+    useEffect(() => {
+        // axios.get('/api/hello')
+        //     .then(response => console.log(response.data))
+
+        axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
+            .then(res => {
+                setUser(res.data);
+                setSchedule(res.data.mt_meetShort);
+            });
+
+        axios.get(SERVER_URL + '/meet/main/list', AXIOS_OPTION)
+            .then(res => {
+                setMeeting(res.data);
+            })
+
+        axios.get(SERVER_URL + '/meet/main/endlist', AXIOS_OPTION)
+            .then(res => {
+                setLastMeeting(res.data);
+            })
+
+    })
+
+    const pageSort = (e) => {
+        let endPoint;
+        let resMtd;
+        if(e.target.id == 'lastMeetSort'){
+            endPoint = `/meet/main/endlist?pageSort=${e.target.value}`;
+            resMtd = (res) => setLastMeeting(res);
+        } else {
+            endPoint = `/meet/main/list?pageSort=${e.target.value}`;
+            resMtd = (res) => setMeeting(res);
+        }
+        axios.get(SERVER_URL + endPoint, AXIOS_OPTION)
+            .then(res => {
+                resMtd(res.data);
+            })
+    }
+
+
 
     return (
         <>
@@ -28,11 +67,11 @@ const Home = ({user}) => {
                         <a href="#none" className="btn btn__make"><img src={require('../assets/image/ic_plus.png')} alt=""/>새 미팅룸
                             만들기</a>
                         <div className="sorting">
-                            <select name="" id="">
-                                <option value="">최신순</option>
-                                <option value="">미팅 시간 순</option>
-                                <option value="">비공개 미팅 순</option>
-                                <option value="">취소된 미팅 순</option>
+                            <select name="" id="meetSort" onChange={pageSort}>
+                                <option value="1">최신순</option>
+                                <option value="2">미팅 시간 순</option>
+                                <option value="3">비공개 미팅 순</option>
+                                <option value="4">취소된 미팅 순</option>
                             </select>
                         </div>
                     </h3>
@@ -63,26 +102,26 @@ const Home = ({user}) => {
                 </div>
 
                 <div className="main__history">
-                    <h3><img src="" alt=""/><img src={require('../assets/image/ic_last.png')} alt=""/> 지난 미팅 <em>(2)</em>
+                    <h3><img src="" alt=""/><img src={require('../assets/image/ic_last.png')} alt=""/> 지난 미팅 <em>({lastMeeting.mt_meetEndMyList ? lastMeeting.mt_meetEndMyList.length : 0})</em>
                         <div className="sorting">
-                            <select name="" id="">
-                                <option value="">최신순</option>
-                                <option value="">미팅 시간 순</option>
-                                <option value="">비공개 미팅 순</option>
-                                <option value="">취소된 미팅 순</option>
+                            <select name="" id="lastMeetSort" onChange={pageSort}>
+                                <option value="1">최신순</option>
+                                <option value="2">미팅 시간 순</option>
+                                <option value="3">비공개 미팅 순</option>
+                                <option value="4">취소된 미팅 순</option>
                             </select>
                         </div>
                     </h3>
                     <div className="boxing">
                         {
-                            !lastMeeting.mt_meetMyListCount ?
+                            !lastMeeting.mt_meetEndMyList || !lastMeeting.mt_meetEndMyList.length ?
                                 <div className="boxing">
                                     <div className="msg__nodata">
-                                        <span>미팅 일정이 없습니다.</span>
+                                        <span>지난 미팅 일정이 없습니다.</span>
                                     </div>
                                 </div>
                                 :
-                                lastMeeting.mt_meetMyList.map(room => {
+                                lastMeeting.mt_meetEndMyList.map(room => {
                                     return (
                                         <Link to="/meetingroom" state={{room: room.mt_idx}}>
                                             <MainMyMeetingRoom room={room} />
@@ -90,31 +129,6 @@ const Home = ({user}) => {
                                     )
                                 })
                         }
-
-
-                        <div className="box">
-                            <div className="box__badge"><span className="type__private">미참석</span></div>
-                            <div className="box__setup"><a href="#none" className="btn btn__setting">공개하기</a></div>
-                            <div className="box__title">인간공학개론</div>
-                            <dl className="">
-                                <dt>호스트 이름</dt>
-                                <dd>홍현수</dd>
-                            </dl>
-                            <dl className="">
-                                <dt>참여도 0%</dt>
-                                <dd>
-                                    <div className="graph"><span className="graph__gage" ></span></div>
-                                </dd>
-                            </dl>
-                            <dl>
-                                <dt>날짜</dt>
-                                <dd>2022. 08. 08</dd>
-                            </dl>
-                            <dl>
-                                <dt>시간</dt>
-                                <dd>9:00 - 11:00</dd>
-                            </dl>
-                        </div>
                     </div>
                 </div>
 

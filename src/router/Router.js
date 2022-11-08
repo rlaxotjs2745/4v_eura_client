@@ -11,6 +11,7 @@ import Profile from "../pages/Profile";
 import PublickRoute from "./PublickRoute";
 import PrivateRoute from "./PrivateRoute";
 import SignUp from "../pages/SignUp";
+import MeetingRoom from "../pages/MeetingRoom";
 
 const Routers = () => {
     return (
@@ -20,6 +21,7 @@ const Routers = () => {
             <Route path="/" element={<PrivateRoute><LayoutType1/></PrivateRoute>}>
                 <Route index element={<Home/>}/>
                 <Route path="/profile" element={<Profile/>} />
+                <Route path="/meetingroom" element={<MeetingRoom/>} />
             </Route>
             <Route path="/" element={<PublickRoute><LayoutType1/></PublickRoute>}>
                 <Route path="signup" element={<SignUp/>}/>
