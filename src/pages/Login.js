@@ -246,7 +246,7 @@ const Login = () => {
                 <form name="loginForm" id="loginForm" onSubmit={handleSubmit(onLogin, onError)}>
                     <div className="login__box">
                     <div className="input__group">
-                        <input type="text" className="text" id="login_id" name="user_id" placeholder="아이디(이메일)" {...register('user_id')}/>
+                        <input type="text" onKeyDown={handleInputId} className="text" id="login_id" name="user_id" placeholder="아이디(이메일)" {...register('user_id')}/>
                     </div>
                     <div className="input__group">
                         <input type="password" className="text" id="login_password" placeholder="비밀번호" name="user_pwd" {...register('user_pwd')}/>
