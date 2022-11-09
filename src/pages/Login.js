@@ -25,10 +25,10 @@ const Login = () => {
             }).then(res => {
                 if(res.data.result_code === 'SUCCESS') {
                     alert(res.data.result_str + ' 로그인 해주세요.')
+                    navigate('/')
                 } else if (res.data.result_code === 'FAIL') {
                     alert(res.data.result_str + ' 다시 확인해주세요.')
                 }
-                // navigate('/')
             })
         }
     },[userParam.confirm])
@@ -39,7 +39,11 @@ const Login = () => {
         user_id: yup
             .string()
             .required('아이디를 입력해주세요.')
-            .email('이메일 형식이 아닙니다.'),
+            // .email('이메일 형식이 아닙니다.'),
+            .matches(
+                /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+                '이메일 형식으로 입력해주세요.'
+            ),
         // 비밀번호
         user_pwd: yup
             .string()
