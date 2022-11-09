@@ -10,13 +10,65 @@ import {Link} from "react-router-dom";
 import {SERVER_URL, AXIOS_OPTION} from "../util/env";
 
 const SignUp = () => {
-    const [userId, setUserId] = useState('www.eura.com');
+    const [userId, setUserId] = useState('');
+    const [userName, setUserName] = useState('')
+    const [userEmail, setUserEmail] = useState('')
+    const [userPwd, setUserPwd] = useState('')
+    const [userPwdChk, setUserPwdChk] = useState('')
+    const [userDisabled, setUserDisabled] = useState(false)
+    const [termDisabled, setTermUserDisabled] = useState(false)
+
+    const handleUserName = (e) => {
+        setUserName(e.target.value);
+        if (userId.length && userName.length && userPwd.length && userPwdChk.length) {
+            setUserDisabled(true)
+        } else {
+            setUserDisabled(false)
+        }
+    }
+
+    const handleUserEmail = (e) => {
+        setUserEmail(e.target.value);
+    }
+
+    const handleUserPwd = (e) => {
+        setUserPwd(e.target.value);
+        if (userId.length && userName.length && userPwd.length && userPwdChk.length) {
+            setUserDisabled(true)
+        } else {
+            setUserDisabled(false)
+        }
+    }
+
+    const handleUserPwdChk = (e) => {
+        setUserPwdChk(e.target.value);
+        if (userId.length && userName.length && userPwd.length && userPwdChk.length) {
+            setUserDisabled(true)
+        } else {
+            setUserDisabled(false)
+        }
+    }
 
     const handleUserId = (e) => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         setUserId(e.target.value);
+        if (userId.length && userName.length && userPwd.length && userPwdChk.length) {
+            setUserDisabled(true)
+        } else {
+            setUserDisabled(false)
+        }
     }
-    document.addEventListener('DOMContentLoaded', e => {
+
+    const handleTerms = (e) => {
+        if ($('#cb-1').val() === '1' && $('#cb-2').val() === '1') {
+            console.log('체크되있어요')
+        } else {
+            console.log('체크 안되있어요')
+            setUserDisabled(false)
+        }
+    }
+
+    document.addEventListener('click', e => {
         for (let checkbox of document.querySelectorAll('input[type=checkbox]')) {
             checkbox.value = checkbox.checked ? 1 : 0;
             checkbox.addEventListener('change', e => {
@@ -305,7 +357,7 @@ const SignUp = () => {
                     <div className="join__box">
                         <div className={'input__group ' + (errors.user_name ? "is-alert " : "") + (watch().user_name ? "is-success " : "")}>
                             <label htmlFor="join_name">이름</label>
-                            <input required name="user_name" type="text" className="text" id="join_name" placeholder="이름을 입력하세요" {...register('user_name')}/>
+                            <input onKeyUp={handleUserName} required name="user_name" type="text" className="text" id="join_name" placeholder="이름을 입력하세요" {...register('user_name')}/>
                             {errors.user_name && <div className="error_tip">{errors.user_name.message}</div>}
                         </div>
                         <div className={'input__group ' + (errors.user_id ? "is-alert " : "") + (watch().user_id ? "is-success " : "")}>
@@ -319,19 +371,19 @@ const SignUp = () => {
                         <div className={'input__group ' + (errors.password ? "is-alert " : "") + (watch().password ? "is-success " : "")}>
                             {/*is-success is-alert*/}
                             <label htmlFor="join_password">비밀번호</label>
-                            <input required type="password" className="text" id="join_password" placeholder="비밀번호를 입력하세요" {...register('password')}/>
+                            <input onKeyUp={handleUserPwd} required type="password" className="text" id="join_password" placeholder="비밀번호를 입력하세요" {...register('password')}/>
                             {errors.password && <div className="error_tip">{errors.password.message}</div>}
                         </div>
                         <div className={'input__group ' + (errors.user_pwd ? "is-alert " : "") + (watch().user_pwd ? "is-success " : "")}>
                             <label htmlFor="join_password2">비밀번호 확인</label>
-                            <input required type="password" className="text" name="user_pwd" id="join_password2" placeholder="비밀번호를 입력하세요" {...register('user_pwd')}/>
+                            <input onKeyUp={handleUserPwdChk} required type="password" className="text" name="user_pwd" id="join_password2" placeholder="비밀번호를 입력하세요" {...register('user_pwd')}/>
                             {errors.user_pwd && <div className="error_tip">{errors.user_pwd.message}</div>}
                         </div>
                     </div>
                     <div className="btn__box">
                         <div className="btn__group">
                             <Link to="/" className="btn btn__normal">취소</Link>
-                            <button type="button" onClick={(Sign2Open)} className="btn btn__able">다음</button>
+                            <button type="button" onClick={(Sign2Open)} className={userDisabled == true ? "btn btn__able" : "btn btn__disable"} >다음</button>
                         </div>
                     </div>
                 </div>

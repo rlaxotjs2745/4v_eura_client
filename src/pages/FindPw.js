@@ -2,10 +2,12 @@ import axios from "axios";
 import {SERVER_URL, AXIOS_OPTION} from "../util/env";
 import { useForm } from 'react-hook-form';
 import $ from "jquery";
+import {useNavigate} from "react-router-dom";
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 const FindPW = () => {
+    const navigate = useNavigate();
 
     const formSchema = yup.object({
         user_id: yup
@@ -50,6 +52,7 @@ const FindPW = () => {
             } else if(res.data.result_code === 'SUCCESS'){
                 console.log('======================', res.data.result_str);
                 alert(res.data.result_str)
+                navigate('/login')
             }
         }).catch(err => {
             console.log(err);
