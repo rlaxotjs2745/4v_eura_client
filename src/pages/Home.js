@@ -14,7 +14,6 @@ const Home = () => {
     const [lastMeeting, setLastMeeting] = useState('');
 
 
-
     useEffect(() => {
         // axios.get('/api/hello')
         //     .then(response => console.log(response.data))
@@ -74,7 +73,6 @@ const Home = () => {
     return (
         <>
             <div className="page">
-
                 <MainTimer user={user} />
 
                 <MainSchedule schedule={schedule} />

@@ -1,5 +1,8 @@
 const isLogin = () => {
-    return !!localStorage.getItem("isLogin");
+
+    return (
+        <></>
+    )
 };
 
 export default isLogin;

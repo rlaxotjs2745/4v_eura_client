@@ -7,15 +7,68 @@ import {useState, useEffect} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import {Link} from "react-router-dom";
+import {SERVER_URL, AXIOS_OPTION} from "../util/env";
 
 const SignUp = () => {
-    const [userId, setUserId] = useState('www.eura.com');
+    const [userId, setUserId] = useState('');
+    const [userName, setUserName] = useState('')
+    const [userEmail, setUserEmail] = useState('')
+    const [userPwd, setUserPwd] = useState('')
+    const [userPwdChk, setUserPwdChk] = useState('')
+    const [userDisabled, setUserDisabled] = useState(false)
+    const [termDisabled, setTermUserDisabled] = useState(false)
+
+    const handleUserName = (e) => {
+        setUserName(e.target.value);
+        if (userId.length && userName.length && userPwd.length && userPwdChk.length) {
+            setUserDisabled(true)
+        } else {
+            setUserDisabled(false)
+        }
+    }
+
+    const handleUserEmail = (e) => {
+        setUserEmail(e.target.value);
+    }
+
+    const handleUserPwd = (e) => {
+        setUserPwd(e.target.value);
+        if (userId.length && userName.length && userPwd.length && userPwdChk.length) {
+            setUserDisabled(true)
+        } else {
+            setUserDisabled(false)
+        }
+    }
+
+    const handleUserPwdChk = (e) => {
+        setUserPwdChk(e.target.value);
+        if (userId.length && userName.length && userPwd.length && userPwdChk.length) {
+            setUserDisabled(true)
+        } else {
+            setUserDisabled(false)
+        }
+    }
 
     const handleUserId = (e) => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         setUserId(e.target.value);
+        if (userId.length && userName.length && userPwd.length && userPwdChk.length) {
+            setUserDisabled(true)
+        } else {
+            setUserDisabled(false)
+        }
     }
-    document.addEventListener('DOMContentLoaded', e => {
+
+    const handleTerms = (e) => {
+        if ($('#cb-1').val() === '1' && $('#cb-2').val() === '1') {
+            console.log('체크되있어요')
+        } else {
+            console.log('체크 안되있어요')
+            setUserDisabled(false)
+        }
+    }
+
+    document.addEventListener('click', e => {
         for (let checkbox of document.querySelectorAll('input[type=checkbox]')) {
             checkbox.value = checkbox.checked ? 1 : 0;
             checkbox.addEventListener('change', e => {
@@ -57,18 +110,17 @@ const SignUp = () => {
             .mixed()
             .nullable(true)
             .transform((_, val) => val === Number(val) ? val : null),
-
-        // .matches(
+            // .matches(
             //     /^\d{3}\d{3,4}\d{4}$/,
             //     '형식에 맞게 입력해주세요. 예) 01012345678'
-            // )
+            // ),
 
         privacy_terms:yup
-            .string()
+            .number()
             .required('개인정보 처리방침에 동의하셔야 합니다.'),
             // .oneOf(["1"], '개인정보 처리방침에 동의하셔야 합니다.'),
         service_use_terms:yup
-            .string()
+            .number()
             .required('서비스 이용약관에 동의하셔야 합니다.'),
             // .oneOf(["1"], '서비스 이용약관에 동의하셔야 합니다.'),
         file:yup
@@ -110,7 +162,6 @@ const SignUp = () => {
         }
     });
 
-    // console.log(watch("eq_type01"))
     const [imagePreview, setImagePreview] = useState('../assets/image/image_upload-pic.png');
     const image = watch("file");
     useEffect(() => {
@@ -126,7 +177,9 @@ const SignUp = () => {
 
     const onSubmit = (data) => {
         // e.preventDefault();
-        const formData = new FormData();
+        console.log(data.privacy_terms)
+        console.log(data.service_use_terms)
+        let formData = new FormData();
         formData.append('file', data.file[0]);
         formData.append('user_name', data.user_name)
         formData.append('user_id', data.user_id)
@@ -143,7 +196,7 @@ const SignUp = () => {
         formData.append('privacy_terms', data.privacy_terms)
         formData.append('service_use_terms', data.service_use_terms)
         console.log(formData)
-        axios.post('http://192.168.0.85:10000/join_mail'
+        axios.post(SERVER_URL + '/join_mail'
             , formData
             , {
                 headers: {
@@ -193,7 +246,6 @@ const SignUp = () => {
         let join_password2 = $('#join_password2')
 
         if(user_name.val() == '') {
-
             alert('이름을 입력해주세요.')
         } else if (user_id.val() == '' || user_id.parent().hasClass('is-alert')) {
             alert('아이디(이메일) 입력 사항을 확인해주세요.')
@@ -238,15 +290,15 @@ const SignUp = () => {
 
     }
 
-    $('#cb-1').on('change', function(){
+    $('#cb-1').on('click', function(){
         this.value = this.checked ? 1 : 0;
         // alert(this.value);
-    }).change();
+    });
 
-    $('#cb-2').on('change', function(){
+    $('#cb-2').on('click', function(){
         this.value = this.checked ? 1 : 0;
         // alert(this.value);
-    }).change();
+    });
 
     const Sign_prev3 = () => {
         $('#step3').removeClass('active')
@@ -259,17 +311,11 @@ const SignUp = () => {
     }
 
     const reMailSubmit = (data) => {
-        console.log(data)
-        axios.post('http://192.168.0.85:10000/remail_join'
+        let formData = new FormData();
+        formData.append('user_id', data.user_id)
+        console.log(data.user_id)
+        axios.post(SERVER_URL + '/remail_join'
             , data
-            , {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    // contentType: false,               // * 중요 *
-                    // processData: false,               // * 중요 *
-                    // enctype : 'multipart/form-data',  // * 중요 *
-                }
-            }
         ).then(res => {
             console.log(res)
             console.log('res.data.userId :: ', res.data.result_code)
@@ -311,12 +357,12 @@ const SignUp = () => {
                     <div className="join__box">
                         <div className={'input__group ' + (errors.user_name ? "is-alert " : "") + (watch().user_name ? "is-success " : "")}>
                             <label htmlFor="join_name">이름</label>
-                            <input required name="user_name" type="text" className="text" id="join_name" placeholder="이름을 입력하세요" {...register('user_name')}/>
+                            <input onKeyUp={handleUserName} required name="user_name" type="text" className="text" id="join_name" placeholder="이름을 입력하세요" {...register('user_name')}/>
                             {errors.user_name && <div className="error_tip">{errors.user_name.message}</div>}
                         </div>
                         <div className={'input__group ' + (errors.user_id ? "is-alert " : "") + (watch().user_id ? "is-success " : "")}>
                             <label htmlFor="join_email">아이디(이메일)</label>
-                            <input onKeyPress={handleUserId} required type="text" className="text" id="join_email"  placeholder="이메일을 입력하세요" {...register('user_id')}/>
+                            <input onKeyUp={handleUserId} required type="text" className="text" id="join_email"  placeholder="이메일을 입력하세요" {...register('user_id')}/>
                             <div className="input__message">
                                 입력하신 이메일로 회원가입 인증메일이 발송됩니다.
                             </div>
@@ -325,19 +371,19 @@ const SignUp = () => {
                         <div className={'input__group ' + (errors.password ? "is-alert " : "") + (watch().password ? "is-success " : "")}>
                             {/*is-success is-alert*/}
                             <label htmlFor="join_password">비밀번호</label>
-                            <input required type="password" className="text" id="join_password" placeholder="비밀번호를 입력하세요" {...register('password')}/>
+                            <input onKeyUp={handleUserPwd} required type="password" className="text" id="join_password" placeholder="비밀번호를 입력하세요" {...register('password')}/>
                             {errors.password && <div className="error_tip">{errors.password.message}</div>}
                         </div>
                         <div className={'input__group ' + (errors.user_pwd ? "is-alert " : "") + (watch().user_pwd ? "is-success " : "")}>
                             <label htmlFor="join_password2">비밀번호 확인</label>
-                            <input required type="password" className="text" name="user_pwd" id="join_password2" placeholder="비밀번호를 입력하세요" {...register('user_pwd')}/>
+                            <input onKeyUp={handleUserPwdChk} required type="password" className="text" name="user_pwd" id="join_password2" placeholder="비밀번호를 입력하세요" {...register('user_pwd')}/>
                             {errors.user_pwd && <div className="error_tip">{errors.user_pwd.message}</div>}
                         </div>
                     </div>
                     <div className="btn__box">
                         <div className="btn__group">
                             <Link to="/" className="btn btn__normal">취소</Link>
-                            <button type="button" onClick={(Sign2Open)} className="btn btn__able">다음</button>
+                            <button type="button" onClick={(Sign2Open)} className={userDisabled == true ? "btn btn__able" : "btn btn__disable"} >다음</button>
                         </div>
                     </div>
                 </div>
@@ -497,8 +543,8 @@ const SignUp = () => {
                                 <input type="checkbox" name="service_use_terms" className="checkbox" id="cb-2" {...register('service_use_terms')}/>
                                 <label htmlFor="cb-2">위의 서비스 이용 약관에 동의합니다.</label>
                             </div>
-                            {errors.privacy_terms && <div className="error_tip">{errors.privacy_terms.message}</div>}
-                            {errors.service_use_terms && <div className="error_tip">{errors.service_use_terms.message}</div>}
+                            {/*{errors.privacy_terms && <div className="error_tip">{errors.privacy_terms.message}</div>}*/}
+                            {/*{errors.service_use_terms && <div className="error_tip">{errors.service_use_terms.message}</div>}*/}
                         </div>
                     </div>
 
@@ -537,7 +583,7 @@ const SignUp = () => {
                     </div>
                 </div>
             </form>
-            <form className="w100" id="sign_up_complete">
+            <form className="w100" id="sign_up_complete"  onSubmit={handleSubmit(reMailSubmit, onError)}>
                 <section className="content">
                     <div className="join temporary">
                         <figure><img src={require('../assets/image/img_mail.png')} alt=""/></figure>
@@ -553,7 +599,7 @@ const SignUp = () => {
                         </div>
 
                         <div className="anchor__box">
-                            인증메일을 받지 못 하셨나요? <button onClick={reMailSubmit} className="login__anchor">인증메일 재발송</button>
+                            인증메일을 받지 못 하셨나요? <button className="login__anchor">인증메일 재발송</button>
                         </div>
                     </div>
                 </section>
