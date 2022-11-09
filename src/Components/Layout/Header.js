@@ -39,7 +39,7 @@ const Header = (props) => {
                         <a className="user__hover"><strong>강채연</strong>님</a>
                         <div id="user_profile_drop" className="user__anchor user_profile_hide">
                             <ul>
-                                <li><a href="/profile">내 프로필</a></li>
+                                <li><Link to="/profile">내 프로필</Link></li>
                                 <li><a onClick={logOut} className="log-out">로그아웃</a></li>
                             </ul>
                         </div>
