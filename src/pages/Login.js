@@ -7,16 +7,43 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {SERVER_URL, AXIOS_OPTION} from "../util/env";
 import axios from 'axios';
-// import jsonp from 'jsonp'
+import queryString from 'query-string'
 import $ from "jquery";
 
-const Login = (props) => {
+const Login = () => {
+    const userParam = queryString.parse(window.location.search);
+    // console.log(userParam.email)
+    // console.log(userParam.authKey)
+    // console.log(userParam.confirm)
+    useEffect(()=> {
+        if(userParam.confirm === 'true') {
+            console.log('인증 api 실행해주세요.')
+            axios.get(SERVER_URL + '/signUpConfirm',{
+                params: {
+                  email:userParam.email, authKey:userParam.authKey
+                },
+            }).then(res => {
+                if(res.data.result_code === 'SUCCESS') {
+                    alert(res.data.result_str + ' 로그인 해주세요.')
+                    navigate('/')
+                } else if (res.data.result_code === 'FAIL') {
+                    alert(res.data.result_str + ' 다시 확인해주세요.')
+                }
+            })
+        }
+    },[userParam.confirm])
+
+    const [loginMessage, setloginMessage] = useState('')
 
     const formSchema = yup.object({
         user_id: yup
             .string()
             .required('아이디를 입력해주세요.')
-            .email('이메일 형식이 아닙니다.'),
+            // .email('이메일 형식이 아닙니다.'),
+            .matches(
+                /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+                '이메일 형식으로 입력해주세요.'
+            ),
         // 비밀번호
         user_pwd: yup
             .string()
@@ -66,28 +93,34 @@ const Login = (props) => {
             if(res.data.result_code === 'FAIL01'){
                 // 로그인 정보를 다시 확인해주세요.
                 console.log('======================',res.data.result_str);
-                alert(res.data.result_str)
+                setloginMessage(res.data.result_str)
+                // alert(res.data.result_str)
             } else if(res.data.result_code === 'FAIL02'){
                 // 이메일 인증을 진행해주세요.
                 console.log('======================', res.data.result_str);
                 alert(res.data.result_str)
+                setloginMessage('')
             } else if(res.data.result_code === 'SUCCESS01') {
                 // 로그인 되었습니다.
                 let tomorrow = new Date();
                 let today = new Date();
                 // 자동로그인 체크 했으면 쿠키 30일
-                if(inputChk) {
+                if(e.autoLogin) {
+                    console.log(e.autoLogin)
                     tomorrow.setDate(today.getDate()+30);
                     setCookie('user_id', inputId, {path:'/', expires:tomorrow});
                 }
-                // 자동로그인 체크 안했으면 쿠키 하루
-                else if (!inputChk) {
+                    // 자동로그인 체크 안했으면 쿠키 하루
+                    else if (!e.autoLogin) {
+                    console.log(e.autoLogin)
                     tomorrow.setDate(today.getDate()+1);
                     setCookie('user_id', inputId, {path:'/', expires:tomorrow});
                 }
+                console.log('---------ID', inputId)
                 console.log('---------cookie', document.cookie)
                 console.log('---------cookie', res.data)
                 console.log('======================',res.data.result_str);
+                setloginMessage('')
                 alert(res.data.result_str)
                 navigate('/profile')
             } else if(res.data.result_code === 'SUCCESS02') {
@@ -106,9 +139,10 @@ const Login = (props) => {
                     setCookie('user_id', inputId, {path:'/', expires:tomorrow});
                 }
                 console.log('======================',res.data.result_str);
-                localStorage.clear()
-                localStorage.setItem('user_id', res.data.id)
-                localStorage.setItem('token', res.data.token)
+                // localStorage.clear()
+                // localStorage.setItem('user_id', res.data.id)
+                // localStorage.setItem('token', res.data.token)
+                setloginMessage('')
                 alert(res.data.result_str)
                 navigate('/profile')
             }
@@ -147,65 +181,62 @@ const Login = (props) => {
         setinputChk(!inputChk);
     }
     const navigate = useNavigate();
-    const onClickLogin = (e) => {
-
-        e.preventDefault();
-        console.log('click login')
-        console.log('ID : ', inputId)
-        console.log('PW : ', inputPw)
-        console.log('CHECKBOX : ', inputChk)
-        axios.defaults.withCredentials = true;
-
-        axios.post('http://192.168.0.85:10000/api_post_login', {
-                'user_id': inputId,
-                'user_pwd': inputPw,
-                'autoLogin': inputChk
-            }).then(res => {
-                // const {accessToken} = res.data;
-                // axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-
-                console.log('@@@@@@@@@@@@@@@@ ' +res)
-                console.log('res.data.userId :: ', res.data.result_code)
-                console.log('res.data.msg :: ', res.data.result_str)
-                if(res.data.result_code === 'FAIL01'){
-                    // 로그인 정보를 다시 확인해주세요.
-                    console.log('======================',res.data.result_str);
-                    alert(res.data.result_str)
-                } else if(res.data.result_code === 'FAIL02'){
-                    // 이메일 인증을 진행해주세요.
-                    console.log('======================', res.data.result_str);
-                    alert(res.data.result_str)
-                } else if(res.data.result_code === 'SUCCESS01') {
-                    // 로그인 되었습니다.
-                    let tomorrow = new Date();
-                    let today = new Date();
-                    // 자동로그인 체크 했으면 쿠키 30일
-                    if(inputChk) {
-                        tomorrow.setDate(today.getDate()+30);
-                        setCookie('user_id', inputId, {path:'/', expires:tomorrow});
-                    }
-                    // 자동로그인 체크 안했으면 쿠키 하루
-                    else if (!inputChk) {
-                        tomorrow.setDate(today.getDate()+1);
-                        setCookie('user_id', inputId, {path:'/', expires:tomorrow});
-                    }
-                    console.log('---------cookie', document.cookie)
-                    console.log('---------cookie', res.data)
-                    console.log('======================',res.data.result_str);
-                    alert(res.data.result_str)
-                    navigate('/')
-                } else if(res.data.result_code === 'SUCCESS02') {
-                    // 임시 비밀번호로 로그인 되었습니다.
-                    console.log('======================',res.data.result_str);
-                    localStorage.clear()
-                    localStorage.setItem('user_id', res.data.id)
-                    localStorage.setItem('token', res.data.token)
-                    alert(res.data.result_str)
-                    navigate('/')
-                }
-            })
-            .catch()
-    }
+    // const onClickLogin = (e) => {
+    //     e.preventDefault();
+    //     console.log('click login')
+    //     console.log('ID : ', inputId)
+    //     console.log('PW : ', inputPw)
+    //     console.log('CHECKBOX : ', inputChk)
+    //     axios.defaults.withCredentials = true;
+    //
+    //     axios.post('http://192.168.0.85:10000/api_post_login', {
+    //             'user_id': inputId,
+    //             'user_pwd': inputPw,
+    //             'autoLogin': inputChk
+    //         }).then(res => {
+    //             // const {accessToken} = res.data;
+    //             // axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    //             console.log('@@@@@@@@@@@@@@@@ ' +res)
+    //             console.log('res.data.userId :: ', res.data.result_code)
+    //             console.log('res.data.msg :: ', res.data.result_str)
+    //             if(res.data.result_code === 'FAIL01'){
+    //                 // 로그인 정보를 다시 확인해주세요.
+    //                 console.log('======================',res.data.result_str);
+    //             } else if(res.data.result_code === 'FAIL02'){
+    //                 // 이메일 인증을 진행해주세요.
+    //                 console.log('======================', res.data.result_str);
+    //                 alert(res.data.result_str)
+    //             } else if(res.data.result_code === 'SUCCESS01') {
+    //                 // 로그인 되었습니다.
+    //                 let tomorrow = new Date();
+    //                 let today = new Date();
+    //                 // 자동로그인 체크 했으면 쿠키 30일
+    //                 if(inputChk) {
+    //                     tomorrow.setDate(today.getDate()+30);
+    //                     setCookie('user_id', inputId, {path:'/', expires:tomorrow});
+    //                 }
+    //                 // 자동로그인 체크 안했으면 쿠키 하루
+    //                 else if (!inputChk) {
+    //                     tomorrow.setDate(today.getDate()+1);
+    //                     setCookie('user_id', inputId, {path:'/', expires:tomorrow});
+    //                 }
+    //                 console.log('---------cookie', document.cookie)
+    //                 console.log('---------cookie', res.data)
+    //                 console.log('======================',res.data.result_str);
+    //                 alert(res.data.result_str)
+    //                 navigate('/')
+    //             } else if(res.data.result_code === 'SUCCESS02') {
+    //                 // 임시 비밀번호로 로그인 되었습니다.
+    //                 console.log('======================',res.data.result_str);
+    //                 localStorage.clear()
+    //                 localStorage.setItem('user_id', res.data.id)
+    //                 localStorage.setItem('token', res.data.token)
+    //                 alert(res.data.result_str)
+    //                 navigate('/')
+    //             }
+    //         })
+    //         .catch()
+    // }
 
 
     // useEffect(() => {
@@ -222,7 +253,7 @@ const Login = (props) => {
                 <form name="loginForm" id="loginForm" onSubmit={handleSubmit(onLogin, onError)}>
                     <div className="login__box">
                     <div className="input__group">
-                        <input type="text" className="text" id="login_id" name="user_id" placeholder="아이디(이메일)" {...register('user_id')}/>
+                        <input type="text" onInput={handleInputId} className="text" id="login_id" name="user_id" placeholder="아이디(이메일)" {...register('user_id')}/>
                     </div>
                     <div className="input__group">
                         <input type="password" className="text" id="login_password" placeholder="비밀번호" name="user_pwd" {...register('user_pwd')}/>
@@ -245,6 +276,12 @@ const Login = (props) => {
                             </div>
                         </div>
                     }
+                    {loginMessage !== '' ? <div className="input__group is-alert">
+                        <div className="input__message">
+                            {loginMessage}
+                        </div>
+                    </div> : null}
+
                     {/*<div className="input__group is-alert">*/}
                     {/*    <div className="input__message">*/}
                     {/*        아이디 또는 비밀번호가 잘못 입력되었어요. 올바른 정보를 입력해 주세요.*/}
