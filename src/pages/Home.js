@@ -3,7 +3,7 @@ import axios from "axios";
 import MainTimer from "../Components/Cards/MainTimer";
 import MainSchedule from "../Components/Cards/MainSchedule";
 import MainMyMeetingRoom from "../Components/Cards/MainMyMeetingRoom";
-import {Link, Route} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {SERVER_URL, AXIOS_OPTION} from "../util/env";
 
 const Home = () => {

@@ -4,6 +4,7 @@ import {AXIOS_OPTION, SERVER_URL} from "../util/env";
 import $ from "jquery";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation, Pagination} from "swiper";
+import {Link} from "react-router-dom";
 import "swiper/swiper.min.css";
 import "swiper/swiper-bundle.min.css"
 import RoomUserList from "../Components/Cards/RoomUserList";
@@ -34,7 +35,7 @@ const MeetingRoom = (props) => {
 
 
         setRoomInfo({
-            mt_ishost: '0', //0 게스트 1 호스트
+            mt_ishost: '1', //0 게스트 1 호스트
             mt_name: '경제학',
             mt_hostname: '김태선',
             mt_start_dt: '2022-11-09 15:00:00',
@@ -44,8 +45,8 @@ const MeetingRoom = (props) => {
             mt_remind_week: null,
             mt_remind_end: null,
             mt_info: '경제적으로 밥먹기, 화장실에서 돈을 모으지 못하지만 기분좋은 쌀국수에 소스가 말린 채 월드컵 경기장에서 국민체조를 즐기는 것',
-            mt_status: 1, // 0 비공개 1 공개 2 취소 3 삭제
-            mt_live: 1, // 라이브여부
+            mt_status: 2, // 0 비공개 1 공개 2 취소 3 삭제
+            mt_live: 0, // 라이브여부
             mt_files: [
                 {
                     idx: 1,
@@ -303,6 +304,14 @@ const MeetingRoom = (props) => {
     }
 
     const cancelMeeting = () => {
+        if(roomInfo.mt_status === 2){
+            axios.delete(SERVER_URL +
+                '/room/erase', {idx_meeting: window.location.pathname.split('/')[window.location.pathname.split('/').length-1]},
+                AXIOS_OPTION)
+                .then(res => {
+                    setRoomInfo({...roomInfo, mt_status: 3});
+                })
+        } else {
         axios.put(SERVER_URL +
             '/room/cancel', {idx_meeting: window.location.pathname.split('/')[window.location.pathname.split('/').length-1]},
             AXIOS_OPTION)
@@ -316,6 +325,9 @@ const MeetingRoom = (props) => {
                         })
                 }
             })
+        }
+        //             setRoomInfo({...roomInfo, mt_status: 3});
+        $('.pop__detail').removeClass('is-on');
     }
 
     const getMeetingRunningTime = () => {
@@ -354,7 +366,6 @@ const MeetingRoom = (props) => {
 
 
 
-
     return (
             <div className="page">
                 <div className="meeting__dash">
@@ -362,6 +373,13 @@ const MeetingRoom = (props) => {
                         <div className="sorting">
                             {
                                 roomInfo.mt_ishost === '0' ? '' :
+                                    roomInfo.isLive === 1 && roomInfo.mt_ishost === '1' ? '' :
+                                        roomInfo.mt_ishost === '1' && roomInfo.mt_status === 2 ?
+                                            <a onClick={openModal} className="btn btn-delete js-modal-alert">
+                                                <img src={require('../assets/image/ic_delete_16.png')} alt=""/>미팅 삭제하기
+                                            </a> :
+                                            roomInfo.mt_status === 3 ?
+                                                "" :
                                 <a onClick={openModal} className="btn btn-modify js-modal-alert">
                                     <img src={require('../assets/image/ic_close_16.png')} alt=""/>미팅 취소하기
                                 </a>
@@ -371,9 +389,12 @@ const MeetingRoom = (props) => {
                     <div className="casing">
                         <div className="case-1">
                             <div className="case__title">{roomInfo.mt_name}
-                                <a href="#none" className="btn btn__edit">
+                                {
+                                    roomInfo.mt_ishost === '1' ?
+                                <Link to="/newroom" className="btn btn__edit">
                                     <img src={require('../assets/image/ic_edit_24.png')} alt=""/>
-                                </a>
+                                </Link> : ''
+                                }
                             </div>
                             <dl className="type__host">
                                 <dt>강의내용</dt>
@@ -407,7 +428,7 @@ const MeetingRoom = (props) => {
                                     <div className="case__message is-ready">미팅 시작 전</div>
                                     : roomInfo.mt_live ?
                                     <div className="case__message is-live"><img src={require('../assets/image/ic_time-record_24.png')} alt="" />{timer}</div>
-                                                : ''
+                                                : <div className="case__message is-cancel">삭제된 미팅</div>
                             }
                         </div>
                         <div className="case-3">
@@ -440,7 +461,9 @@ const MeetingRoom = (props) => {
                     <h3>미팅 참석자 <div className="user__count"><img src={require('../assets/image/ic_participant_24.png')} alt="" />{invCount}</div>
                     </h3>
                     <div className="usering">
-                        <Swiper spaceBetween={30}
+                        <Swiper modules={[
+                            Pagination, Navigation
+                        ]} spaceBetween={30}
                                 slidesPerView={1}
                                 // scrollbar={{draggable:true}}
                                 navigation
@@ -457,11 +480,23 @@ const MeetingRoom = (props) => {
                         </Swiper>
                         <div className="btn__group">
                             {
-                                roomInfo.mt_ishost == '0' ?
-                                    <a href="#none" className="btn btn__able btn__xl">참여하기</a>
+                                roomInfo.mt_ishost == '0' && roomInfo.mt_live ?
+                                    <a href="#none" className="btn btn__able btn__xl">참여하기</a> //게스트, 시작된 미팅
                                     :
-                                    <a href="#none" className="btn btn__able btn__xl">시작하기</a>
+                                    roomInfo.mt_ishost == '0' && !roomInfo.mt_live ?
+                                        <a href="#none" className="btn btn__disable btn__xl">참여하기</a> // 게스트, 시작 전 미팅
+                                        :
+                                        roomInfo.mt_ishost == '1' && !roomInfo.mt_live && roomInfo.mt_status === 1?
+                                    <a href="#none" className="btn btn__able btn__xl">시작하기</a> // 호스트, 시작 전 미팅
+                                            :
+                                            roomInfo.mt_ishost == '1' && roomInfo.mt_live ?
+                                                <a href="#none" className="btn btn__disable btn__xl">시작하기</a> //호스트, 시작된 미팅
+                                                :
+                                                roomInfo.mt_ishost == '1' && !roomInfo.mt_live && roomInfo.mt_status !== 1 ?
+                                                    <a href="#none" className="btn btn__disable btn__xl">시작하기</a>
+                                                    : ''
                             }
+
                         </div>
                     </div>
                 </div>
@@ -469,12 +504,20 @@ const MeetingRoom = (props) => {
                     <div id="popup__cancel" className="pop__detail">
                         <a className="btn__close js-modal-close" onClick={closeModal}><img src={require('../assets/image/ic_close_24.png')} alt="" /></a>
                         <div className="popup__cnt">
-                            <div className="pop__message">
-                                <img src={require('../assets/image/ic_warning_80.png')} alt="" />
-                                    <strong>미팅룸 취소 시 비공개로 전환되며 홈 화면에 반영됩니다.<br/>
-                                        미팅룸을 취소 하시겠습니까?</strong>
-                                    <span>미팅을 취소하면 초대한 참석자들에게 메일이 발송됩니다.</span>
-                            </div>
+                            {
+                                    roomInfo.mt_status === 2 ?
+                                        <div className="pop__message">
+                                            <img src={require('../assets/image/ic_warning_80.png')} alt="" />
+                                            <strong>미팅룸을 삭제 하시겠습니까?</strong>
+                                        </div>
+                                        :
+                                        <div className="pop__message">
+                                            <img src={require('../assets/image/ic_warning_80.png')} alt="" />
+                                            <strong>미팅룸 취소 시 비공개로 전환되며 홈 화면에 반영됩니다.<br/>
+                                                미팅룸을 취소 하시겠습니까?</strong>
+                                            <span>미팅을 취소하면 초대한 참석자들에게 메일이 발송됩니다.</span>
+                                        </div>
+                                }
                             <div className="btn__group">
                                 <a onClick={cancelMeeting} className="btn btn__able btn__s js-modal-alert">예</a>
                                 <a onClick={closeModal} className="btn btn__normal btn__s js-modal-close">아니오</a>
