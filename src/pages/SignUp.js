@@ -194,7 +194,6 @@ const SignUp = () => {
         let join_password2 = $('#join_password2')
 
         if(user_name.val() == '') {
-
             alert('이름을 입력해주세요.')
         } else if (user_id.val() == '' || user_id.parent().hasClass('is-alert')) {
             alert('아이디(이메일) 입력 사항을 확인해주세요.')
