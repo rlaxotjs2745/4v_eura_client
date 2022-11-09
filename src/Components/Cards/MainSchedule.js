@@ -3,7 +3,7 @@ const React = require("react");
 
 
 
-const MainSchedule = (schedule) => {
+const MainSchedule = ({schedule}) => {
 
 
     return (

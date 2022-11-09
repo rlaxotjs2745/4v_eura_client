@@ -1913,6 +1913,10 @@ button.swiper-pagination-bullet {
     box-shadow: 0 3px 20px rgba(177, 206, 248, .3)
 }
 
+.header .user__box .user__anchor.user_profile_hide {
+    display: none;
+}
+
 .header .user__box .user__anchor ul li {
     width: 129px
 }

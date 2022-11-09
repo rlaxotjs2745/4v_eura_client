@@ -19,23 +19,37 @@ const Home = () => {
         // axios.get('/api/hello')
         //     .then(response => console.log(response.data))
 
-        axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
-            .then(res => {
-                setUser(res.data);
-                setSchedule(res.data.mt_meetShort);
-            });
+        // axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
+        //     .then(res => {
+        //         setUser(res.data);
+        //         setSchedule(res.data.mt_meetShort);
+        //     });
+        //
+        // axios.get(SERVER_URL + '/meet/main/list', AXIOS_OPTION)
+        //     .then(res => {
+        //         setMeeting(res.data);
+        //     })
+        //
+        // axios.get(SERVER_URL + '/meet/main/endlist', AXIOS_OPTION)
+        //     .then(res => {
+        //         setLastMeeting(res.data);
+        //     })
 
-        axios.get(SERVER_URL + '/meet/main/list', AXIOS_OPTION)
-            .then(res => {
-                setMeeting(res.data);
-            })
+        setMeeting({
+            mt_meetMyListCount: 1,
+            mt_meetMyList: [{
+            mt_idx: 5,
+            mt_name: '경제학',
+            mt_hostname: '김태선',
+            mt_status: 2,
+            mt_start_dt: '2022-11-08 21:00:00',
+            mt_end_dt: '2022-12-13 12:00:00',
+            mt_live: 0
+            }]
+        })
 
-        axios.get(SERVER_URL + '/meet/main/endlist', AXIOS_OPTION)
-            .then(res => {
-                setLastMeeting(res.data);
-            })
 
-    })
+    }, [])
 
     const pageSort = (e) => {
         let endPoint;
@@ -55,6 +69,8 @@ const Home = () => {
 
 
 
+
+
     return (
         <>
             <div className="page">
@@ -65,8 +81,7 @@ const Home = () => {
 
                 <div className="main__meetingroom">
                     <h3><img src={require('../assets/image/ic_video.png')} alt=""/> 나의 미팅룸 <em>({meeting.mt_meetMyListCount ? meeting.mt_meetMyListCount : 0})</em>
-                        <a href="#none" className="btn btn__make"><img src={require('../assets/image/ic_plus.png')} alt=""/>새 미팅룸
-                            만들기</a>
+                        <Link to="/newroom" className="btn btn__make"><img src={require('../assets/image/ic_plus.png')} alt=""/>새 미팅룸 만들기</Link>
                         <div className="sorting">
                             <select name="" id="meetSort" onChange={pageSort}>
                                 <option value="1">최신순</option>
@@ -86,8 +101,9 @@ const Home = () => {
                             </div>
                                 :
                             meeting.mt_meetMyList.map(room => {
+                                const ep = '/meetingroom/' + room.mt_idx;
                                 return (
-                                    <Link to="/meetingroom" state={{room: room.mt_idx}}>
+                                    <Link to={ep}>
                                         <MainMyMeetingRoom room={room} />
                                     </Link>
                                 )
@@ -124,7 +140,7 @@ const Home = () => {
                                 :
                                 lastMeeting.mt_meetEndMyList.map(room => {
                                     return (
-                                        <Link to="/meetingroom" state={{room: room.mt_idx}}>
+                                        <Link to="/meetingroom">
                                             <MainMyMeetingRoom room={room} />
                                         </Link>
                                     )

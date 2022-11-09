@@ -4,7 +4,7 @@ const {useState} = require("react");
 
 
 
-const MainTimer = (user) => {
+const MainTimer = ({user}) => {
 
     const [timer, setTimer] = useState("00:00")
     const currentTimer = () => {

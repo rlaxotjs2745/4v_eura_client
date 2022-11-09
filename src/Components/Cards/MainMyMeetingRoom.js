@@ -1,8 +1,6 @@
 import React, {useEffect} from "react";
 
-const MainMyMeetingRoom = (room) => {
-
-
+const MainMyMeetingRoom = ({room}) => {
 
     const getSubtractionDate = () => {
         let thisTime = new Date();
@@ -71,7 +69,7 @@ const MainMyMeetingRoom = (room) => {
             </dl>
             <dl>
                 <dt>시간</dt>
-                <dd>{room.mt_start_dt.split(' ')[1]} - {room.mt_end_dt.split(' ')[0]}</dd>
+                <dd>{room.mt_start_dt.split(' ')[1].slice(0,5)} - {room.mt_end_dt.split(' ')[1].slice(0,5)}</dd>
             </dl>
         </div>
     )
