@@ -90,7 +90,11 @@ const SignUp = () => {
         user_id: yup
             .string()
             .required('이메일을 입력해주세요')
-            .email('이메일 형식이 아닙니다.'),
+            // .email('이메일 형식이 아닙니다.'),
+            .matches(
+                /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+                '이메일 형식으로 입력해주세요.'
+            ),
         // 비밀번호
         password: yup
             .string()
@@ -107,9 +111,14 @@ const SignUp = () => {
             .required('비밀번호를 확인해주세요.')
             .oneOf([yup.ref('password')], '비밀번호가 동일하지 않습니다.'),
         user_phone: yup
-            .mixed()
-            .nullable(true)
-            .transform((_, val) => val === Number(val) ? val : null),
+            .string()
+            .matches(
+                /^\d{3}\d{3,4}\d{4}$/,
+                {excludeEmptyString:true, message:'형식에 맞게 입력해주세요. 예) 01012345678'}
+            )
+            .nullable(),
+            // .nullable(true)
+            // .transform((_, val) => val === Number(val) ? val : null),
             // .matches(
             //     /^\d{3}\d{3,4}\d{4}$/,
             //     '형식에 맞게 입력해주세요. 예) 01012345678'
@@ -136,13 +145,14 @@ const SignUp = () => {
             //     return value && value[0].type === ("image/png" || "image/jpg" || "image/jpeg")
             // })
         eq_type01:yup
-            .string()
-            .nullable(true)
-            .transform((_, val) => val === Number(val) ? val : null),
+            .number()
+            .typeError()
+            .nullable(),
+            // .transform((_, val) => val === Number(val) ? val : null),
         eq_type02:yup
-            .string()
-            .nullable(true)
-            .transform((_, val) => val === Number(val) ? val : null),
+            .number()
+            .nullable(),
+            // .transform((_, val) => val === Number(val) ? val : null),
 
     });
     const {
@@ -184,17 +194,20 @@ const SignUp = () => {
         formData.append('user_name', data.user_name)
         formData.append('user_id', data.user_id)
         formData.append('user_pwd', data.user_pwd)
-        if (data.user_phone !== '') {
+        if (data.user_phone !== null) {
             formData.append('user_phone', data.user_phone)
         }
-        else if (data.eq_type01 !== '') {
+        else if (data.eq_type01 !== null) {
             formData.append('eq_type01', data.eq_type01)
         }
-        else if (data.eq_type02 !== '') {
+        else if (data.eq_type02 !== null) {
             formData.append('eq_type02', data.eq_type02)
         }
         formData.append('privacy_terms', data.privacy_terms)
         formData.append('service_use_terms', data.service_use_terms)
+        console.log(data.user_phone)
+        console.log(data.eq_type01)
+        console.log(data.eq_type02)
         console.log(formData)
         axios.post(SERVER_URL + '/join_mail'
             , formData
@@ -231,12 +244,11 @@ const SignUp = () => {
         console.log('에러메세지 입니다. 제출 되지 않습니다.');
     };
 
-    const Sign1Open = () => {
+    const Sign1Open = (e) => {
+        e.preventDefault()
         $('#step1').addClass('active')
         $('#step2').removeClass('active')
     }
-
-
 
     const Sign2Open = (e) => {
 
@@ -586,10 +598,10 @@ const SignUp = () => {
             <form className="w100" id="sign_up_complete"  onSubmit={handleSubmit(reMailSubmit, onError)}>
                 <section className="content">
                     <div className="join temporary">
-                        <figure><img src={require('../assets/image/img_mail.png')} alt=""/></figure>
+                        <figure><img src={require('../assets/image/img_mail_no_lock.png')} alt=""/></figure>
                         <h3>인증메일 발송완료</h3>
-                        <div className="desc__message"><strong>{userId}<input name="user_id" type="hidden" value={userId}/></strong>로 임시 비밀번호가 발송되었습니다.<br/>
-                            이메일에서 확인 후 비밀번호를 재설정해주세요
+                        <div className="desc__message"><strong>{userId}<input name="user_id" type="hidden" value={userId}/></strong>로 회원가입 인증메일이 발송되었습니다.<br/>
+                            이메일에서 확인 후 회원가입이 완료됩니다.
                         </div>
 
                         <div className="btn__box">
