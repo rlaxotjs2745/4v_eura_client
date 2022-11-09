@@ -5,7 +5,6 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Error from "../pages/404";
 import FindPW from "../pages/FindPw";
-import SignUpComplete from "../pages/SignUpComplete";
 import Profile from "../pages/Profile";
 import PublickRoute from "./PublickRoute";
 import PrivateRoute from "./PrivateRoute";
@@ -26,14 +25,15 @@ const Routers = () => {
                 <Route path="*" element={<Error/>}/>
             </Route>
             <Route path="/" element={<PublickRoute><LayoutType1/></PublickRoute>}>
-                <Route path="signup" element={<SignUp/>}/>
-                <Route path="/signup_complete" element={<SignUpComplete/>}/>
+                <Route path="/signup" element={<SignUp/>}/>
+                {/*<Route path="/signup_complete" element={<SignUpComplete/>}/>*/}
                 <Route path="/find_pw" element={<FindPW/>}/>
                 {/* 404 페이지 */}
                 <Route path="*" element={<Error/>}/>
             </Route>
             {/* type2 푸터 헤더 없는 버전 */}
-            <Route path="/" element={<LayoutType2/>}>
+            {/* 로그인 되어 있으면 login 페이지가 아니라 index로 넘어가는 라우터 */}
+            <Route path="/" element={<PublickRoute><LayoutType2/></PublickRoute>}>
                 <Route path="/login" element={<Login/>}/>
             </Route>
         </Routes>

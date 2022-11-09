@@ -101,15 +101,18 @@ const Login = () => {
                 let tomorrow = new Date();
                 let today = new Date();
                 // 자동로그인 체크 했으면 쿠키 30일
-                if(inputChk) {
+                if(e.autoLogin) {
+                    console.log(e.autoLogin)
                     tomorrow.setDate(today.getDate()+30);
                     setCookie('user_id', inputId, {path:'/', expires:tomorrow});
                 }
-                // 자동로그인 체크 안했으면 쿠키 하루
-                else if (!inputChk) {
+                    // 자동로그인 체크 안했으면 쿠키 하루
+                    else if (!e.autoLogin) {
+                    console.log(e.autoLogin)
                     tomorrow.setDate(today.getDate()+1);
                     setCookie('user_id', inputId, {path:'/', expires:tomorrow});
                 }
+                console.log('---------ID', inputId)
                 console.log('---------cookie', document.cookie)
                 console.log('---------cookie', res.data)
                 console.log('======================',res.data.result_str);
@@ -246,7 +249,7 @@ const Login = () => {
                 <form name="loginForm" id="loginForm" onSubmit={handleSubmit(onLogin, onError)}>
                     <div className="login__box">
                     <div className="input__group">
-                        <input type="text" onKeyDown={handleInputId} className="text" id="login_id" name="user_id" placeholder="아이디(이메일)" {...register('user_id')}/>
+                        <input type="text" onInput={handleInputId} className="text" id="login_id" name="user_id" placeholder="아이디(이메일)" {...register('user_id')}/>
                     </div>
                     <div className="input__group">
                         <input type="password" className="text" id="login_password" placeholder="비밀번호" name="user_pwd" {...register('user_pwd')}/>
