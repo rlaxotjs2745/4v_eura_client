@@ -7,10 +7,11 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {SERVER_URL, AXIOS_OPTION} from "../util/env";
 import axios from 'axios';
-import jsonp from 'jsonp'
+// import jsonp from 'jsonp'
 import $ from "jquery";
 
 const Login = (props) => {
+
     const formSchema = yup.object({
         user_id: yup
             .string()

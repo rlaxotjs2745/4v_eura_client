@@ -2,13 +2,18 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {AXIOS_OPTION, SERVER_URL} from "../util/env";
 import $ from "jquery";
-import Modal from "react-modal"
-
+import {Swiper, SwiperSlide} from "swiper/react";
+import {Navigation, Pagination} from "swiper";
+import "swiper/swiper.min.css";
+import "swiper/swiper-bundle.min.css"
+import RoomUserList from "../Components/Cards/RoomUserList";
 
 const MeetingRoom = (props) => {
 
     const [roomInfo, setRoomInfo] = useState('');
-    const [modal, setModal] = useState(false);
+    const [invites, setInvites] = useState('');
+    const [timer, setTimer] = useState('');
+    const [invCount, setInvCount] = useState('');
 
     useEffect(() => {
         // axios.get(SERVER_URL +
@@ -17,11 +22,22 @@ const MeetingRoom = (props) => {
         //     .then(res => {
         //         setRoomInfo(res.data);
         //     })
+        //
+        //  axios.get(SERVER_URL +
+        //     `/meet/room/invite?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
+        //     AXIOS_OPTION)
+        //     .then(res => {
+        //         setInvCount(res.data.mt_invites.length);
+        //         makeInviteTag(res.data.mt_invites);
+        //     })
+
+
 
         setRoomInfo({
+            mt_ishost: '0', //0 게스트 1 호스트
             mt_name: '경제학',
             mt_hostname: '김태선',
-            mt_start_dt: '2022-11-08 21:00:00',
+            mt_start_dt: '2022-11-09 15:00:00',
             mt_end_dt: '2022-12-13 12:00:00',
             mt_remind_type: 0, //되풀이 미팅 타입 0 없음 1 매일 2 주 3 월 4 년
             mt_remind_count: 0, //되풀이 미팅 주기 0 없음, 1이상 주기별
@@ -29,19 +45,250 @@ const MeetingRoom = (props) => {
             mt_remind_end: null,
             mt_info: '경제적으로 밥먹기, 화장실에서 돈을 모으지 못하지만 기분좋은 쌀국수에 소스가 말린 채 월드컵 경기장에서 국민체조를 즐기는 것',
             mt_status: 1, // 0 비공개 1 공개 2 취소 3 삭제
-            mt_live: 0, // 라이브여부
+            mt_live: 1, // 라이브여부
             mt_files: [
                 {
                     idx: 1,
                     files: 'filepath/filename'
                 }
-            ],
-            mt_invites: [{
-                idx: 1,
-                uname: '서광칠',
-                email: 'kwang7@4thevision.com'
-            }]
+            ]
         })
+
+        let dummyInvites = [
+            {
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 1,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 1,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 1,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        },{
+            idx: 1,
+            is_live: 0,
+            uname: '제갈춘재',
+            email: 'chun@chun.com'
+        }];
+
+        setInvCount(dummyInvites.length);
+        makeInviteTag(dummyInvites);
 
     }, [])
 
@@ -55,6 +302,56 @@ const MeetingRoom = (props) => {
         $('.pop__detail').removeClass('is-on');
     }
 
+    const cancelMeeting = () => {
+        axios.put(SERVER_URL +
+            '/room/cancel', {idx_meeting: window.location.pathname.split('/')[window.location.pathname.split('/').length-1]},
+            AXIOS_OPTION)
+            .then(res => {
+                if(res.result_code == 'SUCCESS'){
+                    axios.get(SERVER_URL +
+                        `/meet/room/info?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
+                        AXIOS_OPTION)
+                        .then(res => {
+                            setRoomInfo(res.data);
+                        })
+                }
+            })
+    }
+
+    const getMeetingRunningTime = () => {
+        let nowDiff = new Date() - new Date(roomInfo.mt_start_dt);
+
+        let hour = '' + Math.floor(nowDiff / 3600000);
+        nowDiff = nowDiff - hour * 3600000;
+        let min = '' + Math.floor(nowDiff / 60000);
+        nowDiff = nowDiff - min * 60000;
+        let sec = '' + Math.floor(nowDiff / 1000);
+
+        setTimer(`${hour.length === 1 ? '0'+ hour : hour}:${min.length === 1 ? '0' + min : min}:${sec.length === 1 ? '0' + sec : sec}`);
+    }
+
+    const startTimer = () => {
+        setInterval(getMeetingRunningTime, 1000);
+    }
+
+    const makeInviteTag = (invit) => {
+        let invArr = [];
+        let res = [];
+        invit.forEach((inv, idx) => {
+            invArr.push(inv);
+            if(invArr.length === 16){
+                res.push(invArr);
+                invArr = [];
+            }
+            if(invit.length-1 === idx){
+                res.push(invArr);
+            }
+        })
+        setInvites(res);
+    }
+
+
+
 
 
 
@@ -63,9 +360,12 @@ const MeetingRoom = (props) => {
                 <div className="meeting__dash">
                     <h3>미팅룸 정보
                         <div className="sorting">
-                            <a onClick={openModal} className="btn btn-modify js-modal-alert">
-                                <img src={require('../assets/image/ic_close_16.png')} alt=""/>미팅 취소하기
-                            </a>
+                            {
+                                roomInfo.mt_ishost === '0' ? '' :
+                                <a onClick={openModal} className="btn btn-modify js-modal-alert">
+                                    <img src={require('../assets/image/ic_close_16.png')} alt=""/>미팅 취소하기
+                                </a>
+                            }
                         </div>
                     </h3>
                     <div className="casing">
@@ -94,6 +394,9 @@ const MeetingRoom = (props) => {
                         </div>
                         <div className="case-2">
                             {
+                                roomInfo.mt_live ? startTimer() : ''
+                            }
+                            {
                                 roomInfo.mt_status == 0 ?
                                     <div className="case__message is-late">비공개 상태</div>
                                     : roomInfo.mt_status == 2 ?
@@ -103,7 +406,7 @@ const MeetingRoom = (props) => {
                                     : roomInfo.mt_status == 1 && !roomInfo.mt_live ?
                                     <div className="case__message is-ready">미팅 시작 전</div>
                                     : roomInfo.mt_live ?
-                                    <div className="case__message is-live"><img src={require('../assets/image/ic_time-record_24.png')} alt="" />00:00:01</div>
+                                    <div className="case__message is-live"><img src={require('../assets/image/ic_time-record_24.png')} alt="" />{timer}</div>
                                                 : ''
                             }
                         </div>
@@ -134,48 +437,37 @@ const MeetingRoom = (props) => {
                 </div>
 
                 <div className="meeting__user">
-                    <h3>미팅 참석자 <div className="user__count"><img src={require('../assets/image/ic_participant_24.png')} alt="" />32</div>
+                    <h3>미팅 참석자 <div className="user__count"><img src={require('../assets/image/ic_participant_24.png')} alt="" />{invCount}</div>
                     </h3>
                     <div className="usering">
-                        <div className="swiper userSwiper">
-                            <div className="swiper-wrapper">
-                                <div className="swiper-slide">
-
-                                    <div className="user is-disabled">
-                                        <ul>
-
-                                            <li>
-                                                <figure><img src={require('../assets/image/image_profile.png')} alt="" /></figure>
-                                                <span className="team__user">제갈민정<em>postechkim@postech.com</em></span>
-                                            </li>
-
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div className="swiper-slide">
-
-                                    <div className="user is-disabled">
-                                        <ul>
-
-                                            <li>
-                                                <figure><img src={require('../assets/image/image_profile.png')} alt="" /></figure>
-                                                <span className="team__user">제갈민정<em>postechkim@postech.com</em></span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="swiper-button-next"></div>
-                            <div className="swiper-button-prev"></div>
-                        </div>
+                        <Swiper spaceBetween={30}
+                                slidesPerView={1}
+                                // scrollbar={{draggable:true}}
+                                navigation
+                                // pagination={{clickable:true}}
+                        >
+                                {
+                                    !invites || !invites.length ? '' :
+                                        invites.map(inv =>{
+                                               return <SwiperSlide>
+                                            <RoomUserList invites={inv} />
+                                        </SwiperSlide>
+                                        })
+                                }
+                        </Swiper>
                         <div className="btn__group">
-                            <a href="#none" className="btn btn__able btn__xl">시작하기</a>
+                            {
+                                roomInfo.mt_ishost == '0' ?
+                                    <a href="#none" className="btn btn__able btn__xl">참여하기</a>
+                                    :
+                                    <a href="#none" className="btn btn__able btn__xl">시작하기</a>
+                            }
                         </div>
                     </div>
                 </div>
 
-                    <div id="popup__cancel" class="pop__detail">
-                        <a href="#none" className="btn__close js-modal-close" onClick={closeModal}><img src={require('../assets/image/ic_close_24.png')} alt="" /></a>
+                    <div id="popup__cancel" className="pop__detail">
+                        <a className="btn__close js-modal-close" onClick={closeModal}><img src={require('../assets/image/ic_close_24.png')} alt="" /></a>
                         <div className="popup__cnt">
                             <div className="pop__message">
                                 <img src={require('../assets/image/ic_warning_80.png')} alt="" />
@@ -184,13 +476,11 @@ const MeetingRoom = (props) => {
                                     <span>미팅을 취소하면 초대한 참석자들에게 메일이 발송됩니다.</span>
                             </div>
                             <div className="btn__group">
-                                <a href="#popup__delete" className="btn btn__able btn__s js-modal-alert">예</a>
-                                <a href="#none" className="btn btn__normal btn__s js-modal-close">아니오</a>
+                                <a onClick={cancelMeeting} className="btn btn__able btn__s js-modal-alert">예</a>
+                                <a onClick={closeModal} className="btn btn__normal btn__s js-modal-close">아니오</a>
                             </div>
                         </div>
                     </div>
-                {/*</Modal>*/}
-
             </div>
     )
 }
