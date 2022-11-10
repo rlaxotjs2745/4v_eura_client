@@ -16,7 +16,7 @@ const Routers = () => {
     return (
         <Routes>
             {/* type1 푸터 헤더 있는 버전 */}
-            {/* PrivateRoute 안에는 로그인 해야 접근 가능 */}
+            {/* PrivateRoute 안에는 로그인 해야 접근 가능, 로그인 안되어 있으면 /login으로 이동*/}
             <Route path="/" element={<PrivateRoute><LayoutType1/></PrivateRoute>}>
                 <Route index element={<Home/>}/>
                 <Route path="/profile" element={<Profile/>} />
@@ -25,6 +25,7 @@ const Routers = () => {
                 <Route path="/newroom/:idx" element={<NewRoom />} />
                 {/*<Route path="*" element={<Error/>}/>*/}
             </Route>
+            {/* 로그인 되어 있으면 login 페이지가 아니라 /로 넘어가는 라우터 */}
             <Route path="/" element={<PublickRoute><LayoutType1/></PublickRoute>}>
                 <Route path="/signup" element={<SignUp/>}/>
                 {/*<Route path="/signup_complete" element={<SignUpComplete/>}/>*/}
@@ -33,7 +34,7 @@ const Routers = () => {
                 <Route path="*" element={<Error/>}/>
             </Route>
             {/* type2 푸터 헤더 없는 버전 */}
-            {/* 로그인 되어 있으면 login 페이지가 아니라 index로 넘어가는 라우터 */}
+            {/* 로그인 되어 있으면 login 페이지가 아니라 /로 넘어가는 라우터 */}
             <Route path="/" element={<PublickRoute><LayoutType2/></PublickRoute>}>
                 <Route path="/login" element={<Login/>}/>
             </Route>
