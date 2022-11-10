@@ -47,11 +47,8 @@ const NewRoom = () => {
     }
 
     const handleFileEvent =  (e) => {
-        let uploaded = [...uploadedFiles]
-        let index = uploaded.filter((key)=> key.name !== uploaded.name)
-
-        setUploadedFiles(index)
-
+        const chosenFiles = Array.prototype.slice.call(e.target.files)
+        handleUploadFiles(chosenFiles)
     }
 
 
@@ -69,12 +66,12 @@ const NewRoom = () => {
                 i++;
             }
         }
-        const index = i+1
+        const index2 = i
 
-        setUploadedFiles(uploaded.filter((_ , index) => index !== index))
+        setUploadedFiles(uploaded.filter((_ , index) => index !== index2))
 
-        console.log(uploadedFiles)
-        console.log(index + '번째');
+        // console.log(uploadedFiles)
+        // console.log(index + '번째');
 
         // setUploadedFiles(uploadedFiles.filter(index))
     }
