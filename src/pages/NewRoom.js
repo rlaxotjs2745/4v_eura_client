@@ -5,6 +5,9 @@ import ModifyRoomUser from "../Components/Cards/ModifyRoomUser";
 import {useNavigate} from "react-router-dom";
 import $ from "jquery";
 import AddMeetingUser from "../Components/Cards/AddMeetingUser";
+import {upload} from "@testing-library/user-event/dist/upload";
+
+const MAX_COUNT = 5;
 
 const NewRoom = () => {
 
@@ -20,15 +23,67 @@ const NewRoom = () => {
 
     const [selectValue, setSelectValue] = useState(1)
 
+    const [uploadedFiles, setUploadedFiles] = useState([])
+    const [fileLimit, setFileLimit] = useState(false)
+
+    // const chosenFiles = Array.prototype.slice.call(e.target.files)
+
+    const handleUploadFiles = files => {
+        const uploaded = [...uploadedFiles];
+        let limitExceeded = false;
+        files.some((file) => {
+            if(uploaded.findIndex((f) => f.name === file.name) === -1) {
+                uploaded.push(file);
+                if (uploaded.length === MAX_COUNT) setFileLimit(true);
+                if(uploaded.length > MAX_COUNT) {
+                    alert(`파일은 최대 ${MAX_COUNT}개 까지 첨부할 수 있습니다.`)
+                    setFileLimit(false);
+                    limitExceeded = true;
+                    return true;
+                }
+            }
+        })
+        if (!limitExceeded) setUploadedFiles(uploaded)
+    }
+
+    const handleFileEvent =  (e) => {
+        let uploaded = [...uploadedFiles]
+        let index = uploaded.filter((key)=> key.name !== uploaded.name)
+
+        setUploadedFiles(index)
+
+    }
+
+
+    // const handleFileDeleteEvent = (e) => {
+    //     const newRe = uploadedFiles.filter((it)=> it.name !== e);
+    //     setUploadedFiles(newRe)
+    //     console.log(uploadedFiles)
+    // };
+    const handleFileDeleteEvent = (e) => {
+        let uploaded = [...uploadedFiles]
+        let indexNumber = e.target.parentNode.parentNode
+        let i = 0;
+        while( indexNumber = indexNumber.previousSibling ) {
+            if( indexNumber.nodeType === 1 ) {
+                i++;
+            }
+        }
+        const index = i+1
+
+        setUploadedFiles(uploaded.filter((_ , index) => index !== index))
+
+        console.log(uploadedFiles)
+        console.log(index + '번째');
+
+        // setUploadedFiles(uploadedFiles.filter(index))
+    }
+
 
     useEffect(() => {
-        // $('#remind_meeting').hide();
         if(window.location.pathname.split('/')[window.location.pathname.split('/').length-1] !== 'newroom'){ //수정하기
             if(roomInfo.mt_remind_type !== 0){
-                // setRemindBool(true);
-                // setRemindBool(!remindBool);
                 setRemindBool(!remindBool);
-                // $('#remind_meeting').show();
             }
             axios.get(SERVER_URL +
                 `/meet/room/info?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
@@ -37,10 +92,7 @@ const NewRoom = () => {
                     setRoomInfo(res.data);
                     setIsNew(false);
                     if(res.data.mt_remind_type !== 0){
-                        // setRemindBool(true);
                         // setRemindBool(!remindBool);
-                        // setRemindBool(!remindBool);
-                        // $('#remind_meeting').show();
                     }
                 })
             axios.get(SERVER_URL +
@@ -150,18 +202,9 @@ const NewRoom = () => {
             }];
         setInvites(dummyInvites)
         setSearchUser(dummySearchUser)
-        // $('#remind_meeting').show();
 //더미
-
     }, [])
 
-    // useEffect(() => {
-    //     if(remindBool){
-    //         $('#remind_meeting').show();
-    //     } else {
-    //         $('#remind_meeting').hide();dㄷ
-    //     }
-    // }, [remindBool])
 
     const searchInviteUserList = (e) => {
         let searchWord = e.target.value;
@@ -399,36 +442,45 @@ const NewRoom = () => {
                 </div>
 
                 <div className="input__group">
-                    <label htmlFor="">첨부파일 <a href="#none" className="btn btn__download"><img
-                        src="../assets/image/ic_attachment_14.png" alt="" />파일 업로드</a></label>
+                    <div> 첨부파일 <input type="file" name="file_upload" id="fileUpload" multiple accept="application/pdf, image/*" onChange={handleFileEvent} disabled={fileLimit}/></div>
+                    <label htmlFor="fileUpload"><span  className="btn btn__download"><img src={require('../assets/image/ic_attachment_14.png')} alt="" />파일 업로드</span></label>
+
                     <div className="list__upload">
- {/*                        <ul>*/}
- {/*                            <li>*/}
- {/*                                <a href="#none">*/}
- {/*                                <img src="../assets/image/ic_file_14.png" alt=""><span class="file__name">1주차_인간공학의 개요_ppt.pdf</span><em class="file__size">230KB</em>*/}
- {/*                                </a>*/}
- {/*                                <a href="#none" class="btn btn__delete"><img src="../assets/image/ic_cancle-circle_18.png" alt="삭제"></a>*/}
- {/*                            </li>*/}
- {/*                            <li>*/}
- {/*                                <a href="#none">*/}
- {/*                                    <img src="../assets/image/ic_file_14.png" alt=""><span class="file__name">2주차_인간공학을 위한 인간이해_ppt.pdf*/}
- {/*</span><em class="file__size">680KB</em>*/}
- {/*                                </a>*/}
- {/*                                <a href="#none" class="btn btn__delete"><img src="../assets/image/ic_cancle-circle_18.png" alt="삭제"></a>*/}
- {/*                            </li>*/}
- {/*                            <li>*/}
- {/*                                <a href="#none">*/}
- {/*                                    <img src="../assets/image/ic_file_14.png" alt=""><span class="file__name">3주차_인간의 감각과 그 구조_ppt.pdf</span><em class="file__size">558KB</em>*/}
- {/*                                </a>*/}
- {/*                                <a href="#none" class="btn btn__delete"><img src="../assets/image/ic_cancle-circle_18.png" alt="삭제"></a>*/}
- {/*                            </li>*/}
- {/*                            <li>*/}
- {/*                                <a href="#none">*/}
- {/*                                    <img src="../assets/image/ic_file_14.png" alt=""><span class="file__name">4주차_인간의 형태와 운동기능_ppt.pdf</span><em class="file__size">680KB</em>*/}
- {/*                                </a>*/}
- {/*                                <a href="#none" class="btn btn__delete"><img src="../assets/image/ic_cancle-circle_18.png" alt="삭제"></a>*/}
- {/*                            </li>*/}
- {/*                        </ul>*/}
+                         <ul>
+                             {uploadedFiles.map(file =>(
+                                 <li>
+                                     <a href="#none">
+                                         <img src={require('../assets/image/ic_file_14.png')} alt="" /><span className="file__name">{file.name}</span><em
+                                         className="file__size">{file.size}</em>
+                                     </a>
+                                     <button onClick={handleFileDeleteEvent} className="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></button>
+                                 </li>
+                             ))}
+                             {/*<li>*/}
+                             {/*    <a href="#none">*/}
+                             {/*    <img src="../assets/image/ic_file_14.png" alt=""/><span class="file__name">1주차_인간공학의 개요_ppt.pdf</span><em class="file__size">230KB</em>*/}
+                             {/*    </a>*/}
+                             {/*    <a href="#none" class="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></a>*/}
+                             {/*</li>*/}
+                             {/*<li>*/}
+                             {/*    <a href="#none">*/}
+                             {/*        <img src="../assets/image/ic_file_14.png" alt=""/><span class="file__name">2주차_인간공학을 위한 인간이해_ppt.pdf</span><em class="file__size">680KB</em>*/}
+                             {/*    </a>*/}
+                             {/*    <a href="#none" class="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></a>*/}
+                             {/*</li>*/}
+                             {/*<li>*/}
+                             {/*    <a href="#none">*/}
+                             {/*        <img src="../assets/image/ic_file_14.png" alt=""/><span class="file__name">3주차_인간의 감각과 그 구조_ppt.pdf</span><em class="file__size">558KB</em>*/}
+                             {/*    </a>*/}
+                             {/*    <a href="#none" class="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></a>*/}
+                             {/*</li>*/}
+                             {/*<li>*/}
+                             {/*    <a href="#none">*/}
+                             {/*        <img src="../assets/image/ic_file_14.png" alt=""/><span class="file__name">4주차_인간의 형태와 운동기능_ppt.pdf</span><em class="file__size">680KB</em>*/}
+                             {/*    </a>*/}
+                             {/*    <a href="#none" class="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></a>*/}
+                             {/*</li>*/}
+                         </ul>
                     </div>
                 </div>
             </div>
