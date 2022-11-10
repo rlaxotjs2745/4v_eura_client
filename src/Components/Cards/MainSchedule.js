@@ -18,10 +18,10 @@ const MainSchedule = ({schedule}) => {
                     })
                 }
             </ul>
-            <a href="#none" className="btn btn__calendar">
+            <Link to="/calendar" className="btn btn__calendar">
                 <img src={require('../../assets/image/ic_arrow_light_circle_24.png')} alt=""/>
                 캘린더 보기
-            </a>
+            </Link>
         </div>
     )
 

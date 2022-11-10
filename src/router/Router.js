@@ -11,6 +11,7 @@ import PrivateRoute from "./PrivateRoute";
 import SignUp from "../pages/SignUp";
 import MeetingRoom from "../pages/MeetingRoom";
 import NewRoom from "../pages/NewRoom";
+import MeetingCalendar from "../pages/MeetingCalendar";
 
 const Routers = () => {
     return (
@@ -23,6 +24,7 @@ const Routers = () => {
                 <Route path="/meetingroom/:idx" element={<MeetingRoom />} />
                 <Route path="/newroom" element={<NewRoom />} />
                 <Route path="/newroom/:idx" element={<NewRoom />} />
+                <Route path="/calendar" element={<MeetingCalendar />}/>
                 {/*<Route path="*" element={<Error/>}/>*/}
             </Route>
             {/* 로그인 되어 있으면 login 페이지가 아니라 /로 넘어가는 라우터 */}

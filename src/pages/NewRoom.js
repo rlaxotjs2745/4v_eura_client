@@ -15,6 +15,7 @@ const NewRoom = () => {
     const [invites, setInvites] = useState('');
     const [invCount, setInvCount] = useState('');
     const [delUser, setDelUser] = useState('');
+    const [newInvUser, setNewInvUser] = useState('');
     const [searchUser, setSearchUser] = useState([]);
     const [remindBool, setRemindBool] = useState(false);
 
@@ -72,226 +73,6 @@ const NewRoom = () => {
             },{
                 idx: 1,
                 is_live: 1,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 1,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 1,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
                 uname: '제갈춘재',
                 email: 'chun@chun.com'
             }];
@@ -383,7 +164,7 @@ const NewRoom = () => {
 
                                 <hr />
                                     <div className="checkbox type__square">
-                                        <input type="checkbox" className="checkbox" id="remind_bool" onClick={remindChange} checked={roomInfo.mt_remind_type !== 0 ? true : false}/>
+                                        <input type="checkbox" className="checkbox" id="remind_bool" onClick={remindChange}/>
                                         <label htmlFor="cb-2">되풀이 미팅</label>
                                     </div>
                     <div id="remind_meeting">
@@ -473,7 +254,7 @@ const NewRoom = () => {
                     </div>
                 </div>
 
-                <div className="input__group" id="hahhhoho">
+                <div className="input__group">
                     <label htmlFor="make_team">참석자 추가</label>
                     <div className="list__count"><a href="#none" className="btn btn__download">엑셀 양식 다운로드</a></div>
                     <div className="flow_box input__inline">
@@ -556,7 +337,7 @@ const NewRoom = () => {
                 <div className="btn__group">
                     {
                         isNew ?
-                        <div onClick={() => navigate('/')} className="btn btn__normal">최소</div>
+                        <div onClick={() => navigate('/')} className="btn btn__normal">취소</div>
                         :
                         <div onClick={() => navigate(`/meetingroom/${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`)} className="btn btn__normal">최소</div>
                     }
