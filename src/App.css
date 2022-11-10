@@ -2782,18 +2782,18 @@ html.js-overflow {
     top: 1px
 }
 
-.join .join__box .input__group.is-success .text, .join .join__box .input__group.is-success:focus {
+.input__group.is-success .text, .input__group.is-success:focus {
     border-color: #35cc5d !important;
     background: url(./assets/image/ic_check.png) no-repeat 98% 50%;
     background-size: 24px 24px
 }
 
-.join .join__box .input__group.is-alert .text, .join .join__box .input__group.is-alert:focus {
+.input__group.is-alert .text, .input__group.is-alert:focus {
     border-color: #ff357e !important;
     background:none;
 }
 
-.join .error_tip {
+.error_tip {
     position: relative;
     margin-top: 5px;
     left: 0;
@@ -2802,7 +2802,7 @@ html.js-overflow {
     padding-left: 16px
 }
 
-.join .error_tip:after {
+.error_tip:after {
     content: "";
     width: 14px;
     height: 14px;
@@ -3165,7 +3165,8 @@ html.js-overflow {
 }
 
 .my .my__box .input__group.is-alert .text, .my .my__box .input__group.is-alert:focus {
-    border-color: #ff357e !important
+    border-color: #ff357e !important;
+    background-image: none;
 }
 
 .my .my__box .input__group.is-alert .input__message {
@@ -3377,11 +3378,10 @@ html.js-overflow {
     height: 100px
 }
 
-.my .my__box .upload__type .upload__image:after {
-    content: "프로필 사진 변경";
+.my .my__box .upload__type .upload__image .profile_edit_btn {
     color: #37f;
     position: absolute;
-    left: 130px;
+    left: 120px;
     top: 45px;
     cursor: pointer
 }
