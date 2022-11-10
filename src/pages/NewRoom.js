@@ -18,9 +18,18 @@ const NewRoom = () => {
     const [searchUser, setSearchUser] = useState([]);
     const [remindBool, setRemindBool] = useState(false);
 
+    const [selectValue, setSelectValue] = useState(1)
+
+
     useEffect(() => {
-        $('#remind_meeting').hide();
-        if(window.location.pathname.split('/')[window.location.pathname.split('/').length-1] !== 'newroom'){
+        // $('#remind_meeting').hide();
+        if(window.location.pathname.split('/')[window.location.pathname.split('/').length-1] !== 'newroom'){ //수정하기
+            if(roomInfo.mt_remind_type !== 0){
+                // setRemindBool(true);
+                // setRemindBool(!remindBool);
+                setRemindBool(!remindBool);
+                // $('#remind_meeting').show();
+            }
             axios.get(SERVER_URL +
                 `/meet/room/info?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
                 AXIOS_OPTION)
@@ -28,8 +37,10 @@ const NewRoom = () => {
                     setRoomInfo(res.data);
                     setIsNew(false);
                     if(res.data.mt_remind_type !== 0){
-                        setRemindBool(true);
-                        $('#remind_meeting').show();
+                        // setRemindBool(true);
+                        // setRemindBool(!remindBool);
+                        // setRemindBool(!remindBool);
+                        // $('#remind_meeting').show();
                     }
                 })
             axios.get(SERVER_URL +
@@ -70,244 +81,87 @@ const NewRoom = () => {
                 uname: '제갈춘재',
                 email: 'chun@chun.com'
             },{
-                idx: 1,
+                idx: 2,
                 is_live: 1,
                 uname: '제갈춘재',
                 email: 'chun@chun.com'
             },{
-                idx: 1,
+                idx: 3,
                 is_live: 1,
                 uname: '제갈춘재',
                 email: 'chun@chun.com'
             },{
-                idx: 1,
+                idx: 4,
                 is_live: 1,
                 uname: '제갈춘재',
                 email: 'chun@chun.com'
             },{
-                idx: 1,
+                idx: 5,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            }];
+        let dummySearchUser = [
+            {
+                idx: 6,
                 is_live: 0,
                 uname: '제갈춘재',
                 email: 'chun@chun.com'
             },{
-                idx: 1,
+                idx: 7,
+                is_live: 1,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 8,
+                is_live: 1,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 9,
+                is_live: 1,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 10,
                 is_live: 0,
                 uname: '제갈춘재',
                 email: 'chun@chun.com'
             },{
-                idx: 1,
+                idx: 11,
                 is_live: 0,
                 uname: '제갈춘재',
                 email: 'chun@chun.com'
             },{
-                idx: 1,
+                idx: 12,
                 is_live: 0,
                 uname: '제갈춘재',
                 email: 'chun@chun.com'
             },{
-                idx: 1,
+                idx: 13,
                 is_live: 0,
                 uname: '제갈춘재',
                 email: 'chun@chun.com'
             },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
-                is_live: 0,
-                uname: '제갈춘재',
-                email: 'chun@chun.com'
-            },{
-                idx: 1,
+                idx: 14,
                 is_live: 0,
                 uname: '제갈춘재',
                 email: 'chun@chun.com'
             }];
         setInvites(dummyInvites)
-        $('#remind_meeting').show();
+        setSearchUser(dummySearchUser)
+        // $('#remind_meeting').show();
 //더미
 
     }, [])
 
-    useEffect(() => {
-        if(remindBool){
-            $('#remind_meeting').show();
-        } else {
-            $('#remind_meeting').hide();
-        }
-    }, [remindBool])
+    // useEffect(() => {
+    //     if(remindBool){
+    //         $('#remind_meeting').show();
+    //     } else {
+    //         $('#remind_meeting').hide();dㄷ
+    //     }
+    // }, [remindBool])
 
     const searchInviteUserList = (e) => {
         let searchWord = e.target.value;
@@ -347,11 +201,23 @@ const NewRoom = () => {
         $(".flow__team").slideUp();
     });
 
-    const remindChange = () => {
+    const remindChange = (e) => {
         setRemindBool(!remindBool);
+        e.target.checked = !remindBool;
     }
 
-
+    const handleChange = (e) => {
+        // console.log(e.target.value);
+        if (e.target.value == 1) {
+            setSelectValue(1)
+        } else if (e.target.value == 2) {
+            setSelectValue(2)
+        } else if (e.target.value == 3) {
+            setSelectValue(3)
+        } else if (e.target.value == 4) {
+            setSelectValue(4)
+        }
+    };
 
     return (
         <div className="room">
@@ -383,74 +249,89 @@ const NewRoom = () => {
 
                                 <hr />
                                     <div className="checkbox type__square">
-                                        <input type="checkbox" className="checkbox" id="remind_bool" onClick={remindChange} checked={roomInfo.mt_remind_type !== 0 ? true : false}/>
-                                        <label htmlFor="cb-2">되풀이 미팅</label>
+                                        <input type="checkbox" className="checkbox" id="remind_bool" onChange={remindChange} checked={remindBool}/>
+                                        <label htmlFor="remind_bool">되풀이 미팅</label>
                                     </div>
-                    <div id="remind_meeting">
+                    {remindBool ?
+                        <div id="remind_meeting">
+                            <dl className="inline__type">
+                                <dt><label htmlFor="room_repeat">반복 주기</label></dt>
+                                <dd>
+                                    <select onChange={handleChange} name="" id="room_repeat" className="make-select">
+                                        <option value="1">매일</option>
+                                        <option value="2">주</option>
+                                        <option value="3">월</option>
+                                        <option value="4">년</option>
+                                    </select>
+                                </dd>
+                                <dt><label htmlFor="room_repeat2">반복 횟수</label></dt>
+                                <dd>
+                                    <select name="" id="room_repeat2" className="make-select">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                    {
+                                        selectValue === 1 ? '일'
+                                        : selectValue === 2 ? '주'
+                                        : selectValue === 3 ? '월'
+                                        : selectValue === 4 ? '년'
+                                        : null
+                                    }
+                                </dd>
+                            </dl>
+                            {
+                                selectValue === 2 ?
+                                    <>
+                                        <hr />
+                                        <dl className="inline__type">
+                                            <dt><label htmlFor="월">반복 요일</label></dt>
+                                            <dd>
+                                                <div className="checkbox type__square">
+                                                    <input type="checkbox" className="checkbox" id="월"/>
+                                                    <label htmlFor="월">월</label>
+                                                </div>
+                                                <div className="checkbox type__square">
+                                                    <input type="checkbox" className="checkbox" id="화"/>
+                                                    <label htmlFor="화">화</label>
+                                                </div>
+                                                <div className="checkbox type__square">
+                                                    <input type="checkbox" className="checkbox" id="수"/>
+                                                    <label htmlFor="수">수</label>
+                                                </div>
+                                                <div className="checkbox type__square">
+                                                    <input type="checkbox" className="checkbox" id="목"/>
+                                                    <label htmlFor="목">목</label>
+                                                </div>
+                                                <div className="checkbox type__square">
+                                                    <input type="checkbox" className="checkbox" id="금"/>
+                                                    <label htmlFor="금">금</label>
+                                                </div>
+                                                <div className="checkbox type__square">
+                                                    <input type="checkbox" className="checkbox" id="토"/>
+                                                    <label htmlFor="토">토</label>
+                                                </div>
+                                                <div className="checkbox type__square">
+                                                    <input type="checkbox" className="checkbox" id="일"/>
+                                                    <label htmlFor="일">일</label>
+                                                </div>
+                                            </dd>
+                                        </dl>
+                                    </> : null
+                            }
+                            <hr />
+                            <dl className="inline__type">
+                                <dt><label htmlFor="종료 날짜">종료 날짜</label></dt>
+                                <dd>
+                                    <input id="종료 날짜" type="date" className="text under-scope" />
+                                </dd>
+                            </dl>
+                        </div>
+                        :
+                        null
+                    }
 
-                    <dl className="inline__type">
-                        <dt><label htmlFor="room_repeat">반복 주기</label></dt>
-                        <dd>
-                            <select name="" id="room_repeat" className="make-select">
-                                <option value="1">매일</option>
-                                <option value="2">주</option>
-                                <option value="3">월</option>
-                                <option value="4">년</option>
-                            </select>
-                        </dd>
-                        <dt><label htmlFor="room_repeat2">반복 횟수</label></dt>
-                        <dd>
-                            <select name="" id="room_repeat2" className="make-select">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                            </select>
-                            주
-                        </dd>
-                    </dl>
-                    <hr />
-                        <dl className="inline__type">
-                            <dt><label htmlFor="월">반복 요일</label></dt>
-                            <dd>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="월"/>
-                                    <label htmlFor="월">월</label>
-                                </div>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="화"/>
-                                    <label htmlFor="화">화</label>
-                                </div>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="수" checked/>
-                                    <label htmlFor="수">수</label>
-                                </div>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="목"/>
-                                    <label htmlFor="목">목</label>
-                                </div>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="금"/>
-                                    <label htmlFor="금">금</label>
-                                </div>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="토"/>
-                                    <label htmlFor="토">토</label>
-                                </div>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="일"/>
-                                    <label htmlFor="일">일</label>
-                                </div>
-                            </dd>
-                        </dl>
-                        <hr />
-                        <dl className="inline__type">
-                            <dt><label htmlFor="종료 날짜">종료 날짜</label></dt>
-                            <dd>
-                                <input id="종료 날짜" type="date" className="text under-scope" />
-                            </dd>
-                        </dl>
-                    </div>
                 </div>
 
                 <div className="input__group">
@@ -490,28 +371,28 @@ const NewRoom = () => {
                                         return <AddMeetingUser user={user} addUser={addUser}/>
                                     })
                             }
-                            <li><a href="#none">
-                                <figure><img
-                                    src="https://images.unsplash.com/photo-1510227272981-87123e259b17?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=3759e09a5b9fbe53088b23c615b6312e"
-                                    alt=""/></figure>
-                                <span className="team__user">권민수
-                                 <em>rnjsals12@gmail.com</em></span>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="team-1" name="user"/>
-                                    <label htmlFor="team-1"></label>
-                                </div>
-                            </a></li>
-                            <li><a href="#none">
-                                <figure><img
-                                    src="https://images.unsplash.com/photo-1487735829822-4aa5382f8ed4?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=fd78248154392ee88a2a8da254058508"
-                                    alt=""/></figure>
-                                <span className="team__user">권민수
-                                 <em>rnjsals12@gmail.com</em></span>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="team-2" name="user"/>
-                                    <label htmlFor="team-2"></label>
-                                </div>
-                            </a></li>
+                            {/*<li><a href="#none">*/}
+                            {/*    <figure><img*/}
+                            {/*        src="https://images.unsplash.com/photo-1510227272981-87123e259b17?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=3759e09a5b9fbe53088b23c615b6312e"*/}
+                            {/*        alt=""/></figure>*/}
+                            {/*    <span className="team__user">권민수*/}
+                            {/*     <em>rnjsals12@gmail.com</em></span>*/}
+                            {/*    <div className="checkbox type__square">*/}
+                            {/*        <input type="checkbox" className="checkbox" id="team-1" name="user"/>*/}
+                            {/*        <label htmlFor="team-1"></label>*/}
+                            {/*    </div>*/}
+                            {/*</a></li>*/}
+                            {/*<li><a href="#none">*/}
+                            {/*    <figure><img*/}
+                            {/*        src="https://images.unsplash.com/photo-1487735829822-4aa5382f8ed4?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=fd78248154392ee88a2a8da254058508"*/}
+                            {/*        alt=""/></figure>*/}
+                            {/*    <span className="team__user">권민수*/}
+                            {/*     <em>rnjsals12@gmail.com</em></span>*/}
+                            {/*    <div className="checkbox type__square">*/}
+                            {/*        <input type="checkbox" className="checkbox" id="team-2" name="user"/>*/}
+                            {/*        <label htmlFor="team-2"></label>*/}
+                            {/*    </div>*/}
+                            {/*</a></li>*/}
                         </ul>
                     </div>
 
@@ -556,7 +437,7 @@ const NewRoom = () => {
                 <div className="btn__group">
                     {
                         isNew ?
-                        <div onClick={() => navigate('/')} className="btn btn__normal">최소</div>
+                        <div onClick={() => navigate('/')} className="btn btn__normal">취소</div>
                         :
                         <div onClick={() => navigate(`/meetingroom/${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`)} className="btn btn__normal">최소</div>
                     }

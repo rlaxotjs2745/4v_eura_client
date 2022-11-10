@@ -3676,14 +3676,14 @@ html.js-overflow {
     margin: 0
 }
 
-.room .room__box .flow__team ul li a {
+.room .room__box .flow__team ul li > div {
     display: block;
     overflow: hidden;
     padding: 6px;
     border-radius: 8px
 }
 
-.room .room__box .flow__team ul li a:hover {
+.room .room__box .flow__team ul li > div:hover {
     background: #e8eaf8
 }
 
