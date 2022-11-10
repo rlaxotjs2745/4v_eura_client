@@ -112,7 +112,7 @@ const MeetingCalendar = () => {
                 />
             </div>
             {
-                !clickedDay ? '' :
+                !clickedDay ||!clickedDayMeeting.length ? '' :
                     <div className="calendar_clicked_day_meeting_card">
                         <h2>{new Date(clickedDay).getMonth() + '월' + new Date(clickedDay).getDate()}일 일정</h2>
                         <table className="clicked_day_meeting_list">
@@ -125,19 +125,18 @@ const MeetingCalendar = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {
-                                    !clickedDayMeeting.length ? '' :
-                                        clickedDayMeeting.map(meet => {
-                                            return (
-                                                    <tr onClick={() => navigateToMeetingRoom(meet.mt_idx)}>
-                                                        <td>{meet.mt_name}</td>
-                                                        <td>{meet.hostname}</td>
-                                                        <td>{meet.timer}</td>
-                                                        <td>{meet.mt_info}</td>
-                                                    </tr>
-                                            )
-                                        })
-                                }
+                            {
+                                clickedDayMeeting.map(meet => {
+                                    return (
+                                        <tr onClick={() => navigateToMeetingRoom(meet.mt_idx)}>
+                                            <td>{meet.mt_name}</td>
+                                            <td>{meet.hostname}</td>
+                                            <td>{meet.timer}</td>
+                                            <td>{meet.mt_info}</td>
+                                        </tr>
+                                    )
+                                })
+                            }
                             </tbody>
                         </table>
                     </div>
