@@ -391,7 +391,7 @@ const MeetingRoom = (props) => {
                             <div className="case__title">{roomInfo.mt_name}
                                 {
                                     roomInfo.mt_ishost === '1' ?
-                                <Link to="/newroom" className="btn btn__edit">
+                                <Link to={"/newroom/" + window.location.pathname.split('/')[window.location.pathname.split('/').length-1]} className="btn btn__edit">
                                     <img src={require('../assets/image/ic_edit_24.png')} alt=""/>
                                 </Link> : ''
                                 }

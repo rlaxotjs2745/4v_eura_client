@@ -22,7 +22,8 @@ const Routers = () => {
                 <Route path="/profile" element={<Profile/>} />
                 <Route path="/meetingroom/:idx" element={<MeetingRoom />} />
                 <Route path="/newroom" element={<NewRoom />} />
-                <Route path="*" element={<Error/>}/>
+                <Route path="/newroom/:idx" element={<NewRoom />} />
+                {/*<Route path="*" element={<Error/>}/>*/}
             </Route>
             <Route path="/" element={<PublickRoute><LayoutType1/></PublickRoute>}>
                 <Route path="/signup" element={<SignUp/>}/>

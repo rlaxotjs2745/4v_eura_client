@@ -1,118 +1,517 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
+import axios from "axios";
+import {AXIOS_OPTION, SERVER_URL} from "../util/env";
+import ModifyRoomUser from "../Components/Cards/ModifyRoomUser";
+import {useNavigate} from "react-router-dom";
+import $ from "jquery";
+import AddMeetingUser from "../Components/Cards/AddMeetingUser";
 
 const NewRoom = () => {
 
+    const navigate = useNavigate();
+
+    const [roomInfo, setRoomInfo] = useState('');
+    const [isNew, setIsNew] = useState(true);
+    const [invites, setInvites] = useState('');
+    const [invCount, setInvCount] = useState('');
+    const [delUser, setDelUser] = useState('');
+    const [searchUser, setSearchUser] = useState([]);
+    const [remindBool, setRemindBool] = useState(false);
+
+    useEffect(() => {
+        $('#remind_meeting').hide();
+        if(window.location.pathname.split('/')[window.location.pathname.split('/').length-1] !== 'newroom'){
+            axios.get(SERVER_URL +
+                `/meet/room/info?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
+                AXIOS_OPTION)
+                .then(res => {
+                    setRoomInfo(res.data);
+                    setIsNew(false);
+                    if(res.data.mt_remind_type !== 0){
+                        setRemindBool(true);
+                        $('#remind_meeting').show();
+                    }
+                })
+            axios.get(SERVER_URL +
+                `/meet/room/invite?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
+                AXIOS_OPTION)
+                .then(res => {
+                    setInvCount(res.data.mt_invites.length);
+                    setInvites(res.data.mt_invites);
+                })
+        }
+// 더미
+        setRoomInfo({
+            mt_ishost: '1', //0 게스트 1 호스트
+            mt_name: '경제학',
+            mt_hostname: '김태선',
+            mt_start_dt: '2022-11-09 15:00:00',
+            mt_end_dt: '2022-12-13 12:00:00',
+            mt_remind_type: 1, //되풀이 미팅 타입 0 없음 1 매일 2 주 3 월 4 년
+            mt_remind_count: 0, //되풀이 미팅 주기 0 없음, 1이상 주기별
+            mt_remind_week: null,
+            mt_remind_end: null,
+            mt_info: '경제적으로 밥먹기, 화장실에서 돈을 모으지 못하지만 기분좋은 쌀국수에 소스가 말린 채 월드컵 경기장에서 국민체조를 즐기는 것',
+            mt_status: 2, // 0 비공개 1 공개 2 취소 3 삭제
+            mt_live: 0, // 라이브여부
+            mt_files: [
+                {
+                    idx: 1,
+                    files: 'filepath/filename'
+                }
+            ]
+        })
+        setIsNew(false);
+
+        let dummyInvites = [
+            {
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 1,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 1,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 1,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 1,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            }];
+        setInvites(dummyInvites)
+        $('#remind_meeting').show();
+//더미
+
+    }, [])
+
+    useEffect(() => {
+        if(remindBool){
+            $('#remind_meeting').show();
+        } else {
+            $('#remind_meeting').hide();
+        }
+    }, [remindBool])
+
+    const searchInviteUserList = (e) => {
+        let searchWord = e.target.value;
+        axios.get(SERVER_URL +
+            `/meet/invite?searchTxt=${searchWord}`,
+            AXIOS_OPTION)
+            .then(res => {
+                setSearchUser(res.data.mt_invites);
+            })
+    }
+
+    const excludeUser = (user) => {
+        let targetIdx;
+        invites.forEach((inv, idx) => {
+            if(inv.idx === user.idx) {
+                targetIdx = idx;
+            }
+        })
+
+        setInvites([...invites.slice(0, targetIdx), ...invites.slice(targetIdx+1)]);
+        if(delUser === ''){
+            setDelUser(user.email);
+        } else {
+            setDelUser(delUser + ',' + user.email);
+        }
+    }
+
+
+    const addUser = (user) => {
+        setInvites([...invites, user]);
+    }
+
+    $(document.body).on('click', '#make_team', function () {
+        $(".flow__team").slideDown();
+    });
+    $(document.body).on('mouseleave', '.flow__team', function () {
+        $(".flow__team").slideUp();
+    });
+
+    const remindChange = () => {
+        setRemindBool(!remindBool);
+    }
+
+
+
     return (
         <div className="room">
-            <h2>새 미팅룸 만들기</h2>
+            <h2>
+                {
+                    isNew ? '새 미팅룸 만들기' : '미팅룸 수정하기'
+                }
+            </h2>
 
             <div className="room__box">
                 <div className="input__group ">
                     <label htmlFor="make_new">미팅 이름</label>
-                    <input type="text" className="text" id="make_new" placeholder="미팅 이름을 입력해주세요."/>
+                    <input type="text" className="text" id="make_new" placeholder="미팅 이름을 입력해주세요." defaultValue={isNew ? '' : roomInfo.mt_name}/>
                     <hr />
                         <label htmlFor="make_date"><img src="../assets/image/ic_calendar_24.png" alt="" /></label>
-                        <input id="make_date" type="date" className="text under-scope width-flexble" style="width:140px;" />
+                        <input id="make_date" type="date" className="text under-scope width-flexble"
+                               // defaultValue={isNew ? '' : roomInfo.mt_start_dt.split(' ')[0]}
+                        />
                             <label htmlFor="make_time" className="input__time"><img src="../assets/image/ic_time_24.png" alt="" /></label>
-                            <input id="make_time" type="time" pattern="[0-9]{2}:[0-9]{2}" className="text under-scope width-flexble" style="width:130px;" />
+                            <input id="make_time" type="time"
+                                   pattern="[0-9]{2}:[0-9]{2}"
+                                   className="text under-scope width-flexble"
+                                   // defaultValue={isNew ? '' : roomInfo.mt_start_dt.split(' ')[1]}
+                            />
                                 <span className="bar">-</span>
-                                <input id="make_time" type="time" className="text under-scope width-flexble" style="width:130px;" />
+                                <input id="make_time" type="time" className="text under-scope width-flexble"
+                                       // defaultValue={isNew ? '' : roomInfo.mt_end_dt.split(' ')[1]}
+                                />
 
                                 <hr />
                                     <div className="checkbox type__square">
-                                        <input type="checkbox" className="checkbox" id="cb-2"/>
+                                        <input type="checkbox" className="checkbox" id="remind_bool" onClick={remindChange} checked={roomInfo.mt_remind_type !== 0 ? true : false}/>
                                         <label htmlFor="cb-2">되풀이 미팅</label>
                                     </div>
-                </div>
+                    <div id="remind_meeting">
 
-                <div className="input__group">
-                    <label htmlFor="make_room">미팅 정보</label>
-                    <textarea name="" id="make_room" cols="10" rows="3" placeholder="미팅정보를 입력해주세요."></textarea>
-                </div>
-
-                <div className="input__group">
-                    <label htmlFor="">참석자 명단</label>
-                    <div className="list__count">총 00명</div>
-                    <div className="list__guest">
-                        {/*<ul>*/}
-                        {/*    <li><a href="#none">*/}
-                        {/*        <figure><img src="https://images.unsplash.com/photo-1510227272981-87123e259b17?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=3759e09a5b9fbe53088b23c615b6312e" alt=""></figure>*/}
-                        {/*        <span class="team__user">권민수*/}
-                        {/*         <em>rnjsals12@gmail.com</em></span>*/}
-                        {/*        <a href="#none" class="btn btn__delete"><img src="../assets/image/ic_cancle-circle_18.png" alt="삭제"></a>*/}
-                        {/*    </a></li>*/}
-                        {/*    <li><a href="#none">*/}
-                        {/*        <figure><img src="https://images.unsplash.com/photo-1510227272981-87123e259b17?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=3759e09a5b9fbe53088b23c615b6312e" alt=""></figure>*/}
-                        {/*        <span class="team__user">권민수*/}
-                        {/*         <em>rnjsals12@gmail.com</em></span>*/}
-                        {/*        <a href="#none" class="btn btn__delete"><img src="../assets/image/ic_cancle-circle_18.png" alt="삭제"></a>*/}
-                        {/*    </a></li>*/}
-                        {/*    <li><a href="#none">*/}
-                        {/*        <figure><img src="https://images.unsplash.com/photo-1510227272981-87123e259b17?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=3759e09a5b9fbe53088b23c615b6312e" alt=""></figure>*/}
-                        {/*        <span class="team__user">권민수*/}
-                        {/*         <em>rnjsals12@gmail.com</em></span>*/}
-                        {/*        <a href="#none" class="btn btn__delete"><img src="../assets/image/ic_cancle-circle_18.png" alt="삭제"></a>*/}
-                        {/*    </a></li>*/}
-                        {/*</ul>*/}
+                    <dl className="inline__type">
+                        <dt><label htmlFor="room_repeat">반복 주기</label></dt>
+                        <dd>
+                            <select name="" id="room_repeat" className="make-select">
+                                <option value="1">매일</option>
+                                <option value="2">주</option>
+                                <option value="3">월</option>
+                                <option value="4">년</option>
+                            </select>
+                        </dd>
+                        <dt><label htmlFor="room_repeat2">반복 횟수</label></dt>
+                        <dd>
+                            <select name="" id="room_repeat2" className="make-select">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                            주
+                        </dd>
+                    </dl>
+                    <hr />
+                        <dl className="inline__type">
+                            <dt><label htmlFor="월">반복 요일</label></dt>
+                            <dd>
+                                <div className="checkbox type__square">
+                                    <input type="checkbox" className="checkbox" id="월"/>
+                                    <label htmlFor="월">월</label>
+                                </div>
+                                <div className="checkbox type__square">
+                                    <input type="checkbox" className="checkbox" id="화"/>
+                                    <label htmlFor="화">화</label>
+                                </div>
+                                <div className="checkbox type__square">
+                                    <input type="checkbox" className="checkbox" id="수" checked/>
+                                    <label htmlFor="수">수</label>
+                                </div>
+                                <div className="checkbox type__square">
+                                    <input type="checkbox" className="checkbox" id="목"/>
+                                    <label htmlFor="목">목</label>
+                                </div>
+                                <div className="checkbox type__square">
+                                    <input type="checkbox" className="checkbox" id="금"/>
+                                    <label htmlFor="금">금</label>
+                                </div>
+                                <div className="checkbox type__square">
+                                    <input type="checkbox" className="checkbox" id="토"/>
+                                    <label htmlFor="토">토</label>
+                                </div>
+                                <div className="checkbox type__square">
+                                    <input type="checkbox" className="checkbox" id="일"/>
+                                    <label htmlFor="일">일</label>
+                                </div>
+                            </dd>
+                        </dl>
+                        <hr />
+                        <dl className="inline__type">
+                            <dt><label htmlFor="종료 날짜">종료 날짜</label></dt>
+                            <dd>
+                                <input id="종료 날짜" type="date" className="text under-scope" />
+                            </dd>
+                        </dl>
                     </div>
                 </div>
 
                 <div className="input__group">
+                    <label htmlFor="make_room">미팅 정보</label>
+                    <textarea name="" id="make_room" cols="10" rows="3" placeholder="미팅정보를 입력해주세요." defaultValue={isNew ? '' : roomInfo.mt_info}></textarea>
+                </div>
+
+                <div className="input__group">
+                    <label htmlFor="">참석자 명단</label>
+                    <div className="list__count">총 {!invites || !invites.length ? 0 : invites.length}명</div>
+                    <div className="list__guest">
+                        <ul>
+                            {
+                                !invites || !invites.length ? '' :
+                                    invites.map((inv) => {
+                                        return <ModifyRoomUser user={inv} excludeUser={excludeUser}/>
+                                    })
+                            }
+                        </ul>
+                    </div>
+                </div>
+
+                <div className="input__group" id="hahhhoho">
                     <label htmlFor="make_team">참석자 추가</label>
                     <div className="list__count"><a href="#none" className="btn btn__download">엑셀 양식 다운로드</a></div>
-                    <div className="input__inline">
-                        <input id="make_team" type="text" className="text" placeholder="이메일 또는 이름을 입력해 참석자를 추가하세요." />
+                    <div className="flow_box input__inline">
+                        <input id="make_team" type="text" className="text" placeholder="이메일 또는 이름을 입력해 참석자를 추가하세요." onChange={searchInviteUserList} />
                             <a href="#popup__team" className="btn btn__team js-modal-alert">
                                 <img src="../assets/image/ic_participant_14.png" alt="" />단체추가하기
                             </a>
                     </div>
                     <div className="flow__team">
                         <ul>
-                            <li>
-                                <a href="#none">
-                                    <figure>
-                                        <img src="https://images.unsplash.com/photo-1510227272981-87123e259b17?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=3759e09a5b9fbe53088b23c615b6312e" alt=""/>
-                                    </figure>
-                                    <span className="team__user">
-                                        권민수
-                                        <em>rnjsals12@gmail.com</em>
-                                    </span>
-                                    <div className="checkbox type__square">
-                                        <input type="checkbox" className="checkbox" id="team-1" name="user"/>
-                                        <label htmlFor="team-1"></label>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#none">
-                                    <figure>
-                                        <img src="https://images.unsplash.com/photo-1510227272981-87123e259b17?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=3759e09a5b9fbe53088b23c615b6312e" alt=""/>
-                                    </figure>
-                                    <span className="team__user">
-                                        권민수
-                                        <em>rnjsals12@gmail.com</em>
-                                    </span>
-                                    <div className="checkbox type__square">
-                                        <input type="checkbox" className="checkbox" id="team-1" name="user"/>
-                                        <label htmlFor="team-1"></label>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                            <a href="#none">
-                                <figure>
-                                    <img src="https://images.unsplash.com/photo-1510227272981-87123e259b17?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=3759e09a5b9fbe53088b23c615b6312e" alt=""/>
-                                </figure>
-                                <span className="team__user">
-                                        권민수
-                                        <em>rnjsals12@gmail.com</em>
-                                    </span>
+                            {
+                                !searchUser || !searchUser.length ? '' :
+                                    searchUser.map(user => {
+                                        return <AddMeetingUser user={user} addUser={addUser}/>
+                                    })
+                            }
+                            <li><a href="#none">
+                                <figure><img
+                                    src="https://images.unsplash.com/photo-1510227272981-87123e259b17?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=3759e09a5b9fbe53088b23c615b6312e"
+                                    alt=""/></figure>
+                                <span className="team__user">권민수
+                                 <em>rnjsals12@gmail.com</em></span>
                                 <div className="checkbox type__square">
                                     <input type="checkbox" className="checkbox" id="team-1" name="user"/>
                                     <label htmlFor="team-1"></label>
                                 </div>
-                            </a>
-                        </li>
+                            </a></li>
+                            <li><a href="#none">
+                                <figure><img
+                                    src="https://images.unsplash.com/photo-1487735829822-4aa5382f8ed4?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=fd78248154392ee88a2a8da254058508"
+                                    alt=""/></figure>
+                                <span className="team__user">권민수
+                                 <em>rnjsals12@gmail.com</em></span>
+                                <div className="checkbox type__square">
+                                    <input type="checkbox" className="checkbox" id="team-2" name="user"/>
+                                    <label htmlFor="team-2"></label>
+                                </div>
+                            </a></li>
                         </ul>
                     </div>
 
@@ -155,23 +554,28 @@ const NewRoom = () => {
 
             <div className="btn__box">
                 <div className="btn__group">
-                    <a href="#none" className="btn btn__normal">최소</a>
+                    {
+                        isNew ?
+                        <div onClick={() => navigate('/')} className="btn btn__normal">최소</div>
+                        :
+                        <div onClick={() => navigate(`/meetingroom/${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`)} className="btn btn__normal">최소</div>
+                    }
                     <a href="room_setting.html" className="btn btn__able">저장</a>
                 </div>
             </div>
 
             <div id="popup__team" className="pop__detail ">
-                {/*<a href="#none" class="btn__close js-modal-close"><img src="../assets/image/ic_close_24.png" alt=""></a>*/}
+                {/*<a href="#none" className="btn__close js-modal-close"><img src="../assets/image/ic_close_24.png" alt=""></a>*/}
                 <div className="popup__cnt">
                     <div className="pop__message">
                         <h3>참석자 단체 등록하기</h3>
                         <div className="pop__body">
                             <div className="upload__box ">
-                                <input className="upload-name" value="이메일이 입력된 엑셀파일을 첨부해주세요." disabled="disabled" />
+                                <input className="upload-name" value="이메일이 입력된 엑셀파일을 첨부해주세요." disabled />
                                     <label htmlFor="ex_filename"><img src="../assets/image/ic_attachment_24.png" alt=""/></label>
                                     <input type="file" id="ex_filename" className="upload-hidden"/>
                             </div>
-                            {/*<div class="upload__count">총 52명</div>*/}
+                            {/*<div className="upload__count">총 52명</div>*/}
                             <div className="upload__list">
                                 {/*<span>rlsgus@postech.com</span>*/}
                                 {/*<span>wlsdksms11@postech.com</span>*/}
