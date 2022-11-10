@@ -5,6 +5,9 @@ import ModifyRoomUser from "../Components/Cards/ModifyRoomUser";
 import {useNavigate} from "react-router-dom";
 import $ from "jquery";
 import AddMeetingUser from "../Components/Cards/AddMeetingUser";
+import {upload} from "@testing-library/user-event/dist/upload";
+
+const MAX_COUNT = 5;
 
 const NewRoom = () => {
 
@@ -15,13 +18,70 @@ const NewRoom = () => {
     const [invites, setInvites] = useState('');
     const [invCount, setInvCount] = useState('');
     const [delUser, setDelUser] = useState('');
-    const [newInvUser, setNewInvUser] = useState('');
     const [searchUser, setSearchUser] = useState([]);
     const [remindBool, setRemindBool] = useState(false);
 
+    const [selectValue, setSelectValue] = useState(1)
+
+    const [uploadedFiles, setUploadedFiles] = useState([])
+    const [fileLimit, setFileLimit] = useState(false)
+
+    // const chosenFiles = Array.prototype.slice.call(e.target.files)
+
+    const handleUploadFiles = files => {
+        const uploaded = [...uploadedFiles];
+        let limitExceeded = false;
+        files.some((file) => {
+            if(uploaded.findIndex((f) => f.name === file.name) === -1) {
+                uploaded.push(file);
+                if (uploaded.length === MAX_COUNT) setFileLimit(true);
+                if(uploaded.length > MAX_COUNT) {
+                    alert(`파일은 최대 ${MAX_COUNT}개 까지 첨부할 수 있습니다.`)
+                    setFileLimit(false);
+                    limitExceeded = true;
+                    return true;
+                }
+            }
+        })
+        if (!limitExceeded) setUploadedFiles(uploaded)
+    }
+
+    const handleFileEvent =  (e) => {
+        const chosenFiles = Array.prototype.slice.call(e.target.files)
+        handleUploadFiles(chosenFiles)
+    }
+
+
+    // const handleFileDeleteEvent = (e) => {
+    //     const newRe = uploadedFiles.filter((it)=> it.name !== e);
+    //     setUploadedFiles(newRe)
+    //     console.log(uploadedFiles)
+    // };
+    const handleFileDeleteEvent = (e) => {
+        let uploaded = [...uploadedFiles]
+        let indexNumber = e.target.parentNode.parentNode
+        let i = 0;
+        while( indexNumber = indexNumber.previousSibling ) {
+            if( indexNumber.nodeType === 1 ) {
+                i++;
+            }
+        }
+        const index2 = i
+
+        setUploadedFiles(uploaded.filter((_ , index) => index !== index2))
+
+        // console.log(uploadedFiles)
+        // console.log(index + '번째');
+
+        // setUploadedFiles(uploadedFiles.filter(index))
+    }
+
+
     useEffect(() => {
-        $('#remind_meeting').hide();
-        if(window.location.pathname.split('/')[window.location.pathname.split('/').length-1] !== 'newroom'){
+        if(window.location.pathname.split('/')[window.location.pathname.split('/').length-1] !== 'newroom'){ //수정하기
+            if(roomInfo.mt_remind_type !== 0){
+                setRemindBool(!remindBool);
+            }
             axios.get(SERVER_URL +
                 `/meet/room/info?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
                 AXIOS_OPTION)
@@ -29,8 +89,7 @@ const NewRoom = () => {
                     setRoomInfo(res.data);
                     setIsNew(false);
                     if(res.data.mt_remind_type !== 0){
-                        setRemindBool(true);
-                        $('#remind_meeting').show();
+                        // setRemindBool(!remindBool);
                     }
                 })
             axios.get(SERVER_URL +
@@ -71,24 +130,78 @@ const NewRoom = () => {
                 uname: '제갈춘재',
                 email: 'chun@chun.com'
             },{
-                idx: 1,
+                idx: 2,
                 is_live: 1,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 3,
+                is_live: 1,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 4,
+                is_live: 1,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 5,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            }];
+        let dummySearchUser = [
+            {
+                idx: 6,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 7,
+                is_live: 1,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 8,
+                is_live: 1,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 9,
+                is_live: 1,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 10,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 11,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 12,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 13,
+                is_live: 0,
+                uname: '제갈춘재',
+                email: 'chun@chun.com'
+            },{
+                idx: 14,
+                is_live: 0,
                 uname: '제갈춘재',
                 email: 'chun@chun.com'
             }];
         setInvites(dummyInvites)
-        $('#remind_meeting').show();
+        setSearchUser(dummySearchUser)
 //더미
-
     }, [])
 
-    useEffect(() => {
-        if(remindBool){
-            $('#remind_meeting').show();
-        } else {
-            $('#remind_meeting').hide();
-        }
-    }, [remindBool])
 
     const searchInviteUserList = (e) => {
         let searchWord = e.target.value;
@@ -128,11 +241,23 @@ const NewRoom = () => {
         $(".flow__team").slideUp();
     });
 
-    const remindChange = () => {
+    const remindChange = (e) => {
         setRemindBool(!remindBool);
+        e.target.checked = !remindBool;
     }
 
-
+    const handleChange = (e) => {
+        // console.log(e.target.value);
+        if (e.target.value == 1) {
+            setSelectValue(1)
+        } else if (e.target.value == 2) {
+            setSelectValue(2)
+        } else if (e.target.value == 3) {
+            setSelectValue(3)
+        } else if (e.target.value == 4) {
+            setSelectValue(4)
+        }
+    };
 
     return (
         <div className="room">
@@ -164,74 +289,89 @@ const NewRoom = () => {
 
                                 <hr />
                                     <div className="checkbox type__square">
-                                        <input type="checkbox" className="checkbox" id="remind_bool" onClick={remindChange}/>
-                                        <label htmlFor="cb-2">되풀이 미팅</label>
+                                        <input type="checkbox" className="checkbox" id="remind_bool" onChange={remindChange} checked={remindBool}/>
+                                        <label htmlFor="remind_bool">되풀이 미팅</label>
                                     </div>
-                    <div id="remind_meeting">
+                    {remindBool ?
+                        <div id="remind_meeting">
+                            <dl className="inline__type">
+                                <dt><label htmlFor="room_repeat">반복 주기</label></dt>
+                                <dd>
+                                    <select onChange={handleChange} name="" id="room_repeat" className="make-select">
+                                        <option value="1">매일</option>
+                                        <option value="2">주</option>
+                                        <option value="3">월</option>
+                                        <option value="4">년</option>
+                                    </select>
+                                </dd>
+                                <dt><label htmlFor="room_repeat2">반복 횟수</label></dt>
+                                <dd>
+                                    <select name="" id="room_repeat2" className="make-select">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                    {
+                                        selectValue === 1 ? '일'
+                                        : selectValue === 2 ? '주'
+                                        : selectValue === 3 ? '월'
+                                        : selectValue === 4 ? '년'
+                                        : null
+                                    }
+                                </dd>
+                            </dl>
+                            {
+                                selectValue === 2 ?
+                                    <>
+                                        <hr />
+                                        <dl className="inline__type">
+                                            <dt><label htmlFor="월">반복 요일</label></dt>
+                                            <dd>
+                                                <div className="checkbox type__square">
+                                                    <input type="checkbox" className="checkbox" id="월"/>
+                                                    <label htmlFor="월">월</label>
+                                                </div>
+                                                <div className="checkbox type__square">
+                                                    <input type="checkbox" className="checkbox" id="화"/>
+                                                    <label htmlFor="화">화</label>
+                                                </div>
+                                                <div className="checkbox type__square">
+                                                    <input type="checkbox" className="checkbox" id="수"/>
+                                                    <label htmlFor="수">수</label>
+                                                </div>
+                                                <div className="checkbox type__square">
+                                                    <input type="checkbox" className="checkbox" id="목"/>
+                                                    <label htmlFor="목">목</label>
+                                                </div>
+                                                <div className="checkbox type__square">
+                                                    <input type="checkbox" className="checkbox" id="금"/>
+                                                    <label htmlFor="금">금</label>
+                                                </div>
+                                                <div className="checkbox type__square">
+                                                    <input type="checkbox" className="checkbox" id="토"/>
+                                                    <label htmlFor="토">토</label>
+                                                </div>
+                                                <div className="checkbox type__square">
+                                                    <input type="checkbox" className="checkbox" id="일"/>
+                                                    <label htmlFor="일">일</label>
+                                                </div>
+                                            </dd>
+                                        </dl>
+                                    </> : null
+                            }
+                            <hr />
+                            <dl className="inline__type">
+                                <dt><label htmlFor="종료 날짜">종료 날짜</label></dt>
+                                <dd>
+                                    <input id="종료 날짜" type="date" className="text under-scope" />
+                                </dd>
+                            </dl>
+                        </div>
+                        :
+                        null
+                    }
 
-                    <dl className="inline__type">
-                        <dt><label htmlFor="room_repeat">반복 주기</label></dt>
-                        <dd>
-                            <select name="" id="room_repeat" className="make-select">
-                                <option value="1">매일</option>
-                                <option value="2">주</option>
-                                <option value="3">월</option>
-                                <option value="4">년</option>
-                            </select>
-                        </dd>
-                        <dt><label htmlFor="room_repeat2">반복 횟수</label></dt>
-                        <dd>
-                            <select name="" id="room_repeat2" className="make-select">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                            </select>
-                            주
-                        </dd>
-                    </dl>
-                    <hr />
-                        <dl className="inline__type">
-                            <dt><label htmlFor="월">반복 요일</label></dt>
-                            <dd>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="월"/>
-                                    <label htmlFor="월">월</label>
-                                </div>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="화"/>
-                                    <label htmlFor="화">화</label>
-                                </div>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="수" checked/>
-                                    <label htmlFor="수">수</label>
-                                </div>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="목"/>
-                                    <label htmlFor="목">목</label>
-                                </div>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="금"/>
-                                    <label htmlFor="금">금</label>
-                                </div>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="토"/>
-                                    <label htmlFor="토">토</label>
-                                </div>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="일"/>
-                                    <label htmlFor="일">일</label>
-                                </div>
-                            </dd>
-                        </dl>
-                        <hr />
-                        <dl className="inline__type">
-                            <dt><label htmlFor="종료 날짜">종료 날짜</label></dt>
-                            <dd>
-                                <input id="종료 날짜" type="date" className="text under-scope" />
-                            </dd>
-                        </dl>
-                    </div>
                 </div>
 
                 <div className="input__group">
@@ -254,7 +394,7 @@ const NewRoom = () => {
                     </div>
                 </div>
 
-                <div className="input__group">
+                <div className="input__group" id="hahhhoho">
                     <label htmlFor="make_team">참석자 추가</label>
                     <div className="list__count"><a href="#none" className="btn btn__download">엑셀 양식 다운로드</a></div>
                     <div className="flow_box input__inline">
@@ -271,64 +411,73 @@ const NewRoom = () => {
                                         return <AddMeetingUser user={user} addUser={addUser}/>
                                     })
                             }
-                            <li><a href="#none">
-                                <figure><img
-                                    src="https://images.unsplash.com/photo-1510227272981-87123e259b17?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=3759e09a5b9fbe53088b23c615b6312e"
-                                    alt=""/></figure>
-                                <span className="team__user">권민수
-                                 <em>rnjsals12@gmail.com</em></span>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="team-1" name="user"/>
-                                    <label htmlFor="team-1"></label>
-                                </div>
-                            </a></li>
-                            <li><a href="#none">
-                                <figure><img
-                                    src="https://images.unsplash.com/photo-1487735829822-4aa5382f8ed4?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=fd78248154392ee88a2a8da254058508"
-                                    alt=""/></figure>
-                                <span className="team__user">권민수
-                                 <em>rnjsals12@gmail.com</em></span>
-                                <div className="checkbox type__square">
-                                    <input type="checkbox" className="checkbox" id="team-2" name="user"/>
-                                    <label htmlFor="team-2"></label>
-                                </div>
-                            </a></li>
+                            {/*<li><a href="#none">*/}
+                            {/*    <figure><img*/}
+                            {/*        src="https://images.unsplash.com/photo-1510227272981-87123e259b17?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=3759e09a5b9fbe53088b23c615b6312e"*/}
+                            {/*        alt=""/></figure>*/}
+                            {/*    <span className="team__user">권민수*/}
+                            {/*     <em>rnjsals12@gmail.com</em></span>*/}
+                            {/*    <div className="checkbox type__square">*/}
+                            {/*        <input type="checkbox" className="checkbox" id="team-1" name="user"/>*/}
+                            {/*        <label htmlFor="team-1"></label>*/}
+                            {/*    </div>*/}
+                            {/*</a></li>*/}
+                            {/*<li><a href="#none">*/}
+                            {/*    <figure><img*/}
+                            {/*        src="https://images.unsplash.com/photo-1487735829822-4aa5382f8ed4?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=fd78248154392ee88a2a8da254058508"*/}
+                            {/*        alt=""/></figure>*/}
+                            {/*    <span className="team__user">권민수*/}
+                            {/*     <em>rnjsals12@gmail.com</em></span>*/}
+                            {/*    <div className="checkbox type__square">*/}
+                            {/*        <input type="checkbox" className="checkbox" id="team-2" name="user"/>*/}
+                            {/*        <label htmlFor="team-2"></label>*/}
+                            {/*    </div>*/}
+                            {/*</a></li>*/}
                         </ul>
                     </div>
 
                 </div>
 
                 <div className="input__group">
-                    <label htmlFor="">첨부파일 <a href="#none" className="btn btn__download"><img
-                        src="../assets/image/ic_attachment_14.png" alt="" />파일 업로드</a></label>
+                    <div> 첨부파일 <input type="file" name="file_upload" id="fileUpload" multiple accept="application/pdf, image/*" onChange={handleFileEvent} disabled={fileLimit}/></div>
+                    <label htmlFor="fileUpload"><span  className="btn btn__download"><img src={require('../assets/image/ic_attachment_14.png')} alt="" />파일 업로드</span></label>
+
                     <div className="list__upload">
- {/*                        <ul>*/}
- {/*                            <li>*/}
- {/*                                <a href="#none">*/}
- {/*                                <img src="../assets/image/ic_file_14.png" alt=""><span class="file__name">1주차_인간공학의 개요_ppt.pdf</span><em class="file__size">230KB</em>*/}
- {/*                                </a>*/}
- {/*                                <a href="#none" class="btn btn__delete"><img src="../assets/image/ic_cancle-circle_18.png" alt="삭제"></a>*/}
- {/*                            </li>*/}
- {/*                            <li>*/}
- {/*                                <a href="#none">*/}
- {/*                                    <img src="../assets/image/ic_file_14.png" alt=""><span class="file__name">2주차_인간공학을 위한 인간이해_ppt.pdf*/}
- {/*</span><em class="file__size">680KB</em>*/}
- {/*                                </a>*/}
- {/*                                <a href="#none" class="btn btn__delete"><img src="../assets/image/ic_cancle-circle_18.png" alt="삭제"></a>*/}
- {/*                            </li>*/}
- {/*                            <li>*/}
- {/*                                <a href="#none">*/}
- {/*                                    <img src="../assets/image/ic_file_14.png" alt=""><span class="file__name">3주차_인간의 감각과 그 구조_ppt.pdf</span><em class="file__size">558KB</em>*/}
- {/*                                </a>*/}
- {/*                                <a href="#none" class="btn btn__delete"><img src="../assets/image/ic_cancle-circle_18.png" alt="삭제"></a>*/}
- {/*                            </li>*/}
- {/*                            <li>*/}
- {/*                                <a href="#none">*/}
- {/*                                    <img src="../assets/image/ic_file_14.png" alt=""><span class="file__name">4주차_인간의 형태와 운동기능_ppt.pdf</span><em class="file__size">680KB</em>*/}
- {/*                                </a>*/}
- {/*                                <a href="#none" class="btn btn__delete"><img src="../assets/image/ic_cancle-circle_18.png" alt="삭제"></a>*/}
- {/*                            </li>*/}
- {/*                        </ul>*/}
+                         <ul>
+                             {uploadedFiles.map(file =>(
+                                 <li>
+                                     <a href="#none">
+                                         <img src={require('../assets/image/ic_file_14.png')} alt="" /><span className="file__name">{file.name}</span><em
+                                         className="file__size">{file.size}</em>
+                                     </a>
+                                     <button onClick={handleFileDeleteEvent} className="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></button>
+                                 </li>
+                             ))}
+                             {/*<li>*/}
+                             {/*    <a href="#none">*/}
+                             {/*    <img src="../assets/image/ic_file_14.png" alt=""/><span class="file__name">1주차_인간공학의 개요_ppt.pdf</span><em class="file__size">230KB</em>*/}
+                             {/*    </a>*/}
+                             {/*    <a href="#none" class="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></a>*/}
+                             {/*</li>*/}
+                             {/*<li>*/}
+                             {/*    <a href="#none">*/}
+                             {/*        <img src="../assets/image/ic_file_14.png" alt=""/><span class="file__name">2주차_인간공학을 위한 인간이해_ppt.pdf</span><em class="file__size">680KB</em>*/}
+                             {/*    </a>*/}
+                             {/*    <a href="#none" class="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></a>*/}
+                             {/*</li>*/}
+                             {/*<li>*/}
+                             {/*    <a href="#none">*/}
+                             {/*        <img src="../assets/image/ic_file_14.png" alt=""/><span class="file__name">3주차_인간의 감각과 그 구조_ppt.pdf</span><em class="file__size">558KB</em>*/}
+                             {/*    </a>*/}
+                             {/*    <a href="#none" class="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></a>*/}
+                             {/*</li>*/}
+                             {/*<li>*/}
+                             {/*    <a href="#none">*/}
+                             {/*        <img src="../assets/image/ic_file_14.png" alt=""/><span class="file__name">4주차_인간의 형태와 운동기능_ppt.pdf</span><em class="file__size">680KB</em>*/}
+                             {/*    </a>*/}
+                             {/*    <a href="#none" class="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></a>*/}
+                             {/*</li>*/}
+                         </ul>
                     </div>
                 </div>
             </div>
