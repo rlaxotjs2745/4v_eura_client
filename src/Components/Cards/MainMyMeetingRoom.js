@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 
-const MainMyMeetingRoom = ({room}) => {
+const MainMyMeetingRoom = ({room, modalOpen}) => {
 
     const getSubtractionDate = () => {
         let thisTime = new Date();
@@ -36,9 +36,9 @@ const MainMyMeetingRoom = ({room}) => {
                     <div className="box__setup">
                         {
                             room.mt_status === 0 ?
-                                <a href="#popup__notice"  className="btn btn__setting js-modal-alert">공개하기</a>
+                                <div onClick={() => modalOpen()} className="btn btn__setting js-modal-alert">공개하기</div>
                             :     room.mt_status === 2 ?
-                                <a href="#none" className="btn btn__setting">재개설 하기</a>
+                                <div onClick={() => modalOpen()} className="btn btn__setting">재개설 하기</div>
                             : ''
                         }
                     </div>
