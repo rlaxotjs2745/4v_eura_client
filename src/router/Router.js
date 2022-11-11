@@ -20,13 +20,13 @@ const Routers = () => {
             {/* PrivateRoute 안에는 로그인 해야 접근 가능, 로그인 안되어 있으면 /login으로 이동*/}
             <Route path="/" element={<PrivateRoute><LayoutType1/></PrivateRoute>}>
                 {/*<Route path="*" element={<Error/>}/>*/}
-            </Route>
                 <Route index element={<Home/>}/>
                 <Route path="/profile" element={<Profile/>} />
                 <Route path="/meetingroom/:idx" element={<MeetingRoom />} />
                 <Route path="/newroom" element={<NewRoom />} />
                 <Route path="/newroom/:idx" element={<NewRoom />} />
                 <Route path="/calendar" element={<MeetingCalendar />}/>
+            </Route>
             {/* 로그인 되어 있으면 login 페이지가 아니라 /로 넘어가는 라우터 */}
             <Route path="/" element={<PublickRoute><LayoutType1/></PublickRoute>}>
                 <Route path="/signup" element={<SignUp/>}/>
