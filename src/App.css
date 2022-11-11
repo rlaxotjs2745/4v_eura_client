@@ -4531,3 +4531,5 @@ form.w100 {width:100%; position: relative; height:920px; margin:60px auto 0;}
 #signUpForm.off {opacity: 0; position: absolute;}
 #sign_up_complete {position: absolute; opacity: 0; z-index: -1;}
 #sign_up_complete.on {position: relative; opacity:1; z-index: 9}
+
+input[type=file]:disabled + label .btn.btn__download, button.btn__download {opacity: 0.3}

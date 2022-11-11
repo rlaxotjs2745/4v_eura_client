@@ -35,6 +35,7 @@ const NewRoom = () => {
             if(uploaded.findIndex((f) => f.name === file.name) === -1) {
                 uploaded.push(file);
                 if (uploaded.length === MAX_COUNT) setFileLimit(true);
+                // uploaded.length === MAX_COUNT ? setFileLimit(true) : setFileLimit(false)
                 if(uploaded.length > MAX_COUNT) {
                     alert(`파일은 최대 ${MAX_COUNT}개 까지 첨부할 수 있습니다.`)
                     setFileLimit(false);
@@ -69,7 +70,7 @@ const NewRoom = () => {
         const index2 = i
 
         setUploadedFiles(uploaded.filter((_ , index) => index !== index2))
-
+        setFileLimit(false)
     }
 
 
@@ -435,8 +436,8 @@ const NewRoom = () => {
                 </div>
 
                 <div className="input__group">
-                    <div> 첨부파일 <input className="sr-only" type="file" name="file_upload" id="fileUpload" multiple accept="application/pdf, image/*" onChange={handleFileEvent} disabled={fileLimit}/></div>
-                    <label htmlFor="fileUpload"><span  className="btn btn__download"><img src={require('../assets/image/ic_attachment_14.png')} alt="" />파일 업로드</span></label>
+                    <div style={{display:"inline-block"}}>첨부파일<input className="sr-only" type="file" name="file_upload" id="fileUpload" multiple accept="application/pdf, image/*" onChange={handleFileEvent} disabled={fileLimit}/><label style={{marginLeft:"10px"}} htmlFor="fileUpload"><span  className="btn btn__download"><img src={require('../assets/image/ic_attachment_14.png')} alt="" />파일 업로드</span></label></div>
+
 
                     <div className="list__upload">
                          <ul>
