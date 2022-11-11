@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 
-const MainMyMeetingRoom = ({room, modalOpen}) => {
+const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, mouseOut}) => {
 
     const getSubtractionDate = () => {
         let thisTime = new Date();
@@ -16,7 +16,7 @@ const MainMyMeetingRoom = ({room, modalOpen}) => {
 
 
     return (
-        <div className={room.mt_status === 0 ? 'box is-before' : room.mt_status === 2 ? 'box is-cancel' : 'box'}>
+        <div className={room.mt_status === 0 ? 'box is-before' : room.mt_status === 2 ? 'box is-cancel' : 'box'} onClick={() => navigateToMeetingRoom(room.mt_idx)}>
             <div className="box__badge">
                 {
                     room.mt_live ?
@@ -36,9 +36,9 @@ const MainMyMeetingRoom = ({room, modalOpen}) => {
                     <div className="box__setup">
                         {
                             room.mt_status === 0 ?
-                                <div onClick={() => modalOpen()} className="btn btn__setting js-modal-alert">공개하기</div>
+                                <div onClick={() => modalOpen(room)} onMouseOver={mouseOver} onMouseLeave={mouseOut} className="btn btn__setting js-modal-alert">공개하기</div>
                             :     room.mt_status === 2 ?
-                                <div onClick={() => modalOpen()} className="btn btn__setting">재개설 하기</div>
+                                <div onClick={() => modalOpen(room)} onMouseOver={mouseOver} onMouseLeave={mouseOut} className="btn btn__setting">재개설 하기</div>
                             : ''
                         }
                     </div>
