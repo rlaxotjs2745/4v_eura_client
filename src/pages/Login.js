@@ -83,10 +83,7 @@ const Login = () => {
         // console.log('CHECKBOX : ', inputChk)
         axios.defaults.withCredentials = true;
 
-        axios.post(SERVER_URL + '/api_post_login', e).then(res => {
-            // const {accessToken} = res.data;
-            // axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-
+        axios.post( "http://192.168.0.85:10000", e).then(res => {
             console.log('@@@@@@@@@@@@@@@@ ' +res)
             console.log('res.data.userId :: ', res.data.result_code)
             console.log('res.data.msg :: ', res.data.result_str)
@@ -108,13 +105,13 @@ const Login = () => {
                 if(e.autoLogin) {
                     console.log(e.autoLogin)
                     tomorrow.setDate(today.getDate()+30);
-                    setCookie('user_id', inputId, {path:'/', expires:tomorrow});
+                    setCookie('user_id', document.cookie, {path:'/', expires:tomorrow});
                 }
                     // 자동로그인 체크 안했으면 쿠키 하루
                     else if (!e.autoLogin) {
                     console.log(e.autoLogin)
                     tomorrow.setDate(today.getDate()+1);
-                    setCookie('user_id', inputId, {path:'/', expires:tomorrow});
+                    setCookie('user_id', document.cookie, {path:'/', expires:tomorrow});
                 }
                 console.log('---------ID', inputId)
                 console.log('---------cookie', document.cookie)
@@ -122,7 +119,7 @@ const Login = () => {
                 console.log('======================',res.data.result_str);
                 setloginMessage('')
                 alert(res.data.result_str)
-                navigate('/profile')
+                navigate('/')
             } else if(res.data.result_code === 'SUCCESS02') {
                 // 임시 비밀번호로 로그인 되었습니다.
                 // 로그인 되었습니다.

@@ -77,7 +77,7 @@ const Profile = () => {
         formState: { errors, isSubmitted, isSubmitting, isDirty },
         // isSubmitting 은 양식 제출 중 disabled 처리 하게 함.
     } = useForm({
-        mode: 'onChange',
+        mode: 'onSubmit',
         resolver: yupResolver(formSchema),
         defaultValues: { // 초기값 설정
             user_id: user_id,
@@ -136,6 +136,23 @@ const Profile = () => {
         console.log('에러메세지 입니다. 제출 되지 않습니다.');
     };
 
+    const profileCancle = () => {
+        setNameVisible(!nameVisible)
+        setValue('user_name', user_name)
+    }
+
+    const phoneCancle = () => {
+        setPhoneVisible(!phoneVisible)
+        setValue('user_phone', user_phone)
+    }
+
+    const characterCancle = () => {
+        setCharacterVisible(!characterVisible)
+        setValue('eq_type01', eq_type01)
+        setValue('eq_type02', eq_type02)
+    }
+
+
     return (
         <section className="content" id="content">
             <div className="my">
@@ -188,13 +205,13 @@ const Profile = () => {
                             <input type="text" className="text" name="user_name" {...register('user_name')}/>
                             <div className="modify__box">
                                 <button className="btn btn__able btn__s">변경하기</button>
-                                <button onClick={()=> {setNameVisible(!nameVisible)}} className="btn btn__normal btn__s">취소</button>
+                                <button onClick={profileCancle} className="btn btn__normal btn__s">취소</button>
                             </div>
                         </div>
                         :
                         <div className="input__group">
                             <label htmlFor="join_name">이름</label>
-                            <input type="text" className="text" {...register('user_name')} readOnly/>
+                            <input type="text" className="text" {...register('user_name')} disabled/>
                             <div className="modify__box">
                                 <button onClick={()=> {setNameVisible(!nameVisible)}} className="btn btn-modify">편집하기</button>
                             </div>
@@ -227,7 +244,7 @@ const Profile = () => {
                         :
                         <div className="input__group">
                             <label htmlFor="join_password">비밀번호</label>
-                            <input type="password" className="text" id="join_password" value="비밀번호를 입력하세요" readOnly/>
+                            <input type="password" className="text" id="join_password" value="비밀번호를 입력하세요" disabled/>
                             <div className="modify__box">
                                 <button onClick={()=> {setPwdVisible(!pwdVisible)}} className="btn btn-modify">편집하기</button>
                             </div>
@@ -242,14 +259,14 @@ const Profile = () => {
                             {errors.user_phone && <div className="error_tip">{errors.user_phone.message}</div>}
                             <div className="modify__box">
                                 <button className="btn btn__able btn__s">변경하기</button>
-                                <button onClick={()=> {setPhoneVisible(!phoneVisible)}} className="btn btn__normal btn__s">취소</button>
+                                <button onClick={phoneCancle} className="btn btn__normal btn__s">취소</button>
                             </div>
 
                         </div>
                         :
                         <div className="input__group">
                             <label htmlFor="join_tel">연락처</label>
-                            <input type="text" className="text" id="join_tel" {...register('user_phone')} readOnly/>
+                            <input type="text" className="text" id="join_tel" {...register('user_phone')} disabled/>
                             <div className="modify__box">
                                 <button onClick={()=> {setPhoneVisible(!phoneVisible)}} href="#none" className="btn btn-modify">편집하기</button>
                             </div>
@@ -267,7 +284,7 @@ const Profile = () => {
                             <label htmlFor="join_tel">평소 외향적인 성격인가요?</label>
                             <div className="modify__box">
                                 <button className="btn btn__able btn__s">변경하기</button>
-                                <button onClick={()=> {setCharacterVisible(!characterVisible)}} className="btn btn__normal btn__s">취소</button>
+                                <button onClick={characterCancle} className="btn btn__normal btn__s">취소</button>
                             </div>
                             <div className="radio__inline">
                                 <div className="radio">
