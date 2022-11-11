@@ -12,6 +12,34 @@ import $ from "jquery";
 
 const Profile = () => {
 
+    useEffect((data)=> {
+        axios.post(SERVER_URL + '/myinfo'
+            , data
+            , {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    // cookies: user_cookie
+                }, withCredentials:true
+            }
+        ).then(res => {
+            console.log(res)
+            console.log('res.data.result_code :: ', res.data.result_code)
+            console.log('res.data.msg :: ', res.data.result_str)
+            console.log('res.data.user_name ::', res.data.user_name)
+            console.log('res.data.user_pic ::', res.data.user_pic)
+            // if(res.data.result_code === 'FAIL'){
+            //     console.log('======================',res.data.result_str);
+            //     // alert(res.data.result_str)
+            //     // navigate('/')
+            // } else if(res.data.result_code === 'SUCCESS'){
+            //     console.log('======================', res.data.result_str);
+            //     // alert(res.data.result_str)
+            // }
+        }).catch(err => {
+            console.log(err);
+        });
+    },[])
+
     const user_cookie = getCookie('user_id')
     const [profileVisible, setProfileVisible] = useState(false)
     const [nameVisible, setNameVisible] = useState(false)

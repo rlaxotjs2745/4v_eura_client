@@ -83,7 +83,7 @@ const Login = () => {
         // console.log('CHECKBOX : ', inputChk)
         axios.defaults.withCredentials = true;
 
-        axios.post( "http://192.168.0.85:10000", e).then(res => {
+        axios.post(SERVER_URL + '/api_post_login', e).then(res => {
             console.log('@@@@@@@@@@@@@@@@ ' +res)
             console.log('res.data.userId :: ', res.data.result_code)
             console.log('res.data.msg :: ', res.data.result_str)
@@ -128,7 +128,7 @@ const Login = () => {
                 // 자동로그인 체크 했으면 쿠키 30일
                 if(inputChk) {
                     tomorrow.setDate(today.getDate()+30);
-                    setCookie('user_id', inputId, {path:'/', expires:tomorrow});
+                    setCookie('user_id', document.cookie, {path:'/', expires:tomorrow});
                 }
                 // 자동로그인 체크 안했으면 쿠키 하루
                 else if (!inputChk) {
@@ -144,7 +144,9 @@ const Login = () => {
                 navigate('/profile')
             }
         })
-            .catch()
+            .catch((error)=> {
+                console.log(error)
+            })
     }
 
     const onError = (errors) => {
