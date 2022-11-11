@@ -46,7 +46,9 @@ const Home = () => {
             mt_live: 0
             }]
         })
-
+        setUser({
+            mt_meetMyListCount: 'EURA',
+        })
 
     }, [])
 

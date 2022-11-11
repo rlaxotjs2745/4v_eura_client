@@ -105,7 +105,7 @@ const Profile = () => {
         formState: { errors, isSubmitted, isSubmitting, isDirty },
         // isSubmitting 은 양식 제출 중 disabled 처리 하게 함.
     } = useForm({
-        mode: 'onSubmit',
+        mode: 'onChange',
         resolver: yupResolver(formSchema),
         defaultValues: { // 초기값 설정
             user_id: user_id,

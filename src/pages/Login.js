@@ -15,6 +15,9 @@ const Login = () => {
     // console.log(userParam.email)
     // console.log(userParam.authKey)
     // console.log(userParam.confirm)
+
+    const navigate = useNavigate();
+
     useEffect(()=> {
         if(userParam.confirm === 'true') {
             console.log('인증 api 실행해주세요.')
@@ -81,9 +84,9 @@ const Login = () => {
         // console.log('ID : ', inputId)
         // console.log('PW : ', inputPw)
         // console.log('CHECKBOX : ', inputChk)
-        axios.defaults.withCredentials = true;
+        // axios.defaults.withCredentials = true;
 
-        axios.post(SERVER_URL + '/api_post_login', e).then(res => {
+        axios.post(SERVER_URL + '/api_post_login', e, AXIOS_OPTION).then(res => {
             console.log('@@@@@@@@@@@@@@@@ ' +res)
             console.log('res.data.userId :: ', res.data.result_code)
             console.log('res.data.msg :: ', res.data.result_str)
@@ -105,17 +108,16 @@ const Login = () => {
                 if(e.autoLogin) {
                     console.log(e.autoLogin)
                     tomorrow.setDate(today.getDate()+30);
-                    setCookie('user_id', document.cookie, {path:'/', expires:tomorrow});
-                }
+                    setCookie('user_id', document.cookie['user_id'], {path:'/', expires:tomorrow});
+                } else if (!e.autoLogin) {
                     // 자동로그인 체크 안했으면 쿠키 하루
-                    else if (!e.autoLogin) {
                     console.log(e.autoLogin)
                     tomorrow.setDate(today.getDate()+1);
-                    setCookie('user_id', document.cookie, {path:'/', expires:tomorrow});
+                    setCookie('user_id', document.cookie['user_id'], {path:'/', expires:tomorrow});
                 }
                 console.log('---------ID', inputId)
                 console.log('---------cookie', document.cookie)
-                console.log('---------cookie', res.data)
+                console.log('---------res.data', res.data)
                 console.log('======================',res.data.result_str);
                 setloginMessage('')
                 alert(res.data.result_str)
@@ -128,12 +130,14 @@ const Login = () => {
                 // 자동로그인 체크 했으면 쿠키 30일
                 if(inputChk) {
                     tomorrow.setDate(today.getDate()+30);
-                    setCookie('user_id', document.cookie, {path:'/', expires:tomorrow});
+                    setCookie('user_id', document.cookie['user_id'], {path:'/', expires:tomorrow});
+                    // setCookie('user_id', e,{path:'/', expires:tomorrow});
                 }
                 // 자동로그인 체크 안했으면 쿠키 하루
                 else if (!inputChk) {
                     tomorrow.setDate(today.getDate()+1);
-                    setCookie('user_id', inputId, {path:'/', expires:tomorrow});
+                    setCookie('user_id', document.cookie['user_id'], {path:'/', expires:tomorrow});
+                    // setCookie('user_id', e,{path:'/', expires:tomorrow});
                 }
                 console.log('======================',res.data.result_str);
                 // localStorage.clear()
@@ -159,7 +163,6 @@ const Login = () => {
     // document.cookie = "safeCookie2=foo";
     // document.cookie = "crossCookie=bar; SameSite=None; Secure";
 
-    axios.defaults.withCredentials = true; // withCredentials 전역 설정
     const [inputId, setInputId] = useState('')
     const [inputPw, setInputPw] = useState('')
     const [inputChk, setinputChk] = useState(false)
@@ -179,70 +182,7 @@ const Login = () => {
     const handleInputChk = (target) => {
         setinputChk(!inputChk);
     }
-    const navigate = useNavigate();
-    // const onClickLogin = (e) => {
-    //     e.preventDefault();
-    //     console.log('click login')
-    //     console.log('ID : ', inputId)
-    //     console.log('PW : ', inputPw)
-    //     console.log('CHECKBOX : ', inputChk)
-    //     axios.defaults.withCredentials = true;
-    //
-    //     axios.post('http://192.168.0.85:10000/api_post_login', {
-    //             'user_id': inputId,
-    //             'user_pwd': inputPw,
-    //             'autoLogin': inputChk
-    //         }).then(res => {
-    //             // const {accessToken} = res.data;
-    //             // axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    //             console.log('@@@@@@@@@@@@@@@@ ' +res)
-    //             console.log('res.data.userId :: ', res.data.result_code)
-    //             console.log('res.data.msg :: ', res.data.result_str)
-    //             if(res.data.result_code === 'FAIL01'){
-    //                 // 로그인 정보를 다시 확인해주세요.
-    //                 console.log('======================',res.data.result_str);
-    //             } else if(res.data.result_code === 'FAIL02'){
-    //                 // 이메일 인증을 진행해주세요.
-    //                 console.log('======================', res.data.result_str);
-    //                 alert(res.data.result_str)
-    //             } else if(res.data.result_code === 'SUCCESS01') {
-    //                 // 로그인 되었습니다.
-    //                 let tomorrow = new Date();
-    //                 let today = new Date();
-    //                 // 자동로그인 체크 했으면 쿠키 30일
-    //                 if(inputChk) {
-    //                     tomorrow.setDate(today.getDate()+30);
-    //                     setCookie('user_id', inputId, {path:'/', expires:tomorrow});
-    //                 }
-    //                 // 자동로그인 체크 안했으면 쿠키 하루
-    //                 else if (!inputChk) {
-    //                     tomorrow.setDate(today.getDate()+1);
-    //                     setCookie('user_id', inputId, {path:'/', expires:tomorrow});
-    //                 }
-    //                 console.log('---------cookie', document.cookie)
-    //                 console.log('---------cookie', res.data)
-    //                 console.log('======================',res.data.result_str);
-    //                 alert(res.data.result_str)
-    //                 navigate('/')
-    //             } else if(res.data.result_code === 'SUCCESS02') {
-    //                 // 임시 비밀번호로 로그인 되었습니다.
-    //                 console.log('======================',res.data.result_str);
-    //                 localStorage.clear()
-    //                 localStorage.setItem('user_id', res.data.id)
-    //                 localStorage.setItem('token', res.data.token)
-    //                 alert(res.data.result_str)
-    //                 navigate('/')
-    //             }
-    //         })
-    //         .catch()
-    // }
 
-
-    // useEffect(() => {
-    //     axios.get('http://192.168.0.85:10000/api_post_login')
-    //         .then(res => console.log(res))
-    //         .catch()
-    // },[])
 
     return (
         <div className="content no-head" id="content">
