@@ -2201,7 +2201,8 @@ td {
     margin-top: 17px;
     padding: 30px 33px;
     transition: .1s top ease-in;
-    top: 0
+    top: 0;
+    z-index: 1;
 }
 
 .box:hover {
@@ -2286,12 +2287,18 @@ td {
 .box .box__setup {
     position: absolute;
     right: 30px;
-    top: 30px
+    top: 30px;
+    opacity: 1;
+    z-index: 1000;
+    display: block;
 }
 
 .box .box__setup .btn__setting {
     color: #37f !important;
-    font-weight: 700
+    font-weight: 700;
+    opacity: 1 !important;
+    z-index: 2;
+    padding: 5px;
 }
 
 .box .box__title {

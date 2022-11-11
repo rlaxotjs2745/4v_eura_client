@@ -3,36 +3,37 @@ import axios from "axios";
 import MainTimer from "../Components/Cards/MainTimer";
 import MainSchedule from "../Components/Cards/MainSchedule";
 import MainMyMeetingRoom from "../Components/Cards/MainMyMeetingRoom";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {SERVER_URL, AXIOS_OPTION} from "../util/env";
 
 const Home = () => {
 
-    const [user, setUser] = useState('');
-    const [schedule, setSchedule] = useState('');
-    const [meeting, setMeeting] = useState('');
-    const [lastMeeting, setLastMeeting] = useState('');
+    const [user, setUser] = useState({});
+    const [schedule, setSchedule] = useState({});
+    const [meeting, setMeeting] = useState({});
+    const [lastMeeting, setLastMeeting] = useState([]);
+    const [modal, setModalOpen] = useState(false);
+    const [curMeeting, setCurMeeting] = useState({})
+    const navigate = useNavigate();
 
 
     useEffect(() => {
-        // axios.get('/api/hello')
-        //     .then(response => console.log(response.data))
 
-        // axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
-        //     .then(res => {
-        //         setUser(res.data);
-        //         setSchedule(res.data.mt_meetShort);
-        //     });
-        //
-        // axios.get(SERVER_URL + '/meet/main/list', AXIOS_OPTION)
-        //     .then(res => {
-        //         setMeeting(res.data);
-        //     })
-        //
-        // axios.get(SERVER_URL + '/meet/main/endlist', AXIOS_OPTION)
-        //     .then(res => {
-        //         setLastMeeting(res.data);
-        //     })
+        axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
+            .then(res => {
+                setUser(res.data);
+                setSchedule(res.data.mt_meetShort);
+            });
+
+        axios.get(SERVER_URL + '/meet/main/list', AXIOS_OPTION)
+            .then(res => {
+                setMeeting(res.data);
+            })
+
+        axios.get(SERVER_URL + '/meet/main/endlist', AXIOS_OPTION)
+            .then(res => {
+                setLastMeeting(res.data);
+            })
 
         setMeeting({
             mt_meetMyListCount: 1,
@@ -44,7 +45,72 @@ const Home = () => {
             mt_start_dt: '2022-11-08 21:00:00',
             mt_end_dt: '2022-12-13 12:00:00',
             mt_live: 0
-            }]
+            },{
+                mt_idx: 5,
+                mt_name: '경제학',
+                mt_hostname: '김태선',
+                mt_status: 2,
+                mt_start_dt: '2022-11-08 21:00:00',
+                mt_end_dt: '2022-12-13 12:00:00',
+                mt_live: 0
+            },{
+                mt_idx: 5,
+                mt_name: '경제학',
+                mt_hostname: '김태선',
+                mt_status: 1,
+                mt_start_dt: '2022-11-08 21:00:00',
+                mt_end_dt: '2022-12-13 12:00:00',
+                mt_live: 0
+            },{
+                mt_idx: 5,
+                mt_name: '경제학',
+                mt_hostname: '김태선',
+                mt_status: 2,
+                mt_start_dt: '2022-11-08 21:00:00',
+                mt_end_dt: '2022-12-13 12:00:00',
+                mt_live: 0
+            },{
+                mt_idx: 5,
+                mt_name: '경제학',
+                mt_hostname: '김태선',
+                mt_status: 3,
+                mt_start_dt: '2022-11-08 21:00:00',
+                mt_end_dt: '2022-12-13 12:00:00',
+                mt_live: 0
+            },{
+                mt_idx: 5,
+                mt_name: '경제학',
+                mt_hostname: '김태선',
+                mt_status: 0,
+                mt_start_dt: '2022-11-08 21:00:00',
+                mt_end_dt: '2022-12-13 12:00:00',
+                mt_live: 0
+            },{
+                mt_idx: 5,
+                mt_name: '경제학',
+                mt_hostname: '김태선',
+                mt_status: 1,
+                mt_start_dt: '2022-11-08 21:00:00',
+                mt_end_dt: '2022-12-13 12:00:00',
+                mt_live: 1
+            },{
+                mt_idx: 5,
+                mt_name: '경제학',
+                mt_hostname: '김태선',
+                mt_status: 2,
+                mt_start_dt: '2022-11-08 21:00:00',
+                mt_end_dt: '2022-12-13 12:00:00',
+                mt_live: 0
+            },{
+                mt_idx: 5,
+                mt_name: '경제학',
+                mt_hostname: '김태선',
+                mt_status: 2,
+                mt_start_dt: '2022-11-08 21:00:00',
+                mt_end_dt: '2022-12-13 12:00:00',
+                mt_live: 0
+            },
+            ]
         })
 
 
@@ -64,6 +130,38 @@ const Home = () => {
             .then(res => {
                 resMtd(res.data);
             })
+    }
+
+    const modalOpen = (meet) => {
+        setModalOpen(true);
+        setCurMeeting(meet);
+    }
+
+    const modalClose = () => {
+        setModalOpen(false);
+        setCurMeeting({})
+    }
+
+    const changeMeetingStatus = () => {
+        let meet = curMeeting;
+        let newMeeting = [];
+        if(meet.mt_status === 0){
+            axios.put(SERVER_URL + '/meet/room/open', {idx_meeting: meet.mt_idx}, AXIOS_OPTION)
+                .then(res => {
+                    if(res.result_code === "SUCCESS"){
+                        meet.mt_status = 1;
+                        newMeeting.push(meet);
+                        for(let cur of meeting){
+                            if(cur.mt_idx !== meet.mt_idx){
+                                newMeeting.push(cur);
+                            }
+                        }
+                        setMeeting(newMeeting);
+                    }
+                })
+        } else if(meet.mt_status === 2) {
+            navigate(`/newroom/${meet.mt_idx}`);
+        }
     }
 
 
@@ -138,8 +236,8 @@ const Home = () => {
                                 :
                                 lastMeeting.mt_meetEndMyList.map(room => {
                                     return (
-                                        <Link to="/meetingroom">
-                                            <MainMyMeetingRoom room={room} />
+                                        <Link to={`/meetingroom/${room.mt_idx}`} >
+                                            <MainMyMeetingRoom room={room} modalOpen={modalOpen} />
                                         </Link>
                                     )
                                 })
@@ -147,22 +245,37 @@ const Home = () => {
                     </div>
                 </div>
 
-                <div id="popup__notice" className="pop__detail">
-                    <a href="#none" className="btn__close js-modal-close"><img src="../assets/image/ic_close_24.png"
-                                                                               alt=""/></a>
-                    <div className="popup__cnt">
-                        <div className="pop__message">
-                            <img src="../assets/image/ic_warning_80.png" alt=""/>
-                                <strong>미팅룸을 공개하면 다시 비공개로 설정할 수 없습니다. <br/>
-                                    미팅룸을 공개 하시겠습니까?</strong>
-                                <span>미팅을 공개하면 초대한 참석자들에게 메일이 발송됩니다.</span>
+                {
+                    modal ?
+                        <div id="popup__notice" className="pop__detail is-on">
+                            <div onClick={modalClose} className="btn__close js-modal-close"><img src="../assets/image/ic_close_24.png"
+                                                                                       alt=""/></div>
+                            <div className="popup__cnt">
+                                <div className="pop__message">
+                                    <img src="../assets/image/ic_warning_80.png" alt=""/>
+                                        {
+                                            !curMeeting.mt_status ?
+                                                <div>
+                                                    <strong>미팅룸을 공개하면 다시 비공개로 설정할 수 없습니다. <br/>
+                                                        미팅룸을 공개 하시겠습니까?</strong>
+                                                    <span>미팅을 공개하면 초대한 참석자들에게 메일이 발송됩니다.</span>
+                                                </div>
+                                                :
+                                                <div>
+                                                    <strong>미팅룸을 재개설 하시겠습니까?</strong>
+                                                    <span>미팅을 재개설하면 초대한 참석자들에게 메일이 발송됩니다.</span>
+                                                </div>
+                                        }
+                                </div>
+                                <div className="btn__group">
+                                    <div onClick={changeMeetingStatus} className="btn btn__able btn__s">예</div>
+                                    <div onClick={modalClose} className="btn btn__normal btn__s js-modal-close">아니오</div>
+                                </div>
+                            </div>
                         </div>
-                        <div className="btn__group">
-                            <a href="#none" className="btn btn__able btn__s">예</a>
-                            <a href="#none" className="btn btn__normal btn__s js-modal-close">아니오</a>
-                        </div>
-                    </div>
-                </div>
+                        :
+                        ''
+                }
             </div>
         </>
     )
