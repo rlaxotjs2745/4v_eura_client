@@ -70,10 +70,6 @@ const NewRoom = () => {
 
         setUploadedFiles(uploaded.filter((_ , index) => index !== index2))
 
-        // console.log(uploadedFiles)
-        // console.log(index + '번째');
-
-        // setUploadedFiles(uploadedFiles.filter(index))
     }
 
 
@@ -439,7 +435,7 @@ const NewRoom = () => {
                 </div>
 
                 <div className="input__group">
-                    <div> 첨부파일 <input type="file" name="file_upload" id="fileUpload" multiple accept="application/pdf, image/*" onChange={handleFileEvent} disabled={fileLimit}/></div>
+                    <div> 첨부파일 <input className="sr-only" type="file" name="file_upload" id="fileUpload" multiple accept="application/pdf, image/*" onChange={handleFileEvent} disabled={fileLimit}/></div>
                     <label htmlFor="fileUpload"><span  className="btn btn__download"><img src={require('../assets/image/ic_attachment_14.png')} alt="" />파일 업로드</span></label>
 
                     <div className="list__upload">
@@ -448,7 +444,7 @@ const NewRoom = () => {
                                  <li>
                                      <a href="#none">
                                          <img src={require('../assets/image/ic_file_14.png')} alt="" /><span className="file__name">{file.name}</span><em
-                                         className="file__size">{file.size}</em>
+                                         className="file__size">{file.size + 'KB'}</em>
                                      </a>
                                      <button onClick={handleFileDeleteEvent} className="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></button>
                                  </li>

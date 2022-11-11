@@ -5,15 +5,22 @@ import $ from "jquery";
 import {useNavigate} from "react-router-dom";
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import * as React from "react";
+import {useState} from "react";
 
 const FindPW = () => {
     const navigate = useNavigate();
+
+    const [emailMessage, setEmailMessage] = useState('')
 
     const formSchema = yup.object({
         user_id: yup
             .string()
             .required('이메일을 입력해주세요')
-            // .email('이메일 형식이 아닙니다.'),
+            .matches(
+                /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+                '올바른 이메일을 입력해 주세요.'
+            ),
     });
     const {
         register,
@@ -48,7 +55,9 @@ const FindPW = () => {
             console.log('res.data.msg :: ', res.data.result_str)
             if(res.data.result_code === 'FAIL'){
                 console.log('======================',res.data.result_str);
-                alert(res.data.result_str)
+                // alert(res.data.result_str)
+                // alert(res.data.result_str)
+                setEmailMessage(res.data.result_str)
             } else if(res.data.result_code === 'SUCCESS'){
                 console.log('======================', res.data.result_str);
                 alert(res.data.result_str)
@@ -71,6 +80,11 @@ const FindPW = () => {
                             <label htmlFor="login_mail">아이디(이메일)</label>
                             <input type="text" name="user_id" className="text" id="login_mail" placeholder="이메일을 입력하세요"  {...register('user_id')}/>
                         </div>
+                        {errors.user_id && <div className="error_tip">{errors.user_id.message}</div>}
+                        {emailMessage !== '' ?
+                            <div className="error_tip">
+                                {emailMessage}
+                            </div> : null}
                     </div>
 
                     <div className="btn__box">
