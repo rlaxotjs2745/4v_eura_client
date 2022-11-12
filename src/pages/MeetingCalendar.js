@@ -28,7 +28,7 @@ const MeetingCalendar = () => {
 
 
     const getDayMeetingInfo = (day) => {
-        axios.get(SERVER_URL + '/meet/main/calendar/info?' + `calYear=${day.getFullYear()}&calMonth=${day.getMonth()}&calDay=${day.getDate()}`)
+        axios.get(SERVER_URL + '/meet/main/calendar/info?' + `calYear=${day.getFullYear()}&calMonth=${day.getMonth()}&calDay=${day.getDate()}`, AXIOS_OPTION)
             .then(res => {
                 setClickedDay(day);
                 setClickedDayMeeting(res.data.mt_meetMyList);
