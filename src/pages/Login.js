@@ -105,13 +105,15 @@ const Login = () => {
                 if(e.autoLogin) {
                     console.log(e.autoLogin)
                     tomorrow.setDate(today.getDate()+30);
-                    setCookie('user_id', document.cookie, {path:'/', expires:tomorrow});
+                    document.cookie = `user_id=${inputId}; expires=${tomorrow};`;
+                    // setCookie('user_id', inputId, {path:'/', expires:tomorrow});
                 }
                     // 자동로그인 체크 안했으면 쿠키 하루
                     else if (!e.autoLogin) {
                     console.log(e.autoLogin)
                     tomorrow.setDate(today.getDate()+1);
-                    setCookie('user_id', document.cookie, {path:'/', expires:tomorrow});
+                    document.cookie = `user_id=${inputId}; expires=${tomorrow};`;
+                    // setCookie('user_id', inputId, {path:'/', expires:tomorrow});
                 }
                 console.log('---------ID', inputId)
                 console.log('---------cookie', document.cookie)
@@ -128,12 +130,14 @@ const Login = () => {
                 // 자동로그인 체크 했으면 쿠키 30일
                 if(inputChk) {
                     tomorrow.setDate(today.getDate()+30);
-                    setCookie('user_id', document.cookie, {path:'/', expires:tomorrow});
+                    document.cookie = `user_id=${inputId}; expires=${tomorrow};`
+                    // setCookie('user_id', document.cookie, {path:'/', expires:tomorrow});
                 }
                 // 자동로그인 체크 안했으면 쿠키 하루
                 else if (!inputChk) {
                     tomorrow.setDate(today.getDate()+1);
-                    setCookie('user_id', inputId, {path:'/', expires:tomorrow});
+                    document.cookie = `user_id=${inputId}; expires=${tomorrow};`
+                    // setCookie('user_id', inputId, {path:'/', expires:tomorrow});
                 }
                 console.log('======================',res.data.result_str);
                 // localStorage.clear()
