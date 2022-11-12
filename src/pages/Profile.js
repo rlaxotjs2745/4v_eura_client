@@ -341,23 +341,23 @@ const Profile = () => {
                             <label htmlFor="join_tel">평소 친화력이 있는 성격인가요?</label>
                             <div className="radio__inline">
                                 <div className="radio">
-                                    <input type="radio" value="-2" name="option-radio2" id="r2-1" {...register('eq_type02')}/>
+                                    <input type="radio" value="-2" name="eq_type02" id="r2-1" {...register('eq_type02')}/>
                                     <label htmlFor="r2-1">매우 그렇지 않다</label>
                                 </div>
                                 <div className="radio">
-                                    <input type="radio" value="-1" name="option-radio2" id="r2-2" {...register('eq_type02')}/>
+                                    <input type="radio" value="-1" name="eq_type02" id="r2-2" {...register('eq_type02')}/>
                                     <label htmlFor="r2-2">그렇지 않다</label>
                                 </div>
                                 <div className="radio">
-                                    <input type="radio" value="0" name="option-radio2" id="r2-3" {...register('eq_type02')}/>
+                                    <input type="radio" value="0" name="eq_type02" id="r2-3" {...register('eq_type02')}/>
                                     <label htmlFor="r2-3">보통이다</label>
                                 </div>
                                 <div className="radio">
-                                    <input type="radio" value="1" name="option-radio2" id="r2-4" {...register('eq_type02')}/>
+                                    <input type="radio" value="1" name="eq_type02" id="r2-4" {...register('eq_type02')}/>
                                     <label htmlFor="r2-4">그렇다</label>
                                 </div>
                                 <div className="radio">
-                                    <input type="radio" value="2" name="option-radio2" id="r2-5" {...register('eq_type02')}/>
+                                    <input type="radio" value="2" name="eq_type02" id="r2-5" {...register('eq_type02')}/>
                                     <label htmlFor="r2-5">매우 그렇다</label>
                                 </div>
                             </div>
@@ -397,23 +397,23 @@ const Profile = () => {
                             <label htmlFor="join_tel">평소 친화력이 있는 성격인가요?</label>
                             <div className="radio__inline">
                                 <div className="radio">
-                                    <input disabled type="radio" value="-2" name="option-radio2" id="r2-1" {...register('eq_type02')}/>
+                                    <input disabled type="radio" value="-2" name="eq_type02" id="r2-1" {...register('eq_type02')}/>
                                     <label htmlFor="r2-1">매우 그렇지 않다</label>
                                 </div>
                                 <div className="radio">
-                                    <input disabled type="radio" value="-1" name="option-radio2" id="r2-2" {...register('eq_type02')}/>
+                                    <input disabled type="radio" value="-1" name="eq_type02" id="r2-2" {...register('eq_type02')}/>
                                     <label htmlFor="r2-2">그렇지 않다</label>
                                 </div>
                                 <div className="radio">
-                                    <input disabled type="radio" value="0" name="option-radio2" id="r2-3" {...register('eq_type02')}/>
+                                    <input disabled type="radio" value="0" name="eq_type02" id="r2-3" {...register('eq_type02')}/>
                                     <label htmlFor="r2-3">보통이다</label>
                                 </div>
                                 <div className="radio">
-                                    <input disabled type="radio" value="1" name="option-radio2" id="r2-4" {...register('eq_type02')}/>
+                                    <input disabled type="radio" value="1" name="eq_type02" id="r2-4" {...register('eq_type02')}/>
                                     <label htmlFor="r2-4">그렇다</label>
                                 </div>
                                 <div className="radio">
-                                    <input disabled type="radio" value="2" name="option-radio2" id="r2-5" {...register('eq_type02')}/>
+                                    <input disabled type="radio" value="2" name="eq_type02" id="r2-5" {...register('eq_type02')}/>
                                     <label htmlFor="r2-5">매우 그렇다</label>
                                 </div>
                             </div>
