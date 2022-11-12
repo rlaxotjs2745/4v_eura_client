@@ -141,7 +141,7 @@ const Login = () => {
                 // localStorage.setItem('token', res.data.token)
                 setloginMessage('')
                 alert(res.data.result_str)
-                navigate('/profile')
+                navigate('/')
             }
         })
             .catch((error)=> {

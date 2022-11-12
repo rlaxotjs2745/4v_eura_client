@@ -13,19 +13,26 @@ const NewRoom = () => {
 
     const navigate = useNavigate();
 
-    const [roomInfo, setRoomInfo] = useState('');
+    const [roomInfo, setRoomInfo] = useState({});
     const [isNew, setIsNew] = useState(true);
-    const [invites, setInvites] = useState('');
+    const [invites, setInvites] = useState([]);
     const [invCount, setInvCount] = useState('');
     const [delUser, setDelUser] = useState('');
     const [searchUser, setSearchUser] = useState([]);
     const [remindBool, setRemindBool] = useState(false);
     const [weekday, setWeekday] = useState([]);
 
-    const [selectValue, setSelectValue] = useState(1)
+    const [selectValue, setSelectValue] = useState(1);
+    const [remindCount, setRemindCount] = useState(0);
+    const [title, setTitle] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [meetingInfo, setMeetingInfo] = useState('');
 
-    const [uploadedFiles, setUploadedFiles] = useState([])
-    const [fileLimit, setFileLimit] = useState(false)
+    const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [fileLimit, setFileLimit] = useState(false);
 
     // const chosenFiles = Array.prototype.slice.call(e.target.files)
 
@@ -70,7 +77,7 @@ const NewRoom = () => {
         }
         const index2 = i
 
-        setUploadedFiles(uploaded.filter((_ , index) => index !== index2))
+        setUploadedFiles(uploaded.filter((i , index) => index !== index2))
         setFileLimit(false)
     }
 
@@ -161,29 +168,86 @@ const NewRoom = () => {
         }
     };
 
+    const makeTitle = (e) => {
+        setTitle(e.target.value);
+    }
+
+    const makeDate = (e) => {
+        setStartDate(e.target.value);
+    }
+
+    const makeTime1 = (e) => {
+        setStartTime(e.target.value);
+    }
+
+    const makeTime2 = (e) => {
+        setEndTime(e.target.value);
+    }
+
+    const makeEndDate = (e) => {
+        setEndDate(e.target.value);
+    }
+
+    const makeMeetingInfo = (e) => {
+        setMeetingInfo(e.target.value);
+    }
+
+    const selectRemindCount = (e) => {
+        setRemindCount(parseInt(e.target.value));
+    }
+
     const handleSubmit = () => {
+
+        if($('#make_new').value == ''){
+            return alert('미팅 이름을 입력해주세요.')
+        }
+
+        if($('#make_date').value == ''){
+            return alert('미팅 일자가 입력되지 않았습니다.')
+        }
+
+        if($('#make_time1').value == ''){
+            return alert('미팅 시작 시간이 입력되지 않았습니다.')
+        }
+
+        if($('#make_time2').value == ''){
+            return alert('미팅 종료 시간이 입력되지 않았습니다.')
+        }
+
+        if($('#make_room').value == ''){
+            return alert('미팅 정보가 입력되지 않았습니다.');
+        }
+
+        const formData = new FormData();
+        console.log(title)
+        formData.append('mt_name', title);
+        formData.append('mt_start_dt', `${startDate} ${startTime}:00`);
+        formData.append('mt_end_dt', `${startDate} ${endTime}:00`);
+        formData.append('mt_info', meetingInfo);
+        if(remindBool){
+            formData.append('mt_remind_type', selectValue);
+            formData.append('mt_remind_count', remindCount);
+            formData.append('mt_remind_week', weekday.join());
+            formData.append('mt_remind_end', endDate);
+        }
+        formData.append('mt_invite_email', invites.map(inv => inv.email).join());
+        formData.append('file', uploadedFiles);
         if(isNew) {
-            let formData = new FormData();
-            formData.append('mt_name', $('#make_new').value);
-            formData.append('mt_start_dt', `${$('#make_date').value} ${$('#make_time1').value}:00`);
-            formData.append('mt_end_dt', `${$('#make_date').value} ${$('#make_time2').value}:00`);
-            formData.append('mt_info', $('#make_room').value);
-            if(remindBool){
-                formData.append('mt_remind_type', $('#room_repeat').value);
-                formData.append('mt_remind_count', $('#room_repeat2').value);
-                formData.append('mt_remind_week', weekday.join());
-                formData.append('mt_remind_end', $('#meeting_end_date').value);
-            }
-            formData.append('mt_invite_email', invites.map(inv => inv.email).join());
-
-            $('#fileUpload').files.forEach(file => {
-
-            })
-
-
             axios.post(SERVER_URL + '/meet/create', formData, AXIOS_FORM_DATA_OPTION)
                 .then(res => {
-
+                    if(res.result_code == 'SUCCESS'){
+                        alert('미팅룸을 생성했습니다.');
+                        navigate('/');
+                    }
+                })
+        } else {
+            formData.append('idx_meeting', window.location.pathname.split('/')[window.location.pathname.split('/').length-1]);
+            axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_FORM_DATA_OPTION)
+                .then(res => {
+                    if(res.result_code == 'SUCCESS'){
+                        alert('미팅룸을 수정했습니다.');
+                        navigate('/');
+                    }
                 })
         }
     }
@@ -199,20 +263,23 @@ const NewRoom = () => {
             <div className="room__box">
                 <div className="input__group ">
                     <label htmlFor="make_new">미팅 이름</label>
-                    <input type="text" className="text" id="make_new" placeholder="미팅 이름을 입력해주세요." defaultValue={isNew ? '' : roomInfo.mt_name}/>
+                    <input type="text" className="text" id="make_new" onChange={makeTitle} placeholder="미팅 이름을 입력해주세요." defaultValue={isNew ? '' : roomInfo.mt_name}/>
                     <hr />
                         <label htmlFor="make_date"><img src="../assets/image/ic_calendar_24.png" alt="" /></label>
                         <input id="make_date" type="date" className="text under-scope width-flexble"
+                               onChange={makeDate}
                                // defaultValue={isNew ? '' : roomInfo.mt_start_dt.split(' ')[0]}
                         />
                             <label htmlFor="make_time" className="input__time"><img src="../assets/image/ic_time_24.png" alt="" /></label>
                             <input id="make_time1" type="time"
                                    pattern="[0-9]{2}:[0-9]{2}"
                                    className="text under-scope width-flexble"
+                                   onChange={makeTime1}
                                    // defaultValue={isNew ? '' : roomInfo.mt_start_dt.split(' ')[1]}
                             />
                                 <span className="bar">-</span>
                                 <input id="make_time2" type="time" className="text under-scope width-flexble"
+                                       onChange={makeTime2}
                                        // defaultValue={isNew ? '' : roomInfo.mt_end_dt.split(' ')[1]}
                                 />
 
@@ -237,7 +304,7 @@ const NewRoom = () => {
                                 <dd>
                                     {
                                         selectValue === 1 ?
-                                    <select name="" id="room_repeat2" className="make-select">
+                                    <select name="" id="room_repeat2" onChange={selectRemindCount} className="make-select">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -270,7 +337,7 @@ const NewRoom = () => {
                                         <option value="30">30</option>
                                     </select>
                                             :
-                                            <select name="" id="room_repeat2" className="make-select">
+                                            <select name="" id="room_repeat2" onChange={selectRemindCount} className="make-select">
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
@@ -330,7 +397,7 @@ const NewRoom = () => {
                             <dl className="inline__type">
                                 <dt><label htmlFor="종료 날짜">종료 날짜</label></dt>
                                 <dd>
-                                    <input id="meeting_end_date" type="date" className="text under-scope" />
+                                    <input id="meeting_end_date" type="date" onChange={makeEndDate} className="text under-scope" />
                                 </dd>
                             </dl>
                         </div>
@@ -342,7 +409,7 @@ const NewRoom = () => {
 
                 <div className="input__group">
                     <label htmlFor="make_room">미팅 정보</label>
-                    <textarea name="" id="make_room" cols="10" rows="3" placeholder="미팅정보를 입력해주세요." defaultValue={isNew ? '' : roomInfo.mt_info}></textarea>
+                    <textarea name="" id="make_room" cols="10" rows="3" placeholder="미팅정보를 입력해주세요." onChange={makeMeetingInfo} defaultValue={isNew ? '' : roomInfo.mt_info}></textarea>
                 </div>
 
                 <div className="input__group">
@@ -362,12 +429,12 @@ const NewRoom = () => {
 
                 <div className="input__group" id="hahhhoho">
                     <label htmlFor="make_team">참석자 추가</label>
-                    <div className="list__count"><a href="#none" className="btn btn__download">엑셀 양식 다운로드</a></div>
+                    {/*<div className="list__count"><a href="#none" className="btn btn__download">엑셀 양식 다운로드</a></div>*/}
                     <div className="flow_box input__inline">
                         <input id="make_team" type="text" className="text" placeholder="이메일 또는 이름을 입력해 참석자를 추가하세요." onChange={searchInviteUserList} />
-                            <a href="#popup__team" className="btn btn__team js-modal-alert">
-                                <img src="../assets/image/ic_participant_14.png" alt="" />단체추가하기
-                            </a>
+                            {/*<a href="#popup__team" className="btn btn__team js-modal-alert">*/}
+                            {/*    <img src="../assets/image/ic_participant_14.png" alt="" />단체추가하기*/}
+                            {/*</a>*/}
                     </div>
                     <div className="flow__team">
                         <ul>
