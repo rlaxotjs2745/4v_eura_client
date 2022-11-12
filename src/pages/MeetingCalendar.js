@@ -46,7 +46,7 @@ const MeetingCalendar = () => {
                     value={value}
                     defaultValue={"dfdff"}
                     tileContent={({date, view}) => {
-                        return meeting.map(day => {
+                        return !meeting ? '' : meeting.map(day => {
                             return view === 'month' &&
                             date.getFullYear() == new Date(day.mt_date).getFullYear() &&
                             date.getMonth() == new Date(day.mt_date).getMonth() &&

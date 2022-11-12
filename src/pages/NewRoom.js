@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {AXIOS_OPTION, SERVER_URL} from "../util/env";
+import {AXIOS_FORM_DATA_OPTION, AXIOS_OPTION, SERVER_URL} from "../util/env";
 import ModifyRoomUser from "../Components/Cards/ModifyRoomUser";
 import {useNavigate} from "react-router-dom";
 import $ from "jquery";
@@ -20,6 +20,7 @@ const NewRoom = () => {
     const [delUser, setDelUser] = useState('');
     const [searchUser, setSearchUser] = useState([]);
     const [remindBool, setRemindBool] = useState(false);
+    const [weekday, setWeekday] = useState([]);
 
     const [selectValue, setSelectValue] = useState(1)
 
@@ -143,6 +144,10 @@ const NewRoom = () => {
         e.target.checked = !remindBool;
     }
 
+    const getWeekDay = (num) => {
+        setWeekday([...new Set([...weekday, num])]);
+    }
+
     const handleChange = (e) => {
         // console.log(e.target.value);
         if (e.target.value == 1) {
@@ -155,6 +160,33 @@ const NewRoom = () => {
             setSelectValue(4)
         }
     };
+
+    const handleSubmit = () => {
+        if(isNew) {
+            let formData = new FormData();
+            formData.append('mt_name', $('#make_new').value);
+            formData.append('mt_start_dt', `${$('#make_date').value} ${$('#make_time1').value}:00`);
+            formData.append('mt_end_dt', `${$('#make_date').value} ${$('#make_time2').value}:00`);
+            formData.append('mt_info', $('#make_room').value);
+            if(remindBool){
+                formData.append('mt_remind_type', $('#room_repeat').value);
+                formData.append('mt_remind_count', $('#room_repeat2').value);
+                formData.append('mt_remind_week', weekday.join());
+                formData.append('mt_remind_end', $('#meeting_end_date').value);
+            }
+            formData.append('mt_invite_email', invites.map(inv => inv.email).join());
+
+            $('#fileUpload').files.forEach(file => {
+
+            })
+
+
+            axios.post(SERVER_URL + '/meet/create', formData, AXIOS_FORM_DATA_OPTION)
+                .then(res => {
+
+                })
+        }
+    }
 
     return (
         <div className="room">
@@ -174,13 +206,13 @@ const NewRoom = () => {
                                // defaultValue={isNew ? '' : roomInfo.mt_start_dt.split(' ')[0]}
                         />
                             <label htmlFor="make_time" className="input__time"><img src="../assets/image/ic_time_24.png" alt="" /></label>
-                            <input id="make_time" type="time"
+                            <input id="make_time1" type="time"
                                    pattern="[0-9]{2}:[0-9]{2}"
                                    className="text under-scope width-flexble"
                                    // defaultValue={isNew ? '' : roomInfo.mt_start_dt.split(' ')[1]}
                             />
                                 <span className="bar">-</span>
-                                <input id="make_time" type="time" className="text under-scope width-flexble"
+                                <input id="make_time2" type="time" className="text under-scope width-flexble"
                                        // defaultValue={isNew ? '' : roomInfo.mt_end_dt.split(' ')[1]}
                                 />
 
@@ -203,16 +235,53 @@ const NewRoom = () => {
                                 </dd>
                                 <dt><label htmlFor="room_repeat2">반복 횟수</label></dt>
                                 <dd>
+                                    {
+                                        selectValue === 1 ?
                                     <select name="" id="room_repeat2" className="make-select">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
                                         <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                        <option value="13">13</option>
+                                        <option value="14">14</option>
+                                        <option value="15">15</option>
+                                        <option value="16">16</option>
+                                        <option value="17">17</option>
+                                        <option value="18">18</option>
+                                        <option value="19">19</option>
+                                        <option value="20">20</option>
+                                        <option value="21">21</option>
+                                        <option value="22">22</option>
+                                        <option value="23">23</option>
+                                        <option value="24">24</option>
+                                        <option value="25">25</option>
+                                        <option value="26">26</option>
+                                        <option value="27">27</option>
+                                        <option value="28">28</option>
+                                        <option value="29">29</option>
+                                        <option value="30">30</option>
                                     </select>
+                                            :
+                                            <select name="" id="room_repeat2" className="make-select">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                            </select>
+
+                                    }
                                     {
                                         selectValue === 1 ? '일'
                                         : selectValue === 2 ? '주'
-                                        : selectValue === 3 ? '월'
+                                        : selectValue === 3 ? '개월'
                                         : selectValue === 4 ? '년'
                                         : null
                                     }
@@ -226,31 +295,31 @@ const NewRoom = () => {
                                             <dt><label htmlFor="월">반복 요일</label></dt>
                                             <dd>
                                                 <div className="checkbox type__square">
-                                                    <input type="checkbox" className="checkbox" id="월"/>
+                                                    <input type="checkbox" className="checkbox" id="week_2" onChange={() => getWeekDay(2)} />
                                                     <label htmlFor="월">월</label>
                                                 </div>
                                                 <div className="checkbox type__square">
-                                                    <input type="checkbox" className="checkbox" id="화"/>
+                                                    <input type="checkbox" className="checkbox" id="week_3"onChange={() => getWeekDay(3)} />
                                                     <label htmlFor="화">화</label>
                                                 </div>
                                                 <div className="checkbox type__square">
-                                                    <input type="checkbox" className="checkbox" id="수"/>
+                                                    <input type="checkbox" className="checkbox" id="week_4" onChange={() => getWeekDay(4)} />
                                                     <label htmlFor="수">수</label>
                                                 </div>
                                                 <div className="checkbox type__square">
-                                                    <input type="checkbox" className="checkbox" id="목"/>
+                                                    <input type="checkbox" className="checkbox" id="week_5"onChange={() => getWeekDay(5)} />
                                                     <label htmlFor="목">목</label>
                                                 </div>
                                                 <div className="checkbox type__square">
-                                                    <input type="checkbox" className="checkbox" id="금"/>
+                                                    <input type="checkbox" className="checkbox" id="week_6" onChange={() => getWeekDay(6)} />
                                                     <label htmlFor="금">금</label>
                                                 </div>
                                                 <div className="checkbox type__square">
-                                                    <input type="checkbox" className="checkbox" id="토"/>
+                                                    <input type="checkbox" className="checkbox" id="week_7" onChange={() => getWeekDay(7)} />
                                                     <label htmlFor="토">토</label>
                                                 </div>
                                                 <div className="checkbox type__square">
-                                                    <input type="checkbox" className="checkbox" id="일"/>
+                                                    <input type="checkbox" className="checkbox" id="week_1" onChange={() => getWeekDay(1)} />
                                                     <label htmlFor="일">일</label>
                                                 </div>
                                             </dd>
@@ -261,7 +330,7 @@ const NewRoom = () => {
                             <dl className="inline__type">
                                 <dt><label htmlFor="종료 날짜">종료 날짜</label></dt>
                                 <dd>
-                                    <input id="종료 날짜" type="date" className="text under-scope" />
+                                    <input id="meeting_end_date" type="date" className="text under-scope" />
                                 </dd>
                             </dl>
                         </div>
@@ -385,9 +454,9 @@ const NewRoom = () => {
                         isNew ?
                         <div onClick={() => navigate('/')} className="btn btn__normal">취소</div>
                         :
-                        <div onClick={() => navigate(`/meetingroom/${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`)} className="btn btn__normal">최소</div>
+                        <div onClick={() => navigate(`/meetingroom/${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`)} className="btn btn__normal">취소</div>
                     }
-                    <a href="room_setting.html" className="btn btn__able">저장</a>
+                    <div onClick={handleSubmit} className="btn btn__able">저장</div>
                 </div>
             </div>
 
