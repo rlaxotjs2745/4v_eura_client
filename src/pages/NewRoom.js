@@ -221,8 +221,8 @@ const NewRoom = () => {
         const formData = new FormData();
         console.log(title)
         formData.append('mt_name', title);
-        formData.append('mt_start_dt', `${startDate} ${startTime}:00`);
-        formData.append('mt_end_dt', `${startDate} ${endTime}:00`);
+        formData.append('mt_start_dt', `${startDate} ${startTime}`);
+        formData.append('mt_end_dt', `${startDate} ${endTime}`);
         formData.append('mt_info', meetingInfo);
         if(remindBool){
             formData.append('mt_remind_type', selectValue);
