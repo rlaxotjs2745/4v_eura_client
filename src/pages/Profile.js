@@ -31,10 +31,10 @@ const Profile = () => {
     const user_id = user_cookie_id
 
     const eq_type_01_val = String(eqType01)
-    const eq_type_02_val = eqType02
+    const eq_type_02_val = String(eqType02)
 
-    // console.log('eq_type_01_val', eqType01)
-    // console.log('eq_type_02_val', eqType02)
+    console.log('eq_type_01_val', eq_type_01_val)
+    console.log('eq_type_02_val', eq_type_02_val)
 
 
 
@@ -117,7 +117,6 @@ const Profile = () => {
             setUserPhone(res.data.data.user_phone)
             setEqType01(res.data.data.eq_type01)
             setEqType02(res.data.data.eq_type02)
-
 
             // setValue('eq_type_01_val', res.data.data.eq_type01)
             // console.log('res.data.result_code :: ', res.data.result_code)
@@ -264,8 +263,18 @@ const Profile = () => {
             console.log(err);
         });
     }
-    setValue('eq_type01', eqType01)
-    setValue('eq_type02', eqType02)
+
+    useEffect(()=>{
+        setValue('eq_type01', eq_type_01_val)
+        setValue('eq_type02', eq_type_02_val)
+    },[eqType01, eqType02])
+
+
+    const pwdCancle =()=>{
+        setPwdVisible(!pwdVisible)
+        window.location.reload();
+    }
+
     return (
         <section className="content" id="content">
             <div className="my">
@@ -353,7 +362,7 @@ const Profile = () => {
                                     {errors.user_pwd && <div className="error_tip">{errors.user_pwd.message}</div>}
                                     <div className="modify__box">
                                         <button className="btn btn__able btn__s">변경하기</button>
-                                        <button onClick={()=> {setPwdVisible(!pwdVisible)}} className="btn btn__normal btn__s">취소</button>
+                                        <button onClick={pwdCancle} className="btn btn__normal btn__s">취소</button>
                                     </div>
                                 </div>
                             </form>
