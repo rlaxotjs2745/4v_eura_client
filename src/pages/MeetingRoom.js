@@ -58,7 +58,7 @@ const MeetingRoom = (props) => {
             '/room/cancel', {idx_meeting: window.location.pathname.split('/')[window.location.pathname.split('/').length-1]},
             AXIOS_OPTION)
             .then(res => {
-                if(res.result_code == 'SUCCESS'){
+                if(res.data.result_code == 'SUCCESS'){
                     axios.get(SERVER_URL +
                         `/meet/room/info?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
                         AXIOS_OPTION)

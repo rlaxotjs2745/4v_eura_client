@@ -30,10 +30,15 @@ const MeetingCalendar = () => {
     const getDayMeetingInfo = (day) => {
         axios.get(SERVER_URL + '/meet/main/calendar/info?' + `calYear=${day.getFullYear()}&calMonth=${day.getMonth()}&calDay=${day.getDate()}`, AXIOS_OPTION)
             .then(res => {
+                console.log(res)
                 setClickedDay(day);
                 setClickedDayMeeting(res.data.data.mt_meetMyList);
             })
     }
+
+    useEffect(() => {
+        console.log(meeting);
+    }, [meeting])
 
     const navigateToMeetingRoom = (idx) => {
         navigate(`/meetingroom/${idx}`);

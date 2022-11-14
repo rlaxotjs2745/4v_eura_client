@@ -16,6 +16,7 @@ const Home = () => {
     const [modal, setModalOpen] = useState(false);
     const [curMeeting, setCurMeeting] = useState(false)
     const [curEvent, setCurEvent] = useState(true);
+    const [eventNow, setEventNow] = useState(0);
 
 
     useEffect(() => {
@@ -23,107 +24,27 @@ const Home = () => {
         $('#mt_status_2').hide();
         $('#popup__notice').hide();
 
+        if(!eventNow){
+            axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
+                .then(res => {
+                        setUser(res.data.data);
+                        setSchedule(res.data.data.mt_meetShort);
+                });
 
-        axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
-            .then(res => {
-                    setUser(res.data.data);
-                    setSchedule(res.data.data.mt_meetShort);
-            });
+            axios.get(SERVER_URL + '/meet/main/list', AXIOS_OPTION)
+                .then(res => {
+                    setMeeting(res.data.data);
+                })
 
-        axios.get(SERVER_URL + '/meet/main/list', AXIOS_OPTION)
-            .then(res => {
-                console.log(res.data.data);
-                setMeeting(res.data.data);
-            })
+            axios.get(SERVER_URL + '/meet/main/endlist', AXIOS_OPTION)
+                .then(res => {
+                    setLastMeeting(res.data.data);
+                })
+        }
 
-        axios.get(SERVER_URL + '/meet/main/endlist', AXIOS_OPTION)
-            .then(res => {
-                console.log(res.data.data);
-                setLastMeeting(res.data.data);
-            })
-
-
-
-        // setMeeting({
-        //     mt_meetMyListCount: 1,
-        //     mt_meetMyList: [{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 2,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 0
-        //     },{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 2,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 0
-        //     },{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 1,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 0
-        //     },{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 2,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 0
-        //     },{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 3,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 0
-        //     },{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 0,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 0
-        //     },{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 1,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 1
-        //     },{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 2,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 0
-        //     },{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 2,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 0
-        //     },
-        //     ]
-        // })
+    }, [eventNow])
 
 
-    }, [])
 
     const pageSort = (e) => {
         let endPoint;
@@ -161,11 +82,9 @@ const Home = () => {
         let meet = curMeeting;
         let newMeeting = [];
         if(meet.mt_status === 0){
-            axios.post(SERVER_URL + '/meet/room/open', {idx_meeting: meet.mt_idx}, AXIOS_OPTION)
+            axios.put(SERVER_URL + `/meet/room/open?idx_meeting=${meet.mt_idx}`, {idx_meeting: meet.mt_idx},AXIOS_OPTION)
                 .then(res => {
-                    console.log('/meet/room/open')
-                    console.log(res)
-                    if(res.data.data.result_code === "SUCCESS"){
+                    if(res.data.result_code === "SUCCESS"){
                         meet.mt_status = 1;
                         newMeeting.push(meet);
                         for(let cur of meeting){
@@ -181,6 +100,7 @@ const Home = () => {
             navigate(`/newroom/${meet.mt_idx}`);
         }
     }
+
 
     const navigateToMeetingRoom = (meet) => {
         if(curEvent){
@@ -230,7 +150,8 @@ const Home = () => {
                                 </div>
                             </div>
                                 :
-                            meeting.mt_meetMyList.map(room => {
+                            meeting.mt_meetMyList.map((room, idx) => {
+                                if(idx > 8) return;
                                 return (
                                     <MainMyMeetingRoom room={room} modalOpen={modalOpen} navigateToMeetingRoom={navigateToMeetingRoom} mouseOver={mouseOver} mouseOut={mouseOut} />
                                 )
@@ -267,7 +188,8 @@ const Home = () => {
                                     </div>
                                 </div>
                                 :
-                                lastMeeting.mt_meetEndMyList.map(room => {
+                                lastMeeting.mt_meetEndMyList.map((room, idx) => {
+                                    if(idx > 8) return;
                                     return (
                                         <MainMyMeetingRoom room={room} modalOpen={modalOpen} navigateToMeetingRoom={curEvent} mouseOver={mouseOver} mouseOut={mouseOut} />
                                     )

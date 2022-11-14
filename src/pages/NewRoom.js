@@ -219,7 +219,6 @@ const NewRoom = () => {
         }
 
         const formData = new FormData();
-        console.log(title)
         formData.append('mt_name', title);
         formData.append('mt_start_dt', `${startDate} ${startTime}`);
         formData.append('mt_end_dt', `${startDate} ${endTime}`);
@@ -229,6 +228,8 @@ const NewRoom = () => {
             formData.append('mt_remind_count', remindCount);
             formData.append('mt_remind_week', weekday.join());
             formData.append('mt_remind_end', endDate);
+        } else {
+            formData.append('mt_remind_type', null);
         }
         formData.append('mt_invite_email', invites.map(inv => inv.email).join());
         formData.append('file', uploadedFiles);
@@ -236,7 +237,8 @@ const NewRoom = () => {
             axios.post(SERVER_URL + '/meet/create', formData, AXIOS_FORM_DATA_OPTION)
                 .then(res => {
                     console.log(res)
-                    if(res.data.data.result_code == 'SUCCESS'){
+                    console.log(res.data.result_code)
+                    if(res.data.result_code == 'SUCCESS'){
                         alert('미팅룸을 생성했습니다.');
                         navigate('/');
                     }
@@ -245,7 +247,7 @@ const NewRoom = () => {
             formData.append('idx_meeting', window.location.pathname.split('/')[window.location.pathname.split('/').length-1]);
             axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_FORM_DATA_OPTION)
                 .then(res => {
-                    if(res.data.data.result_code == 'SUCCESS'){
+                    if(res.data.result_code == 'SUCCESS'){
                         alert('미팅룸을 수정했습니다.');
                         navigate('/');
                     }
@@ -269,19 +271,19 @@ const NewRoom = () => {
                         <label htmlFor="make_date"><img src="../assets/image/ic_calendar_24.png" alt="" /></label>
                         <input id="make_date" type="date" className="text under-scope width-flexble"
                                onChange={makeDate}
-                               // defaultValue={isNew ? '' : roomInfo.mt_start_dt.split(' ')[0]}
+                               defaultValue={isNew ? '' : roomInfo.mt_start_dt.split(' ')[0]}
                         />
                             <label htmlFor="make_time" className="input__time"><img src="../assets/image/ic_time_24.png" alt="" /></label>
                             <input id="make_time1" type="time"
                                    pattern="[0-9]{2}:[0-9]{2}"
                                    className="text under-scope width-flexble"
                                    onChange={makeTime1}
-                                   // defaultValue={isNew ? '' : roomInfo.mt_start_dt.split(' ')[1]}
+                                   defaultValue={isNew ? '' : roomInfo.mt_start_dt.split(' ')[1]}
                             />
                                 <span className="bar">-</span>
                                 <input id="make_time2" type="time" className="text under-scope width-flexble"
                                        onChange={makeTime2}
-                                       // defaultValue={isNew ? '' : roomInfo.mt_end_dt.split(' ')[1]}
+                                       defaultValue={isNew ? '' : roomInfo.mt_end_dt.split(' ')[1]}
                                 />
 
                                 <hr />
@@ -445,28 +447,6 @@ const NewRoom = () => {
                                         return <AddMeetingUser user={user} addUser={addUser}/>
                                     })
                             }
-                            {/*<li><a href="#none">*/}
-                            {/*    <figure><img*/}
-                            {/*        src="https://images.unsplash.com/photo-1510227272981-87123e259b17?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=3759e09a5b9fbe53088b23c615b6312e"*/}
-                            {/*        alt=""/></figure>*/}
-                            {/*    <span className="team__user">권민수*/}
-                            {/*     <em>rnjsals12@gmail.com</em></span>*/}
-                            {/*    <div className="checkbox type__square">*/}
-                            {/*        <input type="checkbox" className="checkbox" id="team-1" name="user"/>*/}
-                            {/*        <label htmlFor="team-1"></label>*/}
-                            {/*    </div>*/}
-                            {/*</a></li>*/}
-                            {/*<li><a href="#none">*/}
-                            {/*    <figure><img*/}
-                            {/*        src="https://images.unsplash.com/photo-1487735829822-4aa5382f8ed4?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=fd78248154392ee88a2a8da254058508"*/}
-                            {/*        alt=""/></figure>*/}
-                            {/*    <span className="team__user">권민수*/}
-                            {/*     <em>rnjsals12@gmail.com</em></span>*/}
-                            {/*    <div className="checkbox type__square">*/}
-                            {/*        <input type="checkbox" className="checkbox" id="team-2" name="user"/>*/}
-                            {/*        <label htmlFor="team-2"></label>*/}
-                            {/*    </div>*/}
-                            {/*</a></li>*/}
                         </ul>
                     </div>
 
@@ -487,30 +467,6 @@ const NewRoom = () => {
                                      <button onClick={handleFileDeleteEvent} className="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></button>
                                  </li>
                              ))}
-                             {/*<li>*/}
-                             {/*    <a href="#none">*/}
-                             {/*    <img src="../assets/image/ic_file_14.png" alt=""/><span class="file__name">1주차_인간공학의 개요_ppt.pdf</span><em class="file__size">230KB</em>*/}
-                             {/*    </a>*/}
-                             {/*    <a href="#none" class="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></a>*/}
-                             {/*</li>*/}
-                             {/*<li>*/}
-                             {/*    <a href="#none">*/}
-                             {/*        <img src="../assets/image/ic_file_14.png" alt=""/><span class="file__name">2주차_인간공학을 위한 인간이해_ppt.pdf</span><em class="file__size">680KB</em>*/}
-                             {/*    </a>*/}
-                             {/*    <a href="#none" class="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></a>*/}
-                             {/*</li>*/}
-                             {/*<li>*/}
-                             {/*    <a href="#none">*/}
-                             {/*        <img src="../assets/image/ic_file_14.png" alt=""/><span class="file__name">3주차_인간의 감각과 그 구조_ppt.pdf</span><em class="file__size">558KB</em>*/}
-                             {/*    </a>*/}
-                             {/*    <a href="#none" class="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></a>*/}
-                             {/*</li>*/}
-                             {/*<li>*/}
-                             {/*    <a href="#none">*/}
-                             {/*        <img src="../assets/image/ic_file_14.png" alt=""/><span class="file__name">4주차_인간의 형태와 운동기능_ppt.pdf</span><em class="file__size">680KB</em>*/}
-                             {/*    </a>*/}
-                             {/*    <a href="#none" class="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></a>*/}
-                             {/*</li>*/}
                          </ul>
                     </div>
                 </div>
@@ -529,7 +485,6 @@ const NewRoom = () => {
             </div>
 
             <div id="popup__team" className="pop__detail ">
-                {/*<a href="#none" className="btn__close js-modal-close"><img src="../assets/image/ic_close_24.png" alt=""></a>*/}
                 <div className="popup__cnt">
                     <div className="pop__message">
                         <h3>참석자 단체 등록하기</h3>
@@ -539,38 +494,8 @@ const NewRoom = () => {
                                     <label htmlFor="ex_filename"><img src="../assets/image/ic_attachment_24.png" alt=""/></label>
                                     <input type="file" id="ex_filename" className="upload-hidden"/>
                             </div>
-                            {/*<div className="upload__count">총 52명</div>*/}
                             <div className="upload__list">
-                                {/*<span>rlsgus@postech.com</span>*/}
-                                {/*<span>wlsdksms11@postech.com</span>*/}
-                                {/*<span>rlsgus@postech.com</span>*/}
-                                {/*<span>rlsgus@postech.com</span>*/}
-                                {/*<span>wlsdksms11@postech.com</span>*/}
-                                {/*<span>wlsdksms11@postech.com</span>*/}
-                                {/*<span>rlsgus@postech.com</span>*/}
-                                {/*<span>wlsdksms11@postech.com</span>*/}
-                                {/*<span>rlsgus@postech.com</span>*/}
-                                {/*<span>rlsgus@postech.com</span>*/}
-                                {/*<span>wlsdksms11@postech.com</span>*/}
-                                {/*<span>wlsdksms11@postech.com</span>*/}
-                                {/*<span>rlsgus@postech.com</span>*/}
-                                {/*<span>rlsgus@postech.com</span>*/}
-                                {/*<span>wlsdksms11@postech.com</span>*/}
-                                {/*<span>wlsdksms11@postech.com</span>*/}
-                                {/*<span>rlsgus@postech.com</span>*/}
-                                {/*<span>rlsgus@postech.com</span>*/}
-                                {/*<span>wlsdksms11@postech.com</span>*/}
-                                {/*<span>rlsgus@postech.com</span>*/}
-                                {/*<span>rlsgus@postech.com</span>*/}
-                                {/*<span>wlsdksms11@postech.com</span>*/}
-                                {/*<span>wlsdksms11@postech.com</span>*/}
-                                {/*<span>rlsgus@postech.com</span>*/}
-                                {/*<span>wlsdksms11@postech.com</span>*/}
-                                {/*<span>wlsdksms11@postech.com</span>*/}
-                                {/*<span>wlsdksms11@postech.com</span>*/}
-                                {/*<span>wlsdksms11@postech.com</span>*/}
-                                {/*<span>rlsgus@postech.com</span>*/}
-                                {/*<span>rlsgus@postech.com</span>*/}
+
                             </div>
                         </div>
                     </div>
