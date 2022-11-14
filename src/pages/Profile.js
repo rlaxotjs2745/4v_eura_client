@@ -30,7 +30,7 @@ const Profile = () => {
 
     const user_id = user_cookie_id
 
-    const eq_type_01_val = eqType01
+    const eq_type_01_val = String(eqType01)
     const eq_type_02_val = eqType02
 
     // console.log('eq_type_01_val', eqType01)
@@ -96,11 +96,10 @@ const Profile = () => {
             user_id: user_id,
             // user_name: userName,
             // user_phone: userPhone,
-            eq_type01 : -1,
+            eq_type01 : eq_type_01_val,
             eq_type02 : 2
         }
     });
-
 
     const [imagePreview, setImagePreview] = useState('../assets/image/image_upload-pic.png');
     const image = watch("file");
@@ -118,6 +117,7 @@ const Profile = () => {
             setUserPhone(res.data.data.user_phone)
             setEqType01(res.data.data.eq_type01)
             setEqType02(res.data.data.eq_type02)
+
 
             // setValue('eq_type_01_val', res.data.data.eq_type01)
             // console.log('res.data.result_code :: ', res.data.result_code)
@@ -259,12 +259,13 @@ const Profile = () => {
             'eq_type02' : data.eq_type02
         }, {withCredentials:true}).then(res => {
             console.log(res.data)
-            // window.location.reload();
+            window.location.reload();
         }).catch(err => {
             console.log(err);
         });
     }
-
+    setValue('eq_type01', eqType01)
+    setValue('eq_type02', eqType02)
     return (
         <section className="content" id="content">
             <div className="my">
