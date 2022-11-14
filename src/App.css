@@ -1994,8 +1994,16 @@ td {
 
 .main__board .board__user figure {
     width: 100px;
+    aspect-ratio: 100/100;
+    overflow: hidden;
+    border-radius: 50%;
+    position: relative;
     display: block;
     float: left
+}
+.main__board .board__user img {
+    position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);
+    object-fit: cover;
 }
 
 .main__board .board__user span {

@@ -1,6 +1,8 @@
+import axios from "axios";
+
 const React = require("react");
 const {useState} = require("react");
-
+const {useEffect} = require("react");
 
 
 
@@ -18,6 +20,7 @@ const MainTimer = ({user}) => {
         setInterval(currentTimer, 1000);
     }
     startTimer();
+
 
     return (
         <div className="main__board">

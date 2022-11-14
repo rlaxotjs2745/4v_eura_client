@@ -28,7 +28,6 @@ const Home = () => {
             .then(res => {
                     setUser(res.data.data);
                     setSchedule(res.data.data.mt_meetShort);
-
             });
 
         axios.get(SERVER_URL + '/meet/main/list', AXIOS_OPTION)

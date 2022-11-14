@@ -12,21 +12,36 @@ import $ from "jquery";
 
 const Profile = () => {
 
+
+    const user_cookie = getCookie('user_id')
+    const [profileVisible, setProfileVisible] = useState(false)
+    const [nameVisible, setNameVisible] = useState(false)
+    const [pwdVisible, setPwdVisible] = useState(false)
+    const [phoneVisible, setPhoneVisible] = useState(false)
+    const [characterVisible, setCharacterVisible] = useState(false)
+
+    const [profile, setProfile] = useState('../assets/image/image_profile.png')
+    const [userName, setUserName] = useState('유라')
+
+    const user_id = 'taeseon1997@gmail.com'
+    const user_name = 'EURA'
+    const user_phone = "01012345678"
+    const eq_type01 = '1'
+    const eq_type02 = '-1'
+
     useEffect((data)=> {
-        axios.post(SERVER_URL + '/myinfo'
-            , data
-            , {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    // cookies: user_cookie
-                }, withCredentials:true
-            }
-        ).then(res => {
-            console.log(res)
-            console.log('res.data.result_code :: ', res.data.result_code)
-            console.log('res.data.msg :: ', res.data.result_str)
-            console.log('res.data.user_name ::', res.data.user_name)
-            console.log('res.data.user_pic ::', res.data.user_pic)
+        axios.post(SERVER_URL + '/myinfo', {
+            user_id : user_id
+        }, {withCredentials:true}).then(res => {
+            // console.log(res.data.data)
+            console.log(res.data.data.user_name)
+            setProfile(res.data.data.user_pic)
+            setUserName(res.data.data.user_name)
+            // console.log('res.data.result_code :: ', res.data.result_code)
+            // console.log('res.data.msg :: ', res.data.result_str)
+            // console.log('res.data.user_name ::', res.data.data.user_name)
+            // console.log('res.data.user_pic ::', res.data.data.user_pic)
+            // console.log('res.data.user_pic ::', res.data.user_pic)
             // if(res.data.result_code === 'FAIL'){
             //     console.log('======================',res.data.result_str);
             //     // alert(res.data.result_str)
@@ -39,19 +54,6 @@ const Profile = () => {
             console.log(err);
         });
     },[])
-
-    const user_cookie = getCookie('user_id')
-    const [profileVisible, setProfileVisible] = useState(false)
-    const [nameVisible, setNameVisible] = useState(false)
-    const [pwdVisible, setPwdVisible] = useState(false)
-    const [phoneVisible, setPhoneVisible] = useState(false)
-    const [characterVisible, setCharacterVisible] = useState(false)
-
-    const user_id = 'eura@eura.com'
-    const user_name = 'EURA'
-    const user_phone = "01012345678"
-    const eq_type01 = '1'
-    const eq_type02 = '-1'
 
     // useEffect(() => {
     //     setValue("eq_type01", eq_type01);
@@ -105,11 +107,11 @@ const Profile = () => {
         formState: { errors, isSubmitted, isSubmitting, isDirty },
         // isSubmitting 은 양식 제출 중 disabled 처리 하게 함.
     } = useForm({
-        mode: 'onSubmit',
+        mode: 'onChange',
         resolver: yupResolver(formSchema),
         defaultValues: { // 초기값 설정
             user_id: user_id,
-            user_name: user_name,
+            // user_name: userName,
             user_phone: user_phone,
             eq_type01 : eq_type01,
             eq_type02 : eq_type02
@@ -213,7 +215,7 @@ const Profile = () => {
                             <div className="input__group upload__type">
                                 <input type="file" className="upload__btn"/>
                                 <div className="upload__image" onClick={()=> {setProfileVisible(!profileVisible)}}>
-                                    <img id="preview" src="../assets/image/image_profile.png" alt=""/>
+                                    <img id="preview" src={profile} alt=""/>
                                     <button className="profile_edit_btn">프로필 사진 변경</button>
                                 </div>
                             </div>
@@ -223,7 +225,7 @@ const Profile = () => {
                     {/* 아이디(이메일) */}
                     <div className="input__group ">
                         <label htmlFor="join_email">아이디(이메일)</label>
-                        <input type="text" className="text" id="join_email" name="user_id" readOnly disabled  {...register('user_id')}/>
+                        <input type="text"  className="text" id="join_email" name="user_id" readOnly disabled  {...register('user_id')}/>
                     </div>
 
                     {/* 이름 변경 */}
@@ -239,7 +241,7 @@ const Profile = () => {
                         :
                         <div className="input__group">
                             <label htmlFor="join_name">이름</label>
-                            <input type="text" className="text" {...register('user_name')} disabled/>
+                            <input type="text" className="text" value={userName} {...register('user_name')} disabled/>
                             <div className="modify__box">
                                 <button onClick={()=> {setNameVisible(!nameVisible)}} className="btn btn-modify">편집하기</button>
                             </div>
