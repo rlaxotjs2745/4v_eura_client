@@ -18,9 +18,10 @@ const MeetingRoom = (props) => {
 
     useEffect(() => {
         axios.get(SERVER_URL +
-            `/meet/room/info?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
+            `/meet/room/main?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
             AXIOS_OPTION)
             .then(res => {
+                console.log(res.data.data)
                 setRoomInfo(res.data.data);
             })
 

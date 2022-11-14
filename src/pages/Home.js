@@ -25,7 +25,7 @@ const Home = () => {
 
 
         axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
-            .then(async res => {
+            .then(res => {
                     setUser(res.data.data);
                     setSchedule(res.data.data.mt_meetShort);
 
@@ -143,7 +143,7 @@ const Home = () => {
     }
 
     const modalOpen = (meet) => {
-        console.log("#########" + meet);
+        setCurMeeting(meet);
         if(meet.mt_status == 0){
             $('#mt_status_0').show();
         } else {
@@ -162,9 +162,11 @@ const Home = () => {
         let meet = curMeeting;
         let newMeeting = [];
         if(meet.mt_status === 0){
-            axios.put(SERVER_URL + '/meet/room/open', {idx_meeting: meet.mt_idx}, AXIOS_OPTION)
+            axios.post(SERVER_URL + '/meet/room/open', {idx_meeting: meet.mt_idx}, AXIOS_OPTION)
                 .then(res => {
-                    if(res.result_code === "SUCCESS"){
+                    console.log('/meet/room/open')
+                    console.log(res)
+                    if(res.data.data.result_code === "SUCCESS"){
                         meet.mt_status = 1;
                         newMeeting.push(meet);
                         for(let cur of meeting){
@@ -173,6 +175,7 @@ const Home = () => {
                             }
                         }
                         setMeeting(newMeeting);
+                        modalClose();
                     }
                 })
         } else if(meet.mt_status === 2) {
@@ -182,7 +185,7 @@ const Home = () => {
 
     const navigateToMeetingRoom = (meet) => {
         if(curEvent){
-            navigate(`/meetingroom/${meet.mt_idx}`);
+            navigate(`/meetingroom/${meet}`);
         }
     }
 

@@ -235,7 +235,8 @@ const NewRoom = () => {
         if(isNew) {
             axios.post(SERVER_URL + '/meet/create', formData, AXIOS_FORM_DATA_OPTION)
                 .then(res => {
-                    if(res.result_code == 'SUCCESS'){
+                    console.log(res)
+                    if(res.data.data.result_code == 'SUCCESS'){
                         alert('미팅룸을 생성했습니다.');
                         navigate('/');
                     }
@@ -244,7 +245,7 @@ const NewRoom = () => {
             formData.append('idx_meeting', window.location.pathname.split('/')[window.location.pathname.split('/').length-1]);
             axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_FORM_DATA_OPTION)
                 .then(res => {
-                    if(res.result_code == 'SUCCESS'){
+                    if(res.data.data.result_code == 'SUCCESS'){
                         alert('미팅룸을 수정했습니다.');
                         navigate('/');
                     }
