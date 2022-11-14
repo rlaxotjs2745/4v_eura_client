@@ -21,15 +21,15 @@ const MeetingRoom = (props) => {
             `/meet/room/info?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
             AXIOS_OPTION)
             .then(res => {
-                setRoomInfo(res.data);
+                setRoomInfo(res.data.data);
             })
 
          axios.get(SERVER_URL +
             `/meet/room/invite?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
             AXIOS_OPTION)
             .then(res => {
-                setInvCount(res.data.mt_invites.length);
-                makeInviteTag(res.data.mt_invites);
+                setInvCount(res.data.data.mt_invites.length);
+                makeInviteTag(res.data.data.mt_invites);
             })
 
     }, [])
@@ -62,7 +62,7 @@ const MeetingRoom = (props) => {
                         `/meet/room/info?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
                         AXIOS_OPTION)
                         .then(res => {
-                            setRoomInfo(res.data);
+                            setRoomInfo(res.data.data);
                         })
                 }
             })

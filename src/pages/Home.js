@@ -25,19 +25,22 @@ const Home = () => {
 
 
         axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
-            .then(res => {
-                setUser(res.data);
-                setSchedule(res.data.mt_meetShort);
+            .then(async res => {
+                    setUser(res.data.data);
+                    setSchedule(res.data.data.mt_meetShort);
+
             });
 
         axios.get(SERVER_URL + '/meet/main/list', AXIOS_OPTION)
             .then(res => {
-                setMeeting(res.data);
+                console.log(res.data.data);
+                setMeeting(res.data.data);
             })
 
         axios.get(SERVER_URL + '/meet/main/endlist', AXIOS_OPTION)
             .then(res => {
-                setLastMeeting(res.data);
+                console.log(res.data.data);
+                setLastMeeting(res.data.data);
             })
 
 
@@ -135,7 +138,7 @@ const Home = () => {
         }
         axios.get(SERVER_URL + endPoint, AXIOS_OPTION)
             .then(res => {
-                resMtd(res.data);
+                resMtd(res.data.data);
             })
     }
 

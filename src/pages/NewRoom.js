@@ -91,9 +91,9 @@ const NewRoom = () => {
                 `/meet/room/info?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
                 AXIOS_OPTION)
                 .then(res => {
-                    setRoomInfo(res.data);
+                    setRoomInfo(res.data.data);
                     setIsNew(false);
-                    if(res.data.mt_remind_type !== 0){
+                    if(res.data.data.mt_remind_type !== 0){
                         // setRemindBool(!remindBool);
                     }
                 })
@@ -101,8 +101,8 @@ const NewRoom = () => {
                 `/meet/room/invite?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
                 AXIOS_OPTION)
                 .then(res => {
-                    setInvCount(res.data.mt_invites.length);
-                    setInvites(res.data.mt_invites);
+                    setInvCount(res.data.data.mt_invites.length);
+                    setInvites(res.data.data.mt_invites);
                 })
         }
     }, [])
@@ -114,7 +114,7 @@ const NewRoom = () => {
             `/meet/invite?searchTxt=${searchWord}`,
             AXIOS_OPTION)
             .then(res => {
-                setSearchUser(res.data.mt_invites);
+                setSearchUser(res.data.data.mt_invites);
             })
     }
 
