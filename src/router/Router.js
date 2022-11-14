@@ -21,11 +21,15 @@ const Routers = () => {
         <Routes>
             {/* type1 푸터 헤더 있는 버전 */}
             {/* PrivateRoute 안에는 로그인 해야 접근 가능 */}
-            <Route path="/" element={<PrivateRoute><LayoutType1/></PrivateRoute>}>
+            <Route path="/" element={
+                <PrivateRoute><LayoutType1/></PrivateRoute>}
+            >
                 <Route index element={<Home/>}/>
                 <Route path="/profile" element={<Profile/>} />
             </Route>
-            <Route path="/" element={<PublickRoute><LayoutType1/></PublickRoute>}>
+            <Route path="/" element={
+                <PublickRoute><LayoutType1/></PublickRoute>
+            }>
                 <Route path="signup" element={<SignUp/>}/>
                 <Route path="/signup1" element={<SignUp1/>}/>
                 <Route path="/signup2" element={<SignUp2/>}/>
