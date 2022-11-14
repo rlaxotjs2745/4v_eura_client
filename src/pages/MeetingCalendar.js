@@ -8,7 +8,6 @@ import {Link, useNavigate} from "react-router-dom";
 
 const MeetingCalendar = () => {
 
-    const [value, onChange] = useState(new Date());
     const [meeting, setMeeting] = useState([]);
     const [clickedDay, setClickedDay] = useState('');
     const [clickedDayMeeting, setClickedDayMeeting] = useState([]);
@@ -23,9 +22,13 @@ const MeetingCalendar = () => {
 
     }, [])
 
+    const getNow = (e) => {
+        console.log(e)
+    }
+
 
     const getDayMeetingInfo = (day) => {
-        axios.get(SERVER_URL + '/meet/main/calendar/info?' + `calYear=${day.getFullYear()}&calMonth=${day.getMonth()}&calDay=${day.getDate()}`)
+        axios.get(SERVER_URL + '/meet/main/calendar/info?' + `calYear=${day.getFullYear()}&calMonth=${day.getMonth()}&calDay=${day.getDate()}`, AXIOS_OPTION)
             .then(res => {
                 setClickedDay(day);
                 setClickedDayMeeting(res.data.mt_meetMyList);
@@ -36,24 +39,24 @@ const MeetingCalendar = () => {
         navigate(`/meetingroom/${idx}`);
     }
 
+    const fillTileContent = ({date, view}) => {
+        return !meeting ? '' : meeting.map(day => {
+            return view === 'month'
+            && date.getFullYear() == new Date(day.mt_date).getFullYear()
+            && date.getMonth() == new Date(day.mt_date).getMonth()
+            && date.getDate() == new Date(day.mt_date).getDate() ?
+                <div><span>• </span>{day.mt_name}</div> : null
+        })
+    }
+
+
     return (
         <div className="calendar">
             <h2 id="calendar_title">미팅 캘린더</h2>
             <div className="calendar-card">
                 <Calendar
                     calendarType={"US"}
-                    onChange={onChange}
-                    value={value}
-                    defaultValue={"dfdff"}
-                    tileContent={({date, view}) => {
-                        return meeting.map(day => {
-                            return view === 'month' &&
-                            date.getFullYear() == new Date(day.mt_date).getFullYear() &&
-                            date.getMonth() == new Date(day.mt_date).getMonth() &&
-                            date.getDate() == new Date(day.mt_date).getDate() ?
-                                <div><span>• </span>{day.mt_name}</div> : null
-                        })
-                    }}
+                    tileContent={fillTileContent}
                     onClickDay={(value) => getDayMeetingInfo(new Date(value))}
                 />
             </div>

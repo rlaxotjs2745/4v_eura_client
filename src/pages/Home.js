@@ -5,19 +5,24 @@ import MainSchedule from "../Components/Cards/MainSchedule";
 import MainMyMeetingRoom from "../Components/Cards/MainMyMeetingRoom";
 import {Link, useNavigate} from "react-router-dom";
 import {SERVER_URL, AXIOS_OPTION} from "../util/env";
-
+import $ from "jquery";
 const Home = () => {
 
+    const navigate = useNavigate();
     const [user, setUser] = useState({});
     const [schedule, setSchedule] = useState({});
     const [meeting, setMeeting] = useState({});
     const [lastMeeting, setLastMeeting] = useState([]);
     const [modal, setModalOpen] = useState(false);
-    const [curMeeting, setCurMeeting] = useState({})
-    const navigate = useNavigate();
+    const [curMeeting, setCurMeeting] = useState(false)
+    const [curEvent, setCurEvent] = useState(true);
 
 
     useEffect(() => {
+        $('#mt_status_0').hide();
+        $('#mt_status_2').hide();
+        $('#popup__notice').hide();
+
 
         axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
             .then(res => {
@@ -35,86 +40,86 @@ const Home = () => {
                 setLastMeeting(res.data);
             })
 
-        setMeeting({
-            mt_meetMyListCount: 1,
-            mt_meetMyList: [{
-            mt_idx: 5,
-            mt_name: '경제학',
-            mt_hostname: '김태선',
-            mt_status: 2,
-            mt_start_dt: '2022-11-08 21:00:00',
-            mt_end_dt: '2022-12-13 12:00:00',
-            mt_live: 0
-            },{
-                mt_idx: 5,
-                mt_name: '경제학',
-                mt_hostname: '김태선',
-                mt_status: 2,
-                mt_start_dt: '2022-11-08 21:00:00',
-                mt_end_dt: '2022-12-13 12:00:00',
-                mt_live: 0
-            },{
-                mt_idx: 5,
-                mt_name: '경제학',
-                mt_hostname: '김태선',
-                mt_status: 1,
-                mt_start_dt: '2022-11-08 21:00:00',
-                mt_end_dt: '2022-12-13 12:00:00',
-                mt_live: 0
-            },{
-                mt_idx: 5,
-                mt_name: '경제학',
-                mt_hostname: '김태선',
-                mt_status: 2,
-                mt_start_dt: '2022-11-08 21:00:00',
-                mt_end_dt: '2022-12-13 12:00:00',
-                mt_live: 0
-            },{
-                mt_idx: 5,
-                mt_name: '경제학',
-                mt_hostname: '김태선',
-                mt_status: 3,
-                mt_start_dt: '2022-11-08 21:00:00',
-                mt_end_dt: '2022-12-13 12:00:00',
-                mt_live: 0
-            },{
-                mt_idx: 5,
-                mt_name: '경제학',
-                mt_hostname: '김태선',
-                mt_status: 0,
-                mt_start_dt: '2022-11-08 21:00:00',
-                mt_end_dt: '2022-12-13 12:00:00',
-                mt_live: 0
-            },{
-                mt_idx: 5,
-                mt_name: '경제학',
-                mt_hostname: '김태선',
-                mt_status: 1,
-                mt_start_dt: '2022-11-08 21:00:00',
-                mt_end_dt: '2022-12-13 12:00:00',
-                mt_live: 1
-            },{
-                mt_idx: 5,
-                mt_name: '경제학',
-                mt_hostname: '김태선',
-                mt_status: 2,
-                mt_start_dt: '2022-11-08 21:00:00',
-                mt_end_dt: '2022-12-13 12:00:00',
-                mt_live: 0
-            },{
-                mt_idx: 5,
-                mt_name: '경제학',
-                mt_hostname: '김태선',
-                mt_status: 2,
-                mt_start_dt: '2022-11-08 21:00:00',
-                mt_end_dt: '2022-12-13 12:00:00',
-                mt_live: 0
-            },
-            ]
-        })
-        setUser({
-            mt_meetMyListCount: 'EURA',
-        })
+
+
+        // setMeeting({
+        //     mt_meetMyListCount: 1,
+        //     mt_meetMyList: [{
+        //         mt_idx: 5,
+        //         mt_name: '경제학',
+        //         mt_hostname: '김태선',
+        //         mt_status: 2,
+        //         mt_start_dt: '2022-11-08 21:00:00',
+        //         mt_end_dt: '2022-12-13 12:00:00',
+        //         mt_live: 0
+        //     },{
+        //         mt_idx: 5,
+        //         mt_name: '경제학',
+        //         mt_hostname: '김태선',
+        //         mt_status: 2,
+        //         mt_start_dt: '2022-11-08 21:00:00',
+        //         mt_end_dt: '2022-12-13 12:00:00',
+        //         mt_live: 0
+        //     },{
+        //         mt_idx: 5,
+        //         mt_name: '경제학',
+        //         mt_hostname: '김태선',
+        //         mt_status: 1,
+        //         mt_start_dt: '2022-11-08 21:00:00',
+        //         mt_end_dt: '2022-12-13 12:00:00',
+        //         mt_live: 0
+        //     },{
+        //         mt_idx: 5,
+        //         mt_name: '경제학',
+        //         mt_hostname: '김태선',
+        //         mt_status: 2,
+        //         mt_start_dt: '2022-11-08 21:00:00',
+        //         mt_end_dt: '2022-12-13 12:00:00',
+        //         mt_live: 0
+        //     },{
+        //         mt_idx: 5,
+        //         mt_name: '경제학',
+        //         mt_hostname: '김태선',
+        //         mt_status: 3,
+        //         mt_start_dt: '2022-11-08 21:00:00',
+        //         mt_end_dt: '2022-12-13 12:00:00',
+        //         mt_live: 0
+        //     },{
+        //         mt_idx: 5,
+        //         mt_name: '경제학',
+        //         mt_hostname: '김태선',
+        //         mt_status: 0,
+        //         mt_start_dt: '2022-11-08 21:00:00',
+        //         mt_end_dt: '2022-12-13 12:00:00',
+        //         mt_live: 0
+        //     },{
+        //         mt_idx: 5,
+        //         mt_name: '경제학',
+        //         mt_hostname: '김태선',
+        //         mt_status: 1,
+        //         mt_start_dt: '2022-11-08 21:00:00',
+        //         mt_end_dt: '2022-12-13 12:00:00',
+        //         mt_live: 1
+        //     },{
+        //         mt_idx: 5,
+        //         mt_name: '경제학',
+        //         mt_hostname: '김태선',
+        //         mt_status: 2,
+        //         mt_start_dt: '2022-11-08 21:00:00',
+        //         mt_end_dt: '2022-12-13 12:00:00',
+        //         mt_live: 0
+        //     },{
+        //         mt_idx: 5,
+        //         mt_name: '경제학',
+        //         mt_hostname: '김태선',
+        //         mt_status: 2,
+        //         mt_start_dt: '2022-11-08 21:00:00',
+        //         mt_end_dt: '2022-12-13 12:00:00',
+        //         mt_live: 0
+        //     },
+        //     ]
+        // })
+
 
     }, [])
 
@@ -135,13 +140,19 @@ const Home = () => {
     }
 
     const modalOpen = (meet) => {
-        setModalOpen(true);
-        setCurMeeting(meet);
+        console.log("#########" + meet);
+        if(meet.mt_status == 0){
+            $('#mt_status_0').show();
+        } else {
+            $('#mt_status_2').show();
+        }
+        $('#popup__notice').show();
     }
 
     const modalClose = () => {
-        setModalOpen(false);
-        setCurMeeting({})
+        $('#mt_status_0').hide();
+        $('#mt_status_2').hide();
+        $('#popup__notice').hide();
     }
 
     const changeMeetingStatus = () => {
@@ -165,6 +176,21 @@ const Home = () => {
             navigate(`/newroom/${meet.mt_idx}`);
         }
     }
+
+    const navigateToMeetingRoom = (meet) => {
+        if(curEvent){
+            navigate(`/meetingroom/${meet.mt_idx}`);
+        }
+    }
+
+    const mouseOver = () => {
+        setCurEvent(false);
+    }
+
+    const mouseOut = () => {
+        setCurEvent(true);
+    }
+
 
 
 
@@ -191,6 +217,7 @@ const Home = () => {
                     </h3>
                     <div className="boxing">
                         {
+                            !meeting ||
                             !meeting.mt_meetMyListCount ?
                             <div className="boxing">
                                 <div className="msg__nodata">
@@ -199,16 +226,14 @@ const Home = () => {
                             </div>
                                 :
                             meeting.mt_meetMyList.map(room => {
-                                const ep = '/meetingroom/' + room.mt_idx;
                                 return (
-                                    <Link to={ep}>
-                                        <MainMyMeetingRoom room={room} />
-                                    </Link>
+                                    <MainMyMeetingRoom room={room} modalOpen={modalOpen} navigateToMeetingRoom={navigateToMeetingRoom} mouseOver={mouseOver} mouseOut={mouseOut} />
                                 )
                             })
                         }
                     </div>
                     {
+                        !meeting ||
                         !meeting.mt_meetMyListCount ? '' :
                             <div className="btn__group">
                                 <a href="#none" className="btn btn__more">더 보기</a>
@@ -229,6 +254,7 @@ const Home = () => {
                     </h3>
                     <div className="boxing">
                         {
+                            !lastMeeting ||
                             !lastMeeting.mt_meetEndMyList || !lastMeeting.mt_meetEndMyList.length ?
                                 <div className="boxing">
                                     <div className="msg__nodata">
@@ -238,46 +264,33 @@ const Home = () => {
                                 :
                                 lastMeeting.mt_meetEndMyList.map(room => {
                                     return (
-                                        <Link to={`/meetingroom/${room.mt_idx}`} >
-                                            <MainMyMeetingRoom room={room} modalOpen={modalOpen} />
-                                        </Link>
+                                        <MainMyMeetingRoom room={room} modalOpen={modalOpen} navigateToMeetingRoom={curEvent} mouseOver={mouseOver} mouseOut={mouseOut} />
                                     )
                                 })
                         }
                     </div>
                 </div>
-
-                {
-                    modal ?
-                        <div id="popup__notice" className="pop__detail is-on">
-                            <div onClick={modalClose} className="btn__close js-modal-close"><img src="../assets/image/ic_close_24.png"
-                                                                                       alt=""/></div>
-                            <div className="popup__cnt">
-                                <div className="pop__message">
-                                    <img src="../assets/image/ic_warning_80.png" alt=""/>
-                                        {
-                                            !curMeeting.mt_status ?
-                                                <div>
-                                                    <strong>미팅룸을 공개하면 다시 비공개로 설정할 수 없습니다. <br/>
-                                                        미팅룸을 공개 하시겠습니까?</strong>
-                                                    <span>미팅을 공개하면 초대한 참석자들에게 메일이 발송됩니다.</span>
-                                                </div>
-                                                :
-                                                <div>
-                                                    <strong>미팅룸을 재개설 하시겠습니까?</strong>
-                                                    <span>미팅을 재개설하면 초대한 참석자들에게 메일이 발송됩니다.</span>
-                                                </div>
-                                        }
-                                </div>
-                                <div className="btn__group">
-                                    <div onClick={changeMeetingStatus} className="btn btn__able btn__s">예</div>
-                                    <div onClick={modalClose} className="btn btn__normal btn__s js-modal-close">아니오</div>
-                                </div>
+                    <div id="popup__notice" className="pop__detail is-on">
+                        <div onClick={modalClose} className="btn__close js-modal-close"><img src={require('../assets/image/ic_close_24.png')} alt=""/></div>
+                        <div className="popup__cnt">
+                            <div className="pop__message">
+                                <img src={require('../assets/image/ic_warning_80.png')} alt=""/>
+                                        <div id="mt_status_0">
+                                            <strong>미팅룸을 공개하면 다시 비공개로 설정할 수 없습니다. <br/>
+                                                미팅룸을 공개 하시겠습니까?</strong>
+                                            <span>미팅을 공개하면 초대한 참석자들에게 메일이 발송됩니다.</span>
+                                        </div>
+                                        <div id="mt_status_2">
+                                            <strong>미팅룸을 재개설 하시겠습니까?</strong>
+                                            <span>미팅을 재개설하면 초대한 참석자들에게 메일이 발송됩니다.</span>
+                                        </div>
+                            </div>
+                            <div className="btn__group">
+                                <div onClick={changeMeetingStatus} className="btn btn__able btn__s">예</div>
+                                <div onClick={modalClose} className="btn btn__normal btn__s js-modal-close">아니오</div>
                             </div>
                         </div>
-                        :
-                        ''
-                }
+                    </div>
             </div>
         </>
     )
