@@ -23,7 +23,6 @@ const Home = () => {
         $('#mt_status_2').hide();
         $('#popup__notice').hide();
 
-
         axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
             .then(async res => {
                     setUser(res.data.data);
@@ -41,86 +40,6 @@ const Home = () => {
                 console.log(res.data.data);
                 setLastMeeting(res.data.data);
             })
-
-
-
-        // setMeeting({
-        //     mt_meetMyListCount: 1,
-        //     mt_meetMyList: [{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 2,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 0
-        //     },{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 2,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 0
-        //     },{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 1,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 0
-        //     },{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 2,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 0
-        //     },{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 3,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 0
-        //     },{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 0,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 0
-        //     },{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 1,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 1
-        //     },{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 2,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 0
-        //     },{
-        //         mt_idx: 5,
-        //         mt_name: '경제학',
-        //         mt_hostname: '김태선',
-        //         mt_status: 2,
-        //         mt_start_dt: '2022-11-08 21:00:00',
-        //         mt_end_dt: '2022-12-13 12:00:00',
-        //         mt_live: 0
-        //     },
-        //     ]
-        // })
 
 
     }, [])
