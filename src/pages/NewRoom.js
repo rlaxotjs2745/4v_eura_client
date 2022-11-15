@@ -246,6 +246,10 @@ const NewRoom = () => {
         formData.append('mt_end_dt', `${startDate} ${endTime}`);
         formData.append('mt_info', meetingInfo);
         formData.append('mt_invite_email', invites.map(inv => inv.email).join());
+        for (let i = 0; i < uploadedFiles.length; i++) {
+            formData.append("file", uploadedFiles[i]);
+            console.log(uploadedFiles[i])// 반복문을 활용하여 파일들을 formData 객체에 추가한다
+        }
         if(remindBool){
             formData.append('mt_remind_type', selectValue);
             formData.append('mt_remind_count', remindCount);
@@ -254,15 +258,21 @@ const NewRoom = () => {
         } else {
             formData.append('mt_remind_type', 0);
         }
-        formData.append('file', uploadedFiles);
+
+        // formData.append('file', uploadedFiles);
+
         if(isNew) {
-            axios.post(SERVER_URL + '/meet/create', formData, AXIOS_FORM_DATA_OPTION)
+            axios.post(SERVER_URL + '/meet/create', formData,  {
+                headers: {
+                    "Context-Type": "multipart/form-data",
+                }, withCredentials:true
+            })
                 .then(res => {
                     console.log(res)
                     console.log(res.data.result_code)
                     if(res.data.result_code == 'SUCCESS'){
                         alert('미팅룸을 생성했습니다.');
-                        navigate('/');
+                        // navigate('/');
                     }
                 })
         } else {
@@ -284,7 +294,7 @@ const NewRoom = () => {
                     isNew ? '새 미팅룸 만들기' : '미팅룸 수정하기'
                 }
             </h2>
-
+            <form encType="multipart/form-data">
             <div className="room__box">
                 <div className="input__group ">
                     <label htmlFor="make_new">미팅 이름</label>
@@ -505,7 +515,7 @@ const NewRoom = () => {
                     <div onClick={handleSubmit} className="btn btn__able">저장</div>
                 </div>
             </div>
-
+            </form>
             <div id="popup__team" className="pop__detail ">
                 <div className="popup__cnt">
                     <div className="pop__message">

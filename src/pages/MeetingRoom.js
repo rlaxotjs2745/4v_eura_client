@@ -196,8 +196,8 @@ const MeetingRoom = (props) => {
                                         : roomInfo.mt_files.map(file => {
                                             return (
                                                 <li>
-                                                    <a href={file.files}>
-                                                        <img src={require('../assets/image/ic_file_14.png')} alt=""/><span className="file__name">1주차_인간공학의 개요_ppt.pdf</span>
+                                                    <a href={file.download}>
+                                                        <img src={require('../assets/image/ic_file_14.png')} alt=""/><span className="file__name">{file.files}</span>
                                                     </a>
                                                 </li>
                                             )
