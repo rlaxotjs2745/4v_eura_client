@@ -24,7 +24,6 @@ const Home = () => {
         $('#mt_status_2').hide();
         $('#popup__notice').hide();
 
-        if(!eventNow){
             axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
                 .then(res => {
                         setUser(res.data.data);
@@ -40,10 +39,9 @@ const Home = () => {
                 .then(res => {
                     setLastMeeting(res.data.data);
                 })
-        }
 
-    }, [eventNow])
 
+    }, [])
 
 
     const pageSort = (e) => {

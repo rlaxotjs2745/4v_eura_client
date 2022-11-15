@@ -33,8 +33,8 @@ const Profile = () => {
     const eq_type_01_val = String(eqType01)
     const eq_type_02_val = String(eqType02)
 
-    console.log('eq_type_01_val', eq_type_01_val)
-    console.log('eq_type_02_val', eq_type_02_val)
+    // console.log('eq_type_01_val', eq_type_01_val)
+    // console.log('eq_type_02_val', eq_type_02_val)
 
 
 
@@ -108,9 +108,9 @@ const Profile = () => {
             user_id : user_id
         }, {withCredentials:true}).then(res => {
             // console.log(res.data.data)
-            console.log(res.data)
-            console.log(res.data.data.eq_type01)
-            console.log(res.data.data.eq_type02)
+            // console.log(res.data)
+            // console.log(res.data.data.eq_type01)
+            // console.log(res.data.data.eq_type02)
 
             setImagePreview(res.data.data.user_pic)
             setUserName(res.data.data.user_name)
@@ -146,12 +146,16 @@ const Profile = () => {
     }, [image]);
 
     const profileEditSubmit = (data) => {
-        axios.defaults.withCredentials = true;
-        console.log(data)
-        let formData = new FormData();
-        formData.append('file', data.file[0]);
-        axios.post(SERVER_URL + '/modify_myinfo'
-            , formData
+        // axios.defaults.withCredentials = true;
+        // console.log(data)
+        // console.log(data.file[0])
+        // // console.log(data.file[0])
+        // let formData = new FormData();
+        // formData.append('file', data.file[0]);
+        axios.post(SERVER_URL + '/modify_profile'
+            , {
+            'file' : data.file[0]
+            }
             , {
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -267,6 +271,7 @@ const Profile = () => {
     useEffect(()=>{
         setValue('eq_type01', eq_type_01_val)
         setValue('eq_type02', eq_type_02_val)
+        // setValue('file', imagePreview)
     },[eqType01, eqType02])
 
 
@@ -296,7 +301,7 @@ const Profile = () => {
                                 {errors.file && <div className="error_tip">{errors.file.message}</div>}
                             </label>
                             <div className="modify__box">
-                                <button className="btn btn__able btn__s">변경하기</button>
+                                <button onClick={profileEditSubmit} className="btn btn__able btn__s">변경하기</button>
                                 <button onClick={()=> {setProfileVisible(!profileVisible)}} className="btn btn__normal btn__s">취소</button>
                             </div>
                             </form>
@@ -305,7 +310,7 @@ const Profile = () => {
                         <div className="input__group">
                             <label htmlFor="join_name">프로필사진</label>
                             <div className="input__group upload__type">
-                                <input type="file" className="upload__btn"/>
+                                <input type="file" {...register("file")} className="upload__btn"/>
                                 <div className="upload__image" onClick={()=> {setProfileVisible(!profileVisible)}}>
                                     <img id="preview" src={imagePreview} alt=""/>
                                     <button className="profile_edit_btn">프로필 사진 변경</button>
