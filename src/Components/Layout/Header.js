@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Link, Navigate} from "react-router-dom";
 import { useCookies } from 'react-cookie';
 import {useNavigate} from "react-router-dom";
@@ -29,10 +29,13 @@ const Header = (props) => {
     }
     const [user, setUser] = useState({});
 
-    axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
-        .then(async res => {
-            setUser(res.data.data);
-        });
+    useEffect(() => {
+        axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
+            .then(res => {
+                setUser(res.data.data);
+            });
+
+    }, [])
 
 
     return (
