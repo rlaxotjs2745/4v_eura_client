@@ -7,6 +7,9 @@ export const SERVER_URL = "http://api.eura.site"
 // export const SERVER_URL = "http://192.168.0.9:10000"
 
 export const AXIOS_OPTION = {
+    headers: {
+        "Set-Cookie": document.cookie
+    },
     withCredentials: true
 };
 
