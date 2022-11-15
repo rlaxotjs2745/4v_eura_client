@@ -105,7 +105,7 @@ const Profile = () => {
     const image = watch("file");
     useEffect((data)=> {
         axios.post(SERVER_URL + '/myinfo', {
-            user_id : user_id
+            'user_id' : user_id
         }, {withCredentials:true}).then(res => {
             // console.log(res.data.data)
             // console.log(res.data)

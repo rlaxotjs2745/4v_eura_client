@@ -13,8 +13,6 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
 
 
 
-
-
     return (
         <div className={room.mt_status === 0 ? 'box is-before' : room.mt_status === 2 ? 'box is-cancel' : 'box'} onClick={() => navigateToMeetingRoom(room.mt_idx, isLast)}>
             <div className="box__badge">

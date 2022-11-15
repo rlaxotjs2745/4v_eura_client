@@ -1931,16 +1931,17 @@ td {
     width: 129px
 }
 
-.header .user__box .user__anchor ul li a {
+.header .user__box .user__anchor ul li > * {
     display: block;
     font-size: 14px;
     color: #17171a;
     font-weight: 700;
     padding: 13px 0;
-    text-align: center
+    text-align: center;
+    margin:0 auto;
 }
 
-.header .user__box .user__anchor ul li a.log-out {
+.header .user__box .user__anchor ul li *.log-out {
     color: #f0645d
 }
 
