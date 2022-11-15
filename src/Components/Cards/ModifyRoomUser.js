@@ -12,7 +12,7 @@ const ModifyRoomUser = ({user, excludeUser}) => {
                 </figure>
                 <span className="team__user">
                                         {user.uname}
-                                        <em>{user.email}</em>
+                                        <em>{user && user.email  && user.email.length > 19 ? user.email.slice(0,19) + '..' : user.email}</em>
                                     </span>
                 <div className="btn btn__delete" onClick={() => excludeUser(user)}>
                     <img src={require('../../assets/image/ic_cancle-circle_18.png')} alt="삭제"/>

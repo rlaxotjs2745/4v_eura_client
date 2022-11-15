@@ -104,6 +104,15 @@ const MeetingRoom = (props) => {
         setInvites(res);
     }
 
+    const startMeeting = () => {
+        axios.post(SERVER_URL + '/meet/room/start', {idx_meeting : window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}, AXIOS_OPTION)
+            .then(res => {
+                const mcid = res.data.data.mcid;
+                const token = res.data.data.token;
+                window.location.href = `eura://start?jwt=${token}&channelid=${mcid}`;
+            })
+    }
+
 
 
 
@@ -221,19 +230,19 @@ const MeetingRoom = (props) => {
                         <div className="btn__group">
                             {
                                 roomInfo.mt_ishost == '0' && roomInfo.mt_live ?
-                                    <a href="#none" className="btn btn__able btn__xl">참여하기</a> //게스트, 시작된 미팅
+                                    <div onClick={startMeeting} className="btn btn__able btn__xl">참여하기</div> //게스트, 시작된 미팅
                                     :
                                     roomInfo.mt_ishost == '0' && !roomInfo.mt_live ?
-                                        <a href="#none" className="btn btn__disable btn__xl">참여하기</a> // 게스트, 시작 전 미팅
+                                        <div className="btn btn__disable btn__xl">참여하기</div> // 게스트, 시작 전 미팅
                                         :
                                         roomInfo.mt_ishost == '1' && !roomInfo.mt_live && roomInfo.mt_status === 1?
-                                    <a href="#none" className="btn btn__able btn__xl">시작하기</a> // 호스트, 시작 전 미팅
+                                    <div onClick={startMeeting} className="btn btn__able btn__xl">시작하기</div> // 호스트, 시작 전 미팅
                                             :
                                             roomInfo.mt_ishost == '1' && roomInfo.mt_live ?
-                                                <a href="#none" className="btn btn__disable btn__xl">시작하기</a> //호스트, 시작된 미팅
+                                                <div className="btn btn__disable btn__xl">시작하기</div> //호스트, 시작된 미팅
                                                 :
                                                 roomInfo.mt_ishost == '1' && !roomInfo.mt_live && roomInfo.mt_status !== 1 ?
-                                                    <a href="#none" className="btn btn__disable btn__xl">시작하기</a>
+                                                    <div className="btn btn__disable btn__xl">시작하기</div>
                                                     : ''
                             }
 

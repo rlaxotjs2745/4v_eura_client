@@ -5,7 +5,7 @@ import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {SERVER_URL, AXIOS_OPTION} from "../util/env";
+import {SERVER_URL, AXIOS_OPTION, COOKIE_DOMAIN} from "../util/env";
 import axios from 'axios';
 import queryString from 'query-string'
 import $ from "jquery";
@@ -95,7 +95,7 @@ const Login = () => {
             } else if(res.data.result_code === 'FAIL02'){
                 // 이메일 인증을 진행해주세요.
                 console.log('======================', res.data.result_str);
-                alert(res.data.result_str)
+                alert(res.data.result_str);
                 setloginMessage('')
             } else if(res.data.result_code === 'SUCCESS01') {
                 // 로그인 되었습니다.
@@ -105,14 +105,14 @@ const Login = () => {
                 if(e.autoLogin) {
                     console.log(e.autoLogin)
                     tomorrow.setDate(today.getDate()+30);
-                    document.cookie = `user_id=${inputId}; expires=${tomorrow};`;
+                    document.cookie = `user_id=${inputId}; expires=${tomorrow}; domain=${COOKIE_DOMAIN}`;
                     // setCookie('user_id', inputId, {path:'/', expires:tomorrow});
                 }
                     // 자동로그인 체크 안했으면 쿠키 하루
                     else if (!e.autoLogin) {
                     console.log(e.autoLogin)
                     tomorrow.setDate(today.getDate()+1);
-                    document.cookie = `user_id=${inputId}; expires=${tomorrow};`;
+                    document.cookie = `user_id=${inputId}; expires=${tomorrow}; domain=${COOKIE_DOMAIN}`;
                     // setCookie('user_id', inputId, {path:'/', expires:tomorrow});
                 }
                 console.log('---------ID', inputId)
@@ -130,13 +130,13 @@ const Login = () => {
                 // 자동로그인 체크 했으면 쿠키 30일
                 if(inputChk) {
                     tomorrow.setDate(today.getDate()+30);
-                    document.cookie = `user_id=${inputId}; expires=${tomorrow};`
+                    document.cookie = `user_id=${inputId}; expires=${tomorrow}; domain=${COOKIE_DOMAIN}`
                     // setCookie('user_id', document.cookie, {path:'/', expires:tomorrow});
                 }
                 // 자동로그인 체크 안했으면 쿠키 하루
                 else if (!inputChk) {
                     tomorrow.setDate(today.getDate()+1);
-                    document.cookie = `user_id=${inputId}; expires=${tomorrow};`
+                    document.cookie = `user_id=${inputId}; expires=${tomorrow}; domain=${COOKIE_DOMAIN}`
                     // setCookie('user_id', inputId, {path:'/', expires:tomorrow});
                 }
                 console.log('======================',res.data.result_str);

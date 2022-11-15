@@ -26,8 +26,11 @@ const Home = () => {
 
             axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
                 .then(res => {
+                    console.log(res.data.data);
                         setUser(res.data.data);
-                        setSchedule(res.data.data.mt_meetShort);
+                        if(res.data.data.mt_meetShort){
+                            setSchedule(res.data.data.mt_meetShort);
+                        }
                 });
 
             axios.get(SERVER_URL + '/meet/main/list', AXIOS_OPTION)
@@ -160,7 +163,7 @@ const Home = () => {
                     </div>
                     {
                         !meeting ||
-                        !meeting.mt_meetMyListCount ? '' :
+                        !meeting.mt_meetMyListCount || meeting.mt_meetMyList.length < 8 ? '' :
                             <div className="btn__group">
                                 <a href="#none" className="btn btn__more">더 보기</a>
                             </div>
@@ -191,7 +194,7 @@ const Home = () => {
                                 lastMeeting.mt_meetEndMyList.map((room, idx) => {
                                     if(idx > 8) return;
                                     return (
-                                        <MainMyMeetingRoom room={room} modalOpen={modalOpen} isLast={1} navigateToMeetingRoom={curEvent} mouseOver={mouseOver} mouseOut={mouseOut} />
+                                        <MainMyMeetingRoom room={room} modalOpen={modalOpen} isLast={1} navigateToMeetingRoom={navigateToMeetingRoom} mouseOver={mouseOver} mouseOut={mouseOut} />
                                     )
                                 })
                         }

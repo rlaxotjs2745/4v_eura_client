@@ -61,11 +61,6 @@ const NewRoom = () => {
     }
 
 
-    // const handleFileDeleteEvent = (e) => {
-    //     const newRe = uploadedFiles.filter((it)=> it.name !== e);
-    //     setUploadedFiles(newRe)
-    //     console.log(uploadedFiles)
-    // };
     const handleFileDeleteEvent = (e) => {
         let uploaded = [...uploadedFiles]
         let indexNumber = e.target.parentNode.parentNode
@@ -91,10 +86,12 @@ const NewRoom = () => {
                 `/meet/room/info?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
                 AXIOS_OPTION)
                 .then(res => {
+                    console.log(res.data.data)
                     setRoomInfo(res.data.data);
                     setIsNew(false);
                     if(res.data.data.mt_remind_type !== 0){
-                        // setRemindBool(!remindBool);
+                        console.log('@@@@@@@@@@@@@@@@@@@' + res.data.data.mt_remind_type);
+                        setRemindBool(!remindBool);
                     }
                 })
             axios.get(SERVER_URL +
@@ -110,6 +107,11 @@ const NewRoom = () => {
     useEffect(() => {
         console.log(invites);
     }, [invites]);
+
+
+    useEffect(() => {
+        $('#remind_bool').prop('checked', remindBool);
+    }, [remindBool])
 
 
     const searchInviteUserList = (e) => {
@@ -168,7 +170,7 @@ const NewRoom = () => {
 
     const remindChange = (e) => {
         setRemindBool(!remindBool);
-        e.target.checked = !remindBool;
+        // e.target.checked = !remindBool;
     }
 
     const getWeekDay = (num) => {
@@ -308,7 +310,7 @@ const NewRoom = () => {
 
                                 <hr />
                                     <div className="checkbox type__square">
-                                        <input type="checkbox" className="checkbox" id="remind_bool" onChange={remindChange} checked={remindBool}/>
+                                        <input type="checkbox" className="checkbox" id="remind_bool" onChange={remindChange}/>
                                         <label htmlFor="remind_bool">되풀이 미팅</label>
                                     </div>
                     {remindBool ?

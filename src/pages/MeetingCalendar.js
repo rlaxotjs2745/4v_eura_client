@@ -14,7 +14,7 @@ const MeetingCalendar = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(SERVER_URL + "/meet/main/calendar", AXIOS_OPTION)
+        axios.get(SERVER_URL + `/meet/main/calendar?calYear=${new Date().getFullYear()}&calMonth=${new Date().getMonth() + 1}`, AXIOS_OPTION)
             .then(res => {
                 setMeeting(res.data.data.mt_meetMyList);
             })
@@ -28,7 +28,7 @@ const MeetingCalendar = () => {
 
 
     const getDayMeetingInfo = (day) => {
-        axios.get(SERVER_URL + '/meet/main/calendar/info?' + `calYear=${day.getFullYear()}&calMonth=${day.getMonth()}&calDay=${day.getDate()}`, AXIOS_OPTION)
+        axios.get(SERVER_URL + '/meet/main/calendar/info?' + `calYear=${day.getFullYear()}&calMonth=${day.getMonth() + 1}&calDay=${day.getDate()}`, AXIOS_OPTION)
             .then(res => {
                 console.log(res)
                 setClickedDay(day);
@@ -62,7 +62,16 @@ const MeetingCalendar = () => {
                 <Calendar
                     calendarType={"US"}
                     tileContent={fillTileContent}
+                    onViewChange={({action, activeStartDate, value, view}) => {
+                        console.log(action);
+                        console.log(activeStartDate);
+                        console.log(value);
+                        console.log(view);
+                    }}
+                    showNavigation={false}
+                    // showNeighboringMonth={false}
                     onClickDay={(value) => getDayMeetingInfo(new Date(value))}
+                    onClick={(v) => console.log(v)}
                 />
             </div>
             {
