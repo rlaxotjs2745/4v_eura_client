@@ -7,11 +7,13 @@ import axios from "axios";
 import {AXIOS_OPTION, SERVER_URL} from "../../util/env";
 
 const Header = (props) => {
+    const [user, setUser] = useState({});
     const [cookies, setCookie, removeCookie] = useCookies(['user_id']);
     const navigate = useNavigate();
 
     const logOut = () => {
         removeCookie('user_id'); // 쿠키를 삭제
+        document.cookie = 'user_id='
         navigate('/login'); // 로그인 페이지로 이동
     };
 
@@ -27,7 +29,6 @@ const Header = (props) => {
     const profileHoverOut = () => {
         $('#user_profile_drop').addClass('user_profile_hide')
     }
-    const [user, setUser] = useState({});
 
     useEffect(() => {
         axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
@@ -45,7 +46,7 @@ const Header = (props) => {
                 <h1><Link to="/"><img src={require('../../assets/image/h1_logo.png')} alt=""/></Link></h1>
                 {get_cookie('user_id') == null ? null :
                     <div className="user__box" onMouseOver={profileHover} onMouseOut={profileHoverOut}>
-                        <a className="user__hover"><strong>{user.ui_name}</strong>님</a>
+                        <a className="user__hover"><strong>{user && user.ui_name ? user.ui_name : '유저유저'}</strong>님</a>
                         <div id="user_profile_drop" className="user__anchor user_profile_hide">
                             <ul>
                                 <li><Link to="/profile">내 프로필</Link></li>
