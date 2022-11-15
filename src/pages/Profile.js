@@ -33,8 +33,8 @@ const Profile = () => {
     const eq_type_01_val = String(eqType01)
     const eq_type_02_val = String(eqType02)
 
-    // console.log('eq_type_01_val', eq_type_01_val)
-    // console.log('eq_type_02_val', eq_type_02_val)
+    console.log('eq_type_01_val', eq_type_01_val)
+    console.log('eq_type_02_val', eq_type_02_val)
 
 
 
@@ -66,19 +66,21 @@ const Profile = () => {
             .string()
             // .required('새롭게 사용할 비밀번호를 확인해주세요.')
             .oneOf([yup.ref('password')], '비밀번호가 동일하지 않습니다.'),
-        eq_type01:yup
-            .number()
-            .typeError()
-            .nullable(),
-        eq_type02:yup
-            .number()
-            .nullable(),
         user_id:yup
             .string()
             .nullable(),
         user_name:yup
             .string()
             .nullable(),
+        eq_type01:yup
+            .number()
+            .nullable()
+            .validateSync(null),
+        eq_type02:yup
+            .number()
+            .nullable()
+            .validateSync(null),
+
     });
     const {
         register,
@@ -163,15 +165,16 @@ const Profile = () => {
                 }, withCredentials:true
             }
         ).then(res => {
-            console.log(res)
-            console.log('res.data.result_code :: ', res.data.result_code)
-            console.log('res.data.msg :: ', res.data.result_str)
+            // console.log(res)
+            // console.log('res.data.result_code :: ', res.data.result_code)
+            // console.log('res.data.msg :: ', res.data.result_str)
             if(res.data.result_code === 'FAIL'){
                 console.log('======================',res.data.result_str);
-                // alert(res.data.result_str)
+                alert(res.data.result_str)
                 // navigate('/')
-            } else if(res.data.result_code === 'SUCCESS'){
+            } else if(res.data.result_code === 'SUCCESS02'){
                 console.log('======================', res.data.result_str);
+                window.location.reload();
                 // alert(res.data.result_str)
             }
         }).catch(err => {
@@ -199,11 +202,6 @@ const Profile = () => {
         setValue('user_phone', userPhone)
     }
 
-    const characterCancle = () => {
-        setCharacterVisible(!characterVisible)
-        setValue('eq_type01', eqType01)
-        setValue('eq_type02', eqType02)
-    }
 
     const nameEdit = (data) => {
         console.log(data.user_name)
@@ -275,9 +273,25 @@ const Profile = () => {
     },[eqType01, eqType02])
 
 
+    const characterCancle = () => {
+        setCharacterVisible(!characterVisible)
+        setValue('eq_type01', eq_type_01_val)
+        setValue('eq_type02', eq_type_02_val)
+    }
+
     const pwdCancle =()=>{
         setPwdVisible(!pwdVisible)
         window.location.reload();
+    }
+
+    const nameOpen = () => {
+        setValue('user_name', userName)
+        setNameVisible(!nameVisible)
+    }
+
+    const phoneOpen = () => {
+        setValue('user_phone', userPhone)
+        setPhoneVisible(!phoneVisible)
     }
 
     return (
@@ -342,7 +356,7 @@ const Profile = () => {
                             <label htmlFor="join_name">이름</label>
                             <input type="text" className="text" value={userName} {...register('user_name')} disabled/>
                             <div className="modify__box">
-                                <button onClick={()=> {setNameVisible(!nameVisible)}} className="btn btn-modify">편집하기</button>
+                                <button onClick={nameOpen} className="btn btn-modify">편집하기</button>
                             </div>
                         </div>
                     }
@@ -400,7 +414,7 @@ const Profile = () => {
                             <label htmlFor="join_tel">연락처</label>
                             <input type="text" className="text" id="join_tel" value={userPhone} {...register('user_phone')} disabled/>
                             <div className="modify__box">
-                                <button onClick={()=> {setPhoneVisible(!phoneVisible)}} href="#none" className="btn btn-modify">편집하기</button>
+                                <button onClick={phoneOpen} href="#none" className="btn btn-modify">편집하기</button>
                             </div>
                         </div>
                     }

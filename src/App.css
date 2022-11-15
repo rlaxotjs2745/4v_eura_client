@@ -2004,7 +2004,7 @@ td {
 }
 .main__board .board__user img {
     position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);
-    object-fit: cover;
+    object-fit: cover; width:100%; height:100%;
 }
 
 .main__board .board__user span {
