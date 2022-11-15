@@ -220,23 +220,23 @@ const NewRoom = () => {
 
     const handleSubmit = () => {
 
-        if($('#make_new').value == ''){
+        if($('#make_new').val() == ''){
             return alert('미팅 이름을 입력해주세요.')
         }
 
-        if($('#make_date').value == ''){
+        if($('#make_date').val() == ''){
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
 
-        if($('#make_time1').value == ''){
+        if($('#make_time1').val() == ''){
             return alert('미팅 시작 시간이 입력되지 않았습니다.')
         }
 
-        if($('#make_time2').value == ''){
+        if($('#make_time2').val() == ''){
             return alert('미팅 종료 시간이 입력되지 않았습니다.')
         }
 
-        if($('#make_room').value == ''){
+        if($('#make_room').val() == ''){
             return alert('미팅 정보가 입력되지 않았습니다.');
         }
 

@@ -5,23 +5,24 @@ import axios from "axios";
 import {AXIOS_OPTION, SERVER_URL} from "../util/env";
 import {formatDate} from "react-calendar/dist/cjs/shared/dateFormatter";
 import {Link, useNavigate} from "react-router-dom";
+import $ from "jquery";
 
 const MeetingCalendar = () => {
 
     const [meeting, setMeeting] = useState([]);
     const [clickedDay, setClickedDay] = useState('');
     const [clickedDayMeeting, setClickedDayMeeting] = useState([]);
-    const [thisMonth, setThisMonth] = useState(new Date());
+    const [thisMonth, setThisMonth] = useState(new Date().getMonth()+1);
+    const [thisYear, setThisYear] = useState(new Date().getFullYear());
+
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(SERVER_URL + `/meet/main/calendar?calYear=${thisMonth.getFullYear()}&calMonth=${thisMonth.getMonth() + 1}`, AXIOS_OPTION)
+        axios.get(SERVER_URL + `/meet/main/calendar?calYear=${thisYear}&calMonth=${thisMonth}`, AXIOS_OPTION)
             .then(res => {
                 setMeeting(res.data.data.mt_meetMyList);
             })
-
-
-    }, [thisMonth])
+    }, [thisMonth, thisYear])
 
     const getNow = (e) => {
         console.log(e)
@@ -58,6 +59,24 @@ const MeetingCalendar = () => {
         // setThisMonth(date);
         return label;
     }
+
+    $('.react-calendar__navigation__next-button').click(() => {
+        setThisMonth(thisMonth + 1);
+    })
+
+    $('.react-calendar__navigation__prev-button').click(() => {
+        setThisMonth(thisMonth - 1);
+    })
+
+    $('.react-calendar__navigation__next2-button').click(() => {
+        setThisYear(thisYear + 1);
+    })
+
+    $('.react-calendar__navigation__prev2-button').click(() => {
+        setThisYear(thisYear - 1);
+    })
+
+
 
 
     return (

@@ -35,6 +35,7 @@ const Home = () => {
 
             axios.get(SERVER_URL + '/meet/main/list', AXIOS_OPTION)
                 .then(res => {
+                    console.log(res);
                     setMeeting(res.data.data);
                 })
 
@@ -146,7 +147,8 @@ const Home = () => {
                     <div className="boxing">
                         {
                             !meeting ||
-                            !meeting.mt_meetMyListCount ?
+                            !meeting.mt_meetMyList ||
+                            !meeting.mt_meetMyList.length ?
                             <div className="boxing">
                                 <div className="msg__nodata">
                                     <span>미팅 일정이 없습니다.</span>
@@ -163,7 +165,8 @@ const Home = () => {
                     </div>
                     {
                         !meeting ||
-                        !meeting.mt_meetMyListCount || meeting.mt_meetMyList.length < 8 ? '' :
+                        !meeting.mt_meetMyList ||
+                        meeting.mt_meetMyList.length < 8 ? '' :
                             <div className="btn__group">
                                 <a href="#none" className="btn btn__more">더 보기</a>
                             </div>
