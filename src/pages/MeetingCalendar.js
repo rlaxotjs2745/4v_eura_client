@@ -11,16 +11,17 @@ const MeetingCalendar = () => {
     const [meeting, setMeeting] = useState([]);
     const [clickedDay, setClickedDay] = useState('');
     const [clickedDayMeeting, setClickedDayMeeting] = useState([]);
+    const [thisMonth, setThisMonth] = useState(new Date());
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(SERVER_URL + `/meet/main/calendar?calYear=${new Date().getFullYear()}&calMonth=${new Date().getMonth() + 1}`, AXIOS_OPTION)
+        axios.get(SERVER_URL + `/meet/main/calendar?calYear=${thisMonth.getFullYear()}&calMonth=${thisMonth.getMonth() + 1}`, AXIOS_OPTION)
             .then(res => {
                 setMeeting(res.data.data.mt_meetMyList);
             })
 
 
-    }, [])
+    }, [thisMonth])
 
     const getNow = (e) => {
         console.log(e)
@@ -30,7 +31,6 @@ const MeetingCalendar = () => {
     const getDayMeetingInfo = (day) => {
         axios.get(SERVER_URL + '/meet/main/calendar/info?' + `calYear=${day.getFullYear()}&calMonth=${day.getMonth() + 1}&calDay=${day.getDate()}`, AXIOS_OPTION)
             .then(res => {
-                console.log(res)
                 setClickedDay(day);
                 setClickedDayMeeting(res.data.data.mt_meetMyList);
             })
@@ -50,8 +50,13 @@ const MeetingCalendar = () => {
             && date.getFullYear() == new Date(day.mt_date).getFullYear()
             && date.getMonth() == new Date(day.mt_date).getMonth()
             && date.getDate() == new Date(day.mt_date).getDate() ?
-                <div><span>• </span>{day.mt_name}</div> : null
+                <div><span>• </span>{day && day.mt_name && day.mt_name.length > 10 ? day.mt_name.slice(0,8) + '..' : day.mt_name}</div> : null
         })
+    }
+
+    const getMonthMeetingList = (date, label) => {
+        // setThisMonth(date);
+        return label;
     }
 
 
@@ -63,13 +68,16 @@ const MeetingCalendar = () => {
                     calendarType={"US"}
                     tileContent={fillTileContent}
                     onViewChange={({action, activeStartDate, value, view}) => {
-                        console.log(action);
-                        console.log(activeStartDate);
-                        console.log(value);
-                        console.log(view);
+                        // console.log(action);
+                        // console.log(activeStartDate);
+                        // console.log(value);
+                        // console.log(view);
                     }}
-                    showNavigation={false}
-                    // showNeighboringMonth={false}
+                    onChanMonth={(v,e) => {
+                        console.log(v)
+                        console.log(e)
+                    }}
+                    navigationLabel={({ date, label, locale, view }) => getMonthMeetingList(date, label)}
                     onClickDay={(value) => getDayMeetingInfo(new Date(value))}
                     onClick={(v) => console.log(v)}
                 />

@@ -83,7 +83,7 @@ const Home = () => {
         let meet = curMeeting;
         let newMeeting = [];
         if(meet.mt_status === 0){
-            axios.put(SERVER_URL + `/meet/room/open?idx_meeting=${meet.mt_idx}`, {idx_meeting: meet.mt_idx},AXIOS_OPTION)
+            axios.post(SERVER_URL + `/meet/room/open?idx_meeting=${meet.mt_idx}`, {idx_meeting: meet.mt_idx},AXIOS_OPTION)
                 .then(res => {
                     if(res.data.result_code === "SUCCESS"){
                         meet.mt_status = 1;

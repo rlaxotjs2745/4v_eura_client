@@ -47,15 +47,15 @@ const MeetingRoom = (props) => {
 
     const cancelMeeting = () => {
         if(roomInfo.mt_status === 2){
-            axios.delete(SERVER_URL +
-                '/room/erase', {idx_meeting: window.location.pathname.split('/')[window.location.pathname.split('/').length-1]},
+            axios.post(SERVER_URL +
+                    `/room/erase?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
                 AXIOS_OPTION)
                 .then(res => {
                     setRoomInfo({...roomInfo, mt_status: 3});
                 })
         } else {
-        axios.put(SERVER_URL +
-            '/room/cancel', {idx_meeting: window.location.pathname.split('/')[window.location.pathname.split('/').length-1]},
+        axios.post(SERVER_URL +
+            `/room/cancel?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
             AXIOS_OPTION)
             .then(res => {
                 if(res.data.result_code == 'SUCCESS'){
