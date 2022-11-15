@@ -21,6 +21,7 @@ const Profile = () => {
     const [pwdVisible, setPwdVisible] = useState(false)
     const [phoneVisible, setPhoneVisible] = useState(false)
     const [characterVisible, setCharacterVisible] = useState(false)
+    const [passwordAlert, setPasswordAlert] = useState('')
 
     const [profile, setProfile] = useState('../assets/image/image_profile.png')
     const [userName, setUserName] = useState('유라')
@@ -49,11 +50,11 @@ const Profile = () => {
         password:yup
             .string()
             // .required('새롭게 사용할 비밀번호를 입력해주세요.')
-            .min(10, '10자 이상의 비밀번호만 사용할 수 있습니다')
+            // .min(10, '10자 이상의 비밀번호만 사용할 수 있습니다')
             // .max(15, '최대 15자 까지만 가능합니다')
             .matches(
                 /(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{10,20}$/,
-                '영어, 숫자, 특수문자로 조합된 비밀번호만 사용가능합니다.'
+                {excludeEmptyString:true, message:'영어, 숫자, 특수문자로 조합된 10자리 이상 비밀번호만 사용가능합니다.'}
             ),
         user_phone: yup
             .string()
@@ -246,6 +247,8 @@ const Profile = () => {
                 alert('비밀번호가 성공적으로 변경 되었습니다. 다시 로그인 해 주세요.')
                 logOut()
                 // navigate('/login')
+            } else if (res.data.result_code === 'FAIL') {
+                setPasswordAlert(res.data.result_str)
             }
         }).catch(err => {
             console.log(err);
@@ -281,7 +284,7 @@ const Profile = () => {
 
     const pwdCancle =()=>{
         setPwdVisible(!pwdVisible)
-        window.location.reload();
+        // window.location.reload();
     }
 
     const nameOpen = () => {
@@ -369,6 +372,7 @@ const Profile = () => {
                                     <label htmlFor="join_password">이전 비밀번호</label>
                                     <input placeholder="현재 사용하고 있는 비밀번호를 입력해 주세요" type="password" name="user_pwd_origin" className="text" id="join_password" {...register('user_pwd_origin')}/>
                                     {errors.user_pwd_origin && <div className="error_tip">{errors.user_pwd_origin.message}</div>}
+                                    {passwordAlert == '' ? null : <div className="error_tip">{passwordAlert}</div> }
                                 </div>
                                 <div className={'input__group ' + (errors.password ? "is-alert " : "") + (watch().password ? "is-success " : "")}>
                                     <label htmlFor="join_password">새로운 비밀번호</label>
