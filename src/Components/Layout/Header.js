@@ -46,7 +46,7 @@ const Header = (props) => {
                         <div id="user_profile_drop" className="user__anchor user_profile_hide">
                             <ul>
                                 <li><Link to="/profile">내 프로필</Link></li>
-                                <li><a onClick={logOut} className="log-out">로그아웃</a></li>
+                                <li><div onClick={logOut} className="log-out">로그아웃</div></li>
                             </ul>
                         </div>
                     </div>

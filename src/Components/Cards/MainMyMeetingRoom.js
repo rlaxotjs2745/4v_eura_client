@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 
-const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, mouseOut}) => {
+const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, mouseOut, isLast}) => {
 
     const getSubtractionDate = () => {
         let thisTime = new Date();
@@ -16,14 +16,14 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
 
 
     return (
-        <div className={room.mt_status === 0 ? 'box is-before' : room.mt_status === 2 ? 'box is-cancel' : 'box'} onClick={() => navigateToMeetingRoom(room.mt_idx)}>
+        <div className={room.mt_status === 0 ? 'box is-before' : room.mt_status === 2 ? 'box is-cancel' : 'box'} onClick={() => navigateToMeetingRoom(room.mt_idx, isLast)}>
             <div className="box__badge">
                 {
                     room.mt_live ?
                         <span className="type__live">LIVE</span>
-                    : room.mt_status === 0 ?
+                    : room.mt_status === 0 && room.is_host === 1 ?
                         <span className="type__private">비공개</span>
-                    : room.mt_status === 2 ?
+                    : room.mt_status === 2 && room.is_host === 1 ?
                         <span className="type__cancel">취소된 미팅</span>
                     : new Date(room.mt_start_dt) - new Date() > 86400000 ?
                         <span className="type__dday">D-{getSubtractionDate()}</span>
@@ -32,7 +32,7 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
                 }
             </div>
             {
-                room.mt_status % 2 === 0 ?
+                room.is_host === 1 ?
                     <div className="box__setup">
                         {
                             room.mt_status === 0 ?
@@ -49,13 +49,13 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
                 <dt>호스트 이름</dt>
                 <dd>
                     {
-                        room.mt_status % 2 === 0 ? <img src={require('../../assets/image/ic_host.png')} alt="" /> : ''
+                        room.is_host === 1 ? <img src={require('../../assets/image/ic_host.png')} alt="" /> : ''
                     }
                     {room.mt_hostname}
                 </dd>
             </dl>
             {
-                room.mt_iDataDisplay && room.mt_iDataDisplay === 0 ?
+                room.mt_iDataDisplay && room.mt_iDataDisplay === 0 && room.is_host === 1 ?
                 <dl className="">
                     <dt>참여도 {room.mt_iData}%</dt>
                     <dd>

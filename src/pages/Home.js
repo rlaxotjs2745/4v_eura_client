@@ -102,8 +102,10 @@ const Home = () => {
     }
 
 
-    const navigateToMeetingRoom = (meet) => {
-        if(curEvent){
+    const navigateToMeetingRoom = (meet, isLast) => {
+        if(isLast === 1){
+            navigate(`/analyse/${meet}`);
+        } else if(curEvent){
             navigate(`/meetingroom/${meet}`);
         }
     }
@@ -153,7 +155,7 @@ const Home = () => {
                             meeting.mt_meetMyList.map((room, idx) => {
                                 if(idx > 8) return;
                                 return (
-                                    <MainMyMeetingRoom room={room} modalOpen={modalOpen} navigateToMeetingRoom={navigateToMeetingRoom} mouseOver={mouseOver} mouseOut={mouseOut} />
+                                    <MainMyMeetingRoom room={room} modalOpen={modalOpen} isLast={0} navigateToMeetingRoom={navigateToMeetingRoom} mouseOver={mouseOver} mouseOut={mouseOut} />
                                 )
                             })
                         }
@@ -191,7 +193,7 @@ const Home = () => {
                                 lastMeeting.mt_meetEndMyList.map((room, idx) => {
                                     if(idx > 8) return;
                                     return (
-                                        <MainMyMeetingRoom room={room} modalOpen={modalOpen} navigateToMeetingRoom={curEvent} mouseOver={mouseOver} mouseOut={mouseOut} />
+                                        <MainMyMeetingRoom room={room} modalOpen={modalOpen} isLast={1} navigateToMeetingRoom={curEvent} mouseOver={mouseOver} mouseOut={mouseOut} />
                                     )
                                 })
                         }

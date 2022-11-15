@@ -107,6 +107,10 @@ const NewRoom = () => {
         }
     }, [])
 
+    useEffect(() => {
+        console.log(invites);
+    }, [invites]);
+
 
     const searchInviteUserList = (e) => {
         let searchWord = e.target.value;
@@ -136,7 +140,23 @@ const NewRoom = () => {
 
 
     const addUser = (user) => {
+        let isExist = false;
+       invites.forEach(inv => {
+           if(inv.idx === user.idx){
+               isExist = true;
+           }
+       })
+        if(isExist){
+            return;
+        }
         setInvites([...invites, user]);
+        let targetIdx;
+        searchUser.forEach((us, idx) => {
+            if(us.idx == user.idx){
+                targetIdx = idx;
+            }
+        })
+        setSearchUser([...searchUser.slice(0, targetIdx), ...searchUser.slice(targetIdx+1)]);
     }
 
     $(document.body).on('click', '#make_team', function () {
@@ -223,15 +243,15 @@ const NewRoom = () => {
         formData.append('mt_start_dt', `${startDate} ${startTime}`);
         formData.append('mt_end_dt', `${startDate} ${endTime}`);
         formData.append('mt_info', meetingInfo);
+        formData.append('mt_invite_email', invites.map(inv => inv.email).join());
         if(remindBool){
             formData.append('mt_remind_type', selectValue);
             formData.append('mt_remind_count', remindCount);
             formData.append('mt_remind_week', weekday.join());
             formData.append('mt_remind_end', endDate);
         } else {
-            formData.append('mt_remind_type', null);
+            formData.append('mt_remind_type', 0);
         }
-        formData.append('mt_invite_email', invites.map(inv => inv.email).join());
         formData.append('file', uploadedFiles);
         if(isNew) {
             axios.post(SERVER_URL + '/meet/create', formData, AXIOS_FORM_DATA_OPTION)

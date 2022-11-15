@@ -12,6 +12,7 @@ import SignUp from "../pages/SignUp";
 import MeetingRoom from "../pages/MeetingRoom";
 import NewRoom from "../pages/NewRoom";
 import MeetingCalendar from "../pages/MeetingCalendar";
+import AnalyseMeeting from "../pages/AnalyseMeeting";
 
 const Routers = () => {
     return (
@@ -26,6 +27,7 @@ const Routers = () => {
                 <Route path="/newroom" element={<NewRoom />} />
                 <Route path="/newroom/:idx" element={<NewRoom />} />
                 <Route path="/calendar" element={<MeetingCalendar />}/>
+                <Route path="/analyse/:idx" element={<AnalyseMeeting />} />
             </Route>
             {/* 로그인 되어 있으면 login 페이지가 아니라 /로 넘어가는 라우터 */}
             <Route path="/" element={<PublickRoute><LayoutType1/></PublickRoute>}>
