@@ -29,7 +29,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start2": "export PORT=80 && react-scripts start",
+    "start2": "export PORT=80 && HTTPS=true react-scripts start",
     "start": "HTTPS=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
