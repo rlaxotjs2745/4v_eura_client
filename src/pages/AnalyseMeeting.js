@@ -267,6 +267,8 @@ const AnalyseMeeting = () => {
                 {/* <Player src={movieSrc} width={860} height={407}></Player> */}
                 </div>
                 <div className="result__graph" title="그래프자리 (860 x 218)">
+                {
+                    !btmdata || !btmdata.length ?'':
                     <Chart height={218} data={btmdata} padding={[40, 40, 50, 40]} autoFit onGetG2Instance={chart => { chartIns = chart; }}
                         scale={{ value: { min: -100, max: 100 }, name: {
                             values: ['Good'],
@@ -343,9 +345,12 @@ const AnalyseMeeting = () => {
                         ]}
                       />
                     </Chart>
+                    }
                 </div>
 
                 <div className="result__analysis" title="분석그래프">
+                {
+                !btmdata || !btmdata.length ?'':
                 <Chart height={218} data={btmdata} padding={[40, 40, 50, 40]} autoFit onGetG2Instance={chart => { chartIns = chart; }}
                         scale={{ value: { min: -100, max: 100 }, name: {
                             values: ['Good'],
@@ -422,8 +427,8 @@ const AnalyseMeeting = () => {
                         ]}
                       />
                     </Chart>
+                    }
                 </div>
-
             </div>
         </section>
         </>
