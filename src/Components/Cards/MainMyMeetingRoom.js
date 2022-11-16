@@ -36,13 +36,14 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
                             room.mt_status === 0 ?
                                 <div onClick={() => modalOpen(room)} onMouseOver={mouseOver} onMouseLeave={mouseOut} className="btn btn__setting js-modal-alert">공개하기</div>
                             :     room.mt_status === 2 ?
-                                <div onClick={() => modalOpen(room)} onMouseOver={mouseOver} onMouseLeave={mouseOut} className="btn btn__setting">재개설 하기</div>
+                                ''
+                                // <div onClick={() => modalOpen(room)} onMouseOver={mouseOver} onMouseLeave={mouseOut} className="btn btn__setting">재개설 하기</div>
                             : ''
                         }
                     </div>
                 : ''
             }
-            <div className="box__title">{room.mt_name}</div>
+            <div className="box__title">{!room.mt_name ? '' : room.mt_name.length > 15 ? room.mt_name.slice(0,14) + '..' : room.mt_name}</div>
             <dl className="type__host">
                 <dt>호스트 이름</dt>
                 <dd>
