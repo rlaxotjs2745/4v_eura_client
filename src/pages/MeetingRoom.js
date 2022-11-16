@@ -241,19 +241,19 @@ const MeetingRoom = (props) => {
                         </Swiper>
                         <div className="btn__group">
                             {
-                                roomInfo.mt_ishost == '0' && roomInfo.mt_live ?
+                                roomInfo.mt_ishost == '0' ?
                                     <div onClick={startMeeting} className="btn btn__able btn__xl">참여하기</div> //게스트, 시작된 미팅
                                     :
-                                    roomInfo.mt_ishost == '0' && !roomInfo.mt_live ?
+                                    roomInfo.mt_ishost == '0' ?
                                         <div className="btn btn__disable btn__xl">참여하기</div> // 게스트, 시작 전 미팅
                                         :
-                                        roomInfo.mt_ishost == '1' && !roomInfo.mt_live && roomInfo.mt_status === 1?
+                                        roomInfo.mt_ishost == '1' && roomInfo.mt_status === 1?
                                     <div onClick={startMeeting} className="btn btn__able btn__xl">시작하기</div> // 호스트, 시작 전 미팅
                                             :
-                                            roomInfo.mt_ishost == '1' && roomInfo.mt_live ?
+                                            roomInfo.mt_ishost == '1' ?
                                                 <div className="btn btn__disable btn__xl">시작하기</div> //호스트, 시작된 미팅
                                                 :
-                                                roomInfo.mt_ishost == '1' && !roomInfo.mt_live && roomInfo.mt_status !== 1 ?
+                                                roomInfo.mt_ishost == '1' && roomInfo.mt_status !== 1 ?
                                                     <div className="btn btn__disable btn__xl">시작하기</div>
                                                     : ''
                             }
