@@ -3950,7 +3950,7 @@ html.js-overflow {
     margin: 15px 20px
 }
 
-.result__user .result__watch ul li a {
+.result__user .result__watch ul li button {
     width: 265px;
     padding: 7px 0 7px 6px;
     display: table;
@@ -3958,7 +3958,7 @@ html.js-overflow {
     border-radius: 8px
 }
 
-.result__user .result__watch ul li a:focus, .result__user .result__watch ul li a:hover {
+.result__user .result__watch ul li button:focus, .result__user .result__watch ul li button:hover {
     background: rgba(121, 76, 255, .15)
 }
 

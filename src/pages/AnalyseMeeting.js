@@ -45,19 +45,19 @@ const AnalyseMeeting = () => {
                 },
                 "mtInviteList": [
                     {
-                        "upic":"", // 프로필 사진 URL
+                        "upic":"../assets/image/Ellipse 164.png", // 프로필 사진 URL
                         "uname":"1번참석자", // 참석자명
                         "idx":1, // 참석자 명단용 INDEX
                         "value":33, // 집중도 %
-                        "usemail":"www.naver.com" // 참석자 이메일
+                        "uemail":"www.naver.com" // 참석자 이메일
 
                     },
                     {
-                        "upic":"", // 프로필 사진 URL
+                        "upic":"../assets/image/Ellipse 164.png", // 프로필 사진 URL
                         "uname":"2번참석자", // 참석자명
                         "idx":2, // 참석자 명단용 INDEX
                         "value":55, // 집중도 %
-                        "usemail":"www.daum.com" // 참석자 이메일
+                        "uemail":"www.daum.com" // 참석자 이메일
                     },
                 ],
                 // 첨부파일
@@ -173,72 +173,27 @@ const AnalyseMeeting = () => {
                     <h4 className="result__title">참석자 목록({!lecture || !lecture.mtInviteInfo ? '0' : lecture.mtInviteInfo.user_invite}/{!lecture || !lecture.mtInviteInfo ? '0' : lecture.mtInviteInfo.user_total})</h4>
                     <div className="result__watch">
                         <ul>
-                            <li><a href="#none">
-                                <figure><img src="../assets/image/Ellipse 164.png" alt=""/></figure>
-                                <div className="watch__td"><span>권민수</span><span>rnjsals12@gmail.com</span></div>
-                                <div className="watch__percent is-good">62%</div>
-                            </a>
-                            </li>
-                            <li><a href="#none">
-                                <figure><img src="../assets/image/Ellipse 164.png" alt=""/></figure>
-                                <div className="watch__td"><span>권민수</span><span>rnjsals12@gmail.com</span></div>
-                                <div className="watch__percent is-good">62%</div>
-                            </a>
-                            </li>
-                            <li><a href="#none">
-                                <figure><img src="../assets/image/Ellipse 164.png" alt=""/></figure>
-                                <div className="watch__td"><span>권민수</span><span>rnjsals12@gmail.com</span></div>
-                                <div className="watch__percent is-good">62%</div>
-                            </a>
-                            </li>
-                            <li><a href="#none">
-                                <figure><img src="../assets/image/Ellipse 164.png" alt=""/></figure>
-                                <div className="watch__td"><span>권민수</span><span>rnjsals12@gmail.com</span></div>
-                                <div className="watch__percent is-good">62%</div>
-                            </a>
-                            </li>
-                            <li><a href="#none">
-                                <figure><img src="../assets/image/Ellipse 164.png" alt=""/></figure>
-                                <div className="watch__td"><span>권민수</span><span>rnjsals12@gmail.com</span></div>
-                                <div className="watch__percent is-good">62%</div>
-                            </a>
-                            </li>
-                            <li><a href="#none">
-                                <figure><img src="../assets/image/Ellipse 164.png" alt=""/></figure>
-                                <div className="watch__td"><span>권민수</span><span>rnjsals12@gmail.com</span></div>
-                                <div className="watch__percent is-good">62%</div>
-                            </a>
-                            </li>
-                            <li><a href="#none">
-                                <figure><img src="../assets/image/Ellipse 164.png" alt=""/></figure>
-                                <div className="watch__td"><span>권민수</span><span>rnjsals12@gmail.com</span></div>
-                                <div className="watch__percent is-good">62%</div>
-                            </a>
-                            </li>
-                            <li><a href="#none">
-                                <figure><img src="../assets/image/Ellipse 164.png" alt=""/></figure>
-                                <div className="watch__td"><span>권민수</span><span>rnjsals12@gmail.com</span></div>
-                                <div className="watch__percent is-bad">62%</div>
-                            </a>
-                            </li>
-                            <li><a href="#none">
-                                <figure><img src="../assets/image/Ellipse 164.png" alt=""/></figure>
-                                <div className="watch__td"><span>권민수</span><span>rnjsals12@gmail.com</span></div>
-                                <div className="watch__percent is-good">62%</div>
-                            </a>
-                            </li>
-                            <li><a href="#none">
-                                <figure><img src="../assets/image/Ellipse 164.png" alt=""/></figure>
-                                <div className="watch__td"><span>권민수</span><span>rnjsals12@gmail.com</span></div>
-                                <div className="watch__percent is-good">62%</div>
-                            </a>
-                            </li>
-                            <li><a href="#none">
-                                <figure><img src="../assets/image/Ellipse 164.png" alt=""/></figure>
-                                <div className="watch__td"><span>권민수</span><span>rnjsals12@gmail.com</span></div>
-                                <div className="watch__percent is-bad">62%</div>
-                            </a>
-                            </li>
+                            {
+                                !lecture.mtInviteList || !lecture.mtInviteList.length
+                                ?
+                                <span className="file__name">참석자가 없습니다.</span>
+                                :
+                                lecture.mtInviteList.map(member => {
+                                    return (
+                                        <li key={member.idx}>
+                                            <button>
+                                                <figure><img src={member.upic} alt=""/></figure>
+                                                <div className="watch__td"><span>{member.uname}</span><span>{member.uemail}</span></div>
+                                                {member.value > 40 ?
+                                                    <div className="watch__percent is-good">{member.value}%</div>
+                                                    :
+                                                    <div className="watch__percent is-bad">{member.value}%</div>
+                                                }
+                                            </button>
+                                        </li>
+                                    )
+                                })
+                            }
                         </ul>
                     </div>
                 </div>
