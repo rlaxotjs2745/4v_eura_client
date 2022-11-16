@@ -14,9 +14,6 @@ const AnalyseMeeting = () => {
     const params = {idx_meeting:pathSplit};
 
     const [lecture, setLecture] = useState({});
-    const [fileLength, setFileLength] = useState({})
-
-
 
     // useEffect(() => {
     //     axios.get(SERVER_URL + `/meet/result/meeting`,{params, withCredentials:true})
@@ -42,6 +39,10 @@ const AnalyseMeeting = () => {
                 "is_host":0, // 호스트 여부 - 0:참석자, 1:호스트
                 "hostname":"나교수",
                 // 참석자 인원수 - 참석자는 null 값
+                "mtInviteInfo":{
+                    "user_invite":29,
+                    "user_total":30
+                },
                 "mtInviteList": [
                     {
                         "upic":"", // 프로필 사진 URL
@@ -64,12 +65,12 @@ const AnalyseMeeting = () => {
                     {
                         "idx":1, // 첨부파일 INDEX
                         "fileUrl":"http://api.eura.site/pic?fnm=asda.mp4", // 첨부파일 URL
-                        "fileName" : "강의 자료.pdf" // 임시 파일명
+                        "filename" : "강의 자료.pdf" // 임시 파일명
                     },
                     {
                         "idx":2, // 첨부파일 INDEX
                         "fileUrl":"http://api.eura.site/pic?fnm=asda2.mp4", // 첨부파일 URL
-                        "fileName" : "강의 자료2.pdf",
+                        "filename" : "강의 자료2.pdf",
                     },
                 ],
                 // 상단 반원 그래프
@@ -121,9 +122,6 @@ const AnalyseMeeting = () => {
             },
         );
     },[])
-    console.log(lecture)
-    console.log(fileLength.length)
-
 
 
     return (
@@ -155,7 +153,7 @@ const AnalyseMeeting = () => {
                     </div>
                 </div>
                 <div className="result__download">
-                    <h4 className="result__title">첨부파일()</h4>
+                    <h4 className="result__title">첨부파일({!lecture || !lecture.mtAttachedFiles ? '0' : [...lecture.mtAttachedFiles].length})</h4>
                     <div className="result__list">
                         {
                             !lecture.mtAttachedFiles || !lecture.mtAttachedFiles.length ?
@@ -164,19 +162,15 @@ const AnalyseMeeting = () => {
                                 </a>
                                 : lecture.mtAttachedFiles.map(file => {
                                     return (
-                                        // <a href={file.download}>
-                                        //     <img src={require('../assets/image/ic_file_14.png')} alt=""/><span className="file__name">{file.files}</span>
-                                        // </a>
-                                    <a key={file.idx} href={file.fileUrl}><img src={require('../assets/image/ic_file_14.png')} alt=""/> {file.fileName}</a>
+                                    <a key={file.idx}  href={file.fileUrl}><img src={require('../assets/image/ic_file_14.png')} alt=""/> {file.filename}</a>
                                     )
                                 })
                         }
                     </div>
                 </div>
 
-
                 <div className="result__user">
-                    <h4 className="result__title">참석자 목록(38/40)</h4>
+                    <h4 className="result__title">참석자 목록({!lecture || !lecture.mtInviteInfo ? '0' : lecture.mtInviteInfo.user_invite}/{!lecture || !lecture.mtInviteInfo ? '0' : lecture.mtInviteInfo.user_total})</h4>
                     <div className="result__watch">
                         <ul>
                             <li><a href="#none">
