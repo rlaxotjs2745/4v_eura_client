@@ -110,7 +110,7 @@ const Home = () => {
 
     const navigateToMeetingRoom = (meet, isLast) => {
         if(isLast === 1){
-            navigate(`/analyse/${meet}`);
+            navigate(`/analyse/${meet}`, {state:meet});
         } else if(curEvent){
             navigate(`/meetingroom/${meet}`);
         }
