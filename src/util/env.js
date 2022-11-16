@@ -15,9 +15,9 @@ export const AXIOS_OPTION = {
 
 export const AXIOS_FORM_DATA_OPTION = {
     headers: {
-    "Content-Type": "multipart/form-data"
-    },
-    withCredentials: true
+    "Content-Type": "multipart/form-data",
+        "auth":getCookie('user_id')
+    }
 }
 
 // export const COOKIE_DOMAIN = "eura.site";
