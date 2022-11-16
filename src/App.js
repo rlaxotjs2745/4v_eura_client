@@ -2,6 +2,11 @@ import './App.css';
 import React from 'react';
 import $ from "jquery";
 import Routers from "./router/Router";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+} from "react-router-dom";
 
 class App extends React.Component {
     componentDidMount(){
@@ -55,9 +60,9 @@ class App extends React.Component {
         // })();
     }
     render() {
-        return (
-            <Routers/>
-        );
+        return (
+            <Routers/>
+        );
     }
 }
 
