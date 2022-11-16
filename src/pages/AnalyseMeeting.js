@@ -122,7 +122,7 @@ const AnalyseMeeting = () => {
         );
     },[])
     console.log(lecture)
-    console.log(fileLength)
+    console.log(fileLength.length)
 
 
 
