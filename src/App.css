@@ -3896,7 +3896,7 @@ html.js-overflow {
     margin-top: 16px;
     width: 860px;
     height: 407px;
-    background: #ccc
+    background: #ccc;
 }
 
 .result__graph {
@@ -3905,7 +3905,8 @@ html.js-overflow {
     height: 218px;
     background: #fff;
     border-radius: 20px;
-    margin-top: 16px
+    margin-top: 16px;
+    display: block;
 }
 
 .result__user {
@@ -3915,7 +3916,8 @@ html.js-overflow {
     height: 641px;
     background: #fff;
     margin-top: 16px;
-    border-radius: 20px
+    border-radius: 20px;
+    display: block;
 }
 
 .result__user .result__title {
@@ -4331,7 +4333,7 @@ html.js-overflow {
     left: -100%;
     width: 100%;
     height: 0;
-    transition: none
+    transition: none;
 }
 
 .pop__detail.is-on {

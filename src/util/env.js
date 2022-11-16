@@ -21,5 +21,12 @@ export const AXIOS_FORM_DATA_OPTION = {
     }
 }
 
+export const AXIOS_FORM_DATA_OPTION_NOUSER = {
+    headers: {
+        "Content-Type": "multipart/form-data"
+    }
+}
+// withCredentials:true
+
 export const COOKIE_DOMAIN = "eura.site";
 // export const COOKIE_DOMAIN = "localhost";

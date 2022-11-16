@@ -1,15 +1,15 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react';
 import {Link, useNavigate} from "react-router-dom";
-import {setCookie, getCookie} from "../util/cookie";
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {SERVER_URL2, AXIOS_OPTION, SERVER_URL} from "../util/env";
+import * as yup from 'yup';
 import axios from 'axios';
+import {useCookies} from "react-cookie";
+import {SERVER_URL2, AXIOS_OPTION, SERVER_URL, AXIOS_FORM_DATA_OPTION} from "../util/env";
+import {setCookie, getCookie} from "../util/cookie";
 import queryString from 'query-string'
 import $ from "jquery";
-import {useCookies} from "react-cookie";
 
 const Profile = () => {
 
@@ -26,8 +26,8 @@ const Profile = () => {
     const [profile, setProfile] = useState('../assets/image/image_profile.png')
     const [userName, setUserName] = useState('유라')
     const [userPhone, setUserPhone] = useState('01012345678')
-    const [eqType01, setEqType01] = useState(null)
-    const [eqType02, setEqType02] = useState(null)
+    const [eqType01, setEqType01] = useState(0)
+    const [eqType02, setEqType02] = useState(0)
 
     const user_id = user_cookie_id
 
@@ -67,9 +67,9 @@ const Profile = () => {
             .string()
             // .required('새롭게 사용할 비밀번호를 확인해주세요.')
             .oneOf([yup.ref('password')], '비밀번호가 동일하지 않습니다.'),
-        user_id:yup
-            .string()
-            .nullable(),
+        // user_id:yup
+        //     .string()
+        //     .nullable(),
         user_name:yup
             .string()
             .nullable(),
@@ -99,46 +99,13 @@ const Profile = () => {
             user_id: user_id,
             // user_name: userName,
             // user_phone: userPhone,
-            eq_type01 : eq_type_01_val,
-            eq_type02 : 2
+            eq_type01 : 0,
+            eq_type02 : 0
         }
     });
-
+    
     const [imagePreview, setImagePreview] = useState('../assets/image/image_upload-pic.png');
     const image = watch("file");
-    useEffect((data)=> {
-        axios.post(SERVER_URL + '/myinfo', {
-            'user_id' : user_id
-        }, {withCredentials:true}).then(res => {
-            // console.log(res.data.data)
-            // console.log(res.data)
-            // console.log(res.data.data.eq_type01)
-            // console.log(res.data.data.eq_type02)
-
-            setImagePreview(res.data.data.user_pic)
-            setUserName(res.data.data.user_name)
-            setUserPhone(res.data.data.user_phone)
-            setEqType01(res.data.data.eq_type01)
-            setEqType02(res.data.data.eq_type02)
-
-            // setValue('eq_type_01_val', res.data.data.eq_type01)
-            // console.log('res.data.result_code :: ', res.data.result_code)
-            // console.log('res.data.msg :: ', res.data.result_str)
-            // console.log('res.data.user_name ::', res.data.data.user_name)
-            // console.log('res.data.user_pic ::', res.data.data.user_pic)
-            // console.log('res.data.user_pic ::', res.data.user_pic)
-            // if(res.data.result_code === 'FAIL'){
-            //     console.log('======================',res.data.result_str);
-            //     // alert(res.data.result_str)
-            //     // navigate('/')
-            // } else if(res.data.result_code === 'SUCCESS'){
-            //     console.log('======================', res.data.result_str);
-            //     // alert(res.data.result_str)
-            // }
-        }).catch(err => {
-            console.log(err);
-        });
-    },[])
     useEffect(() => {
         if (image && image.length > 0) {
             const file = image[0];
@@ -159,12 +126,7 @@ const Profile = () => {
             , {
             'file' : data.file[0]
             }
-            , {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    // cookies: user_cookie
-                }, withCredentials:true
-            }
+            , AXIOS_FORM_DATA_OPTION
         ).then(res => {
             // console.log(res)
             // console.log('res.data.result_code :: ', res.data.result_code)
@@ -208,7 +170,7 @@ const Profile = () => {
         console.log(data.user_name)
         axios.post(SERVER_URL + '/modify_myinfo', {
             user_name : data.user_name
-        }, {withCredentials:true}).then(res => {
+        }, AXIOS_OPTION).then(res => {
             console.log(res.data)
             window.location.reload();
         }).catch(err => {
@@ -220,7 +182,7 @@ const Profile = () => {
         console.log(data.user_phone)
         axios.post(SERVER_URL + '/modify_myinfo', {
             user_phone : data.user_phone
-        }, {withCredentials:true}).then(res => {
+        }, AXIOS_OPTION).then(res => {
             console.log(res.data)
             window.location.reload();
         }).catch(err => {
@@ -241,7 +203,7 @@ const Profile = () => {
         axios.post(SERVER_URL + '/modify_myinfo', {
             'user_pwd_origin' : data.user_pwd_origin,
             'user_pwd' : data.user_pwd
-        }, {withCredentials:true}).then(res => {
+        }, AXIOS_OPTION).then(res => {
             console.log(res.data)
             if(res.data.result_code === 'SUCCESS') {
                 alert('비밀번호가 성공적으로 변경 되었습니다. 다시 로그인 해 주세요.')
@@ -261,7 +223,7 @@ const Profile = () => {
         axios.post(SERVER_URL + '/modify_myinfo', {
             'eq_type01' : data.eq_type01,
             'eq_type02' : data.eq_type02
-        }, {withCredentials:true}).then(res => {
+        }, AXIOS_OPTION).then(res => {
             console.log(res.data)
             window.location.reload();
         }).catch(err => {
@@ -296,6 +258,42 @@ const Profile = () => {
         setValue('user_phone', userPhone)
         setPhoneVisible(!phoneVisible)
     }
+
+    async function getMyinfo() {
+        axios.post(SERVER_URL + '/myinfo', {}, AXIOS_OPTION).then(res => {
+            // console.log(res.data.data)
+            // console.log(res.data)
+            // console.log(res.data.data.eq_type01)
+            // console.log(res.data.data.eq_type02)
+            if(res.data.result_code === 'SUCCESS'){
+                setImagePreview(res.data.data.user_pic)
+                setUserName(res.data.data.user_name)
+                setUserPhone(res.data.data.user_phone)
+                setEqType01(res.data.data.eq_type01)
+                setEqType02(res.data.data.eq_type02)
+            }
+
+            // setValue('eq_type_01_val', res.data.data.eq_type01)
+            // console.log('res.data.result_code :: ', res.data.result_code)
+            // console.log('res.data.msg :: ', res.data.result_str)
+            // console.log('res.data.user_name ::', res.data.data.user_name)
+            // console.log('res.data.user_pic ::', res.data.data.user_pic)
+            // console.log('res.data.user_pic ::', res.data.user_pic)
+            // if(res.data.result_code === 'FAIL'){
+            //     console.log('======================',res.data.result_str);
+            //     // alert(res.data.result_str)
+            //     // navigate('/')
+            // } else if(res.data.result_code === 'SUCCESS'){
+            //     console.log('======================', res.data.result_str);
+            //     // alert(res.data.result_str)
+            // }
+        }).catch(err => {
+            console.log(err);
+        })
+    };
+    useEffect(()=> {
+        getMyinfo()
+    },[])
 
     return (
         <section className="content" id="content">

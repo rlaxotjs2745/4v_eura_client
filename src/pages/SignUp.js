@@ -7,7 +7,7 @@ import {useState, useEffect} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import {Link} from "react-router-dom";
-import {SERVER_URL, AXIOS_OPTION} from "../util/env";
+import {SERVER_URL, AXIOS_OPTION, AXIOS_FORM_DATA_OPTION_NOUSER} from "../util/env";
 
 const SignUp = () => {
     const [userId, setUserId] = useState('');
@@ -211,14 +211,7 @@ const SignUp = () => {
         console.log(formData)
         axios.post(SERVER_URL + '/join_mail'
             , formData
-            , {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    // contentType: false,               // * 중요 *
-                    // processData: false,               // * 중요 *
-                    // enctype : 'multipart/form-data',  // * 중요 *
-                }
-            }
+            , AXIOS_FORM_DATA_OPTION_NOUSER
         ).then(res => {
             console.log(res)
             console.log('res.data.userId :: ', res.data.result_code)

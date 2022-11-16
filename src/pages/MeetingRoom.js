@@ -51,7 +51,11 @@ const MeetingRoom = (props) => {
                     '/meet/room/erase', {idx_meeting:window.location.pathname.split('/')[window.location.pathname.split('/').length-1]},
                 AXIOS_OPTION)
                 .then(res => {
-                    setRoomInfo({...roomInfo, mt_status: 3});
+                    if(res.data.result_code === 'SUCCESS'){
+                        setRoomInfo({...roomInfo, mt_status: 3});
+                    }else{
+                        alert(res.data.result_str);
+                    }
                 })
         } else {
         axios.post(SERVER_URL +
@@ -59,13 +63,15 @@ const MeetingRoom = (props) => {
             AXIOS_OPTION)
             .then(res => {
                 console.log(res)
-                if(res.data.result_code == 'SUCCESS'){
+                if(res.data.result_code === 'SUCCESS'){
                     axios.get(SERVER_URL +
                         `/meet/room/info?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
                         AXIOS_OPTION)
                         .then(res => {
                             setRoomInfo(res.data.data);
                         })
+                }else{
+                    alert(res.data.result_str);
                 }
             })
         }
@@ -108,10 +114,14 @@ const MeetingRoom = (props) => {
     const startMeeting = () => {
         axios.post(SERVER_URL + '/meet/room/start', {idx_meeting : window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}, AXIOS_OPTION)
             .then(res => {
-                const mcid = res.data.data.mcid;
-                const token = res.data.data.token;
-                window.location.href = `EuraEmotionService://mcid=${mcid},token=${token}`;
-                window.location.reload();
+                if(res.data.result_code === 'SUCCESS'){
+                    const mcid = res.data.data.mcid;
+                    const token = res.data.data.token;
+                    window.location.href = `EuraEmotionService://mcid=${mcid},token=${token}`;
+                    window.location.reload();
+                }else{
+                    alert(res.data.result_str);
+                }
             })
     }
 

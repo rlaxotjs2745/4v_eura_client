@@ -6,8 +6,8 @@ import MainMyMeetingRoom from "../Components/Cards/MainMyMeetingRoom";
 import {Link, useNavigate} from "react-router-dom";
 import {SERVER_URL, AXIOS_OPTION} from "../util/env";
 import $ from "jquery";
-const Home = () => {
 
+const Home = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState({});
     const [schedule, setSchedule] = useState({});
@@ -17,36 +17,6 @@ const Home = () => {
     const [curMeeting, setCurMeeting] = useState(false)
     const [curEvent, setCurEvent] = useState(true);
     const [eventNow, setEventNow] = useState(0);
-
-
-    useEffect(() => {
-        $('#mt_status_0').hide();
-        $('#mt_status_2').hide();
-        $('#popup__notice').hide();
-
-            axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
-                .then(res => {
-                    console.log(res.data.data);
-                        setUser(res.data.data);
-                        if(res.data.data.mt_meetShort){
-                            setSchedule(res.data.data.mt_meetShort);
-                        }
-                });
-
-            axios.get(SERVER_URL + '/meet/main/list', AXIOS_OPTION)
-                .then(res => {
-                    console.log(res);
-                    setMeeting(res.data.data);
-                })
-
-            axios.get(SERVER_URL + '/meet/main/endlist', AXIOS_OPTION)
-                .then(res => {
-                    setLastMeeting(res.data.data);
-                })
-
-
-    }, [])
-
 
     const pageSort = (e) => {
         let endPoint;
@@ -85,7 +55,7 @@ const Home = () => {
         let newMeeting = [];
         console.log(meet.mt_idx)
         if(meet.mt_status === 0){
-            axios.put(SERVER_URL + '/meet/room/open', {"idx_meeting": meet.mt_idx}, {withCredentials:true})
+            axios.put(SERVER_URL + '/meet/room/open', {"idx_meeting": meet.mt_idx}, AXIOS_OPTION)
                 .then(res => {
                     if(res.data.result_code === "SUCCESS"){
                         meet.mt_status = 1;
@@ -107,7 +77,6 @@ const Home = () => {
         }
     }
 
-
     const navigateToMeetingRoom = (meet, isLast) => {
         if(isLast === 1){
             navigate(`/analyse/${meet}`, {state:meet});
@@ -124,10 +93,74 @@ const Home = () => {
         setCurEvent(true);
     }
 
+    async function getMain() {
+        axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
+        .then(res => {
+            setUser(res.data.data);
+            if(res.data.data.mt_meetShort){
+                setSchedule(res.data.data.mt_meetShort);
+                return () => {
+                    console.log("cleanup1");
+                }
+            }
+        });
+    };
+    async function getMainList() {
+        axios.get(SERVER_URL + '/meet/main/list', AXIOS_OPTION)
+        .then(res => {
+            setMeeting(res.data.data);
+            return () => {
+                console.log("cleanup2");
+            }
+        })
+    };
+    async function getMainEndList() {
+        axios.get(SERVER_URL + '/meet/main/endlist', AXIOS_OPTION)
+        .then(res => {
+            setLastMeeting(res.data.data);
+            return () => {
+                console.log("cleanup3");
+            }
+        })
+    };
 
+    useEffect(() => {
+        modalClose();
+        getMain();
+        getMainList();
+        getMainEndList();
+    }, []);
 
-
-
+    // useEffect(() => {
+    //     axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
+    //         .then(res => {
+    //             setUser(res.data.data);
+    //             if(res.data.data.mt_meetShort){
+    //                 setSchedule(res.data.data.mt_meetShort);
+    //                 return () => {
+    //                     console.log("cleanup1");
+    //                 }
+    //             }
+    //         });
+    // },[]);
+    // useEffect(() => {
+    //     axios.get(SERVER_URL + '/meet/main/list', AXIOS_OPTION)
+    //         .then(res => {
+    //             setMeeting(res.data.data);
+    //             return () => {
+    //                 console.log("cleanup2");
+    //             }
+    //         })
+    // },[]);
+    // useEffect(() => {
+    //     axios.get(SERVER_URL + '/meet/main/endlist', AXIOS_OPTION)
+    //         .then(res => {
+    //             setLastMeeting(res.data.data);
+    //             return () => {
+    //                 console.log("cleanup3");
+    //             }
+    //         })
+    // },[]);
 
     return (
         <>

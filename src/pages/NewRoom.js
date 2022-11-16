@@ -262,26 +262,26 @@ const NewRoom = () => {
         // formData.append('file', uploadedFiles);
 
         if(isNew) {
-            axios.post(SERVER_URL + '/meet/create', formData,  {
-                headers: {
-                    "Context-Type": "multipart/form-data",
-                }, withCredentials:true
-            })
+            axios.post(SERVER_URL + '/meet/create', formData,  AXIOS_FORM_DATA_OPTION)
                 .then(res => {
                     console.log(res)
                     console.log(res.data.result_code)
-                    if(res.data.result_code == 'SUCCESS'){
+                    if(res.data.result_code === 'SUCCESS'){
                         alert('미팅룸을 생성했습니다.');
                         navigate('/');
+                    }else{
+                        alert(res.data.result_str);
                     }
                 })
         } else {
             formData.append('idx_meeting', window.location.pathname.split('/')[window.location.pathname.split('/').length-1]);
             axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_FORM_DATA_OPTION)
                 .then(res => {
-                    if(res.data.result_code == 'SUCCESS'){
+                    if(res.data.result_code === 'SUCCESS'){
                         alert('미팅룸을 수정했습니다.');
                         navigate('/');
+                    }else{
+                        alert(res.data.result_str);
                     }
                 })
         }
