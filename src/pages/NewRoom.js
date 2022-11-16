@@ -272,7 +272,7 @@ const NewRoom = () => {
                     console.log(res.data.result_code)
                     if(res.data.result_code == 'SUCCESS'){
                         alert('미팅룸을 생성했습니다.');
-                        // navigate('/');
+                        navigate('/');
                     }
                 })
         } else {

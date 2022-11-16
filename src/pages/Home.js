@@ -83,8 +83,9 @@ const Home = () => {
     const changeMeetingStatus = () => {
         let meet = curMeeting;
         let newMeeting = [];
+        console.log(meet.mt_idx)
         if(meet.mt_status === 0){
-            axios.put(SERVER_URL + '/meet/room/open', {idx_meeting: meet.mt_idx}, AXIOS_OPTION)
+            axios.put(SERVER_URL + '/meet/room/open', {"idx_meeting": meet.mt_idx}, {withCredentials:true})
                 .then(res => {
                     if(res.data.result_code === "SUCCESS"){
                         meet.mt_status = 1;
@@ -97,7 +98,10 @@ const Home = () => {
                         setMeeting({...meeting, mt_meetMyList: newMeeting});
                         modalClose();
                     }
-                })
+                }).catch(err => {
+                console.log(err);
+            });
+
         } else if(meet.mt_status === 2) {
             navigate(`/newroom/${meet.mt_idx}`);
         }
@@ -106,7 +110,7 @@ const Home = () => {
 
     const navigateToMeetingRoom = (meet, isLast) => {
         if(isLast === 1){
-            navigate(`/analyse/${meet}`);
+            navigate(`/analyse/${meet}`, {state:meet});
         } else if(curEvent){
             navigate(`/meetingroom/${meet}`);
         }
@@ -221,8 +225,8 @@ const Home = () => {
                                         </div>
                             </div>
                             <div className="btn__group">
-                                <div onClick={changeMeetingStatus} className="btn btn__able btn__s">예</div>
-                                <div onClick={modalClose} className="btn btn__normal btn__s js-modal-close">아니오</div>
+                                <button onClick={changeMeetingStatus} className="btn btn__able btn__s">예</button>
+                                <button onClick={modalClose} className="btn btn__normal btn__s js-modal-close">아니오</button>
                             </div>
                         </div>
                     </div>
