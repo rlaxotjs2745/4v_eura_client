@@ -46,17 +46,17 @@ const AnalyseMeeting = () => {
                 "mtInviteList": [
                     {
                         "upic":"../assets/image/Ellipse 164.png", // 프로필 사진 URL
-                        "uname":"1번참석자", // 참석자명
+                        "uname":"참석자1", // 참석자명
                         "idx":1, // 참석자 명단용 INDEX
-                        "value":33, // 집중도 %
+                        "value":40, // 집중도 %
                         "uemail":"www.naver.com" // 참석자 이메일
 
                     },
                     {
                         "upic":"../assets/image/Ellipse 164.png", // 프로필 사진 URL
-                        "uname":"2번참석자", // 참석자명
+                        "uname":"참석자2", // 참석자명
                         "idx":2, // 참석자 명단용 INDEX
-                        "value":55, // 집중도 %
+                        "value":61, // 집중도 %
                         "uemail":"www.daum.com" // 참석자 이메일
                     },
                 ],
@@ -183,8 +183,8 @@ const AnalyseMeeting = () => {
                                         <li key={member.idx}>
                                             <button>
                                                 <figure><img src={member.upic} alt=""/></figure>
-                                                <div className="watch__td"><span>{member.uname}</span><span>{member.uemail}</span></div>
-                                                {member.value > 40 ?
+                                                <div className="watch__td"><span>{member.uname}</span><div>{member.uemail}</div></div>
+                                                {member.value > 60 ?
                                                     <div className="watch__percent is-good">{member.value}%</div>
                                                     :
                                                     <div className="watch__percent is-bad">{member.value}%</div>

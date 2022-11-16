@@ -111,6 +111,7 @@ const MeetingRoom = (props) => {
                 const mcid = res.data.data.mcid;
                 const token = res.data.data.token;
                 window.location.href = `EuraEmotionService://mcid=${mcid},token=${token}`;
+                window.location.reload();
             })
     }
 
