@@ -1,35 +1,128 @@
 import React, {useState, useEffect} from 'react';
 import $ from "jquery";
-import {Link, useNavigate, useLocation} from "react-router-dom";
+import {Link, useNavigate, useLocation, json} from "react-router-dom";
 
 import axios from "axios";
 import {AXIOS_OPTION, SERVER_URL} from "../util/env";
 import queryString from "query-string";
 
-import qs from "qs";
-
-
-
 const AnalyseMeeting = () => {
     const location = useLocation(); // 홈에서 넘겨준 스테이트 값
     const pathname = location.pathname; // 값 중에 pathname
     const pathSplit = pathname.split('/')[2] // pathname /로 뜯어서 2번째값
-    console.log(pathSplit); // 미팅룸 인덱스번호
-
-
+    // console.log(pathSplit); // 미팅룸 인덱스번호
     const params = {idx_meeting:pathSplit};
 
+    const [lecture, setLecture] = useState({});
+    const [fileLength, setFileLength] = useState({})
+
+
+
+    // useEffect(() => {
+    //     axios.get(SERVER_URL + `/meet/result/meeting`,{params, withCredentials:true})
+    //         .then(res => {
+    //             // console.log(res.data.data);
+    //             setLecture(res.data)
+    //             console.log(lecture);
+    //             console.log(lecture.mtMeetDate)
+    //         }).catch((error)=>{
+    //             console.log(error)
+    //     });
+    //
+    // }, [])
+
+    // 더미 데이터용
     useEffect(() => {
+        setLecture(
+            {
+                "mtName":"인간공학개론", // 강의명
+                "mtMeetiDate":"2022-11-11", // 강의 날짜
+                "mtMeetiTime":"09:00 ~ 10:00", // 강의 시간
+                "mtMeetTimer":"00:56:53", // 소요 시간
+                "is_host":0, // 호스트 여부 - 0:참석자, 1:호스트
+                "hostname":"나교수",
+                // 참석자 인원수 - 참석자는 null 값
+                "mtInviteList": [
+                    {
+                        "upic":"", // 프로필 사진 URL
+                        "uname":"1번참석자", // 참석자명
+                        "idx":1, // 참석자 명단용 INDEX
+                        "value":33, // 집중도 %
+                        "usemail":"www.naver.com" // 참석자 이메일
 
-        axios.get(SERVER_URL + `/meet/result/meeting`,{params, withCredentials:true})
-            .then(res => {
-                console.log('잘 갔어요')
-                console.log(res.data.data);
-            }).catch((error)=>{
-                console.log(error)
-        });
-
-    }, [])
+                    },
+                    {
+                        "upic":"", // 프로필 사진 URL
+                        "uname":"2번참석자", // 참석자명
+                        "idx":2, // 참석자 명단용 INDEX
+                        "value":55, // 집중도 %
+                        "usemail":"www.daum.com" // 참석자 이메일
+                    },
+                ],
+                // 첨부파일
+                "mtAttachedFiles" : [
+                    {
+                        "idx":1, // 첨부파일 INDEX
+                        "fileUrl":"http://api.eura.site/pic?fnm=asda.mp4", // 첨부파일 URL
+                        "fileName" : "강의 자료.pdf" // 임시 파일명
+                    },
+                    {
+                        "idx":2, // 첨부파일 INDEX
+                        "fileUrl":"http://api.eura.site/pic?fnm=asda2.mp4", // 첨부파일 URL
+                        "fileName" : "강의 자료2.pdf",
+                    },
+                ],
+                // 상단 반원 그래프
+                "mtAnalyTop": {
+                    "bad":25,
+                    "good":65,
+                    "off":10
+                },
+                // 하단 인디케이터 - 참석자는 null 값
+                "mtAnalyBtm":{
+                    "duration":5, // 영상 재생 위치
+                    "timer":"00:00:05", // 데이터 생성 시간
+                    "value":5 // 집중도 10 ~ -10
+                },
+                // 영상 파일 리스트
+                "mtMovieFiles" : [
+                    {
+                        "duration": 0, // 영상 길이
+                        "fileNo": null, // 영상 순서
+                        "fileUrl" : "http://api.eura.site/pic?fnm=/meetmovie/euraclass1/1668066673044",
+                        "idx":1,
+                        "recordDt": "2022-11-10 10:22:22" // 영상 녹화 시작 시간
+                    },
+                    {
+                        "duration": 0, // 영상 길이
+                        "fileNo": null, // 영상 순서
+                        "fileUrl" : "http://api.eura.site/pic?fnm=/meetmovie/euraclass1/1668066673044",
+                        "idx":2,
+                        "recordDt": "2022-11-10 10:22:22" // 영상 녹화 시작 시간
+                    },
+                ],
+                // 참석자만 나오는 곳 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                // 오른쪽 하단 바 그래프
+                "mtData1": {
+                    "tcnt":73, // 현재 점수
+                    "bad":13, // BAD
+                    "acnt":52, // 누적 평균
+                    "good":62, // GOOD
+                    "off":25 // OFF
+                },
+                // 인디케이터
+                "mtData0": [
+                    {
+                        "duration":5, // 재생위치
+                        "timer": "00:00:05", // 기록시간
+                        "value":5 // 집중도
+                    }
+                ]
+            },
+        );
+    },[])
+    console.log(lecture)
+    console.log(fileLength)
 
 
 
@@ -38,16 +131,16 @@ const AnalyseMeeting = () => {
             <section className="content" id="content">
             <div className="page">
                 <div className="result__dash">
-                    <h3>‘인간공학개론’ 미팅 분석 결과</h3>
+                    <h3>{lecture.mtName} 미팅 분석 결과</h3>
                     <dl>
                         <dt>호스트 이름</dt>
-                        <dd>강채연</dd>
+                        <dd>{lecture.hostname}</dd>
                         <dt>날짜</dt>
-                        <dd>2022. 08. 11</dd>
+                        <dd>{lecture.mtMeetiDate}</dd>
                         <dt>시간</dt>
-                        <dd>09:00 - 10:00</dd>
+                        <dd>{lecture.mtMeetiTime}</dd>
                         <dt>소요 시간</dt>
-                        <dd>01:28:33</dd>
+                        <dd>{lecture.mtMeetTimer}</dd>
                         <dt className="th__file">저장된 파일</dt>
                         <dd className="td__file">
                             <a href="#none" className="file__anchor is-active"><span>1</span></a>
@@ -62,16 +155,22 @@ const AnalyseMeeting = () => {
                     </div>
                 </div>
                 <div className="result__download">
-                    <h4 className="result__title">첨부파일(4)</h4>
+                    <h4 className="result__title">첨부파일()</h4>
                     <div className="result__list">
-                        <a href="#none"><img src="../assets/image/ic_file_14.png" alt=""/> 1주차_인간공학의 개요_ppt.pdf</a>
-                        <a href="#none"><img src="../assets/image/ic_file_14.png" alt=""/> 2주차_인간공학을 위한 인간이해_ppt.pdf</a>
-                        <a href="#none"><img src="../assets/image/ic_file_14.png" alt=""/> 3주차_인간의 감각과 그 구조_ppt.pdf</a>
-                        <a href="#none"><img src="../assets/image/ic_file_14.png" alt=""/> 4주차_인간의 형태와 운동기능_ppt.pdf</a>
-                        <a href="#none"><img src="../assets/image/ic_file_14.png" alt=""/> 1주차_인간공학의 개요_ppt.pdf</a>
-                        <a href="#none"><img src="../assets/image/ic_file_14.png" alt=""/> 2주차_인간공학을 위한 인간이해_ppt.pdf</a>
-                        <a href="#none"><img src="../assets/image/ic_file_14.png" alt=""/> 3주차_인간의 감각과 그 구조_ppt.pdf</a>
-                        <a href="#none"><img src="../assets/image/ic_file_14.png" alt=""/> 4주차_인간의 형태와 운동기능_ppt.pdf</a>
+                        {
+                            !lecture.mtAttachedFiles || !lecture.mtAttachedFiles.length ?
+                                <a>
+                                    <span className="file__name">강의에 업로드 된 파일이 없습니다.</span>
+                                </a>
+                                : lecture.mtAttachedFiles.map(file => {
+                                    return (
+                                        // <a href={file.download}>
+                                        //     <img src={require('../assets/image/ic_file_14.png')} alt=""/><span className="file__name">{file.files}</span>
+                                        // </a>
+                                    <a key={file.idx} href={file.fileUrl}><img src={require('../assets/image/ic_file_14.png')} alt=""/> {file.fileName}</a>
+                                    )
+                                })
+                        }
                     </div>
                 </div>
 
