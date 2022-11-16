@@ -89,12 +89,12 @@ const Home = () => {
                     if(res.data.result_code === "SUCCESS"){
                         meet.mt_status = 1;
                         newMeeting.push(meet);
-                        for(let cur of meeting){
+                        for(let cur of meeting.mt_meetMyList){
                             if(cur.mt_idx !== meet.mt_idx){
                                 newMeeting.push(cur);
                             }
                         }
-                        setMeeting(newMeeting);
+                        setMeeting({...meeting, mt_meetMyList: newMeeting});
                         modalClose();
                     }
                 })
@@ -133,7 +133,9 @@ const Home = () => {
                 <MainSchedule schedule={schedule} />
 
                 <div className="main__meetingroom">
-                    <h3><img src={require('../assets/image/ic_video.png')} alt=""/> 나의 미팅룸 <em>({meeting.mt_meetMyListCount ? meeting.mt_meetMyListCount : 0})</em>
+                    <h3><img src={require('../assets/image/ic_video.png')} alt=""/> 나의 미팅룸 <em>({  !meeting ||
+                    !meeting.mt_meetMyList ||
+                    !meeting.mt_meetMyList.length ? 0 : meeting.mt_meetMyList.length})</em>
                         <Link to="/newroom" className="btn btn__make"><img src={require('../assets/image/ic_plus.png')} alt=""/>새 미팅룸 만들기</Link>
                         <div className="sorting">
                             <select name="" id="meetSort" onChange={pageSort}>

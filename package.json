@@ -30,7 +30,7 @@
   },
   "scripts": {
     "start": "export PORT=80 && react-scripts start",
-    "start2": "HTTPS=true SSL_CRT_FILE=localhost.pem SSL_KEY_FILE=localhost-key.pem react-scripts start",
+    "start2": "HTTPS=true SSL_CRT_FILE=./eura.site-crt.pem SSL_KEY_FILE=eura.site-key.pem react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
