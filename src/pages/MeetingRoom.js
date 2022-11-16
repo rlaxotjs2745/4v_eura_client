@@ -110,7 +110,7 @@ const MeetingRoom = (props) => {
             .then(res => {
                 const mcid = res.data.data.mcid;
                 const token = res.data.data.token;
-                window.location.href = `eura://start?jwt=${token}&channelid=${mcid}`;
+                window.location.href = `EuraEmotionService://mcid=${mcid},token=${token}`;
             })
     }
 
