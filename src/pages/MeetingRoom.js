@@ -42,12 +42,18 @@ const MeetingRoom = (props) => {
     const openModal = () => {
         // setModal(true);
         $('.pop__detail').addClass('is-on');
+        $('#shade').addClass('is-on');
     }
 
     const closeModal = () => {
         // setModal(false);
         $('.pop__detail').removeClass('is-on');
+        $('#shade').removeClass('is-on');
     }
+
+    $('#shade').click(() => {
+        closeModal();
+    })
 
     const cancelMeeting = () => {
         if(roomInfo.mt_status === 2){
@@ -72,7 +78,7 @@ const MeetingRoom = (props) => {
                         `/meet/room/info?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
                         AXIOS_OPTION)
                         .then(res => {
-                            setRoomInfo(res.data.data);
+                            setRoomInfo({...roomInfo, mt_status: 2});
                         })
                 }else{
                     alert(res.data.result_str);

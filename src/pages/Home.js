@@ -42,12 +42,14 @@ const Home = () => {
             $('#mt_status_2').show();
         }
         $('#popup__notice').show();
+        $('#shade').addClass('is-on');
     }
 
     const modalClose = () => {
         $('#mt_status_0').hide();
         $('#mt_status_2').hide();
         $('#popup__notice').hide();
+        $('#shade').removeClass('is-on');
     }
 
     const changeMeetingStatus = () => {
@@ -123,6 +125,10 @@ const Home = () => {
             }
         })
     };
+
+    $('#shade').click(() => {
+        modalClose();
+    })
 
     useEffect(() => {
         modalClose();

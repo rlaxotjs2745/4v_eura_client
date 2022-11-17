@@ -89,17 +89,20 @@ const NewRoom = () => {
                 .then(res => {
                     // console.log(res.data.data)
                     const room = res.data.data;
-                    setRoomInfo(room);
                     setIsNew(false);
                     setTitle(room.mt_name);
-                    setStartDate(!room.mt_start_dt ? '' : room.mt_start_dt.split(' ')[0]);
-                    setStartTime(!room.mt_start_dt ? '' : room.mt_start_dt.split(' ')[1]);
-                    setEndTime(!room.mt_end_dt ? '' : room.mt_end_dt.split(' ')[1]);
+                    setStartDate(room.mt_start_dt.split(' ')[0]);
+                    console.log( '@' + room.mt_start_dt.split(' ')[0])
+                    setStartTime(room.mt_start_dt.split(' ')[1]);
+                    console.log(room.mt_start_dt.split(' ')[1]);
+                    setEndTime(room.mt_end_dt.split(' ')[1]);
+                    console.log(room.mt_end_dt.split(' ')[1]);
                     setSelectValue(room.mt_remind_type);
                     setRemindCount(room.mt_remind_count);
                     setWeekday(room.mt_remind_week);
-                    setEndDate(!room.mt_end_dt ? '' : room.mt_end_dt.split(' ')[0]);
+                    setEndDate(room.mt_end_dt.split(' ')[0]);
                     setMeetingInfo(room.mt_info);
+                    setRoomInfo(room);
                 })
             axios.get(SERVER_URL +
                 `/meet/room/invite?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
@@ -112,6 +115,9 @@ const NewRoom = () => {
     }, [])
 
     useEffect(() => {
+        console.log(roomInfo);
+        console.log(startTime);
+        console.log(endTime);
         setRemindBool(!!roomInfo.mt_remind_type);
     }, [roomInfo]);
 
@@ -314,19 +320,19 @@ const NewRoom = () => {
                         <label htmlFor="make_date"><img src="../assets/image/ic_calendar_24.png" alt="" /></label>
                         <input id="make_date" type="date" className="text under-scope width-flexble"
                                onChange={makeDate}
-                               defaultValue={isNew ? new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3) : roomInfo.mt_start_dt.split(' ')[0]}
+                               value={startDate}
                         />
                             <label htmlFor="make_time" className="input__time"><img src="../assets/image/ic_time_24.png" alt="" /></label>
                             <input id="make_time1" type="time"
                                    pattern="[0-9]{2}:[0-9]{2}"
                                    className="text under-scope width-flexble"
                                    onChange={makeTime1}
-                                   defaultValue={isNew ? new Date().getHours() + ':' + new Date().getMinutes() + ':00' : roomInfo.mt_start_dt.split(' ')[1]}
+                                   value={startTime}
                             />
                                 <span className="bar">-</span>
                                 <input id="make_time2" type="time" className="text under-scope width-flexble"
                                        onChange={makeTime2}
-                                       defaultValue={isNew ? new Date().getHours() + ':' + new Date().getMinutes() + ':00' : roomInfo.mt_end_dt.split(' ')[1]}
+                                       value={endTime}
                                 />
 
                                 <hr />

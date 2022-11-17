@@ -14,6 +14,7 @@ root.render(
           <BrowserRouter>
               <ScrollToTop/>
               <App />
+              <div id="shade"></div>
           </BrowserRouter>
       </CookiesProvider>
   // </React.StrictMode>
