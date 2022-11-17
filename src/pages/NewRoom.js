@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import $ from "jquery";
 import AddMeetingUser from "../Components/Cards/AddMeetingUser";
 import {upload} from "@testing-library/user-event/dist/upload";
+import {setSelectionRange} from "@testing-library/user-event/dist/utils";
 
 const MAX_COUNT = 5;
 
@@ -30,6 +31,7 @@ const NewRoom = () => {
     const [endTime, setEndTime] = useState('');
     const [endDate, setEndDate] = useState('');
     const [meetingInfo, setMeetingInfo] = useState('');
+    const [content, setContent] = useState('');
 
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [fileLimit, setFileLimit] = useState(false);
@@ -86,13 +88,19 @@ const NewRoom = () => {
                 `/meet/room/info?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
                 AXIOS_OPTION)
                 .then(res => {
-                    console.log(res.data.data)
-                    setRoomInfo(res.data.data);
+                    // console.log(res.data.data)
+                    const room = res.data.data;
+                    setRoomInfo(room);
                     setIsNew(false);
-                    if(res.data.data.mt_remind_type !== 0){
-                        console.log('@@@@@@@@@@@@@@@@@@@' + res.data.data.mt_remind_type);
-                        setRemindBool(!remindBool);
-                    }
+                    setTitle(room.mt_name);
+                    setStartDate(!room.mt_start_dt ? '' : room.mt_start_dt.split(' ')[0]);
+                    setStartTime(!room.mt_start_dt ? '' : room.mt_start_dt.split(' ')[1]);
+                    setEndTime(!room.mt_end_dt ? '' : room.mt_end_dt.split(' ')[1]);
+                    setSelectValue(room.mt_remind_type);
+                    setRemindCount(room.mt_remind_count);
+                    setWeekday(room.mt_remind_week);
+                    setEndDate(!room.mt_end_dt ? '' : room.mt_end_dt.split(' ')[0]);
+                    setContent(room.mt_info);
                 })
             axios.get(SERVER_URL +
                 `/meet/room/invite?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
@@ -105,8 +113,8 @@ const NewRoom = () => {
     }, [])
 
     useEffect(() => {
-        console.log(invites);
-    }, [invites]);
+        setRemindBool(!!roomInfo.mt_remind_type);
+    }, [roomInfo]);
 
 
     useEffect(() => {
@@ -272,9 +280,13 @@ const NewRoom = () => {
                     }else{
                         alert(res.data.result_str);
                     }
-                })
+                }).catch(res => console.log(res))
         } else {
             formData.append('idx_meeting', window.location.pathname.split('/')[window.location.pathname.split('/').length-1]);
+            console.log(formData);
+            for(let i of formData){
+                console.log(i);
+            }
             axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_FORM_DATA_OPTION)
                 .then(res => {
                     if(res.data.result_code === 'SUCCESS'){
@@ -283,7 +295,7 @@ const NewRoom = () => {
                     }else{
                         alert(res.data.result_str);
                     }
-                })
+                }).catch(res => console.log(res))
         }
     }
 
@@ -328,7 +340,7 @@ const NewRoom = () => {
                             <dl className="inline__type">
                                 <dt><label htmlFor="room_repeat">반복 주기</label></dt>
                                 <dd>
-                                    <select onChange={handleChange} name="" id="room_repeat" className="make-select">
+                                    <select onChange={handleChange} name="" id="room_repeat" className="make-select" defaultValue={selectValue}>
                                         <option value="1">매일</option>
                                         <option value="2">주</option>
                                         <option value="3">월</option>
@@ -339,7 +351,7 @@ const NewRoom = () => {
                                 <dd>
                                     {
                                         selectValue === 1 ?
-                                    <select name="" id="room_repeat2" onChange={selectRemindCount} className="make-select">
+                                    <select name="" id="room_repeat2" onChange={selectRemindCount} className="make-select" defaultValue={weekday}>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -444,7 +456,7 @@ const NewRoom = () => {
 
                 <div className="input__group">
                     <label htmlFor="make_room">미팅 정보</label>
-                    <textarea name="" id="make_room" cols="10" rows="3" placeholder="미팅정보를 입력해주세요." onChange={makeMeetingInfo} defaultValue={isNew ? '' : roomInfo.mt_info}></textarea>
+                    <textarea name="" id="make_room" cols="10" rows="3" placeholder="미팅정보를 입력해주세요." onChange={makeMeetingInfo} defaultValue={isNew ? '' : content}></textarea>
                 </div>
 
                 <div className="input__group">

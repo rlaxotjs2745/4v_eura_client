@@ -12,9 +12,11 @@ const MainSchedule = ({schedule}) => {
             <ul>
                 {!schedule || !schedule.length ? <li><strong>다음 일정이 없습니다.</strong></li> :
                     schedule.map((day) => {
-                        return (
-                            <li><Link to="/meetingroom" state={{room: day.mt_idx}}><strong>{day.mt_name}</strong> <em>{day.mt_start_dt.split(' ')[1].slice(0,5)} - {day.mt_end_dt.split(' ')[1].slice(0,5)}</em></Link></li>
-                        )
+                        if(day.mt_status === 1){
+                            return (
+                                <li><Link to="/meetingroom" state={{room: day.mt_idx}}><strong>{day.mt_name}</strong> <em>{day.mt_start_dt.split(' ')[1].slice(0,5)} - {day.mt_end_dt.split(' ')[1].slice(0,5)}</em></Link></li>
+                            )
+                        }
                     })
                 }
             </ul>

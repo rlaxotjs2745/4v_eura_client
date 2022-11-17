@@ -196,6 +196,8 @@ const Home = () => {
                                 :
                             meeting.mt_meetMyList.map((room, idx) => {
                                 if(idx > 8) return;
+                                console.log(room)
+                                if(room.is_host === 0 && room.mt_status !== 1) return;
                                 return (
                                     <MainMyMeetingRoom key={idx} room={room} modalOpen={modalOpen} isLast={0} navigateToMeetingRoom={navigateToMeetingRoom} mouseOver={mouseOver} mouseOut={mouseOut} />
                                 )

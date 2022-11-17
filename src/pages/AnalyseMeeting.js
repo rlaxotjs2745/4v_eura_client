@@ -5,7 +5,7 @@ import {Link, useNavigate, useLocation, json} from "react-router-dom";
 import axios from "axios";
 import {AXIOS_OPTION, SERVER_URL} from "../util/env";
 import queryString from "query-string";
-import {Chart, View, Interval, Legend, Slider} from "bizcharts";
+import {Chart, View, Interval, Legend, Slider}  from "bizcharts";
 // import { Player } from 'video-react';
 
 const AnalyseMeeting = () => {
@@ -83,7 +83,7 @@ const AnalyseMeeting = () => {
         $('.moveFilelist .file__anchor').eq(0).addClass('is-active')
         console.log(movieSrc)
     }, [movieSrc])
-      
+
     const colors = ['#3377ff', '#3377ff', '#ffc633', '#ffc633']
     let chartIns = null
 
@@ -272,10 +272,10 @@ const AnalyseMeeting = () => {
                     <Chart height={218} data={btmdata} padding={[40, 40, 50, 40]} autoFit onGetG2Instance={chart => { chartIns = chart; }}
                         scale={{ value: { min: -100, max: 100 }, name: {
                             values: ['Good'],
-                            
+
                         }, item: {
                             values: ['Bad'],
-                            
+
                         } } }>
                       <Interval
                                     adjust={[
@@ -286,7 +286,7 @@ const AnalyseMeeting = () => {
                                         },
                                     ]}
                                     color={['name', [colors[0], colors[1]]]}
-                                
+
                                     position="month*value"
                                 />
                             <Interval
@@ -312,10 +312,10 @@ const AnalyseMeeting = () => {
                                     const value = item.value;
                                     const checked = !item.unchecked;
                                     const geoms = chartIns.geometries;
-                
+
                                     for (let i = 0; i < geoms.length; i++) {
                                         const geom = geoms[i];
-                
+
                                         if (geom.getYScale().field === value) {
                                             if (checked) {
                                                 geom.show();
@@ -354,10 +354,10 @@ const AnalyseMeeting = () => {
                 <Chart height={218} data={btmdata} padding={[40, 40, 50, 40]} autoFit onGetG2Instance={chart => { chartIns = chart; }}
                         scale={{ value: { min: -100, max: 100 }, name: {
                             values: ['Good'],
-                            
+
                         }, item: {
                             values: ['Bad'],
-                            
+
                         } } }>
                       <Interval
                                     adjust={[
@@ -368,7 +368,7 @@ const AnalyseMeeting = () => {
                                         },
                                     ]}
                                     color={['name', [colors[0], colors[1]]]}
-                                
+
                                     position="month*value"
                                 />
                             <Interval
@@ -394,10 +394,10 @@ const AnalyseMeeting = () => {
                                     const value = item.value;
                                     const checked = !item.unchecked;
                                     const geoms = chartIns.geometries;
-                
+
                                     for (let i = 0; i < geoms.length; i++) {
                                         const geom = geoms[i];
-                
+
                                         if (geom.getYScale().field === value) {
                                             if (checked) {
                                                 geom.show();

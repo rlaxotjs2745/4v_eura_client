@@ -35,6 +35,10 @@ const MeetingRoom = (props) => {
 
     }, [])
 
+    useEffect(() => {
+        console.log(roomInfo);
+    }, [roomInfo])
+
     const openModal = () => {
         // setModal(true);
         $('.pop__detail').addClass('is-on');
@@ -80,7 +84,7 @@ const MeetingRoom = (props) => {
     }
 
     const getMeetingRunningTime = () => {
-        let nowDiff = new Date() - new Date(roomInfo.mt_start_dt);
+        let nowDiff = new Date() - new Date(roomInfo.mt_live_dt);
 
         let hour = '' + Math.floor(nowDiff / 3600000);
         nowDiff = nowDiff - hour * 3600000;
