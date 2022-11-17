@@ -90,6 +90,7 @@ const Profile = () => {
         setError,
         setValue,
         watch,
+        clearErrors,
         formState: { errors, isSubmitted, isSubmitting, isDirty },
         // isSubmitting 은 양식 제출 중 disabled 처리 하게 함.
     } = useForm({
@@ -104,7 +105,7 @@ const Profile = () => {
         }
     });
     
-    const [imagePreview, setImagePreview] = useState('../assets/image/image_upload-pic.png');
+    const [imagePreview, setImagePreview] = useState('../assets/image/image_profile.png');
     const image = watch("file");
     useEffect(() => {
         if (image && image.length > 0) {
@@ -246,6 +247,10 @@ const Profile = () => {
 
     const pwdCancle =()=>{
         setPwdVisible(!pwdVisible)
+        setValue('user_pwd_origin', '')
+        setValue('password', '')
+        setValue('user_pwd', '')
+        clearErrors()
         // window.location.reload();
     }
 
