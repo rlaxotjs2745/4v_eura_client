@@ -164,6 +164,7 @@ const Profile = () => {
     const phoneCancle = () => {
         setPhoneVisible(!phoneVisible)
         setValue('user_phone', userPhone)
+        clearErrors()
     }
 
 
