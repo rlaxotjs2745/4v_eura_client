@@ -282,8 +282,6 @@ const NewRoom = () => {
         if(isNew) {
             axios.post(SERVER_URL + '/meet/create', formData,  AXIOS_FORM_DATA_OPTION)
                 .then(res => {
-                    console.log(res)
-                    console.log(res.data.result_code)
                     if(res.data.result_code === 'SUCCESS'){
                         alert('미팅룸을 생성했습니다.');
                         navigate('/');

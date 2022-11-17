@@ -86,7 +86,7 @@ const MeetingRoom = (props) => {
             })
         }
         //             setRoomInfo({...roomInfo, mt_status: 3});
-        $('.pop__detail').removeClass('is-on');
+        closeModal();
     }
 
     const getMeetingRunningTime = () => {

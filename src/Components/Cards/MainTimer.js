@@ -29,7 +29,7 @@ const MainTimer = ({user}) => {
                         <div className="board__user">
                             <figure><img src={!user || !user.ui_pic ? require('../../assets/image/image_profile.png') : user.ui_pic} alt=""/></figure>
                             <span>안녕하세요</span>
-                            <strong>{!user ||!user.ui_name ? '유저유저' : user.ui_name }님</strong>
+                            <strong>{!user ||!user.ui_name ? '' : user.ui_name + '님' }</strong>
                         </div>
                         <div className="board__time">{timer}</div>
                 </div>
