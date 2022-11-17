@@ -37,10 +37,6 @@ const MeetingCalendar = () => {
             })
     }
 
-    useEffect(() => {
-        console.log(meeting);
-    }, [meeting])
-
     const navigateToMeetingRoom = (idx) => {
         navigate(`/meetingroom/${idx}`);
     }
@@ -76,6 +72,12 @@ const MeetingCalendar = () => {
         setThisYear(thisYear - 1);
     })
 
+    const setYearMonth = (date) => {
+        console.log(date)
+        setThisYear(date.getFullYear());
+        setThisMonth(date.getMonth()+1);
+    }
+
 
 
 
@@ -86,19 +88,9 @@ const MeetingCalendar = () => {
                 <Calendar
                     calendarType={"US"}
                     tileContent={fillTileContent}
-                    onViewChange={({action, activeStartDate, value, view}) => {
-                        // console.log(action);
-                        // console.log(activeStartDate);
-                        // console.log(value);
-                        // console.log(view);
-                    }}
-                    onChanMonth={(v,e) => {
-                        console.log(v)
-                        console.log(e)
-                    }}
-                    navigationLabel={({ date, label, locale, view }) => getMonthMeetingList(date, label)}
+                    onViewChange={({activeStartDate}) => setYearMonth(activeStartDate)}
+                    navigationLabel={({ date, label }) => getMonthMeetingList(date, label)}
                     onClickDay={(value) => getDayMeetingInfo(new Date(value))}
-                    onClick={(v) => console.log(v)}
                 />
             </div>
             {
