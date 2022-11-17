@@ -6,10 +6,12 @@ import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
 import {CookiesProvider} from "react-cookie";
 import ScrollToTop from "./Components/Layout/ScrollToTop";
+import HttpsRedirect from 'react-https-redirect';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  // <React.StrictMode>
+    // <React.StrictMode>
+    <HttpsRedirect>
       <CookiesProvider>
           <BrowserRouter>
               <ScrollToTop/>
@@ -17,6 +19,7 @@ root.render(
               <div id="shade"></div>
           </BrowserRouter>
       </CookiesProvider>
+    </HttpsRedirect>
   // </React.StrictMode>
 );
 
