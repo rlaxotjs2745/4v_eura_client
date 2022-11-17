@@ -111,14 +111,12 @@ const NewRoom = () => {
                 .then(res => {
                     // console.log(res.data.data)
                     const room = res.data.data;
+                    console.log(room)
                     setIsNew(false);
                     setTitle(room.mt_name);
                     setStartDate(room.mt_start_dt.split(' ')[0]);
-                    console.log( '@' + room.mt_start_dt.split(' ')[0])
                     setStartTime(room.mt_start_dt.split(' ')[1]);
-                    console.log(room.mt_start_dt.split(' ')[1]);
                     setEndTime(room.mt_end_dt.split(' ')[1]);
-                    console.log(room.mt_end_dt.split(' ')[1]);
                     setSelectValue(room.mt_remind_type);
                     setRemindCount(room.mt_remind_count);
                     setWeekday(room.mt_remind_week);
@@ -138,16 +136,8 @@ const NewRoom = () => {
     }, [])
 
     useEffect(() => {
-        console.log(roomInfo);
-        console.log(startTime);
-        console.log(endTime);
         setRemindBool(!!roomInfo.mt_remind_type);
     }, [roomInfo]);
-
-
-    useEffect(() => {
-        $('#remind_bool').prop('checked', remindBool);
-    }, [remindBool])
 
 
     const searchInviteUserList = (e) => {
@@ -214,16 +204,7 @@ const NewRoom = () => {
     }
 
     const handleChange = (e) => {
-        // console.log(e.target.value);
-        if (e.target.value == 1) {
-            setSelectValue(1)
-        } else if (e.target.value == 2) {
-            setSelectValue(2)
-        } else if (e.target.value == 3) {
-            setSelectValue(3)
-        } else if (e.target.value == 4) {
-            setSelectValue(4)
-        }
+        setSelectValue(parseInt(e.target.value))
     };
 
     const makeTitle = (e) => {
@@ -284,12 +265,13 @@ const NewRoom = () => {
         formData.append('mt_invite_email', invites.map(inv => inv.email).join());
         for (let i = 0; i < uploadedFiles.length; i++) {
             formData.append("file", uploadedFiles[i]);
-            console.log(uploadedFiles[i])// 반복문을 활용하여 파일들을 formData 객체에 추가한다
         }
         if(remindBool){
             formData.append('mt_remind_type', selectValue);
             formData.append('mt_remind_count', remindCount);
-            formData.append('mt_remind_week', weekday.join());
+            if(selectValue == 2){
+                formData.append('mt_remind_week', weekday.join());
+            }
             formData.append('mt_remind_end', endDate);
         } else {
             formData.append('mt_remind_type', 0);
@@ -315,6 +297,9 @@ const NewRoom = () => {
                 formData.append('file_del', delFiles.join());
             }
 
+            for(let i of formData){
+                console.log(i);
+            }
             axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_FORM_DATA_OPTION)
                 .then(res => {
                     if(res.data.result_code === 'SUCCESS'){
@@ -425,7 +410,7 @@ const NewRoom = () => {
                                         : selectValue === 2 ? '주'
                                         : selectValue === 3 ? '개월'
                                         : selectValue === 4 ? '년'
-                                        : null
+                                        : '일'
                                     }
                                 </dd>
                             </dl>
