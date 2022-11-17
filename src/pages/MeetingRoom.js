@@ -4,13 +4,13 @@ import {AXIOS_OPTION, SERVER_URL} from "../util/env";
 import $ from "jquery";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation, Pagination} from "swiper";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import "swiper/swiper.min.css";
 import "swiper/swiper-bundle.min.css"
 import RoomUserList from "../Components/Cards/RoomUserList";
 
 const MeetingRoom = (props) => {
-
+    const navigate = useNavigate();
     const [roomInfo, setRoomInfo] = useState('');
     const [invites, setInvites] = useState('');
     const [timer, setTimer] = useState('');
@@ -63,6 +63,7 @@ const MeetingRoom = (props) => {
                 .then(res => {
                     if(res.data.result_code === 'SUCCESS'){
                         setRoomInfo({...roomInfo, mt_status: 3});
+                        navigate('/')
                     }else{
                         alert(res.data.result_str);
                     }
@@ -79,6 +80,7 @@ const MeetingRoom = (props) => {
                         AXIOS_OPTION)
                         .then(res => {
                             setRoomInfo({...roomInfo, mt_status: 2});
+                            navigate('/')
                         })
                 }else{
                     alert(res.data.result_str);
