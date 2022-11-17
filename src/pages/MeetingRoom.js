@@ -80,7 +80,7 @@ const MeetingRoom = (props) => {
                 console.log(res)
                 if(res.data.result_code === 'SUCCESS'){
                     axios.get(SERVER_URL +
-                        `/meet/room/info?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
+                        `/meet/room/info?idx_meeting=${pathSplit}`,
                         AXIOS_OPTION)
                         .then(res => {
                             setRoomInfo({...roomInfo, mt_status: 2});
