@@ -238,7 +238,6 @@ const Home = () => {
                                 lastMeeting.mt_meetEndMyList.map((room, idx) => {
                                     if(idx > 8) return;
                                     if(room.is_host == 0 && room.mt_status != 1) return;
-
                                     return (
                                         <MainMyMeetingRoom key={idx} room={room} modalOpen={modalOpen} isLast={1} navigateToMeetingRoom={navigateToMeetingRoom} mouseOver={mouseOver} mouseOut={mouseOut} />
                                     )
