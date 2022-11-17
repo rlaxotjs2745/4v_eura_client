@@ -1723,7 +1723,8 @@ td {
 
 .btn.disabled, button.disabled {
     background: #babfd6 !important;
-    border-color: #babfd6 !important
+    border-color: #babfd6 !important;
+    cursor: default;
 }
 
 .btn.btn__normal, button.btn__normal {
@@ -1740,7 +1741,8 @@ td {
     border: 1px solid #b4b6bf;
     font-size: 16px;
     padding: 12px 0 11px 0;
-    min-width: 140px
+    min-width: 140px;
+    cursor: default;
 }
 
 .btn.btn__able, button.btn__able {
