@@ -239,7 +239,7 @@ const Profile = () => {
     },[eqType01, eqType02])
 
     const profileEditCancle = () => {
-        setImagePreview(imagePreview)
+        setImagePreview(profile)
         setProfileVisible(!profileVisible)
     }
 
@@ -283,6 +283,7 @@ const Profile = () => {
             }
 
             if (res.data.result_code === 'SUCCESS' && res.data.data.user_pic.length > 0) {
+                setProfile(res.data.data.user_pic);
                 setImagePreview(res.data.data.user_pic)
             }
 
@@ -294,6 +295,11 @@ const Profile = () => {
     useEffect(()=> {
         getMyinfo()
     },[])
+
+    const viewProfile = () => {
+
+    }
+
 
 
 
@@ -329,7 +335,7 @@ const Profile = () => {
                             <div className="input__group upload__type">
                                 <input type="file" {...register("file")} className="upload__btn"/>
                                 <div className="upload__image" onClick={()=> {setProfileVisible(!profileVisible)}}>
-                                    <img id="preview" src={imagePreview} alt=""/>
+                                    <img id="preview" src={profile} alt=""/>
                                     <button className="profile_edit_btn">프로필 사진 변경</button>
                                 </div>
                             </div>

@@ -122,6 +122,11 @@ const MeetingRoom = (props) => {
     }
 
     const startMeeting = () => {
+        const timeDiff = new Date(roomInfo.mt_start_dt) - new Date();
+        if(Math.floor(timeDiff / 1000 / 60) > 10){
+            return alert('지금은 예정된 시작 시간보다 너무 이릅니다. \r예정된 시작 시간 10분 전부터 시작할 수 있습니다.')
+        }
+
         axios.post(SERVER_URL + '/meet/room/start', {idx_meeting : window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}, AXIOS_OPTION)
             .then(res => {
                 if(res.data.result_code === 'SUCCESS'){
