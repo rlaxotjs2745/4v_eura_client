@@ -49,7 +49,7 @@ const Header = (props) => {
                 <h1><Link to="/"><img src={require('../../assets/image/h1_logo.png')} alt=""/></Link></h1>
                 {get_cookie('user_id') == null ? null :
                     <div className="user__box" onMouseOver={profileHover} onMouseOut={profileHoverOut}>
-                        <a className="user__hover"><strong>{user && user.ui_name ? user.ui_name : '유저유저'}</strong>님</a>
+                        <a className="user__hover"><strong>{user && user.ui_name ? user.ui_name : ''}</strong>님</a>
                         <div id="user_profile_drop" className="user__anchor user_profile_hide">
                             <ul>
                                 <li><Link to="/profile">내 프로필</Link></li>
