@@ -34,6 +34,7 @@ const NewRoom = () => {
 
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [uploadedFilesPlus, setUploadedFilesPlus] = useState([]);
+    const [delFiles, setDelFiles] = useState([]);
 
     const [fileLimit, setFileLimit] = useState(false);
 
@@ -90,10 +91,14 @@ const NewRoom = () => {
             }
         }
         let index2 = i
-        setUploadedFilesPlus(uploaded.filter((i , index) => index !== index2))
+        setUploadedFilesPlus(uploaded.filter((i , index) => {
+            if(index === index2){
+                setDelFiles([...delFiles ,i.idx])
+            }
+            return index !== index2
+        }))
         setFileLimit(false)
     }
-
 
     useEffect(() => {
         if(window.location.pathname.split('/')[window.location.pathname.split('/').length-1] !== 'newroom' || window.location.pathname.split('/')[window.location.pathname.split('/').length-1] !== ''){ //수정하기
@@ -306,10 +311,10 @@ const NewRoom = () => {
                 }).catch(res => console.log(res))
         } else {
             formData.append('idx_meeting', window.location.pathname.split('/')[window.location.pathname.split('/').length-1]);
-            console.log(formData);
-            for(let i of formData){
-                console.log(i);
+            if(delFiles.length > 0){
+                formData.append('file_del', delFiles.join());
             }
+
             axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_FORM_DATA_OPTION)
                 .then(res => {
                     if(res.data.result_code === 'SUCCESS'){
