@@ -24,7 +24,7 @@ const Profile = () => {
     const [passwordAlert, setPasswordAlert] = useState('')
 
     const [profile, setProfile] = useState('../assets/image/image_profile.png')
-    const [userName, setUserName] = useState('유라')
+    const [userName, setUserName] = useState('')
     const [userPhone, setUserPhone] = useState('01012345678')
     const [eqType01, setEqType01] = useState(0)
     const [eqType02, setEqType02] = useState(0)
@@ -286,24 +286,11 @@ const Profile = () => {
                 setImagePreview(res.data.data.user_pic)
             }
 
-            // setValue('eq_type_01_val', res.data.data.eq_type01)
-            // console.log('res.data.result_code :: ', res.data.result_code)
-            // console.log('res.data.msg :: ', res.data.result_str)
-            // console.log('res.data.user_name ::', res.data.data.user_name)
-            // console.log('res.data.user_pic ::', res.data.data.user_pic)
-            // console.log('res.data.user_pic ::', res.data.user_pic)
-            // if(res.data.result_code === 'FAIL'){
-            //     console.log('======================',res.data.result_str);
-            //     // alert(res.data.result_str)
-            //     // navigate('/')
-            // } else if(res.data.result_code === 'SUCCESS'){
-            //     console.log('======================', res.data.result_str);
-            //     // alert(res.data.result_str)
-            // }
         }).catch(err => {
             console.log(err);
         })
-    };
+    }
+
     useEffect(()=> {
         getMyinfo()
     },[])
