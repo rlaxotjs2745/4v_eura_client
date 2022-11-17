@@ -2006,7 +2006,7 @@ td {
 }
 .main__board .board__user img {
     position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);
-    object-fit: cover; width:100%; height:100%;
+    object-fit: fill; width:100%; height:100%;
 }
 
 .main__board .board__user span {
@@ -2973,6 +2973,7 @@ html.js-overflow {
 }
 
 .join .join__box .upload__type .upload__image {
+    cursor: pointer;
     margin: 0 auto;
     text-align: center;
     width: 200px;
@@ -2982,8 +2983,8 @@ html.js-overflow {
 }
 
 .join .join__box .upload__type .upload__image img {
-    -o-object-fit: cover;
-    object-fit: cover;
+    -o-object-fit: fill;
+    object-fit: fill;
     -o-object-position: 50% 50%;
     object-position: 50% 50%;
     width: 200px;
@@ -3400,8 +3401,8 @@ html.js-overflow {
 }
 
 .my .my__box .upload__type .upload__image img {
-    -o-object-fit: cover;
-    object-fit: cover;
+    -o-object-fit: fill;
+    object-fit: fill;
     -o-object-position: 50% 50%;
     object-position: 50% 50%;
     width: 100px;

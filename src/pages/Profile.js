@@ -117,6 +117,7 @@ const Profile = () => {
     }, [image]);
 
     const profileEditSubmit = (data) => {
+        console.log(data.file)
         // axios.defaults.withCredentials = true;
         // console.log(data)
         // console.log(data.file[0])
