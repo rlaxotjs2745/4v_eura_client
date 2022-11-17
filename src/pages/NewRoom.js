@@ -8,7 +8,7 @@ import AddMeetingUser from "../Components/Cards/AddMeetingUser";
 import {upload} from "@testing-library/user-event/dist/upload";
 import {setSelectionRange} from "@testing-library/user-event/dist/utils";
 
-const MAX_COUNT = 5;
+const MAX_COUNT = 99;
 
 const NewRoom = () => {
 
@@ -33,7 +33,10 @@ const NewRoom = () => {
     const [meetingInfo, setMeetingInfo] = useState('');
 
     const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [uploadedFilesPlus, setUploadedFilesPlus] = useState([]);
+
     const [fileLimit, setFileLimit] = useState(false);
+
 
     // const chosenFiles = Array.prototype.slice.call(e.target.files)
 
@@ -44,7 +47,7 @@ const NewRoom = () => {
             if(uploaded.findIndex((f) => f.name === file.name) === -1) {
                 uploaded.push(file);
                 if (uploaded.length === MAX_COUNT) setFileLimit(true);
-                // uploaded.length === MAX_COUNT ? setFileLimit(true) : setFileLimit(false)
+                uploaded.length === MAX_COUNT ? setFileLimit(true) : setFileLimit(false)
                 if(uploaded.length > MAX_COUNT) {
                     alert(`파일은 최대 ${MAX_COUNT}개 까지 첨부할 수 있습니다.`)
                     setFileLimit(false);
@@ -71,9 +74,23 @@ const NewRoom = () => {
                 i++;
             }
         }
-        const index2 = i
-
+        let index2 = i
         setUploadedFiles(uploaded.filter((i , index) => index !== index2))
+        setFileLimit(false)
+    }
+
+    const handleFileDeleteEvent2 = (e) => {
+        let uploaded = [...uploadedFilesPlus]
+        // console.log(uploaded)
+        let indexNumber = e.target.parentNode.parentNode
+        let i = 0;
+        while( indexNumber = indexNumber.previousSibling ) {
+            if( indexNumber.nodeType === 1 ) {
+                i++;
+            }
+        }
+        let index2 = i
+        setUploadedFilesPlus(uploaded.filter((i , index) => index !== index2))
         setFileLimit(false)
     }
 
@@ -103,6 +120,7 @@ const NewRoom = () => {
                     setEndDate(room.mt_end_dt.split(' ')[0]);
                     setMeetingInfo(room.mt_info);
                     setRoomInfo(room);
+                    setUploadedFilesPlus(room.mt_files)
                 })
             axios.get(SERVER_URL +
                 `/meet/room/invite?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
@@ -513,7 +531,16 @@ const NewRoom = () => {
                                          <img src={require('../assets/image/ic_file_14.png')} alt="" /><span className="file__name">{file.name}</span><em
                                          className="file__size">{file.size + 'KB'}</em>
                                      </a>
-                                     <button onClick={handleFileDeleteEvent} className="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></button>
+                                     <button type="button" onClick={handleFileDeleteEvent} className="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></button>
+                                 </li>
+                             ))}
+                             {uploadedFilesPlus.map(file =>(
+                                 <li>
+                                     <a href={file.download} download>
+                                         <img src={require('../assets/image/ic_file_14.png')} alt="" /><span className="file__name">{file.files}</span><em
+                                         className="file__size">{file.fileSize + 'KB'}</em>
+                                     </a>
+                                     <button type="button" onClick={handleFileDeleteEvent2} className="btn btn__delete"><img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/></button>
                                  </li>
                              ))}
                          </ul>
