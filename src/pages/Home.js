@@ -10,7 +10,7 @@ import $ from "jquery";
 const Home = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState({});
-    const [schedule, setSchedule] = useState({});
+    const [schedule, setSchedule] = useState([]);
     const [meeting, setMeeting] = useState({});
     const [lastMeeting, setLastMeeting] = useState([]);
     const [modal, setModalOpen] = useState(false);
@@ -100,7 +100,11 @@ const Home = () => {
         .then(res => {
             setUser(res.data.data);
             if(res.data.data.mt_meetShort){
-                setSchedule(res.data.data.mt_meetShort);
+                for(let meet of res.data.data.mt_meetShort){
+                    if(meet.mt_status == 1) {
+                        setSchedule([...schedule, meet]);
+                    }
+                }
                 return () => {
                     console.log("cleanup1");
                 }
