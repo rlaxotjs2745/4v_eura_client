@@ -3378,7 +3378,8 @@ html.js-overflow {
 
 .my .my__box .upload__type {
     padding: 5px 0 5px 0;
-    text-align: left
+    text-align: left;
+    cursor: pointer;
 }
 
 .my .my__box .upload__type .upload__btn {
