@@ -26,12 +26,11 @@ const NewRoom = () => {
     const [selectValue, setSelectValue] = useState(1);
     const [remindCount, setRemindCount] = useState(0);
     const [title, setTitle] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [startTime, setStartTime] = useState('');
-    const [endTime, setEndTime] = useState('');
+    const [startDate, setStartDate] = useState(new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3));
+    const [startTime, setStartTime] = useState(new Date().getHours() + ':' + new Date().getMinutes() + ':00');
+    const [endTime, setEndTime] = useState(new Date().getHours() + ':' + new Date().getMinutes() + ':00');
     const [endDate, setEndDate] = useState('');
     const [meetingInfo, setMeetingInfo] = useState('');
-    const [content, setContent] = useState('');
 
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [fileLimit, setFileLimit] = useState(false);
@@ -80,7 +79,7 @@ const NewRoom = () => {
 
 
     useEffect(() => {
-        if(window.location.pathname.split('/')[window.location.pathname.split('/').length-1] !== 'newroom'){ //수정하기
+        if(window.location.pathname.split('/')[window.location.pathname.split('/').length-1] !== 'newroom' || window.location.pathname.split('/')[window.location.pathname.split('/').length-1] !== ''){ //수정하기
             if(roomInfo.mt_remind_type !== 0){
                 setRemindBool(!remindBool);
             }
@@ -100,7 +99,7 @@ const NewRoom = () => {
                     setRemindCount(room.mt_remind_count);
                     setWeekday(room.mt_remind_week);
                     setEndDate(!room.mt_end_dt ? '' : room.mt_end_dt.split(' ')[0]);
-                    setContent(room.mt_info);
+                    setMeetingInfo(room.mt_info);
                 })
             axios.get(SERVER_URL +
                 `/meet/room/invite?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
@@ -315,19 +314,19 @@ const NewRoom = () => {
                         <label htmlFor="make_date"><img src="../assets/image/ic_calendar_24.png" alt="" /></label>
                         <input id="make_date" type="date" className="text under-scope width-flexble"
                                onChange={makeDate}
-                               defaultValue={isNew ? '' : roomInfo.mt_start_dt.split(' ')[0]}
+                               defaultValue={isNew ? new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3) : roomInfo.mt_start_dt.split(' ')[0]}
                         />
                             <label htmlFor="make_time" className="input__time"><img src="../assets/image/ic_time_24.png" alt="" /></label>
                             <input id="make_time1" type="time"
                                    pattern="[0-9]{2}:[0-9]{2}"
                                    className="text under-scope width-flexble"
                                    onChange={makeTime1}
-                                   defaultValue={isNew ? '' : roomInfo.mt_start_dt.split(' ')[1]}
+                                   defaultValue={isNew ? new Date().getHours() + ':' + new Date().getMinutes() + ':00' : roomInfo.mt_start_dt.split(' ')[1]}
                             />
                                 <span className="bar">-</span>
                                 <input id="make_time2" type="time" className="text under-scope width-flexble"
                                        onChange={makeTime2}
-                                       defaultValue={isNew ? '' : roomInfo.mt_end_dt.split(' ')[1]}
+                                       defaultValue={isNew ? new Date().getHours() + ':' + new Date().getMinutes() + ':00' : roomInfo.mt_end_dt.split(' ')[1]}
                                 />
 
                                 <hr />
@@ -456,7 +455,7 @@ const NewRoom = () => {
 
                 <div className="input__group">
                     <label htmlFor="make_room">미팅 정보</label>
-                    <textarea name="" id="make_room" cols="10" rows="3" placeholder="미팅정보를 입력해주세요." onChange={makeMeetingInfo} defaultValue={isNew ? '' : content}></textarea>
+                    <textarea name="" id="make_room" cols="10" rows="3" placeholder="미팅정보를 입력해주세요." onChange={makeMeetingInfo} defaultValue={meetingInfo}></textarea>
                 </div>
 
                 <div className="input__group">
