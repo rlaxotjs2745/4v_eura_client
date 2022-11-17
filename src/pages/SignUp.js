@@ -16,11 +16,11 @@ const SignUp = () => {
     const [userPwd, setUserPwd] = useState('')
     const [userPwdChk, setUserPwdChk] = useState('')
     const [userDisabled, setUserDisabled] = useState(false)
-    const [termDisabled, setTermUserDisabled] = useState(false)
+    const [termDisabled, setTermDisabled] = useState(true)
 
     const handleUserName = (e) => {
         setUserName(e.target.value);
-        if (userId.length && userName.length && userPwd.length && userPwdChk.length) {
+        if (userId.length && userName.length && userPwd.length && userPwdChk.length  && !($('.input__group').hasClass('is-alert'))) {
             setUserDisabled(true)
         } else {
             setUserDisabled(false)
@@ -33,7 +33,7 @@ const SignUp = () => {
 
     const handleUserPwd = (e) => {
         setUserPwd(e.target.value);
-        if (userId.length && userName.length && userPwd.length && userPwdChk.length) {
+        if (userId.length && userName.length && userPwd.length && userPwdChk.length && !($('.input__group').hasClass('is-alert'))) {
             setUserDisabled(true)
         } else {
             setUserDisabled(false)
@@ -42,7 +42,7 @@ const SignUp = () => {
 
     const handleUserPwdChk = (e) => {
         setUserPwdChk(e.target.value);
-        if (userId.length && userName.length && userPwd.length && userPwdChk.length) {
+        if (userId.length && userName.length && userPwd.length && userPwdChk.length && !($('.input__group').hasClass('is-alert'))) {
             setUserDisabled(true)
         } else {
             setUserDisabled(false)
@@ -52,7 +52,7 @@ const SignUp = () => {
     const handleUserId = (e) => {
         // console.log(e.target.value);
         setUserId(e.target.value);
-        if (userId.length && userName.length && userPwd.length && userPwdChk.length) {
+        if (userId.length && userName.length && userPwd.length && userPwdChk.length && !($('.input__group').hasClass('is-alert'))) {
             setUserDisabled(true)
         } else {
             setUserDisabled(false)
@@ -61,10 +61,11 @@ const SignUp = () => {
 
     const handleTerms = (e) => {
         if ($('#cb-1').val() === '1' && $('#cb-2').val() === '1') {
+            setTermDisabled(false)
             console.log('체크되있어요')
         } else {
             console.log('체크 안되있어요')
-            setUserDisabled(false)
+            setTermDisabled(true)
         }
     }
 
@@ -541,11 +542,11 @@ const SignUp = () => {
                                 sapiente, temporibus voluptatem voluptatibus? Consequatur.
                             </div>
                             <div className="checkbox">
-                                <input type="checkbox" name="privacy_terms" className="checkbox" id="cb-1" {...register('privacy_terms')}/>
+                                <input type="checkbox" onInput={handleTerms} name="privacy_terms" className="checkbox" id="cb-1" {...register('privacy_terms')}/>
                                 <label htmlFor="cb-1">위의 개인정보 처리방침에 동의합니다.</label>
                             </div>
                             <div className="checkbox">
-                                <input type="checkbox" name="service_use_terms" className="checkbox" id="cb-2" {...register('service_use_terms')}/>
+                                <input type="checkbox" onInput={handleTerms} name="service_use_terms" className="checkbox" id="cb-2" {...register('service_use_terms')}/>
                                 <label htmlFor="cb-2">위의 서비스 이용 약관에 동의합니다.</label>
                             </div>
                             {/*{errors.privacy_terms && <div className="error_tip">{errors.privacy_terms.message}</div>}*/}
@@ -556,7 +557,12 @@ const SignUp = () => {
                     <div className="btn__box">
                         <div className="btn__group">
                             <button onClick={Sign_prev3} className="btn btn__normal">이전</button>
-                            <button onClick={Sign4Open} className="btn btn__able">다음</button>
+                            {termDisabled ?
+                                <button type="button" className="btn btn__disable">다음</button>
+                                :
+                                <button onClick={Sign4Open} className="btn btn__able">다음</button>
+                            }
+
                         </div>
                     </div>
                 </div>

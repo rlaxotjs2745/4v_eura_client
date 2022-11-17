@@ -423,31 +423,31 @@ const NewRoom = () => {
                                             <dd>
                                                 <div className="checkbox type__square">
                                                     <input type="checkbox" className="checkbox" id="week_2" onChange={() => getWeekDay(2)} />
-                                                    <label htmlFor="월">월</label>
+                                                    <label htmlFor="week_2">월</label>
                                                 </div>
                                                 <div className="checkbox type__square">
                                                     <input type="checkbox" className="checkbox" id="week_3"onChange={() => getWeekDay(3)} />
-                                                    <label htmlFor="화">화</label>
+                                                    <label htmlFor="week_3">화</label>
                                                 </div>
                                                 <div className="checkbox type__square">
                                                     <input type="checkbox" className="checkbox" id="week_4" onChange={() => getWeekDay(4)} />
-                                                    <label htmlFor="수">수</label>
+                                                    <label htmlFor="week_4">수</label>
                                                 </div>
                                                 <div className="checkbox type__square">
                                                     <input type="checkbox" className="checkbox" id="week_5"onChange={() => getWeekDay(5)} />
-                                                    <label htmlFor="목">목</label>
+                                                    <label htmlFor="week_5">목</label>
                                                 </div>
                                                 <div className="checkbox type__square">
                                                     <input type="checkbox" className="checkbox" id="week_6" onChange={() => getWeekDay(6)} />
-                                                    <label htmlFor="금">금</label>
+                                                    <label htmlFor="week_6">금</label>
                                                 </div>
                                                 <div className="checkbox type__square">
                                                     <input type="checkbox" className="checkbox" id="week_7" onChange={() => getWeekDay(7)} />
-                                                    <label htmlFor="토">토</label>
+                                                    <label htmlFor="week_7">토</label>
                                                 </div>
                                                 <div className="checkbox type__square">
                                                     <input type="checkbox" className="checkbox" id="week_1" onChange={() => getWeekDay(1)} />
-                                                    <label htmlFor="일">일</label>
+                                                    <label htmlFor="week_1">일</label>
                                                 </div>
                                             </dd>
                                         </dl>

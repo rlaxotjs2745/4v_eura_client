@@ -24,7 +24,7 @@ const Profile = () => {
     const [passwordAlert, setPasswordAlert] = useState('')
 
     const [profile, setProfile] = useState('../assets/image/image_profile.png')
-    const [userName, setUserName] = useState('유라')
+    const [userName, setUserName] = useState('')
     const [userPhone, setUserPhone] = useState('01012345678')
     const [eqType01, setEqType01] = useState(0)
     const [eqType02, setEqType02] = useState(0)
@@ -238,6 +238,10 @@ const Profile = () => {
         // setValue('file', imagePreview)
     },[eqType01, eqType02])
 
+    const profileEditCancle = () => {
+        setImagePreview(imagePreview)
+        setProfileVisible(!profileVisible)
+    }
 
     const characterCancle = () => {
         setCharacterVisible(!characterVisible)
@@ -266,39 +270,32 @@ const Profile = () => {
 
     async function getMyinfo() {
         axios.post(SERVER_URL + '/myinfo', {}, AXIOS_OPTION).then(res => {
-            // console.log(res.data.data)
+            console.log(res.data.data)
+            console.log('user_pic은', res.data.data.user_pic.length)
             // console.log(res.data)
             // console.log(res.data.data.eq_type01)
             // console.log(res.data.data.eq_type02)
             if(res.data.result_code === 'SUCCESS'){
-                setImagePreview(res.data.data.user_pic)
                 setUserName(res.data.data.user_name)
                 setUserPhone(res.data.data.user_phone)
                 setEqType01(res.data.data.eq_type01)
                 setEqType02(res.data.data.eq_type02)
             }
 
-            // setValue('eq_type_01_val', res.data.data.eq_type01)
-            // console.log('res.data.result_code :: ', res.data.result_code)
-            // console.log('res.data.msg :: ', res.data.result_str)
-            // console.log('res.data.user_name ::', res.data.data.user_name)
-            // console.log('res.data.user_pic ::', res.data.data.user_pic)
-            // console.log('res.data.user_pic ::', res.data.user_pic)
-            // if(res.data.result_code === 'FAIL'){
-            //     console.log('======================',res.data.result_str);
-            //     // alert(res.data.result_str)
-            //     // navigate('/')
-            // } else if(res.data.result_code === 'SUCCESS'){
-            //     console.log('======================', res.data.result_str);
-            //     // alert(res.data.result_str)
-            // }
+            if (res.data.result_code === 'SUCCESS' && res.data.data.user_pic.length > 0) {
+                setImagePreview(res.data.data.user_pic)
+            }
+
         }).catch(err => {
             console.log(err);
         })
-    };
+    }
+
     useEffect(()=> {
         getMyinfo()
     },[])
+
+
 
     return (
         <section className="content" id="content">
@@ -322,7 +319,7 @@ const Profile = () => {
                             </label>
                             <div className="modify__box">
                                 <button onClick={profileEditSubmit} className="btn btn__able btn__s">변경하기</button>
-                                <button onClick={()=> {setProfileVisible(!profileVisible)}} className="btn btn__normal btn__s">취소</button>
+                                <button onClick={profileEditCancle} className="btn btn__normal btn__s">취소</button>
                             </div>
                             </form>
                         </div>
