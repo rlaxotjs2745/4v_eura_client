@@ -128,7 +128,7 @@ const Profile = () => {
             , {
             'file' : data.file[0]
             }
-            , AXIOS_FORM_DATA_OPTION
+            , AXIOS_OPTION
         ).then(res => {
             // console.log(res)
             // console.log('res.data.result_code :: ', res.data.result_code)

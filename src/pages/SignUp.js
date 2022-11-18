@@ -212,7 +212,7 @@ const SignUp = () => {
         console.log(formData)
         axios.post(SERVER_URL + '/join_mail'
             , formData
-            , AXIOS_FORM_DATA_OPTION_NOUSER
+            , AXIOS_OPTION
         ).then(res => {
             console.log(res)
             console.log('res.data.userId :: ', res.data.result_code)

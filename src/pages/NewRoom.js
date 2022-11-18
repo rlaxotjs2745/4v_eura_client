@@ -283,7 +283,7 @@ const NewRoom = () => {
         // formData.append('file', uploadedFiles);
 
         if(isNew) {
-            axios.post(SERVER_URL + '/meet/create', formData,  AXIOS_FORM_DATA_OPTION_NOUSER)
+            axios.post(SERVER_URL + '/meet/create', formData,  AXIOS_OPTION)
                 .then(res => {
                     if(res.data.result_code === 'SUCCESS'){
                         alert('미팅룸을 생성했습니다.');
@@ -303,7 +303,7 @@ const NewRoom = () => {
             for(let i of formData){
                 console.log(i);
             }
-            axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_FORM_DATA_OPTION_NOUSER)
+            axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_OPTION)
                 .then(res => {
                     if(res.data.result_code === 'SUCCESS'){
                         alert('미팅룸을 수정했습니다.');
