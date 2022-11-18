@@ -17,7 +17,7 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
         <div className={room.mt_status === 0 ? 'box is-before' : room.mt_status === 2 ? 'box is-cancel' : 'box'} onClick={() => navigateToMeetingRoom(room.mt_idx, isLast)}>
             <div className="box__badge">
                 {
-                    room.mt_live && room.is_finish !== 1 ?
+                    room.mt_live && isLast !== 1 ?
                         <span className="type__live">LIVE</span>
                     : room.mt_status === 0 && room.is_host === 1 ?
                         <span className="type__private">비공개</span>

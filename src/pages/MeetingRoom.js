@@ -125,6 +125,7 @@ const MeetingRoom = (props) => {
             }
         })
         setInvites(res);
+        console.log(invites)
     }
 
     const startMeeting = () => {

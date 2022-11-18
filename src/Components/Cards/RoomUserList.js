@@ -15,7 +15,6 @@ const RoomUserList = ({invites, idx}) =>
             <div className="user" id={'slide_' + idx}>
                 <ul>
                     {
-
                         invites.map(inv => <RoomUser inv={inv} />)
                     }
                 </ul>
