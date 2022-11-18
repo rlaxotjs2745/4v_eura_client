@@ -110,12 +110,12 @@ const Home = () => {
                     console.log("cleanup1");
                 }
             }
-            localStorage.setItem('reload', false);
+            // localStorage.setItem('reload', false);
         }).catch(() => {
-            if(!localStorage.getItem('reload')){
-                window.location.reload();
-                localStorage.setItem('reload', true);
-            }
+            // if(!localStorage.getItem('reload')){
+            //     window.location.reload();
+            //     localStorage.setItem('reload', true);
+            // }
         })
     };
     async function getMainList() {
