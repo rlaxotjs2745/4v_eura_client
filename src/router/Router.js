@@ -1,3 +1,4 @@
+import React from "react";
 import {Route, Routes} from "react-router-dom";
 import LayoutType2 from "../Layout/LayoutType2";
 import LayoutType1 from "../Layout/LayoutType1";
@@ -13,7 +14,6 @@ import MeetingRoom from "../pages/MeetingRoom";
 import NewRoom from "../pages/NewRoom";
 import MeetingCalendar from "../pages/MeetingCalendar";
 import AnalyseMeeting from "../pages/AnalyseMeeting";
-import React from "react";
 
 const Routers = () => {
     return (

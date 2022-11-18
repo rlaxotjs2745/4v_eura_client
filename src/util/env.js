@@ -9,9 +9,7 @@ export const SERVER_URL = "https://api.eura.site"
 const userid = getCookie('user_id')
 
 export const AXIOS_OPTION = {
-    headers: {
-        "uid":userid
-    }
+    withCredentials:true
 };
 
 export const AXIOS_FORM_DATA_OPTION = {

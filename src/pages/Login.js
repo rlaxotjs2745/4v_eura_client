@@ -106,7 +106,7 @@ const Login = () => {
                     console.log(e.autoLogin)
                     tomorrow.setDate(today.getDate()+30);
                     // document.cookie = `user_id=${inputId}; expires=${tomorrow}; domain=${COOKIE_DOMAIN}`;
-                    document.cookie = `user_id=${inputId}; expires=${tomorrow};`;
+                    // document.cookie = `user_id=${inputId}; expires=${tomorrow};`;
                     // setCookie('user_id', inputId, {path:'/', expires:tomorrow});
                 }
                     // 자동로그인 체크 안했으면 쿠키 하루
@@ -114,7 +114,7 @@ const Login = () => {
                     console.log(e.autoLogin)
                     tomorrow.setDate(today.getDate()+1);
                     // document.cookie = `user_id=${inputId}; expires=${tomorrow}; domain=${COOKIE_DOMAIN}`;
-                    document.cookie = `user_id=${inputId}; expires=${tomorrow};`;
+                    // document.cookie = `user_id=${inputId}; expires=${tomorrow};`;
                     // setCookie('user_id', inputId, {path:'/', expires:tomorrow});
                 }
                 console.log('---------ID', inputId)
@@ -124,7 +124,7 @@ const Login = () => {
                 setloginMessage('')
                 // alert(res.data.result_str)
                 navigate('/')
-                window.location.reload()
+                // window.location.reload()
             } else if(res.data.result_code === 'SUCCESS02') {
                 // 임시 비밀번호로 로그인 되었습니다.
                 // 로그인 되었습니다.
@@ -134,14 +134,14 @@ const Login = () => {
                 if(inputChk) {
                     tomorrow.setDate(today.getDate()+30);
                     // document.cookie = `user_id=${inputId}; expires=${tomorrow}; domain=${COOKIE_DOMAIN}`
-                    document.cookie = `user_id=${inputId}; expires=${tomorrow};`
+                    // document.cookie = `user_id=${inputId}; expires=${tomorrow};`
                     // setCookie('user_id', document.cookie, {path:'/', expires:tomorrow});
                 }
                 // 자동로그인 체크 안했으면 쿠키 하루
                 else if (!inputChk) {
                     tomorrow.setDate(today.getDate()+1);
                     // document.cookie = `user_id=${inputId}; expires=${tomorrow}; domain=${COOKIE_DOMAIN}`
-                    document.cookie = `user_id=${inputId}; expires=${tomorrow};`
+                    // document.cookie = `user_id=${inputId}; expires=${tomorrow};`
                     // setCookie('user_id', inputId, {path:'/', expires:tomorrow});
                 }
                 console.log('======================',res.data.result_str);
@@ -151,7 +151,7 @@ const Login = () => {
                 setloginMessage('')
                 // alert(res.data.result_str)
                 navigate('/')
-                window.location.reload()
+                // window.location.reload()
             }
         })
             .catch((error)=> {
