@@ -13,6 +13,10 @@ export const AXIOS_OPTION = {
 };
 
 export const AXIOS_FORM_DATA_OPTION = {
+    // headers: {
+    //     Cookie: "user_id="+userid,
+    //     "Content-Type": "multipart/form-data"
+    // },
     withCredentials:true
 }
 
