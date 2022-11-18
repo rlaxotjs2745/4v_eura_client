@@ -17,6 +17,7 @@ const Home = () => {
     const [curMeeting, setCurMeeting] = useState(false)
     const [curEvent, setCurEvent] = useState(true);
     const [eventNow, setEventNow] = useState(0);
+    const [curPage, setCurPage] = useState(1);
 
     const pageSort = (e) => {
         let endPoint;
@@ -94,6 +95,15 @@ const Home = () => {
     const mouseOut = () => {
         setCurEvent(true);
     }
+
+    const getMeetMore = () => {
+        axios.get(SERVER_URL + `/meet/main/list?currentPage=${curPage+1}`, AXIOS_OPTION)
+            .then(res => {
+                setMeeting([...meeting, ...res.data.data]);
+                setCurPage(curPage+1);
+            })
+    }
+
 
     async function getMain() {
         axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
@@ -224,9 +234,9 @@ const Home = () => {
                     {
                         !meeting ||
                         !meeting.mt_meetMyList ||
-                        meeting.mt_meetMyList.length < 8 ? '' :
+                        meeting.mt_meetMyList.length % 8 == 0 ? '' :
                             <div className="btn__group">
-                                <a href="#none" className="btn btn__more">더 보기</a>
+                                <a onClick={getMeetMore} className="btn btn__more">더 보기</a>
                             </div>
                     }
                 </div>
