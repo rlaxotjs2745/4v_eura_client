@@ -7,17 +7,17 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
         let thisYear = thisTime.getFullYear();
         let thisMonth = thisTime.getMonth() + 1;
         let thisDate = thisTime.getDate();
-
         return Math.floor((new Date(room.mt_start_dt.split(' ')[0]) - new Date(`${thisYear}-${thisMonth}-${thisDate}`)) / 86400000);
     }
 
 
+    // console.log('피니쉬?', room.is_finish)
 
     return (
         <div className={room.mt_status === 0 ? 'box is-before' : room.mt_status === 2 ? 'box is-cancel' : 'box'} onClick={() => navigateToMeetingRoom(room.mt_idx, isLast)}>
             <div className="box__badge">
                 {
-                    room.mt_live ?
+                    room.mt_live && room.is_finish !== 1 ?
                         <span className="type__live">LIVE</span>
                     : room.mt_status === 0 && room.is_host === 1 ?
                         <span className="type__private">비공개</span>
@@ -25,8 +25,9 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
                         <span className="type__cancel">취소된 미팅</span>
                     : new Date(room.mt_start_dt) - new Date() > 86400000 ?
                         <span className="type__dday">D-{getSubtractionDate()}</span>
-                    :
+                    : room.mt_iData !== 0 ?
                         <span className="type__ready">약 {Math.floor((new Date(room.mt_start_dt) - new Date()) / 3600000)}시간 뒤 시작</span>
+                    : ""
                 }
             </div>
             {

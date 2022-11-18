@@ -103,18 +103,19 @@ const Home = () => {
                 for(let meet of res.data.data.mt_meetShort){
                     if(meet.mt_status == 1) {
                         setSchedule([...schedule, meet]);
+
                     }
                 }
                 return () => {
                     console.log("cleanup1");
                 }
             }
-            localStorage.setItem('reload', false);
+            // localStorage.setItem('reload', false);
         }).catch(() => {
-            if(!localStorage.getItem('reload')){
-                window.location.reload();
-                localStorage.setItem('reload', true);
-            }
+            // if(!localStorage.getItem('reload')){
+            //     window.location.reload();
+            //     localStorage.setItem('reload', true);
+            // }
         })
     };
     async function getMainList() {
@@ -129,6 +130,7 @@ const Home = () => {
     async function getMainEndList() {
         axios.get(SERVER_URL + '/meet/main/endlist', AXIOS_OPTION)
         .then(res => {
+            console.log(res.data.data)
             setLastMeeting(res.data.data);
             return () => {
                 console.log("cleanup3");
@@ -240,21 +242,21 @@ const Home = () => {
                             </select>
                         </div>
                     </h3>
-                    <div className="boxing">
+                    <div className="boxing ">
                         {
                             !lastMeeting ||
                             !lastMeeting.mt_meetEndMyList || !lastMeeting.mt_meetEndMyList.length ?
                                 <div className="boxing">
                                     <div className="msg__nodata">
                                         <span>지난 미팅 일정이 없습니다.</span>
-                                    </div>
+                                        </div>
                                 </div>
                                 :
-                                lastMeeting.mt_meetEndMyList.map((room, idx) => {
-                                    if(idx > 8) return;
-                                    if(room.is_host == 0 && room.mt_status != 1) return;
-                                    return (
-                                        <MainMyMeetingRoom key={idx} room={room} modalOpen={modalOpen} isLast={1} navigateToMeetingRoom={navigateToMeetingRoom} mouseOver={mouseOver} mouseOut={mouseOut} />
+                                    lastMeeting.mt_meetEndMyList.map((room, idx) => {
+                                        if(idx > 8) return;
+                                        if(room.is_host == 0 && room.mt_status != 1) return;
+                                        return (
+                                            <MainMyMeetingRoom key={idx} room={room} modalOpen={modalOpen} isLast={1} navigateToMeetingRoom={navigateToMeetingRoom} mouseOver={mouseOver} mouseOut={mouseOut} />
                                     )
                                 })
                         }

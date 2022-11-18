@@ -2,16 +2,19 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {AXIOS_FORM_DATA_OPTION, AXIOS_OPTION, SERVER_URL} from "../util/env";
 import ModifyRoomUser from "../Components/Cards/ModifyRoomUser";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import $ from "jquery";
 import AddMeetingUser from "../Components/Cards/AddMeetingUser";
 import {upload} from "@testing-library/user-event/dist/upload";
 import {setSelectionRange} from "@testing-library/user-event/dist/utils";
+import queryString from 'query-string'
 
 const MAX_COUNT = 99;
 
 const NewRoom = () => {
-
+    const { pathname } = useLocation();
+    const pathSplit = Number(pathname.split('/')[2])
+    console.log(pathSplit)
     const navigate = useNavigate();
 
     const [roomInfo, setRoomInfo] = useState({});
@@ -106,7 +109,7 @@ const NewRoom = () => {
                 setRemindBool(!remindBool);
             }
             axios.get(SERVER_URL +
-                `/meet/room/info?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
+                `/meet/room/info?idx_meeting=${pathSplit}`,
                 AXIOS_OPTION)
                 .then(res => {
                     // console.log(res.data.data)
@@ -126,7 +129,7 @@ const NewRoom = () => {
                     setUploadedFilesPlus(room.mt_files)
                 })
             axios.get(SERVER_URL +
-                `/meet/room/invite?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
+                `/meet/room/invite?idx_meeting=${pathSplit}`,
                 AXIOS_OPTION)
                 .then(res => {
                     setInvCount(res.data.data.mt_invites.length);
@@ -294,7 +297,6 @@ const NewRoom = () => {
             if(delFiles.length > 0){
                 formData.append('file_del', delFiles.join());
             }
-
             for(let i of formData){
                 console.log(i);
             }

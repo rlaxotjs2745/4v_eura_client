@@ -4,12 +4,16 @@ import {AXIOS_OPTION, SERVER_URL} from "../util/env";
 import $ from "jquery";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation, Pagination} from "swiper";
-import {Link} from "react-router-dom";
+import {Link, useNavigate, useLocation} from "react-router-dom";
 import "swiper/swiper.min.css";
 import "swiper/swiper-bundle.min.css"
 import RoomUserList from "../Components/Cards/RoomUserList";
 
 const MeetingRoom = (props) => {
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
+    const pathSplit = Number(pathname.split('/')[2])
+    console.log(pathSplit)
 
     const [roomInfo, setRoomInfo] = useState('');
     const [invites, setInvites] = useState('');
@@ -18,7 +22,7 @@ const MeetingRoom = (props) => {
 
     useEffect(() => {
         axios.get(SERVER_URL +
-            `/meet/room/main?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
+            `/meet/room/main?idx_meeting=${pathSplit}`,
             AXIOS_OPTION)
             .then(res => {
                 console.log(res.data.data)
@@ -26,7 +30,7 @@ const MeetingRoom = (props) => {
             })
 
          axios.get(SERVER_URL +
-            `/meet/room/invite?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
+            `/meet/room/invite?idx_meeting=${pathSplit}`,
             AXIOS_OPTION)
             .then(res => {
                 setInvCount(res.data.data.mt_invites.length);
@@ -63,6 +67,7 @@ const MeetingRoom = (props) => {
                 .then(res => {
                     if(res.data.result_code === 'SUCCESS'){
                         setRoomInfo({...roomInfo, mt_status: 3});
+                        navigate('/')
                     }else{
                         alert(res.data.result_str);
                     }
@@ -75,10 +80,11 @@ const MeetingRoom = (props) => {
                 console.log(res)
                 if(res.data.result_code === 'SUCCESS'){
                     axios.get(SERVER_URL +
-                        `/meet/room/info?idx_meeting=${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`,
+                        `/meet/room/info?idx_meeting=${pathSplit}`,
                         AXIOS_OPTION)
                         .then(res => {
                             setRoomInfo({...roomInfo, mt_status: 2});
+                            navigate('/')
                         })
                 }else{
                     alert(res.data.result_str);
@@ -169,9 +175,9 @@ const MeetingRoom = (props) => {
                             <div className="case__title">{roomInfo.mt_name}
                                 {
                                     roomInfo.mt_ishost === '1' ?
-                                <Link to={"/newroom/" + window.location.pathname.split('/')[window.location.pathname.split('/').length-1]} className="btn btn__edit">
-                                    <img src={require('../assets/image/ic_edit_24.png')} alt=""/>
-                                </Link> : ''
+                                    <Link to={"/newroom/" + window.location.pathname.split('/')[window.location.pathname.split('/').length-1]} className="btn btn__edit">
+                                        <img src={require('../assets/image/ic_edit_24.png')} alt=""/>
+                                    </Link> : ''
                                 }
                             </div>
                             <dl className="type__host">
