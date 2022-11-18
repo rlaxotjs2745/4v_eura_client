@@ -270,7 +270,7 @@ const NewRoom = () => {
             formData.append("file", uploadedFiles[i]);
         }
         if(remindBool){
-            formData.append('mt_remind_type', selectValue);
+            formData.append('mt_remind_type', parseInt(selectValue));
             formData.append('mt_remind_count', remindCount);
             if(selectValue == 2){
                 formData.append('mt_remind_week', weekday.join());
