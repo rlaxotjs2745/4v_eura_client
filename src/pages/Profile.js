@@ -124,11 +124,12 @@ const Profile = () => {
         // // console.log(data.file[0])
         // let formData = new FormData();
         // formData.append('file', data.file[0]);
+        const formData = new FormData();
+        formData.append("file", data.file[0]);
+
         axios.post(SERVER_URL + '/modify_profile'
-            , {
-            'file' : data.file[0]
-            }
-            , AXIOS_FORM_DATA_OPTION
+            , formData
+            , AXIOS_OPTION
         ).then(res => {
             // console.log(res)
             // console.log('res.data.result_code :: ', res.data.result_code)
