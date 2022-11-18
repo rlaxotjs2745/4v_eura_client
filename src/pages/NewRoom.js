@@ -122,7 +122,7 @@ const NewRoom = () => {
                     setEndTime(room.mt_end_dt.split(' ')[1]);
                     setSelectValue(room.mt_remind_type);
                     setRemindCount(room.mt_remind_count);
-                    setWeekday(room.mt_remind_week);
+                    setWeekday(room.mt_remind_week.split(','));
                     setEndDate(room.mt_end_dt.split(' ')[0]);
                     setMeetingInfo(room.mt_info);
                     setRoomInfo(room);
@@ -296,6 +296,9 @@ const NewRoom = () => {
             formData.append('idx_meeting', window.location.pathname.split('/')[window.location.pathname.split('/').length-1]);
             if(delFiles.length > 0){
                 formData.append('file_del', delFiles.join());
+            }
+            if(delUser.length > 0){
+                formData.append('invite_del', delUser);
             }
             for(let i of formData){
                 console.log(i);
