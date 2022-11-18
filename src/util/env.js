@@ -13,10 +13,7 @@ export const AXIOS_OPTION = {
 };
 
 export const AXIOS_FORM_DATA_OPTION = {
-    headers: {
-        "Content-Type": "multipart/form-data",
-        "uid":userid
-    }
+    withCredentials:true
 }
 
 export const AXIOS_FORM_DATA_OPTION_NOUSER = {

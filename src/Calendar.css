@@ -121,6 +121,7 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+    text-decoration: none;
 /*border: 1px #8e57ff !important;*/
 }
 .react-calendar button {

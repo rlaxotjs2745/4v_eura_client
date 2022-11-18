@@ -2066,6 +2066,7 @@ td {
     margin-bottom: 17px;
     overflow: hidden
 }
+.main__schedule ul li > div {cursor: pointer}
 
 .main__schedule ul li strong {
     color: #17171a;
@@ -4575,3 +4576,4 @@ form.w100 {width:100%; position: relative; height:920px; margin:60px auto 0;}
 
 input[type=file]:disabled + label .btn.btn__download, button.btn__download {opacity: 0.3}
 
+input[type=date].under-scope, input[type=time].under-scope {cursor: pointer}

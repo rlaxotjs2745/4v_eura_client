@@ -8,6 +8,7 @@ const {useState} = require("react");
 
 
 
+
 const RoomUser = ({inv}) =>
         <li className={inv.is_live ? 'user' : 'user is-disabled'}>
             <figure><img src={inv.picture ? inv.picture : require('../../assets/image/image_profile.png')} alt="" /></figure>
