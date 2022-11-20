@@ -234,7 +234,7 @@ const Home = () => {
                     {
                         !meeting ||
                         !meeting.mt_meetMyList ||
-                        meeting.mt_meetMyList.length % 8 == 0 ? '' :
+                        meeting.mt_meetMyList.length % 8 != 0 ? '' :
                             <div className="btn__group">
                                 <a onClick={getMeetMore} className="btn btn__more">더 보기</a>
                             </div>
