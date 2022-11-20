@@ -1,18 +1,32 @@
 import React, {useState, useEffect} from 'react';
 import $ from "jquery";
 import {Link, useNavigate, useLocation, json} from "react-router-dom";
-
 import axios from "axios";
 import {AXIOS_OPTION, SERVER_URL} from "../util/env";
-import queryString from "query-string";
-// import {Chart, View, Interval, Legend, Slider} from "bizcharts";
-// import { Player } from 'video-react';
+// import queryString from "query-string";
+import { Player, ControlBar } from "video-react";
+import "/node_modules/video-react/dist/video-react.css";
+import EuraPlayer from "../util/EuraPlayer";
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend, 
+    ReferenceLine,
+    ResponsiveContainer,
+    Pie,
+    PieChart
+  } from 'recharts';
 
 const AnalyseMeeting = () => {
     const profile = '../assets/image/image_profile.png'
     const graph = '../assets/image/graph.png';
-    const [vidRef, setVidRef] = useState('');
+    // const [vidRef, setVidRef] = useState('');
     const [movieSrc, setMovieSrc] = useState('');
+    const [playMovieNo, setPlayMovieNo] = useState(0);
     const location = useLocation(); // 홈에서 넘겨준 스테이트 값
     const pathname = location.pathname; // 값 중에 pathname
     const pathSplit = pathname.split('/')[2] // pathname /로 뜯어서 2번째값
@@ -27,27 +41,120 @@ const AnalyseMeeting = () => {
 
     const [lecture, setLecture] = useState({})
     const [btmdata, setBtmdata] = useState([])
+    const [piedata, setPiedata] = useState([])
+    const [middata, setMiddata] = useState([])
+    const colors = ['#3377ff', '#3377ff', '#ffc633', '#ffc633']
+    const _colors = ['#3377ff', '#ffc633', 'gray']
+    let chartIns = null
 
     useEffect(() => {
-        setBtmdata(
-            [
-                {duration:0,month:'00:00:05',name:'Good',value:76},{duration:0,month:'00:00:05',item:'Bad',value:-48},{duration:5,month:'00:00:05',name:'Good',value:46},{duration:5,month:'00:00:05',item:'Bad',value:-41},{duration:10,month:'00:00:05',name:'Good',value:65},{duration:10,month:'00:00:05',item:'Bad',value:-63},{duration:15,month:'00:00:05',name:'Good',value:79},{duration:15,month:'00:00:05',item:'Bad',value:-20},{duration:20,month:'00:00:05',name:'Good',value:53},{duration:20,month:'00:00:05',item:'Bad',value:-89},{duration:25,month:'00:00:05',name:'Good',value:61},{duration:25,month:'00:00:05',item:'Bad',value:-48},{duration:30,month:'00:00:05',name:'Good',value:81},{duration:30,month:'00:00:05',item:'Bad',value:-64},{duration:35,month:'00:00:05',name:'Good',value:22},{duration:35,month:'00:00:05',item:'Bad',value:-65},{duration:40,month:'00:00:05',name:'Good',value:73},{duration:40,month:'00:00:05',item:'Bad',value:-71},{duration:45,month:'00:00:05',name:'Good',value:50},{duration:45,month:'00:00:05',item:'Bad',value:-90},{duration:50,month:'00:00:05',name:'Good',value:46},{duration:50,month:'00:00:05',item:'Bad',value:-75},{duration:55,month:'00:00:05',name:'Good',value:29},{duration:55,month:'00:00:05',item:'Bad',value:-38},{duration:60,month:'00:00:05',name:'Good',value:4},{duration:60,month:'00:00:05',item:'Bad',value:-87},{duration:65,month:'00:00:05',name:'Good',value:6},{duration:65,month:'00:00:05',item:'Bad',value:-6},{duration:70,month:'00:00:05',name:'Good',value:25},{duration:70,month:'00:00:05',item:'Bad',value:-58},{duration:75,month:'00:00:05',name:'Good',value:45},{duration:75,month:'00:00:05',item:'Bad',value:-3},{duration:80,month:'00:00:05',name:'Good',value:59},{duration:80,month:'00:00:05',item:'Bad',value:-47},{duration:85,month:'00:00:05',name:'Good',value:68},{duration:85,month:'00:00:05',item:'Bad',value:0},{duration:90,month:'00:00:05',name:'Good',value:33},{duration:90,month:'00:00:05',item:'Bad',value:-29},{duration:95,month:'00:00:05',name:'Good',value:9},{duration:95,month:'00:00:05',item:'Bad',value:-76},{duration:100,month:'00:00:05',name:'Good',value:88},{duration:100,month:'00:00:05',item:'Bad',value:-80},{duration:105,month:'00:00:05',name:'Good',value:42},{duration:105,month:'00:00:05',item:'Bad',value:-10},{duration:110,month:'00:00:05',name:'Good',value:79},{duration:110,month:'00:00:05',item:'Bad',value:-37},{duration:115,month:'00:00:05',name:'Good',value:22},{duration:115,month:'00:00:05',item:'Bad',value:-41},{duration:120,month:'00:00:05',name:'Good',value:27},{duration:120,month:'00:00:05',item:'Bad',value:-53},{duration:125,month:'00:00:05',name:'Good',value:16},{duration:125,month:'00:00:05',item:'Bad',value:-56},{duration:130,month:'00:00:05',name:'Good',value:73},{duration:130,month:'00:00:05',item:'Bad',value:-38},{duration:135,month:'00:00:05',name:'Good',value:60},{duration:135,month:'00:00:05',item:'Bad',value:-19},{duration:140,month:'00:00:05',name:'Good',value:29},{duration:140,month:'00:00:05',item:'Bad',value:-49},{duration:145,month:'00:00:05',name:'Good',value:84},{duration:145,month:'00:00:05',item:'Bad',value:-43}
-            ]
-        );
-    },[]);
+        // 개인 집중도 그래프
+        setBtmdata([
+              {
+                name: "00:00:05",
+                Bad: -80,
+                Good: 0,
+                amt: 0
+              },
+              {
+                name: "00:00:10",
+                Bad: 0,
+                Good: 30,
+                amt: 0
+              },
+              {
+                name: "00:00:15",
+                Bad: -60,
+                Good: 0,
+                amt: 0
+              },
+              {
+                name: "00:00:20",
+                Bad: -50,
+                Good: 0,
+                amt: 0
+              },
+              {
+                name: "00:00:25",
+                Bad: 0,
+                Good: 60,
+                amt: 0
+              },
+              {
+                name: "00:00:30",
+                Bad: -30,
+                Good: 0,
+                amt: 0
+              },
+              {
+                name: "00:00:35",
+                Bad: 0,
+                Good: 80,
+                amt: 0
+              }
+          ])
 
-    useEffect(() => {
+        // 전체 집중도 원형그래프
+        setPiedata([
+            { name: "Good", value: 70 },
+            { name: "Bad", value: 20 },
+            { name: "Camera off", value: 10 },
+        ])
+
+        // 전체 집중도 그래프
+        setMiddata([
+            {
+                name: "00:00:05",
+                Bad: -80,
+                Good: 20,
+                amt: 0
+              },
+              {
+                name: "00:00:10",
+                Bad: -70,
+                Good: 30,
+                amt: 0
+              },
+              {
+                name: "00:00:15",
+                Bad: -60,
+                Good: 40,
+                amt: 0
+              },
+              {
+                name: "00:00:20",
+                Bad: -50,
+                Good: 50,
+                amt: 0
+              },
+              {
+                name: "00:00:25",
+                Bad: -40,
+                Good: 60,
+                amt: 0
+              },
+              {
+                name: "00:00:30",
+                Bad: -30,
+                Good: 70,
+                amt: 0
+              },
+              {
+                name: "00:00:35",
+                Bad: -20,
+                Good: 80,
+                amt: 0
+              }
+          ])
+    
         axios.get(SERVER_URL + `/meet/result/meeting?idx_meeting=`+pathSplit, AXIOS_OPTION)
             .then(res => {
                 if(res.data.result_code === 'SUCCESS'){
                     setLecture(res.data.data)
-                    console.log(lecture)
+                    // console.log(lecture)
                     setBtmdata(res.data.data.mtAnalyBtm)
                     let _mfile = res.data.data.mtMovieFiles
-                    if(_mfile.length>0){
-                        setMovieSrc(_mfile[0].fileUrl)
-                        $('.moveFilelist .file__anchor').eq(0).addClass('is-active')
-                    }
+                    if(_mfile.length>0){setMovieSrc(_mfile[0].fileUrl)}
                     console.log('_mfile.length : '+ _mfile.length)
                 }else{
                     alert(res.data.result_str)
@@ -55,136 +162,36 @@ const AnalyseMeeting = () => {
             }).catch((error)=>{
                 console.log(error)
         });
+
+        return () => {
+            console.log('END')
+        }
     }, [])
+    
+    // const [dur, setDuration] = useState(0)
+    // const durationStat = (dur) => {
+    //     setDuration(dur);
+    // };
+
+    // useEffect(() => {
+    //     console.log(dur)
+    // }, [dur])
 
     useEffect(() => {
-        for(let i=0;i<$('.moveFilelist .file__anchor').length;i++){
-            $('.moveFilelist .file__anchor').eq(i).removeClass('is-active')
-        }
-        $('.moveFilelist .file__anchor').eq(0).addClass('is-active')
-        // setVidRef($('.moveFilelist .file__anchor').eq(0).attr('title'))
-        // setMovieSrc($('.moveFilelist .file__anchor').eq(0).attr('src'))
-        // callMovie()
-        console.log(lecture)
-    }, [lecture])
-
-    useEffect(() => {
-        console.log(btmdata)
-    }, [btmdata])
-
-    // const callMovie = () => {
-        // $('.moveFilelist .file__anchor').each(function(){$(this).removeClass('is-active');})
-        // setVidRef($('.moveFilelist .file__anchor').eq(_i-1).attr('title'))
-        // setMovieSrc($('.moveFilelist .file__anchor').eq(0).attr('src'))
-    // }
-
-    useEffect(() => {
-        for(let i=0;i<$('.moveFilelist .file__anchor').length;i++){
-            $('.moveFilelist .file__anchor').eq(i).removeClass('is-active')
-        }
-        $('.moveFilelist .file__anchor').eq(0).addClass('is-active')
         console.log(movieSrc)
     }, [movieSrc])
 
-    const colors = ['#3377ff', '#3377ff', '#ffc633', '#ffc633']
-    let chartIns = null
+    // console.log(lecture.mtInviteInfo)
 
-    // // 더미 데이터용
-    // useEffect(() => {
-    //     setLecture(
-    //         {
-    //             "mtName":"인간공학개론", // 강의명
-    //             "mtMeetiDate":"2022-11-11", // 강의 날짜
-    //             "mtMeetiTime":"09:00 ~ 10:00", // 강의 시간
-    //             "mtMeetTimer":"00:56:53", // 소요 시간
-    //             "is_host":0, // 호스트 여부 - 0:참석자, 1:호스트
-    //             "hostname":"나교수",
-    //             // 참석자 인원수 - 참석자는 null 값
-    //             "mtInviteInfo":{
-    //                 "user_invite":29,
-    //                 "user_total":30
-    //             },
-    //             "mtInviteList": [
-    //                 {
-    //                     "upic":"../assets/image/Ellipse 164.png", // 프로필 사진 URL
-    //                     "uname":"참석자1", // 참석자명
-    //                     "idx":1, // 참석자 명단용 INDEX
-    //                     "value":40, // 집중도 %
-    //                     "uemail":"www.naver.com" // 참석자 이메일
-    //
-    //                 },
-    //                 {
-    //                     "upic":"../assets/image/Ellipse 164.png", // 프로필 사진 URL
-    //                     "uname":"참석자2", // 참석자명
-    //                     "idx":2, // 참석자 명단용 INDEX
-    //                     "value":61, // 집중도 %
-    //                     "uemail":"www.daum.com" // 참석자 이메일
-    //                 },
-    //             ],
-    //             // 첨부파일
-    //             "mtAttachedFiles" : [
-    //                 {
-    //                     "idx":1, // 첨부파일 INDEX
-    //                     "fileUrl":"http://api.eura.site/pic?fnm=asda.mp4", // 첨부파일 URL
-    //                     "filename" : "강의 자료.pdf" // 임시 파일명
-    //                 },
-    //                 {
-    //                     "idx":2, // 첨부파일 INDEX
-    //                     "fileUrl":"http://api.eura.site/pic?fnm=asda2.mp4", // 첨부파일 URL
-    //                     "filename" : "강의 자료2.pdf",
-    //                 },
-    //             ],
-    //             // 상단 반원 그래프
-    //             "mtAnalyTop": {
-    //                 "bad":25,
-    //                 "good":65,
-    //                 "off":10
-    //             },
-    //             // 하단 인디케이터 - 참석자는 null 값
-    //             "mtAnalyBtm":{
-    //                 "duration":5, // 영상 재생 위치
-    //                 "timer":"00:00:05", // 데이터 생성 시간
-    //                 "value1":5, // 집중도 10 ~ -10
-    //                 "value2":5 // 집중도 10 ~ -10
-    //             },
-    //             // 영상 파일 리스트
-    //             "mtMovieFiles" : [
-    //                 {
-    //                     "duration": 0, // 영상 길이
-    //                     "fileNo": null, // 영상 순서
-    //                     "fileUrl" : "http://api.eura.site/pic?fnm=/meetmovie/euraclass1/1668066673044",
-    //                     "idx":1,
-    //                     "recordDt": "2022-11-10 10:22:22" // 영상 녹화 시작 시간
-    //                 },
-    //                 {
-    //                     "duration": 0, // 영상 길이
-    //                     "fileNo": null, // 영상 순서
-    //                     "fileUrl" : "http://api.eura.site/pic?fnm=/meetmovie/euraclass1/1668066673044",
-    //                     "idx":2,
-    //                     "recordDt": "2022-11-10 10:22:22" // 영상 녹화 시작 시간
-    //                 },
-    //             ],
-    //             // 참석자만 나오는 곳 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-    //             // 오른쪽 하단 바 그래프
-    //             "mtData1": {
-    //                 "tcnt":73, // 현재 점수
-    //                 "bad":13, // BAD
-    //                 "acnt":52, // 누적 평균
-    //                 "good":62, // GOOD
-    //                 "off":25 // OFF
-    //             },
-    //             // 인디케이터
-    //             "mtData0": [
-    //                 {
-    //                     "duration":5, // 재생위치
-    //                     "timer": "00:00:05", // 기록시간
-    //                     "value":5, // 집중도 10~-10
-    //                 }
-    //             ]
-    //         },
-    //     );
-    // },[])
-    console.log(lecture.mtInviteInfo)
+    // alert('테스트 중입니다.')
+
+    // <EuraPlayer ref={(ref) => (this.euraPlayer = ref)} />
+
+    let movie1180 = {
+        width:"1180px !important",
+        height:"407px !important"
+    }
+    
     return (
         <>
             <section className="content" id="content">
@@ -209,14 +216,20 @@ const AnalyseMeeting = () => {
                                 </a>
                                 : lecture.mtMovieFiles.map(file => {
                                     return (
-                                        <a href="#" src={file.fileUrl} key={file.idx} className="file__anchor" title={file.filename}><span>{file.fileNo}</span></a>
+                                        <a href="#" className="file__anchor" title={file.filename}><span>{file.fileNo}</span></a>
                                     )
                                 })
                         }
                         </dd>
                     </dl>
                     <div className="summary__graph" title="반원그래프 / 분석요약 TEXT">
-                        <img src={graph}/>
+                    <div style={{ width: "100%", height: 140 }}>
+                    <ResponsiveContainer>
+                    <PieChart>
+                        <Pie dataKey="value" data={piedata} fill="#3377ff" label />
+                    </PieChart>
+                    </ResponsiveContainer>
+                    </div>
                     </div>
                 </div>
                 <div className="result__download">
@@ -239,9 +252,8 @@ const AnalyseMeeting = () => {
                     <>
                             {lecture.mtInviteInfo === null ?
                             <>
-                                <div className="result__mov" title="영상자리 (860 x 407)">
-                                    <video id="MeetMovie" controls width={1180} height={407} playsInline={true} src={movieSrc} />
-                                    {/* <Player src={movieSrc} width={860} height={407}></Player> */}
+                                <div className="result__mov" id="result__mov" style={movie1180} title="영상자리 (1180 x 407)">
+                                    <EuraPlayer moveUrl={movieSrc} width={1180} height={407} videoWidth={1180} videoHeight={407} />
                                 </div>
                             </>
                             :
@@ -275,89 +287,38 @@ const AnalyseMeeting = () => {
                                     </div>
                                 </div>
                                 <div className="result__mov" title="영상자리 (860 x 407)">
-                                    <video id="MeetMovie" controls width={860} height={407} playsInline={true} src={movieSrc} />
+                                    {/* <video id="MeetMovie" controls width={860} height={407} playsInline={true} src={movieSrc} /> */}
                                     {/* <Player src={movieSrc} width={860} height={407}></Player> */}
+                                    <Player src={movieSrc} width={860} height={407}></Player>
                                 </div>
                                 <div className="result__graph" title="그래프자리 (860 x 218)">
                                     {
-                                        !btmdata || !btmdata.length ?'':
-                                            // <Chart height={218} data={btmdata} padding={[40, 40, 50, 40]} autoFit onGetG2Instance={chart => { chartIns = chart; }}
-                                            //        scale={{ value: { min: -100, max: 100 }, name: {
-                                            //                values: ['Good'],
-                                            //
-                                            //            }, item: {
-                                            //                values: ['Bad'],
-                                            //
-                                            //            } } }>
-                                            //     <Interval
-                                            //         adjust={[
-                                            //             {
-                                            //                 type: 'dodge',
-                                            //                 marginRatio: 0,
-                                            //                 dodgeBy:"name"
-                                            //             },
-                                            //         ]}
-                                            //         color={['name', [colors[0], colors[1]]]}
-                                            //
-                                            //         position="month*value"
-                                            //     />
-                                            //     <Interval
-                                            //         adjust={[
-                                            //             {
-                                            //                 type: 'dodge',
-                                            //                 marginRatio: 0,
-                                            //             },
-                                            //         ]}
-                                            //         color={['item', [colors[2], colors[3]]]}
-                                            //         position="month*value"
-                                            //     />
-                                            //     <Legend
-                                            //         custom={true}
-                                            //         itemSpacing={60}
-                                            //         layout="horizontal"
-                                            //         position="top-left"
-                                            //         flipPage={false}
-                                            //         offsetX="50"
-                                            //         offsetY="15"
-                                            //         onChange={ev => {
-                                            //             const item = ev.item;
-                                            //             const value = item.value;
-                                            //             const checked = !item.unchecked;
-                                            //             const geoms = chartIns.geometries;
-                                            //
-                                            //             for (let i = 0; i < geoms.length; i++) {
-                                            //                 const geom = geoms[i];
-                                            //
-                                            //                 if (geom.getYScale().field === value) {
-                                            //                     if (checked) {
-                                            //                         geom.show();
-                                            //                     } else {
-                                            //                         geom.hide();
-                                            //                     }
-                                            //                 }
-                                            //             }
-                                            //         }}
-                                            //         items={[
-                                            //             {
-                                            //                 value: 'Good',
-                                            //                 name: 'Good',
-                                            //                 marker: {
-                                            //                     symbol: 'circle',
-                                            //                     style: { fill: colors[0] },
-                                            //                 },
-                                            //             },
-                                            //             {
-                                            //                 value: 'Bad',
-                                            //                 name: 'Bad',
-                                            //                 marker: {
-                                            //                     symbol: 'circle',
-                                            //                     style: { fill: colors[1] },
-                                            //                 },
-                                            //             },
-                                            //         ]}
-                                            //     />
-                                            // </Chart>
-                                            <></>
+                                        !middata || !middata.length ?'':
+                                        <>
+                                        <ResponsiveContainer width="100%" height="100%">
+                                        <BarChart
+                                        width={860}
+                                        height={218}
+                                        data={middata}
+                                        stackOffset="sign"
+                                        margin={{
+                                          top: 5,
+                                          right: 30,
+                                          left: 20,
+                                          bottom: 5,
+                                        }}
+                                      >
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" />
+                                        <YAxis />
+                                        <Tooltip />
+                                        <Legend />
+                                        <ReferenceLine y={0} stroke="#000" />
+                                        <Bar dataKey="Good" fill="#3377ff" stackId="stack" />
+                                        <Bar dataKey="Bad" fill="#ffc633" stackId="stack" />
+                                      </BarChart>
+                                      </ResponsiveContainer>
+                                        </>
                                     }
                                 </div>
                             </>
@@ -394,172 +355,69 @@ const AnalyseMeeting = () => {
                             </div>
                         </div>
                         <div className="result__mov" title="영상자리 (860 x 407)">
-                            <video id="MeetMovie" controls width={860} height={407} playsInline={true} src={movieSrc} />
+                            {/* <video id="MeetMovie" controls width={860} height={407} playsInline={true} src={movieSrc} /> */}
                             {/* <Player src={movieSrc} width={860} height={407}></Player> */}
+                            <Player src={movieSrc} width={860} height={407}></Player>
                         </div>
                         <div className="result__graph" title="그래프자리 (860 x 218)">
                             {
-                                !btmdata || !btmdata.length ?'':
-                                    // <Chart height={218} data={btmdata} padding={[40, 40, 50, 40]} autoFit onGetG2Instance={chart => { chartIns = chart; }}
-                                    //        scale={{ value: { min: -100, max: 100 }, name: {
-                                    //                values: ['Good'],
-                                    //
-                                    //            }, item: {
-                                    //                values: ['Bad'],
-                                    //
-                                    //            } } }>
-                                    //     <Interval
-                                    //         adjust={[
-                                    //             {
-                                    //                 type: 'dodge',
-                                    //                 marginRatio: 0,
-                                    //                 dodgeBy:"name"
-                                    //             },
-                                    //         ]}
-                                    //         color={['name', [colors[0], colors[1]]]}
-                                    //
-                                    //         position="month*value"
-                                    //     />
-                                    //     <Interval
-                                    //         adjust={[
-                                    //             {
-                                    //                 type: 'dodge',
-                                    //                 marginRatio: 0,
-                                    //             },
-                                    //         ]}
-                                    //         color={['item', [colors[2], colors[3]]]}
-                                    //         position="month*value"
-                                    //     />
-                                    //     <Legend
-                                    //         custom={true}
-                                    //         itemSpacing={60}
-                                    //         layout="horizontal"
-                                    //         position="top-left"
-                                    //         flipPage={false}
-                                    //         offsetX="50"
-                                    //         offsetY="15"
-                                    //         onChange={ev => {
-                                    //             const item = ev.item;
-                                    //             const value = item.value;
-                                    //             const checked = !item.unchecked;
-                                    //             const geoms = chartIns.geometries;
-                                    //
-                                    //             for (let i = 0; i < geoms.length; i++) {
-                                    //                 const geom = geoms[i];
-                                    //
-                                    //                 if (geom.getYScale().field === value) {
-                                    //                     if (checked) {
-                                    //                         geom.show();
-                                    //                     } else {
-                                    //                         geom.hide();
-                                    //                     }
-                                    //                 }
-                                    //             }
-                                    //         }}
-                                    //         items={[
-                                    //             {
-                                    //                 value: 'Good',
-                                    //                 name: 'Good',
-                                    //                 marker: {
-                                    //                     symbol: 'circle',
-                                    //                     style: { fill: colors[0] },
-                                    //                 },
-                                    //             },
-                                    //             {
-                                    //                 value: 'Bad',
-                                    //                 name: 'Bad',
-                                    //                 marker: {
-                                    //                     symbol: 'circle',
-                                    //                     style: { fill: colors[1] },
-                                    //                 },
-                                    //             },
-                                    //         ]}
-                                    //     />
-                                    // </Chart>
-                                    <></>
+                                !middata || !middata.length ?'':
+                                <>
+                                <ResponsiveContainer width="100%" height="100%">
+                                        <BarChart
+                                        width={860}
+                                        height={218}
+                                        data={middata}
+                                        stackOffset="sign"
+                                        margin={{
+                                          top: 5,
+                                          right: 30,
+                                          left: 20,
+                                          bottom: 5,
+                                        }}
+                                      >
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" />
+                                        <YAxis />
+                                        <Tooltip />
+                                        <Legend />
+                                        <ReferenceLine y={0} stroke="#000" />
+                                        <Bar dataKey="Good" fill="#3377ff" stackId="stack" />
+                                        <Bar dataKey="Bad" fill="#ffc633" stackId="stack" />
+                                      </BarChart>
+                                      </ResponsiveContainer>
+                                </>
                             }
                         </div>
 
                         <div className="result__analysis" title="분석그래프">
                             {
                                 !btmdata || !btmdata.length ?'':
-                                    // <Chart height={218} data={btmdata} padding={[40, 40, 50, 40]} autoFit onGetG2Instance={chart => { chartIns = chart; }}
-                                    //        scale={{ value: { min: -100, max: 100 }, name: {
-                                    //                values: ['Good'],
-                                    //
-                                    //            }, item: {
-                                    //                values: ['Bad'],
-                                    //
-                                    //            } } }>
-                                    //     <Interval
-                                    //         adjust={[
-                                    //             {
-                                    //                 type: 'dodge',
-                                    //                 marginRatio: 0,
-                                    //                 dodgeBy:"name"
-                                    //             },
-                                    //         ]}
-                                    //         color={['name', [colors[0], colors[1]]]}
-                                    //
-                                    //         position="month*value"
-                                    //     />
-                                    //     <Interval
-                                    //         adjust={[
-                                    //             {
-                                    //                 type: 'dodge',
-                                    //                 marginRatio: 0,
-                                    //             },
-                                    //         ]}
-                                    //         color={['item', [colors[2], colors[3]]]}
-                                    //         position="month*value"
-                                    //     />
-                                    //     <Legend
-                                    //         custom={true}
-                                    //         itemSpacing={60}
-                                    //         layout="horizontal"
-                                    //         position="top-left"
-                                    //         flipPage={false}
-                                    //         offsetX="50"
-                                    //         offsetY="15"
-                                    //         onChange={ev => {
-                                    //             const item = ev.item;
-                                    //             const value = item.value;
-                                    //             const checked = !item.unchecked;
-                                    //             const geoms = chartIns.geometries;
-                                    //
-                                    //             for (let i = 0; i < geoms.length; i++) {
-                                    //                 const geom = geoms[i];
-                                    //
-                                    //                 if (geom.getYScale().field === value) {
-                                    //                     if (checked) {
-                                    //                         geom.show();
-                                    //                     } else {
-                                    //                         geom.hide();
-                                    //                     }
-                                    //                 }
-                                    //             }
-                                    //         }}
-                                    //         items={[
-                                    //             {
-                                    //                 value: 'Good',
-                                    //                 name: 'Good',
-                                    //                 marker: {
-                                    //                     symbol: 'circle',
-                                    //                     style: { fill: colors[0] },
-                                    //                 },
-                                    //             },
-                                    //             {
-                                    //                 value: 'Bad',
-                                    //                 name: 'Bad',
-                                    //                 marker: {
-                                    //                     symbol: 'circle',
-                                    //                     style: { fill: colors[1] },
-                                    //                 },
-                                    //             },
-                                    //         ]}
-                                    //     />
-                                    // </Chart>
-                                    <></>
+                                    <>
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <BarChart
+                                        width={860}
+                                        height={218}
+                                        data={btmdata}
+                                        stackOffset="sign"
+                                        margin={{
+                                          top: 5,
+                                          right: 30,
+                                          left: 20,
+                                          bottom: 5,
+                                        }}
+                                      >
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" />
+                                        <YAxis />
+                                        <Tooltip />
+                                        <Legend />
+                                        <ReferenceLine y={0} stroke="#000" />
+                                        <Bar dataKey="Good" fill="#3377ff" stackId="stack" />
+                                        <Bar dataKey="Bad" fill="#ffc633" stackId="stack" />
+                                      </BarChart>
+                                      </ResponsiveContainer>
+                                    </>
                             }
                         </div>
                     </>
