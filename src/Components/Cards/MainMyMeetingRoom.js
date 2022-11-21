@@ -27,6 +27,8 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
                         <span className="type__dday">D-{getSubtractionDate()}</span>
                     : room.mt_iData !== 0 ?
                         <span className="type__ready">약 {Math.floor((new Date(room.mt_start_dt) - new Date()) / 3600000)}시간 뒤 시작</span>
+                    : room.mt_iData !== 0 && Math.floor((new Date(room.mt_start_dt) - new Date())/(1000*60)) < 60 ?
+                        <span className="type__ready">약 {Math.floor((new Date(room.mt_start_dt) - new Date())/(1000*60))}분 뒤 시작</span>
                     : ""
                 }
             </div>
