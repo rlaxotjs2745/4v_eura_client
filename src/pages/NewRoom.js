@@ -10,6 +10,9 @@ import {upload} from "@testing-library/user-event/dist/upload";
 import {setSelectionRange} from "@testing-library/user-event/dist/utils";
 import queryString from 'query-string'
 
+import TimePicker from 'react-bootstrap-time-picker';
+
+
 const MAX_COUNT = 99;
 
 const NewRoom = () => {
@@ -346,22 +349,25 @@ const NewRoom = () => {
                         <input type="text" className="text" id="make_new" onChange={makeTitle} placeholder="미팅 이름을 입력해주세요." defaultValue={isNew === 0 ? '' : roomInfo.mt_name}/>
                         <hr />
                         <label htmlFor="make_date"><img src="../assets/image/ic_calendar_24.png" alt="" /></label>
+
                         <input id="make_date" type="date" className="text under-scope width-flexble"
                                onChange={makeDate}
                                value={startDate}
                         />
                         <label htmlFor="make_time" className="input__time"><img src="../assets/image/ic_time_24.png" alt="" /></label>
-                        <input id="make_time1" type="time"
-                               pattern="[0-9]{2}:[0-9]{2}"
-                               className="text under-scope width-flexble"
-                               onChange={makeTime1}
-                               value={startTime}
-                        />
+                        <TimePicker start={startTime} step={10} />
+                        {/*<input id="make_time1" type="time"*/}
+                        {/*       pattern="[0-9]{2}:[0-9]{2}"*/}
+                        {/*       className="text under-scope width-flexble"*/}
+                        {/*       onChange={makeTime1}*/}
+                        {/*       value={startTime}*/}
+                        {/*/>*/}
                         <span className="bar">-</span>
-                        <input id="make_time2" type="time" className="text under-scope width-flexble"
-                               onChange={makeTime2}
-                               value={endTime}
-                        />
+                        <TimePicker start={startTime+30} step={10} />
+                        {/*<input id="make_time2" type="time" className="text under-scope width-flexble"*/}
+                        {/*       onChange={makeTime2}*/}
+                        {/*       value={endTime}*/}
+                        {/*/>*/}
 
                         <hr />
                         <div className="checkbox type__square">
