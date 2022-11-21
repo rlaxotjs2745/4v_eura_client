@@ -16,7 +16,14 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
     // console.log('피니쉬?', room.is_finish)
 
     return (
-        <div className={room.mt_status === 0 ? 'box is-before' : room.mt_status === 2 ? 'box is-cancel' : 'box'} onClick={() => navigateToMeetingRoom(room.mt_idx, isLast)}>
+        <div
+            className={
+                room.mt_status === 0 ? 'box is-before' :
+                room.mt_status === 2 ? 'box is-cancel' :
+                isLast ? 'box' : 'box'
+            }
+            onClick={() => navigateToMeetingRoom(room.mt_idx, isLast)}
+        >
             <div className="box__badge">
                 {
                     room.mt_live && isLast !== 1 ?
@@ -27,10 +34,10 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
                         <span className="type__cancel">취소된 미팅</span>
                     : new Date(room.mt_start_dt) - new Date() > 86400000 ?
                         <span className="type__dday">D-{getSubtractionDate()}</span>
-                    : room.mt_iData !== 0 ?
-                        <span className="type__ready">약 {Math.floor((new Date(room.mt_start_dt) - new Date()) / 3600000)}시간 뒤 시작</span>
                     : room.mt_iData !== 0 && Math.floor((new Date(room.mt_start_dt) - new Date())/(1000*60)) < 60 ?
                         <span className="type__ready">약 {Math.floor((new Date(room.mt_start_dt) - new Date())/(1000*60))}분 뒤 시작</span>
+                    : room.mt_iData !== 0 ?
+                        <span className="type__ready">약 {Math.floor((new Date(room.mt_start_dt) - new Date()) / 3600000)}시간 뒤 시작</span>
                     : ""
                 }
             </div>
@@ -38,7 +45,7 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
                 room.is_host === 1 ?
                     <div className="box__setup">
                         {
-                            room.mt_status === 0 ?
+                            room.mt_status === 0 || isLast ?
                                 <div onClick={() => modalOpen(room)} onMouseOver={mouseOver} onMouseLeave={mouseOut} className="btn btn__setting js-modal-alert">공개하기</div>
                             :     room.mt_status === 2 ?
                                 ''
