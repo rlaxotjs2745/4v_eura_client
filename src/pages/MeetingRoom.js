@@ -256,7 +256,7 @@ const MeetingRoom = (props) => {
                                     !invites || !invites.length ? '' :
                                         invites.map(inv =>{
                                                return <SwiperSlide>
-                                            <RoomUserList invites={inv} />
+                                            <RoomUserList invites={inv} roomInfo={roomInfo} />
                                         </SwiperSlide>
                                         })
                                 }

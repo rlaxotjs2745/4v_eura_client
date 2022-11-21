@@ -3,12 +3,11 @@ import {Navigation, Pagination} from "swiper";
 import "swiper/swiper.min.css";
 import "swiper/swiper-bundle.min.css"
 const React = require("react");
-const {useState} = require("react");
 
 
 
-const RoomUser = ({inv}) =>
-        <li className={inv.mt_live ? 'user' : 'user is-disabled'}>
+const RoomUser = ({inv, roomInfo}) =>
+        <li className={roomInfo.mt_live ? 'user' : 'user is-disabled'}>
             {inv.is_host ?
                 <>
                     <figure><img src={inv.picture ? inv.picture : require('../../assets/image/image_profile.png')} alt="" /></figure>

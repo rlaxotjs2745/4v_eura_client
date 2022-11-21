@@ -10,12 +10,12 @@ const {useState} = require("react");
 
 
 
-const RoomUserList = ({invites, idx}) =>
+const RoomUserList = ({invites, idx, roomInfo}) =>
 
             <div className="user" id={'slide_' + idx}>
                 <ul>
                     {
-                        invites.map(inv => <RoomUser inv={inv} />)
+                        invites.map(inv => <RoomUser inv={inv} roomInfo={roomInfo} />)
                     }
                 </ul>
             </div>

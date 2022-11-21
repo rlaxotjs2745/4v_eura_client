@@ -5,6 +5,7 @@ import ModifyRoomUser from "../Components/Cards/ModifyRoomUser";
 import {useLocation, useNavigate} from "react-router-dom";
 import $ from "jquery";
 import AddMeetingUser from "../Components/Cards/AddMeetingUser";
+import {getCookie} from "../util/cookie";
 import {upload} from "@testing-library/user-event/dist/upload";
 import {setSelectionRange} from "@testing-library/user-event/dist/utils";
 import queryString from 'query-string'
@@ -158,6 +159,10 @@ const NewRoom = () => {
 
     const excludeUser = (user) => {
         let targetIdx;
+        if(user.email === getCookie('user_id')){
+            return alert('호스트는 제거할 수 없습니다.');
+        }
+
         invites.forEach((inv, idx) => {
             if(inv.idx === user.idx) {
                 targetIdx = idx;
@@ -174,6 +179,10 @@ const NewRoom = () => {
 
 
     const addUser = (user) => {
+        if(user.email === getCookie('user_id')){
+            return;
+        }
+
         let isExist = false;
         invites.forEach(inv => {
             if(inv.idx === user.idx){
