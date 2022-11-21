@@ -250,7 +250,7 @@ const AnalyseMeeting = () => {
                 </div>
                     {lecture.is_host === 0 ?
                     <>
-                            {lecture.mtInviteInfo === null ?
+                        {lecture.mtInviteInfo === null && lecture.mtData0 === null && lecture.mtData1 === null?
                             <>
                                 <div className="result__mov" id="result__mov" style={movie1180} title="영상자리 (1180 x 407)">
                                     <EuraPlayer moveUrl={movieSrc} width={1180} height={407} videoWidth={1180} videoHeight={407} />
@@ -259,32 +259,8 @@ const AnalyseMeeting = () => {
                             :
                             <>
                                 <div className="result__user">
-                                    <h4 className="result__title">참석자 목록({!lecture || !lecture.mtInviteInfo ? '0' : lecture.mtInviteInfo.user_invite}/{!lecture || !lecture.mtInviteInfo ? '0' : lecture.mtInviteInfo.user_total})</h4>
-                                    <div className="result__watch">
-                                        <ul>
-                                            {
-                                                !lecture.mtInviteList || !lecture.mtInviteList.length
-                                                    ?
-                                                    <span className="file__name">참석자가 없습니다.</span>
-                                                    :
-                                                    lecture.mtInviteList.map(member => {
-                                                        return (
-                                                            <li key={member.idx}>
-                                                                <button>
-                                                                    <figure><img src={member.upic?member.upic:profile} alt=""/></figure>
-                                                                    <div className="watch__td"><span>{member.uname}</span><div>{member.uemail}</div></div>
-                                                                    {member.value > 60 ?
-                                                                        <div className="watch__percent is-good">{member.value}%</div>
-                                                                        :
-                                                                        <div className="watch__percent is-bad">{member.value}%</div>
-                                                                    }
-                                                                </button>
-                                                            </li>
-                                                        )
-                                                    })
-                                            }
-                                        </ul>
-                                    </div>
+                                    <h4 className="result__title">분석요약</h4>
+
                                 </div>
                                 <div className="result__mov" title="영상자리 (860 x 407)">
                                     {/* <video id="MeetMovie" controls width={860} height={407} playsInline={true} src={movieSrc} /> */}

@@ -10,7 +10,7 @@ import {upload} from "@testing-library/user-event/dist/upload";
 import {setSelectionRange} from "@testing-library/user-event/dist/utils";
 import queryString from 'query-string'
 
-import TimePicker from 'react-bootstrap-time-picker';
+// import TimePicker from 'react-bootstrap-time-picker';
 
 
 const MAX_COUNT = 99;
@@ -355,19 +355,19 @@ const NewRoom = () => {
                                value={startDate}
                         />
                         <label htmlFor="make_time" className="input__time"><img src="../assets/image/ic_time_24.png" alt="" /></label>
-                        <TimePicker start={startTime} step={10} />
-                        {/*<input id="make_time1" type="time"*/}
-                        {/*       pattern="[0-9]{2}:[0-9]{2}"*/}
-                        {/*       className="text under-scope width-flexble"*/}
-                        {/*       onChange={makeTime1}*/}
-                        {/*       value={startTime}*/}
-                        {/*/>*/}
+                        {/*<TimePicker start={startTime} step={10} />*/}
+                        <input id="make_time1" type="time"
+                               pattern="[0-9]{2}:[0-9]{2}"
+                               className="text under-scope width-flexble"
+                               onChange={makeTime1}
+                               value={startTime}
+                        />
                         <span className="bar">-</span>
-                        <TimePicker start={startTime+30} step={10} />
-                        {/*<input id="make_time2" type="time" className="text under-scope width-flexble"*/}
-                        {/*       onChange={makeTime2}*/}
-                        {/*       value={endTime}*/}
-                        {/*/>*/}
+                        {/*<TimePicker start={startTime+30} step={10} />*/}
+                        <input id="make_time2" type="time" className="text under-scope width-flexble"
+                               onChange={makeTime2}
+                               value={endTime}
+                        />
 
                         <hr />
                         <div className="checkbox type__square">
