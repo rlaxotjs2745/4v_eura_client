@@ -3,6 +3,7 @@ import {Navigation, Pagination} from "swiper";
 import "swiper/swiper.min.css";
 import "swiper/swiper-bundle.min.css"
 const React = require("react");
+const {useState} = require("react");
 
 
 
