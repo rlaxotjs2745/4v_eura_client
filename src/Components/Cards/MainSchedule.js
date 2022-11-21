@@ -18,10 +18,10 @@ const MainSchedule = ({schedule}) => {
                     schedule.map((day) => {
                         return (
                             <li key={day.mt_idx}>
-                                <div onClick={dayClick}>
+                                <Link to={`/meetingroom/${day.mt_idx}`}>
                                     <strong>{day.mt_name}</strong>
                                     <em>{day.mt_start_dt.split(' ')[1].slice(0,5)} - {day.mt_end_dt.split(' ')[1].slice(0,5)}</em>
-                                </div>
+                                </Link>
                             </li>
                         )
                     })

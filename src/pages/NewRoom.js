@@ -279,8 +279,8 @@ const NewRoom = () => {
 
         const formData = new FormData();
         formData.append('mt_name', title);
-        formData.append('mt_start_dt', `${startDate} ${startTime}:00`);
-        formData.append('mt_end_dt', `${startDate} ${endTime}:00`);
+        formData.append('mt_start_dt',  startTime.length > 7 ? `${startDate} ${startTime}` : `${startDate} ${startTime}:00`);
+        formData.append('mt_end_dt',   endTime.length > 7 ? `${startDate} ${endTime}` : `${startDate} ${endTime}:00`);
         formData.append('mt_info', meetingInfo);
         formData.append('mt_invite_email', invites.map(inv => inv.email).join());
         for (let i = 0; i < uploadedFiles.length; i++) {
