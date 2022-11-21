@@ -18,7 +18,6 @@ const RoomUserList = ({invites, idx, roomInfo}) =>
                     {
                         invites.map(inv =>
                             inv.is_host ?
-
                                 <li className={roomInfo.mt_live ? 'user' : 'user is-disabled'}>
                                     <figure><img
                                         src={inv.picture ? inv.picture : require('../../assets/image/image_profile.png')}

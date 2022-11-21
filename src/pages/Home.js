@@ -99,7 +99,7 @@ const Home = () => {
     const getMeetMore = () => {
         axios.get(SERVER_URL + `/meet/main/list?currentPage=${curPage+1}`, AXIOS_OPTION)
             .then(res => {
-                setMeeting({...meeting, mt_meetMyList: [meeting.mt_meetMyList, ...res.data.data]});
+                setMeeting({...meeting, mt_meetMyList: [meeting.mt_meetMyList, ...res.data.data.mt_meetMyList]});
                 setCurPage(curPage+1);
             })
     }
