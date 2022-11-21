@@ -11,6 +11,8 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
     }
 
 
+
+
     // console.log('피니쉬?', room.is_finish)
 
     return (

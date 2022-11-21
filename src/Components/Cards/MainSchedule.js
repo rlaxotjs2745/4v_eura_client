@@ -16,12 +16,14 @@ const MainSchedule = ({schedule}) => {
             <ul>
                 {!schedule || !schedule.length ? <li><strong>다음 일정이 없습니다.</strong></li> :
                     schedule.map((day) => {
-                        console.log(day.mt_idx)
-                        if(day.mt_status === 1){
-                            return (
-                                <li key={day.mt_idx}><div onClick={dayClick}><strong>{day.mt_name}</strong> <em>{day.mt_start_dt.split(' ')[1].slice(0,5)} - {day.mt_end_dt.split(' ')[1].slice(0,5)}</em></div></li>
-                            )
-                        }
+                        return (
+                            <li key={day.mt_idx}>
+                                <div onClick={dayClick}>
+                                    <strong>{day.mt_name}</strong>
+                                    <em>{day.mt_start_dt.split(' ')[1].slice(0,5)} - {day.mt_end_dt.split(' ')[1].slice(0,5)}</em>
+                                </div>
+                            </li>
+                        )
                     })
                 }
             </ul>

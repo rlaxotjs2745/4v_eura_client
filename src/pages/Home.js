@@ -120,13 +120,8 @@ const Home = () => {
                     console.log("cleanup1");
                 }
             }
-            // localStorage.setItem('reload', false);
-        }).catch(() => {
-            // if(!localStorage.getItem('reload')){
-            //     window.location.reload();
-            //     localStorage.setItem('reload', true);
-            // }
         })
+
     };
     async function getMainList() {
         axios.get(SERVER_URL + '/meet/main/list', AXIOS_OPTION)
@@ -158,6 +153,7 @@ const Home = () => {
         getMainList();
         getMainEndList();
     }, []);
+
 
     // useEffect(() => {
     //     axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
