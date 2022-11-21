@@ -93,7 +93,7 @@ html {
 }
 
 body {
-    background: #faf5fa
+    background: #f0f2f9
 }
 
 @media print {
@@ -1714,7 +1714,7 @@ td {
     position: relative;
     display: inline-block;
     overflow: hidden;
-    transition: x .2s all ease-in;
+    transition: .2s all ease-in;
     vertical-align: middle;
     text-align: center;
     border-radius: 8px;
@@ -2223,7 +2223,8 @@ td {
     top: -9px;
     box-shadow: 5px 12px 25px rgba(11, 54, 118, .1)
 }
-
+.box.is-before:hover {background: #fff;}
+.box.is-before:hover * {opacity: 1}
 .box.is-before {
     background: rgba(255, 255, 255, .4)
 }
