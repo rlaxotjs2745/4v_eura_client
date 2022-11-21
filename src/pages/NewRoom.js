@@ -19,7 +19,7 @@ const NewRoom = () => {
     const navigate = useNavigate();
 
     const [roomInfo, setRoomInfo] = useState({});
-    const [isNew, setIsNew] = useState(true);
+    const [isNew, setIsNew] = useState(0);
     const [invites, setInvites] = useState([]);
     const [invCount, setInvCount] = useState('');
     const [delUser, setDelUser] = useState('');
@@ -113,7 +113,7 @@ const NewRoom = () => {
                     // console.log(res.data.data)
                     const room = res.data.data;
                     console.log(room)
-                    setIsNew(false);
+                    setIsNew(room.mt_status);
                     setTitle(room.mt_name);
                     setStartDate(room.mt_start_dt.split(' ')[0]);
                     setStartTime(room.mt_start_dt.split(' ')[1]);
@@ -236,6 +236,10 @@ const NewRoom = () => {
     }
 
     const makeTime2 = (e) => {
+        if(new Date(e.target.value) <= new Date(startTime)){
+            return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
+        }
+
         setEndTime(e.target.value);
     }
 
@@ -295,7 +299,7 @@ const NewRoom = () => {
 
         // formData.append('file', uploadedFiles);
 
-        if(isNew) {
+        if(isNew === 0) {
             axios.post(SERVER_URL + '/meet/create', formData,  AXIOS_OPTION)
                 .then(res => {
                     if(res.data.result_code === 'SUCCESS'){
@@ -332,14 +336,14 @@ const NewRoom = () => {
         <div className="room">
             <h2>
                 {
-                    isNew ? '새 미팅룸 만들기' : '미팅룸 수정하기'
+                    isNew === 0 ? '새 미팅룸 만들기' : isNew === 1 ?  '미팅룸 수정하기' : '미팅룸 재개설하기'
                 }
             </h2>
             <form encType="multipart/form-data">
                 <div className="room__box">
                     <div className="input__group ">
                         <label htmlFor="make_new">미팅 이름</label>
-                        <input type="text" className="text" id="make_new" onChange={makeTitle} placeholder="미팅 이름을 입력해주세요." defaultValue={isNew ? '' : roomInfo.mt_name}/>
+                        <input type="text" className="text" id="make_new" onChange={makeTitle} placeholder="미팅 이름을 입력해주세요." defaultValue={isNew === 0 ? '' : roomInfo.mt_name}/>
                         <hr />
                         <label htmlFor="make_date"><img src="../assets/image/ic_calendar_24.png" alt="" /></label>
                         <input id="make_date" type="date" className="text under-scope width-flexble"
@@ -557,7 +561,7 @@ const NewRoom = () => {
                 <div className="btn__box">
                     <div className="btn__group">
                         {
-                            isNew ?
+                            isNew === 0 ?
                                 <div onClick={() => navigate('/')} className="btn btn__normal">취소</div>
                                 :
                                 <div onClick={() => navigate(`/meetingroom/${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`)} className="btn btn__normal">취소</div>
