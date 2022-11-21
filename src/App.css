@@ -4006,6 +4006,8 @@ html.js-overflow {
     padding-left: 10px
 }
 
+.result__user .result__watch ul li .watch__td > div {display: block; width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis}
+
 .result__user .result__watch ul li .watch__percent {
     display: table-cell;
     text-align: center;
