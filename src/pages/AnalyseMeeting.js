@@ -151,7 +151,7 @@ const AnalyseMeeting = () => {
             .then(res => {
                 if(res.data.result_code === 'SUCCESS'){
                     setLecture(res.data.data)
-                    // console.log(lecture)
+                    // console.log(res)
                     setBtmdata(res.data.data.mtAnalyBtm)
                     let _mfile = res.data.data.mtMovieFiles
                     if(_mfile.length>0){setMovieSrc(_mfile[0].fileUrl)}
