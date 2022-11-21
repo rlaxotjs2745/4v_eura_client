@@ -150,10 +150,17 @@ const AnalyseMeeting = () => {
         axios.get(SERVER_URL + `/meet/result/meeting?idx_meeting=`+pathSplit, AXIOS_OPTION)
             .then(res => {
                 if(res.data.result_code === 'SUCCESS'){
-                    setLecture(res.data.data)
+                    let _data = res.data.data
+                    setLecture(_data)
                     // console.log(res)
-                    setBtmdata(res.data.data.mtAnalyBtm)
-                    let _mfile = res.data.data.mtMovieFiles
+                    setMiddata(_data.mtAnalyMid)
+                    setBtmdata(_data.mtData0)
+                    setPiedata([
+                        { name: "Good", value: _data.mtAnalyTop.good },
+                        { name: "Bad", value: _data.mtAnalyTop.bad },
+                        { name: "Camera off", value: _data.mtAnalyTop.off },
+                    ])
+                    let _mfile = _data.mtMovieFiles
                     if(_mfile.length>0){setMovieSrc(_mfile[0].fileUrl)}
                     console.log('_mfile.length : '+ _mfile.length)
                 }else{
@@ -268,7 +275,7 @@ const AnalyseMeeting = () => {
                             <>
                                 <div className="result__mov" id="result__mov" title="영상자리 (1180 x 407)">
                                     {/* <EuraPlayer moveUrl={movieSrc} src={movieSrc} width={1180} height={407} videoWidth={1180} videoHeight={407} /> */}
-                                    <Player src={movieSrc} width={1180} height={407}></Player>
+                                    <Player src={movieSrc} width={1180} height={407} fluid="false"></Player>
                                 </div>
                             </>
                             :
