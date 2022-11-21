@@ -489,7 +489,7 @@ const NewRoom = () => {
 
                     <div className="input__group">
                         <label htmlFor="make_room">미팅 정보</label>
-                        <textarea name="" id="make_room" cols="10" rows="3" placeholder="미팅정보를 입력해주세요." onChange={makeMeetingInfo} defaultValue={meetingInfo}></textarea>
+                        <textarea name="" id="make_room" cols="10" rows="3" placeholder="미팅정보를 입력해주세요." onChange={makeMeetingInfo} defaultValue={meetingInfo}> </textarea>
                     </div>
 
                     <div className="input__group">
@@ -566,7 +566,7 @@ const NewRoom = () => {
                                 :
                                 <div onClick={() => navigate(`/meetingroom/${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`)} className="btn btn__normal">취소</div>
                         }
-                        <div onClick={handleSubmit} className="btn btn__able">저장</div>
+                        <div onClick={handleSubmit} className="btn btn__able">{isNew === 2 ? '재개설' : '저장'}</div>
                     </div>
                 </div>
             </form>
