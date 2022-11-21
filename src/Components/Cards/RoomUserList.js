@@ -14,6 +14,19 @@ const RoomUserList = ({invites, idx, roomInfo}) =>
 
             <div className="user" id={'slide_' + idx}>
                 <ul>
+
+                    {
+                        invites.map(inv =>
+                            inv.is_host ?
+                            <>
+                                <figure><img
+                                    src={inv.picture ? inv.picture : require('../../assets/image/image_profile.png')}
+                                    alt=""/></figure>
+                                <span className="team__user">{inv.uname}<img
+                                    src={require('../../assets/image/ic_host.png')} alt=""/><em>{inv.email}</em></span>
+                                {!!inv.is_iam ? <span className="team__badge">나</span> : ''}
+                            </> : '')
+                    }
                     {
                         invites.map(inv => <RoomUser inv={inv} roomInfo={roomInfo} />)
                     }
