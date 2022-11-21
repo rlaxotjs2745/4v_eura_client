@@ -3906,7 +3906,7 @@ html.js-overflow {
     float: left;
     margin-top: 16px;
     width: 860px;
-    height: 407px;
+    /* height: 407px; */
     background: #ccc;
 }
 

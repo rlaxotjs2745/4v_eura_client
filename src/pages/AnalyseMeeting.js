@@ -165,6 +165,7 @@ const AnalyseMeeting = () => {
 
         return () => {
             console.log('END')
+            console.log("movieSrc1:" + movieSrc)
         }
     }, [])
     
@@ -178,7 +179,7 @@ const AnalyseMeeting = () => {
     // }, [dur])
 
     useEffect(() => {
-        console.log(movieSrc)
+        console.log("movieSrc2:" + movieSrc)
     }, [movieSrc])
 
     // console.log(lecture.mtInviteInfo)
@@ -265,8 +266,9 @@ const AnalyseMeeting = () => {
                     <>
                         {lecture.mtInviteInfo === null && lecture.mtData0 === null && lecture.mtData1 === null?
                             <>
-                                <div className="result__mov" id="result__mov" style={moviebox1180} title="영상자리 (1180 x 407)">
-                                    <EuraPlayer moveUrl={movieSrc} width={1180} height={407} videoWidth={1180} videoHeight={407} />
+                                <div className="result__mov" id="result__mov" title="영상자리 (1180 x 407)">
+                                    {/* <EuraPlayer moveUrl={movieSrc} src={movieSrc} width={1180} height={407} videoWidth={1180} videoHeight={407} /> */}
+                                    <Player src={movieSrc} width={1180} height={407}></Player>
                                 </div>
                             </>
                             :
@@ -275,10 +277,10 @@ const AnalyseMeeting = () => {
                                     <h4 className="result__title">분석요약</h4>
 
                                 </div>
-                                <div className="result__mov" title="영상자리 (860 x 407)" style={moviebox860}>
+                                <div className="result__mov" title="영상자리 (860 x 407)">
                                     {/* <video id="MeetMovie" controls width={860} height={407} playsInline={true} src={movieSrc} /> */}
-                                    {/* <Player src={movieSrc} width={860} height={407}></Player> */}
-                                    <EuraPlayer moveUrl={movieSrc} width={860} height={407} videoWidth={860} videoHeight={407} />
+                                    <Player src={movieSrc} width={860} height={407}></Player>
+                                    {/* <EuraPlayer moveUrl={movieSrc} src={movieSrc} width={860} height={407} videoWidth={860} videoHeight={407} /> */}
                                 </div>
                                 <div className="result__graph" title="그래프자리 (860 x 218)">
                                     {
@@ -343,10 +345,10 @@ const AnalyseMeeting = () => {
                                 </ul>
                             </div>
                         </div>
-                        <div className="result__mov" title="영상자리 (860 x 407)" style={moviebox860}>
+                        <div className="result__mov" title="영상자리 (860 x 407)">
                             {/* <video id="MeetMovie" controls width={860} height={407} playsInline={true} src={movieSrc} /> */}
-                            {/* <Player src={movieSrc} width={860} height={407}></Player> */}
-                            <EuraPlayer moveUrl={movieSrc} width={860} height={407} videoWidth={860} videoHeight={407} />
+                            <Player src={movieSrc} width={860} height={407}></Player>
+                            {/* <EuraPlayer moveUrl={movieSrc} src={movieSrc} width={860} height={407} videoWidth={860} videoHeight={407} /> */}
                         </div>
                         <div className="result__graph" title="그래프자리 (860 x 218)">
                             {
