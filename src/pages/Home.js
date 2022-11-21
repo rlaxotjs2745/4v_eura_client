@@ -99,7 +99,7 @@ const Home = () => {
     const getMeetMore = () => {
         axios.get(SERVER_URL + `/meet/main/list?currentPage=${curPage+1}`, AXIOS_OPTION)
             .then(res => {
-                setMeeting([...meeting, ...res.data.data]);
+                setMeeting({...meeting, mt_meetMyList: [meeting.mt_meetMyList, ...res.data.data]});
                 setCurPage(curPage+1);
             })
     }
@@ -207,7 +207,7 @@ const Home = () => {
                             !meeting.mt_meetMyList ||
                             !meeting.mt_meetMyList.length ?
                             <div className="boxing">
-                                <div className="msg..........................................................................................................................__nodata">
+                                <div className="msg__nodata">
                                     <span>미팅 일정이 없습니다.</span>
                                 </div>
                             </div>
