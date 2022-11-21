@@ -239,10 +239,6 @@ const NewRoom = () => {
     }
 
     const makeTime2 = (e) => {
-        if(new Date(e.target.value) <= new Date(startTime)){
-            return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
-        }
-
         setEndTime(e.target.value);
     }
 
@@ -266,6 +262,10 @@ const NewRoom = () => {
 
         if($('#make_date').val() == ''){
             return alert('미팅 일자가 입력되지 않았습니다.')
+        }
+
+        if(new Date(endTime) <= new Date(startTime)){
+            return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
         }
 
         if($('#make_time1').val() == ''){
