@@ -27,7 +27,9 @@ const Routers = () => {
                 <Route path="/meetingroom/:idx" element={<MeetingRoom />} />
                 <Route path="/newroom" element={<NewRoom />} />
                 <Route path="/newroom/:idx" element={<NewRoom />} />
+                <Route path="/reopen/:idx" element={<NewRoom />} />
                 <Route path="/newroom/" element={<NewRoom />} />
+
                 <Route path="/calendar" element={<MeetingCalendar />}/>
                 <Route path="/analyse/:idx" element={<AnalyseMeeting />} />
             </Route>

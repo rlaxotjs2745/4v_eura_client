@@ -106,6 +106,10 @@ const NewRoom = () => {
 
     useEffect(() => {
         if(window.location.pathname.split('/')[window.location.pathname.split('/').length-1] !== 'newroom' || window.location.pathname.split('/')[window.location.pathname.split('/').length-1] !== ''){ //수정하기
+            setIsNew(1);
+            if(window.location.pathname.split('/')[window.location.pathname.split('/').length-2] === 'reopen'){
+                setIsNew(2);
+            }
             axios.get(SERVER_URL +
                 `/meet/room/info?idx_meeting=${pathSplit}`,
                 AXIOS_OPTION)
@@ -113,7 +117,6 @@ const NewRoom = () => {
                     // console.log(res.data.data)
                     const room = res.data.data;
                     console.log(room)
-                    setIsNew(room.mt_status);
                     setTitle(room.mt_name);
                     setStartDate(room.mt_start_dt.split(' ')[0]);
                     setStartTime(room.mt_start_dt.split(' ')[1]);
