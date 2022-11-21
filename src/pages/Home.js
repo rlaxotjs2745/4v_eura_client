@@ -99,7 +99,7 @@ const Home = () => {
     const getMeetMore = () => {
         axios.get(SERVER_URL + `/meet/main/list?currentPage=${curPage+1}`, AXIOS_OPTION)
             .then(res => {
-                setMeeting({...meeting, mt_meetMyList: [meeting.mt_meetMyList, ...res.data.data.mt_meetMyList]});
+                setMeeting({...meeting, mt_meetMyList: [...meeting.mt_meetMyList, ...res.data.data.mt_meetMyList]});
                 setCurPage(curPage+1);
             })
     }
@@ -213,7 +213,6 @@ const Home = () => {
                             </div>
                                 :
                             meeting.mt_meetMyList.map((room, idx) => {
-                                if(idx > 8) return;
                                 if(room.is_host == 0 && room.mt_status != 1) return;
                                 return (
                                     <MainMyMeetingRoom key={idx} room={room} modalOpen={modalOpen} isLast={0} navigateToMeetingRoom={navigateToMeetingRoom} mouseOver={mouseOver} mouseOut={mouseOut} />
