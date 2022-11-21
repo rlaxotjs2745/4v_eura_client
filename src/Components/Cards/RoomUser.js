@@ -9,7 +9,7 @@ const {useState} = require("react");
 
 const RoomUser = ({inv, roomInfo}) => {
         return inv.is_host ? null :
-            !roomInfo.mt_live ?
+            !roomInfo.mt_live || roomInfo.mt_live && inv.is_status === 0 ?
             <li className='user is-disabled'>
                     <>
                             <figure><img
