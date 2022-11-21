@@ -109,16 +109,9 @@ const Home = () => {
         axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
         .then(res => {
             setUser(res.data.data);
-            if(res.data.data.mt_meetShort){
-                for(let meet of res.data.data.mt_meetShort){
-                    if(meet.mt_status == 1) {
-                        setSchedule([...schedule, meet]);
-
-                    }
-                }
-                return () => {
-                    console.log("cleanup1");
-                }
+            setSchedule(res.data.data.mt_meetShort);
+            return () => {
+                console.log("cleanup1");
             }
         })
 
@@ -193,6 +186,7 @@ const Home = () => {
 
                 <MainSchedule schedule={schedule} />
 
+
                 <div className="main__meetingroom">
                     <h3><img src={require('../assets/image/ic_video.png')} alt=""/> 나의 미팅룸 <em>({  !meeting ||
                     !meeting.mt_meetMyList ||
@@ -213,7 +207,7 @@ const Home = () => {
                             !meeting.mt_meetMyList ||
                             !meeting.mt_meetMyList.length ?
                             <div className="boxing">
-                                <div className="msg__nodata">
+                                <div className="msg..........................................................................................................................__nodata">
                                     <span>미팅 일정이 없습니다.</span>
                                 </div>
                             </div>
@@ -232,7 +226,7 @@ const Home = () => {
                         !meeting.mt_meetMyList ||
                         meeting.mt_meetMyList.length % 8 != 0 ? '' :
                             <div className="btn__group">
-                                <a onClick={getMeetMore} className="btn btn__more">더 보기</a>
+                                <button onClick={getMeetMore} className="btn btn__more">더 보기</button>
                             </div>
                     }
                 </div>
@@ -255,7 +249,7 @@ const Home = () => {
                                 <div className="boxing">
                                     <div className="msg__nodata">
                                         <span>지난 미팅 일정이 없습니다.</span>
-                                        </div>
+                                    </div>
                                 </div>
                                 :
                                     lastMeeting.mt_meetEndMyList.map((room, idx) => {

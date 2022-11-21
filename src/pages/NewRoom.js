@@ -106,9 +106,6 @@ const NewRoom = () => {
 
     useEffect(() => {
         if(window.location.pathname.split('/')[window.location.pathname.split('/').length-1] !== 'newroom' || window.location.pathname.split('/')[window.location.pathname.split('/').length-1] !== ''){ //수정하기
-            if(roomInfo.mt_remind_type !== 0){
-                setRemindBool(!remindBool);
-            }
             axios.get(SERVER_URL +
                 `/meet/room/info?idx_meeting=${pathSplit}`,
                 AXIOS_OPTION)
@@ -127,6 +124,10 @@ const NewRoom = () => {
                     setMeetingInfo(room.mt_info);
                     setRoomInfo(room);
                     setUploadedFilesPlus(room.mt_files);
+
+                    if(room.mt_remind_type !== 0){
+                        setRemindBool(true);
+                    }
 
                     if(room.mt_remind_week !== null) {
                         setWeekday(room.mt_remind_week.split(','));
@@ -360,7 +361,7 @@ const NewRoom = () => {
 
                         <hr />
                         <div className="checkbox type__square">
-                            <input type="checkbox" className="checkbox" id="remind_bool" onChange={remindChange}/>
+                            <input type="checkbox" className="checkbox" id="remind_bool" onChange={remindChange} defaultValue={remindBool}/>
                             <label htmlFor="remind_bool">되풀이 미팅</label>
                         </div>
                         {remindBool ?
