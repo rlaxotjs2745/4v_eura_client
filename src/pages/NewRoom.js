@@ -492,7 +492,7 @@ const NewRoom = () => {
 
                     <div className="input__group">
                         <label htmlFor="make_room">미팅 정보</label>
-                        <textarea name="" id="make_room" cols="10" rows="3" placeholder="미팅정보를 입력해주세요." onChange={makeMeetingInfo} defaultValue={meetingInfo}> </textarea>
+                        <textarea name="" id="make_room" cols="10" rows="3" placeholder="미팅정보를 입력해주세요." onChange={makeMeetingInfo} value={meetingInfo}></textarea>
                     </div>
 
                     <div className="input__group">
