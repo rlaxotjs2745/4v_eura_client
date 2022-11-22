@@ -7,12 +7,15 @@ import $ from "jquery";
 import AddMeetingUser from "../Components/Cards/AddMeetingUser";
 import {getCookie} from "../util/cookie";
 
-// import TimePicker from 'react-bootstrap-time-picker';
-
+import DatePicker from 'react-datepicker'
 
 const MAX_COUNT = 99;
 
 const NewRoom = () => {
+
+    const [timeStartDate, setTimeStartDate] = useState(new Date());
+    const [timeStartDate2, setTimeStartDate2] = useState(new Date());
+
     const { pathname } = useLocation();
     const pathSplit = Number(pathname.split('/')[2])
     console.log(pathSplit)
@@ -349,27 +352,52 @@ const NewRoom = () => {
                         <label htmlFor="make_new">미팅 이름</label>
                         <input type="text" className="text" id="make_new" onChange={makeTitle} placeholder="미팅 이름을 입력해주세요." defaultValue={isNew === 0 ? '' : roomInfo.mt_name}/>
                         <hr />
-                        <label htmlFor="make_date"><img src="../assets/image/ic_calendar_24.png" alt="" /></label>
+                        <div className="flex_box">
+                            <label htmlFor="make_date"><img src="../assets/image/ic_calendar_24.png" alt="" /></label>
 
-                        <input id="make_date" type="date" className="text under-scope width-flexble"
-                               onChange={makeDate}
-                               value={startDate}
-                        />
-                        <label htmlFor="make_time" className="input__time"><img src="../assets/image/ic_time_24.png" alt="" /></label>
-                        {/*<TimePicker start={startTime} step={10} />*/}
-                        <input id="make_time1" type="time"
-                               pattern="[0-9]{2}:[0-9]{2}"
-                               className="text under-scope width-flexble"
-                               onChange={makeTime1}
-                               value={startTime}
-                        />
-                        <span className="bar">-</span>
-                        {/*<TimePicker start={startTime+30} step={10} />*/}
-                        <input id="make_time2" type="time" className="text under-scope width-flexble"
-                               onChange={makeTime2}
-                               value={endTime}
-                        />
+                            <input id="make_date" type="date" className="text under-scope width-flexble"
+                                   onChange={makeDate}
+                                   value={startDate}
+                            />
+                            <label htmlFor="make_time" className="input__time"><img src="../assets/image/ic_time_24.png" alt="" /></label>
+                            <div className="flex_time">
+                                <div className="relative">
+                                    <DatePicker id="make_time1"
+                                        selected={timeStartDate}
+                                        onChange={(date) => setTimeStartDate(date)}
+                                        showTimeSelect
+                                        showTimeSelectOnly
+                                        timeIntervals={10}
+                                        timeCaption="Time"
+                                        dateFormat="h:mm aa"
+                                    />
+                                </div>
+                                {/*<input id="make_time1" type="time"*/}
+                                {/*       pattern="[0-9]{2}:[0-9]{2}"*/}
+                                {/*       className="text under-scope width-flexble"*/}
+                                {/*       onChange={makeTime1}*/}
+                                {/*       value={startTime}*/}
+                                {/*/>*/}
+                                <span className="bar">-</span>
 
+                                {/*<TimePicker start="10:00" end="21:00" step={30} />*/}
+                                <div className="relative">
+                                    <DatePicker id="make_time2"
+                                                selected={timeStartDate2}
+                                                onChange={(date) => setTimeStartDate2(date)}
+                                                showTimeSelect
+                                                showTimeSelectOnly
+                                                timeIntervals={10}
+                                                timeCaption="Time"
+                                                dateFormat="h:mm aa"
+                                    />
+                                </div>
+                            </div>
+                            {/*<input id="make_time2" type="time" className="text under-scope width-flexble"*/}
+                            {/*       onChange={makeTime2}*/}
+                            {/*       value={endTime}*/}
+                            {/*/>*/}
+                        </div>
                         <hr />
                         <div className="checkbox type__square">
                             <input type="checkbox" className="checkbox" id="remind_bool" onChange={remindChange} defaultValue={remindBool}/>
