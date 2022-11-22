@@ -105,11 +105,46 @@ const NewRoom = () => {
     }
 
     useEffect(() => {
+        if(window.location.pathname.split('/')[window.location.pathname.split('/').length-2] === 'reopen'){
+            setIsNew(2);
+            axios.get(SERVER_URL +
+                `/meet/room/info?idx_meeting=${pathSplit}`,
+                AXIOS_OPTION)
+                .then(res => {
+                    // console.log(res.data.data)
+                    const room = res.data.data;
+                    console.log(room)
+                    setTitle(room.mt_name);
+                    setStartDate(room.mt_start_dt.split(' ')[0]);
+                    setStartTime(room.mt_start_dt.split(' ')[1]);
+                    setEndTime(room.mt_end_dt.split(' ')[1]);
+                    setSelectValue(room.mt_remind_type);
+                    setRemindCount(room.mt_remind_count);
+                    setEndDate(room.mt_end_dt.split(' ')[0]);
+                    setMeetingInfo(room.mt_info);
+                    setRoomInfo(room);
+                    setUploadedFilesPlus(room.mt_files);
+
+                    if(room.mt_remind_type !== 0){
+                        setRemindBool(true);
+                    }
+
+                    if(room.mt_remind_week !== null) {
+                        setWeekday(room.mt_remind_week.split(','));
+                    }
+                })
+            axios.get(SERVER_URL +
+                `/meet/room/invite?idx_meeting=${pathSplit}`,
+                AXIOS_OPTION)
+                .then(res => {
+                    setInvCount(res.data.data.mt_invites.length);
+                    setInvites(res.data.data.mt_invites);
+                })
+        }
+
         if(window.location.pathname.split('/')[window.location.pathname.split('/').length-1] !== 'newroom' || window.location.pathname.split('/')[window.location.pathname.split('/').length-1] !== ''){ //수정하기
             setIsNew(1);
-            if(window.location.pathname.split('/')[window.location.pathname.split('/').length-2] === 'reopen'){
-                setIsNew(2);
-            }
+
             axios.get(SERVER_URL +
                 `/meet/room/info?idx_meeting=${pathSplit}`,
                 AXIOS_OPTION)
