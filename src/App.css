@@ -2029,8 +2029,21 @@ td {
     float: left
 }
 
+.main__board .board__time_box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .main__board .board__time {
     font-size: 70px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.main__board .board__date {
+    font-size: 18px;
     font-weight: 500;
     color: #fff
 }

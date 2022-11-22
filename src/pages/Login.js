@@ -75,7 +75,6 @@ const Login = () => {
     });
 
     const onLogin = (e) => {
-        console.log(e)
         // e.preventDefault();
         // console.log('click login')
         // console.log('ID : ', inputId)
@@ -84,17 +83,12 @@ const Login = () => {
         axios.defaults.withCredentials = true;
 
         axios.post(SERVER_URL + '/api_post_login', e).then(res => {
-            console.log('@@@@@@@@@@@@@@@@ ' +res)
-            console.log('res.data.userId :: ', res.data.result_code)
-            console.log('res.data.msg :: ', res.data.result_str)
             if(res.data.result_code === 'FAIL01'){
                 // 로그인 정보를 다시 확인해주세요.
-                console.log('======================',res.data.result_str);
                 setloginMessage(res.data.result_str)
                 // alert(res.data.result_str)
             } else if(res.data.result_code === 'FAIL02'){
                 // 이메일 인증을 진행해주세요.
-                console.log('======================', res.data.result_str);
                 alert(res.data.result_str);
                 setloginMessage('')
             } else if(res.data.result_code === 'SUCCESS01') {
@@ -117,10 +111,6 @@ const Login = () => {
                     // document.cookie = `user_id=${inputId}; expires=${tomorrow};`;
                     // setCookie('user_id', inputId, {path:'/', expires:tomorrow});
                 }
-                console.log('---------ID', inputId)
-                console.log('---------cookie', document.cookie)
-                console.log('---------cookie', res.data)
-                console.log('======================',res.data.result_str);
                 setloginMessage('')
                 // alert(res.data.result_str)
                 navigate('/')
@@ -144,7 +134,6 @@ const Login = () => {
                     // document.cookie = `user_id=${inputId}; expires=${tomorrow};`
                     // setCookie('user_id', inputId, {path:'/', expires:tomorrow});
                 }
-                console.log('======================',res.data.result_str);
                 // localStorage.clear()
                 // localStorage.setItem('user_id', res.data.id)
                 // localStorage.setItem('token', res.data.token)
@@ -301,7 +290,6 @@ const Login = () => {
                         <button type="submit" disabled={isSubmitting} className="btn btn__able">로그인</button>
                         <Link className="btn btn__normal" to="/signup">회원가입하기</Link>
                     </div>
-
                     <div className="anchor__box">
                         <Link to="/find_pw" className="login__anchor">비밀번호를 잊으셨나요?</Link>
                     </div>
