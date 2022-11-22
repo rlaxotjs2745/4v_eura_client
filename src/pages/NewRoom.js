@@ -46,10 +46,10 @@ const NewRoom = () => {
     const [groupFileName, setGroupFileName] = useState('이메일이 입력된 엑셀파일을 첨부해주세요.')
     const [groupSearchUser, setGroupSearchUser] = useState([]);
 
-    const [Selected1, setSelected1] = useState('');
-    const [Selected2, setSelected2] = useState('');
-    const [Selected3, setSelected3] = useState('');
-    const [Selected4, setSelected4] = useState('');
+    const [Selected1, setSelected1] = useState('00');
+    const [Selected2, setSelected2] = useState('00');
+    const [Selected3, setSelected3] = useState('00');
+    const [Selected4, setSelected4] = useState('00');
 
     const select1_opiton = [
         { value: "00", label: "00", idx:"00"},

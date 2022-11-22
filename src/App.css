@@ -3764,7 +3764,11 @@ html.js-overflow {
     display: block;
     font-size: 12px;
     color: #17171a;
-    font-weight: 500
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 170px;
 }
 
 .room .room__box .flow__team ul li .checkbox {
