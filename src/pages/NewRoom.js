@@ -7,7 +7,8 @@ import $ from "jquery";
 import AddMeetingUser from "../Components/Cards/AddMeetingUser";
 import {getCookie} from "../util/cookie";
 
-import DatePicker from 'react-datepicker'
+import DatePicker from 'react-datepicker';
+// import '../react_date_picker.css';
 
 const MAX_COUNT = 99;
 
@@ -18,7 +19,6 @@ const NewRoom = () => {
 
     const { pathname } = useLocation();
     const pathSplit = Number(pathname.split('/')[2])
-    console.log(pathSplit)
     const navigate = useNavigate();
     const fileReader = new FileReader();
 
@@ -47,6 +47,8 @@ const NewRoom = () => {
     const [fileLimit, setFileLimit] = useState(false);
 
     const [groupModal, setGroupModal] = useState('pop__detail');
+    const [groupFileName, setGroupFileName] = useState('이메일이 입력된 엑셀파일을 첨부해주세요.')
+    const [groupSearchUser, setGroupSearchUser] = useState([]);
 
 
     // const chosenFiles = Array.prototype.slice.call(e.target.files)
@@ -123,7 +125,7 @@ const NewRoom = () => {
     }
 
     const handleModal = (e) => {
-        e.preventDefault();
+        if(e) e.preventDefault()
         if(groupModal === 'pop__detail'){
             setGroupModal('pop__detail is-on');
             $('#shade').addClass('is-on');
@@ -182,32 +184,42 @@ const NewRoom = () => {
 
     const getGroupFile = (e) => {
         const chosenFile = e.target.files[0];
-        console.log(chosenFile);
-
-        fileReader.onload((ev) => {
-            const csvOutput = ev.target.result;
-        })
-
-        console.log(fileReader.readAsText(chosenFile));
-    }
-
-    const excludeUser = (user) => {
-        let targetIdx;
-        if(user.email === getCookie('user_id')){
-            return alert('호스트는 제거할 수 없습니다.');
+        setGroupFileName(chosenFile && chosenFile.name ? chosenFile.name : '이메일이 입력된 엑셀파일을 첨부해주세요.');
+        fileReader.onload = (eve) => {
+            const csvOutput = eve.target.result;
+            axios.get(SERVER_URL +
+                `/meet/invite?searchTxt=${csvOutput.toString().trim().replace(/\r\n/g, '$%&').split('$%&').slice(1).join(',')}`,
+                AXIOS_OPTION)
+                .then(res => {
+                    console.log(res);
+                    setGroupSearchUser(res.data.data.mt_invites);
+                })
         }
 
-        invites.forEach((inv, idx) => {
-            if(inv.idx === user.idx) {
-                targetIdx = idx;
-            }
-        })
+        fileReader.readAsText(chosenFile);
+    }
 
-        setInvites([...invites.slice(0, targetIdx), ...invites.slice(targetIdx+1)]);
-        if(delUser === ''){
-            setDelUser(user.email);
+    const excludeUser = (user, isSearch) => {
+        if(!isSearch){
+            let targetIdx;
+            if(user.email === getCookie('user_id')){
+                return alert('호스트는 제거할 수 없습니다.');
+            }
+
+            invites.forEach((inv, idx) => {
+                if(inv.idx === user.idx) {
+                    targetIdx = idx;
+                }
+            })
+
+            setInvites([...invites.slice(0, targetIdx), ...invites.slice(targetIdx+1)]);
+            if(delUser === ''){
+                setDelUser(user.email);
+            } else {
+                setDelUser(delUser + ',' + user.email);
+            }
         } else {
-            setDelUser(delUser + ',' + user.email);
+            setGroupSearchUser(groupSearchUser.filter(inv => inv.email != user.email));
         }
     }
 
@@ -234,6 +246,19 @@ const NewRoom = () => {
             }
         })
         setSearchUser([...searchUser.slice(0, targetIdx), ...searchUser.slice(targetIdx+1)]);
+    }
+
+    const addSearchGroupUser = () => {
+        setInvites([...invites, ...groupSearchUser.filter(user => {
+            let result = true;
+            invites.forEach(inv => {
+                if(inv.email === user.email){
+                    result = false;
+                }
+            })
+            return result;
+        })]);
+        handleModal();
     }
 
     $(document.body).on('click', '#make_team', function () {
@@ -395,7 +420,7 @@ const NewRoom = () => {
                                         showTimeSelectOnly
                                         timeIntervals={10}
                                         timeCaption="Time"
-                                        dateFormat="h:mm aa"
+                                        dateFormat="aa hh:mm"
                                     />
                                 </div>
                                 {/*<input id="make_time1" type="time"*/}
@@ -561,7 +586,7 @@ const NewRoom = () => {
                                 {
                                     !invites || !invites.length ? '' :
                                         invites.map((inv) => {
-                                            return <ModifyRoomUser user={inv} excludeUser={excludeUser}/>
+                                            return <ModifyRoomUser user={inv} isSearch={0} excludeUser={excludeUser}/>
                                         })
                                 }
                             </ul>
@@ -570,7 +595,7 @@ const NewRoom = () => {
 
                     <div className="input__group" id="hahhhoho">
                         <label htmlFor="make_team">참석자 추가</label>
-                        {/*<div className="list__count"><a href="https://api.eura.site/download?fnm=/html/testt.csv" className="btn btn__download">엑셀 양식 다운로드</a></div>*/}
+                        <div className="list__count"><a href="https://eura-server.s3.ap-northeast-2.amazonaws.com/upload/EURA_%EB%AF%B8%ED%8C%85_%EC%B0%B8%EC%84[…]B2%B4_%EC%B6%94%EA%B0%80_%EC%96%91%EC%8B%9D.csv" className="btn btn__download">엑셀 양식 다운로드</a></div>
                         <div className="flow_box input__inline">
                             <input id="make_team" type="text" className="text" placeholder="이메일 또는 이름을 입력해 참석자를 추가하세요." onChange={searchInviteUserList} />
                             <button onClick={handleModal} className="btn btn__team js-modal-alert">
@@ -637,19 +662,25 @@ const NewRoom = () => {
                         <h3>참석자 단체 등록하기</h3>
                         <div className="pop__body">
                             <div className="upload__box ">
-                                <input className="upload-name" value="이메일이 입력된 엑셀파일을 첨부해주세요." disabled />
+                                <input className="upload-name" value={groupFileName} disabled />
                                 <label htmlFor="ex_filename"><img src="../assets/image/ic_attachment_24.png" alt=""/></label>
-                                <input type="file" id="ex_filename" onChange={getGroupFile} className="upload-hidden"/>
+                                <input type="file" accept=".csv" id="ex_filename" onChange={getGroupFile} className="upload-hidden"/>
                             </div>
                             <div className="upload__list">
-
+                                <ul>
+                                    {
+                                        !groupSearchUser || !groupSearchUser.length ? '' :
+                                            groupSearchUser.map(user => {
+                                                return <ModifyRoomUser user={user} isSearch={1} excludeUser={excludeUser}/>
+                                            })
+                                    }
+                                </ul>
                             </div>
                         </div>
                     </div>
                     <div className="btn__group align__right">
-                        <button onClick={handleModal} className="btn btn__normal btn__s">참석자 찾기</button>
                         <button onClick={handleModal} className="btn btn__normal btn__s">취소</button>
-                        <button onClick={''} className="btn btn__able btn__s js-modal-close">완료</button>
+                        <button onClick={addSearchGroupUser} className="btn btn__able btn__s js-modal-close">완료</button>
                     </div>
                 </div>
             </div>
