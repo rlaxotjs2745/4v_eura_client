@@ -3769,7 +3769,8 @@ html.js-overflow {
 
 .room .room__box .flow__team ul li .checkbox {
     float: right;
-    margin-top: 18px
+    margin-top: 18px;
+    display: none;
 }
 
 .room .btn__box {

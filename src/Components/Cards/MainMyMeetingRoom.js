@@ -34,7 +34,7 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
                         <span className="type__cancel">취소된 미팅</span>
                     : new Date(room.mt_start_dt) - new Date() > 86400000 ?
                         <span className="type__dday">D-{getSubtractionDate()}</span>
-                    : room.mt_iData !== 0 && Math.floor((new Date(room.mt_start_dt) - new Date())/(1000*60)) < 60 ?
+                    : room.mt_iData !== 0 && Math.floor((new Date(room.mt_start_dt) - new Date())/(1000*60)) < 60 && Math.floor((new Date(room.mt_start_dt) - new Date())/(1000*60)) >= 5?
                         <span className="type__ready">약 {Math.floor((new Date(room.mt_start_dt) - new Date())/(1000*60))}분 뒤 시작</span>
                     : room.mt_iData !== 0 && Math.floor((new Date(room.mt_start_dt) - new Date())/(1000*60)) < 5 ?
                         <span className="type__ready">곧 시작</span>
