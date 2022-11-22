@@ -25,9 +25,11 @@ const MeetingRoom = (props) => {
             `/meet/room/main?idx_meeting=${pathSplit}`,
             AXIOS_OPTION)
             .then(res => {
-                console.log(res.data.data)
+                if(res.data && res.data.data && res.data.data.mt_finish === 1){
+                    navigate(`/analyse/${pathSplit}`);
+                }
                 setRoomInfo(res.data.data);
-            })
+            }).catch(res => console.log(res))
 
          axios.get(SERVER_URL +
             `/meet/room/invite?idx_meeting=${pathSplit}`,

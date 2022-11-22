@@ -516,7 +516,7 @@ const NewRoom = () => {
 
                     <div className="input__group" id="hahhhoho">
                         <label htmlFor="make_team">참석자 추가</label>
-                        {/*<div className="list__count"><a href="#none" className="btn btn__download">엑셀 양식 다운로드</a></div>*/}
+                        {/*<div className="list__count"><a href="https://api.eura.site/download?fnm=/html/testt.csv" className="btn btn__download">엑셀 양식 다운로드</a></div>*/}
                         <div className="flow_box input__inline">
                             <input id="make_team" type="text" className="text" placeholder="이메일 또는 이름을 입력해 참석자를 추가하세요." onChange={searchInviteUserList} />
                             {/*<a href="#popup__team" className="btn btn__team js-modal-alert">*/}
