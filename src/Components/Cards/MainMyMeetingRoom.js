@@ -47,7 +47,7 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
                 room.is_host === 1 ?
                     <div className="box__setup">
                         {
-                            room.mt_status === 0 || isLast ?
+                            room.mt_status === 0 ?
                                 <div onClick={() => modalOpen(room)} onMouseOver={mouseOver} onMouseLeave={mouseOut} className="btn btn__setting js-modal-alert">공개하기</div>
                             :     room.mt_status === 2 ?
                                 ''

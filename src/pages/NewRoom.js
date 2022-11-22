@@ -479,6 +479,10 @@ const NewRoom = () => {
         }
     }
 
+    $('#shade').click(() => {
+        handleModal();
+    })
+
 
 
     return (

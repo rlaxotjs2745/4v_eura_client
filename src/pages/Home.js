@@ -96,10 +96,12 @@ const Home = () => {
     }
 
     const mouseOver = () => {
+        console.log('over');
         setCurEvent(false);
     }
 
     const mouseOut = () => {
+        console.log('out')
         setCurEvent(true);
     }
 
