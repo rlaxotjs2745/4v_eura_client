@@ -6,7 +6,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import $ from "jquery";
 import AddMeetingUser from "../Components/Cards/AddMeetingUser";
 import {getCookie} from "../util/cookie";
-import Select from 'react-select'
+// import Select from 'react-select'
 
 
 const MAX_COUNT = 99;
@@ -46,10 +46,10 @@ const NewRoom = () => {
     const [groupFileName, setGroupFileName] = useState('이메일이 입력된 엑셀파일을 첨부해주세요.')
     const [groupSearchUser, setGroupSearchUser] = useState([]);
 
-    const [Selected1, setSelected1] = useState('');
-    const [Selected2, setSelected2] = useState('');
-    const [Selected3, setSelected3] = useState('');
-    const [Selected4, setSelected4] = useState('');
+    const [Selected1, setSelected1] = useState('00');
+    const [Selected2, setSelected2] = useState('00');
+    const [Selected3, setSelected3] = useState('00');
+    const [Selected4, setSelected4] = useState('00');
 
     const select1_opiton = [
         { value: "00", label: "00", idx:"00"},
@@ -426,8 +426,8 @@ const NewRoom = () => {
 
         const formData = new FormData();
         formData.append('mt_name', title);
-        formData.append('mt_start_dt',  startTime.length > 7 ? `${startDate} ${Selected1}:${Selected2}` : `${startDate} ${Selected1}:${Selected2}:00`);
-        formData.append('mt_end_dt',   endTime.length > 7 ? `${startDate} ${Selected3}:${Selected4}` : `${startDate} ${Selected3}:${Selected4}:00`);
+        formData.append('mt_start_dt',   `${startDate} ${Selected1}:${Selected2}:00`);
+        formData.append('mt_end_dt',   `${startDate} ${Selected3}:${Selected4}:00`);
         formData.append('mt_info', meetingInfo);
         formData.append('mt_invite_email', invites.map(inv => inv.email).join());
         for (let i = 0; i < uploadedFiles.length; i++) {
@@ -698,7 +698,7 @@ const NewRoom = () => {
 
                     <div className="input__group" id="hahhhoho">
                         <label htmlFor="make_team">참석자 추가</label>
-                        <div className="list__count"><a href="https://eura-server.s3.ap-northeast-2.amazonaws.com/upload/EURA_%EB%AF%B8%ED%8C%85_%EC%B0%B8%EC%84[…]B2%B4_%EC%B6%94%EA%B0%80_%EC%96%91%EC%8B%9D.csv" className="btn btn__download">엑셀 양식 다운로드</a></div>
+                        <div className="list__count"><a onClick={() => window.open('https://eura-server.s3.ap-northeast-2.amazonaws.com/upload/EURA_%EB%AF%B8%ED%8C%85_%EC%B0%B8%EC%84\[%E2%80%A6]B2%B4_%EC%B6%94%EA%B0%80_%EC%96%91%EC%8B%9D.csv')} className="btn btn__download">엑셀 양식 다운로드</a></div>
                         <div className="flow_box input__inline">
                             <input id="make_team" type="text" className="text" placeholder="이메일 또는 이름을 입력해 참석자를 추가하세요." onChange={searchInviteUserList} />
                             <button onClick={handleModal} className="btn btn__team js-modal-alert">

@@ -28,6 +28,10 @@ const MeetingCalendar = () => {
         console.log(e)
     }
 
+    useEffect(()=>{
+        console.log(clickedDay);
+    }, [clickedDay]);
+
 
     const getDayMeetingInfo = (day) => {
         axios.get(SERVER_URL + '/meet/main/calendar/info?' + `calYear=${day.getFullYear()}&calMonth=${day.getMonth() + 1}&calDay=${day.getDate()}`, AXIOS_OPTION)
@@ -91,12 +95,13 @@ const MeetingCalendar = () => {
                     onViewChange={({activeStartDate}) => setYearMonth(activeStartDate)}
                     navigationLabel={({ date, label }) => getMonthMeetingList(date, label)}
                     onClickDay={(value) => getDayMeetingInfo(new Date(value))}
+                    showNeighboringMonth={false}
                 />
             </div>
             {
                 !clickedDay ||!clickedDayMeeting.length ? '' :
                     <div className="calendar_clicked_day_meeting_card">
-                        <h2>{new Date(clickedDay).getMonth() + '월' + new Date(clickedDay).getDate()}일 일정</h2>
+                        <h2>{new Date(clickedDay).getMonth()+1 + '월' + new Date(clickedDay).getDate()}일 일정</h2>
                         <table className="clicked_day_meeting_list">
                             <thead>
                                 <tr>
