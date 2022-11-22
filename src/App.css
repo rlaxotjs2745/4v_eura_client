@@ -4662,16 +4662,22 @@ input[type=date].under-scope, input[type=time].under-scope {cursor: pointer}
 
 .flex_time {display: flex; align-items: center; width:325px;}
 .flex_box {display: flex; align-items: stretch;}
+#make_time1, #make_time2 {cursor: pointer}
+.flex_time > .relative {flex:1; display: flex;}
+.flex_time > .relative select {border:1px solid #bfc3d5; flex:1; border-radius: 8px; padding:11px 12px; color:#17171a; font-size:14px; box-sizing: content-box;}
+
 .input__group label.input__time {margin-left:10px;}
 .input__group .flex_box label {display: flex; align-items: center; margin-right:5px;}
 .input__group .flex_box label.input__time {margin-bottom: 0;}
 .input__group .flex_box label img{min-width:22px; height:22px;}
 
-.flex_time .react-datepicker__header {display: none;}
+/*.flex_time .react-datepicker__header {display: none;}*/
 
-.flex_time .relative {position: relative;}
-#make_time1, #make_time2 {cursor: pointer}
-.react-datepicker__time {width:100%; border:1px solid #bfc3d5; border-radius: 8px;  box-sizing: border-box; font-size:14px; font-weight: 500; height:300px; overflow-y: auto; cursor: pointer}
-.react-datepicker-popper {width: 100%; box-sizing: border-box; z-index: 99; }
-.react-datepicker__time-list-item { padding:12px 12px; background: #fff;}
-.react-datepicker__time-list-item + .react-datepicker__time-list-item {border-top:1px solid #bfc3d5;}
+/*.flex_time .relative {position: relative;}*/
+
+
+
+/*.react-datepicker__time {width:100%; border:1px solid #bfc3d5; border-radius: 8px;  box-sizing: border-box; font-size:14px; font-weight: 500; height:300px; overflow-y: auto; cursor: pointer}*/
+/*.react-datepicker-popper {width: 100%; box-sizing: border-box; z-index: 99; }*/
+/*.react-datepicker__time-list-item { padding:12px 12px; background: #fff;}*/
+/*.react-datepicker__time-list-item + .react-datepicker__time-list-item {border-top:1px solid #bfc3d5;}*/
