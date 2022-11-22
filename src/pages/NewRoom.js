@@ -6,21 +6,12 @@ import {useLocation, useNavigate} from "react-router-dom";
 import $ from "jquery";
 import AddMeetingUser from "../Components/Cards/AddMeetingUser";
 import {getCookie} from "../util/cookie";
+import Select from 'react-select'
 
-import DatePicker from 'react-datepicker';
-// import '../react_date_picker.css';
-// import "react-datepicker/dist/react-datepicker.css";
-// import DatePicker from 'react-datepicker'
-import DatePicker, { registerLocale } from "react-datepicker";
-import { ko } from "date-fns/esm/locale";
 
 const MAX_COUNT = 99;
 
 const NewRoom = () => {
-
-    const [timeStartDate, setTimeStartDate] = useState(new Date());
-    const [hhTime, setHhtime] = useState(new Date().getHours());
-    const [timeStartDate3, setTimeStartDate3] = useState(new Date());
 
     const { pathname } = useLocation();
     const pathSplit = Number(pathname.split('/')[2])
@@ -55,6 +46,95 @@ const NewRoom = () => {
     const [groupFileName, setGroupFileName] = useState('이메일이 입력된 엑셀파일을 첨부해주세요.')
     const [groupSearchUser, setGroupSearchUser] = useState([]);
 
+    const [Selected1, setSelected1] = useState('');
+    const [Selected2, setSelected2] = useState('');
+    const [Selected3, setSelected3] = useState('');
+    const [Selected4, setSelected4] = useState('');
+
+    const select1_opiton = [
+        { value: "00", label: "00", idx:"00"},
+        { value: "01", label: "01", idx:"01"},
+        { value: "02", label: "02", idx:"02"},
+        { value: "03", label: "03", idx:"03"},
+        { value: "04", label: "04", idx:"04"},
+        { value: "05", label: "05", idx:"05"},
+        { value: "06", label: "06", idx:"06"},
+        { value: "07", label: "07", idx:"07"},
+        { value: "08", label: "08", idx:"08"},
+        { value: "09", label: "09", idx:"09"},
+        { value: "10", label: "10", idx:"10"},
+        { value: "11", label: "11", idx:"11"},
+        { value: "12", label: "12", idx:"12"},
+        { value: "13", label: "13", idx:"13"},
+        { value: "14", label: "14", idx:"14"},
+        { value: "15", label: "15", idx:"15"},
+        { value: "16", label: "16", idx:"16"},
+        { value: "17", label: "17", idx:"17"},
+        { value: "18", label: "18", idx:"18"},
+        { value: "19", label: "19", idx:"19"},
+        { value: "20", label: "20", idx:"20"},
+        { value: "21", label: "21", idx:"21"},
+        { value: "22", label: "22", idx:"22"},
+        { value: "23", label: "23", idx:"23"},
+    ];
+
+    const select2_opiton = [
+        { value: "00", label: "00", idx:"00"},
+        { value: "10", label: "10", idx:"01"},
+        { value: "20", label: "20", idx:"02"},
+        { value: "30", label: "30", idx:"03"},
+        { value: "40", label: "40", idx:"04"},
+        { value: "50", label: "50", idx:"05"},
+    ];
+
+    const select3_opiton = [
+        { value: "00", label: "00", idx:"00"},
+        { value: "01", label: "01", idx:"01"},
+        { value: "02", label: "02", idx:"02"},
+        { value: "03", label: "03", idx:"03"},
+        { value: "04", label: "04", idx:"04"},
+        { value: "05", label: "05", idx:"05"},
+        { value: "06", label: "06", idx:"06"},
+        { value: "07", label: "07", idx:"07"},
+        { value: "08", label: "08", idx:"08"},
+        { value: "09", label: "09", idx:"09"},
+        { value: "10", label: "10", idx:"10"},
+        { value: "11", label: "11", idx:"11"},
+        { value: "12", label: "12", idx:"12"},
+        { value: "13", label: "13", idx:"13"},
+        { value: "14", label: "14", idx:"14"},
+        { value: "15", label: "15", idx:"15"},
+        { value: "16", label: "16", idx:"16"},
+        { value: "17", label: "17", idx:"17"},
+        { value: "18", label: "18", idx:"18"},
+        { value: "19", label: "19", idx:"19"},
+        { value: "20", label: "20", idx:"20"},
+        { value: "21", label: "21", idx:"21"},
+        { value: "22", label: "22", idx:"22"},
+        { value: "23", label: "23", idx:"23"},
+    ];
+
+    const select4_opiton = [
+        { value: "00", label: "00", idx:"00"},
+        { value: "10", label: "10", idx:"01"},
+        { value: "20", label: "20", idx:"02"},
+        { value: "30", label: "30", idx:"03"},
+        { value: "40", label: "40", idx:"04"},
+        { value: "50", label: "50", idx:"05"},
+    ];
+
+    const handleSelect1 = (e) => {
+        setSelected1(e.target.value);
+    };
+    const handleSelect2 = (e) => {
+        setSelected2(e.target.value);
+    };
+    const handleSelect3 = (e) => {
+        setSelected3(e.target.value);
+    };
+    const handleSelect4 = (e) => {
+        setSelected4(e.target.value);
+    };
 
     // const chosenFiles = Array.prototype.slice.call(e.target.files)
     useEffect(() => {
@@ -81,6 +161,10 @@ const NewRoom = () => {
                     setMeetingInfo(room.mt_info);
                     setRoomInfo(room);
                     setUploadedFilesPlus(room.mt_files);
+                    setSelected1(room.mt_start_dt.split(' ')[1].split(':')[0])
+                    setSelected2(room.mt_start_dt.split(' ')[1].split(':')[1])
+                    setSelected3(room.mt_end_dt.split(' ')[1].split(':')[0])
+                    setSelected4(room.mt_end_dt.split(' ')[1].split(':')[1])
 
                     if(room.mt_remind_type !== 0){
                         setRemindBool(true);
@@ -363,7 +447,7 @@ const NewRoom = () => {
         // formData.append('file', uploadedFiles);
 
         if(isNew === 0) {
-            axios.post(SERVER_URL + '/meet/create', formData,  AXIOS_OPTION)
+            axios.post(SERVER_URL + '/meet/create', formData, AXIOS_OPTION)
                 .then(res => {
                     if(res.data.result_code === 'SUCCESS'){
                         alert('미팅룸을 생성했습니다.');
@@ -395,6 +479,8 @@ const NewRoom = () => {
         }
     }
 
+
+
     return (
         <div className="room">
             <h2>
@@ -418,77 +504,41 @@ const NewRoom = () => {
                             <label htmlFor="make_time" className="input__time"><img src="../assets/image/ic_time_24.png" alt="" /></label>
                             <div className="flex_time">
                                 <div className="relative">
-                                    <select>
-                                        <option value="00">00</option>
-                                        <option value="01">01</option>
-                                        <option value="02">02</option>
-                                        <option value="03">03</option>
-                                        <option value="04">04</option>
-                                        <option value="05">05</option>
-                                        <option value="06">06</option>
-                                        <option value="07">07</option>
-                                        <option value="08">08</option>
-                                        <option value="09">09</option>
-                                        <option value="10">10</option>
-                                        <option value="11">11</option>
-                                        <option value="12">12</option>
-                                        <option value="13">13</option>
-                                        <option value="14">14</option>
-                                        <option value="15">15</option>
-                                        <option value="16">16</option>
-                                        <option value="17">17</option>
-                                        <option value="18">18</option>
-                                        <option value="19">19</option>
-                                        <option value="20">20</option>
-                                        <option value="21">21</option>
-                                        <option value="22">22</option>
-                                        <option value="23">23</option>
+                                    <select onChange={handleSelect1} value={Selected1}>
+                                        {select1_opiton.map((item) => (
+                                            <option value={item.value} key={item.idx}>
+                                                {item.label}
+                                            </option>
+                                        ))}
                                     </select>
-                                    <select>
-                                        <option value="00">00</option>
-                                        <option value="10">10</option>
-                                        <option value="20">20</option>
-                                        <option value="30">30</option>
-                                        <option value="40">40</option>
-                                        <option value="50">50</option>
+                                    시
+                                    <select onChange={handleSelect2} value={Selected2}>
+                                        {select2_opiton.map((item) => (
+                                            <option value={item.value} key={item.idx}>
+                                                {item.label}
+                                            </option>
+                                        ))}
                                     </select>
+                                    분
                                 </div>
                                 <span className="bar">-</span>
                                 <div className="relative">
-                                    <select value={'22'}>
-                                        <option value="00">00</option>
-                                        <option value="01">01</option>
-                                        <option value="02">02</option>
-                                        <option value="03">03</option>
-                                        <option value="04">04</option>
-                                        <option value="05">05</option>
-                                        <option value="06">06</option>
-                                        <option value="07">07</option>
-                                        <option value="08">08</option>
-                                        <option value="09">09</option>
-                                        <option value="10">10</option>
-                                        <option value="11">11</option>
-                                        <option value="12">12</option>
-                                        <option value="13">13</option>
-                                        <option value="14">14</option>
-                                        <option value="15">15</option>
-                                        <option value="16">16</option>
-                                        <option value="17">17</option>
-                                        <option value="18">18</option>
-                                        <option value="19">19</option>
-                                        <option value="20">20</option>
-                                        <option value="21">21</option>
-                                        <option value="22">22</option>
-                                        <option value="23">23</option>
+                                    <select onChange={handleSelect3} value={Selected3}>
+                                        {select3_opiton.map((item) => (
+                                            <option value={item.value} key={item.idx}>
+                                                {item.label}
+                                            </option>
+                                        ))}
                                     </select>
-                                    <select>
-                                        <option value="00">00</option>
-                                        <option value="10">10</option>
-                                        <option value="20">20</option>
-                                        <option value="30">30</option>
-                                        <option value="40">40</option>
-                                        <option value="50">50</option>
+                                    시
+                                    <select onChange={handleSelect4} value={Selected4}>
+                                        {select4_opiton.map((item) => (
+                                            <option value={item.value} key={item.idx}>
+                                                {item.label}
+                                            </option>
+                                        ))}
                                     </select>
+                                    분
                                 </div>
                             </div>
                             {/*<input id="make_time1" type="time"*/}
