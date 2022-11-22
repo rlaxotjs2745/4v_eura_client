@@ -2029,8 +2029,21 @@ td {
     float: left
 }
 
+.main__board .board__time_box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .main__board .board__time {
     font-size: 70px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.main__board .board__date {
+    font-size: 18px;
     font-weight: 500;
     color: #fff
 }
@@ -3756,7 +3769,8 @@ html.js-overflow {
 
 .room .room__box .flow__team ul li .checkbox {
     float: right;
-    margin-top: 18px
+    margin-top: 18px;
+    display: none;
 }
 
 .room .btn__box {
@@ -4595,3 +4609,19 @@ form.w100 {width:100%; position: relative; height:920px; margin:60px auto 0;}
 input[type=file]:disabled + label .btn.btn__download, button.btn__download {opacity: 0.3}
 
 input[type=date].under-scope, input[type=time].under-scope {cursor: pointer}
+
+.flex_time {display: flex; align-items: center; width:325px;}
+.flex_box {display: flex; align-items: stretch;}
+.input__group label.input__time {margin-left:10px;}
+.input__group .flex_box label {display: flex; align-items: center; margin-right:5px;}
+.input__group .flex_box label.input__time {margin-bottom: 0;}
+.input__group .flex_box label img{min-width:22px; height:22px;}
+
+.flex_time .react-datepicker__header {display: none;}
+
+.flex_time .relative {position: relative;}
+#make_time1, #make_time2 {cursor: pointer}
+.react-datepicker__time {width:100%; border:1px solid #bfc3d5; border-radius: 8px;  box-sizing: border-box; font-size:14px; font-weight: 500; height:300px; overflow-y: auto; cursor: pointer}
+.react-datepicker-popper {width: 100%; box-sizing: border-box; z-index: 99; }
+.react-datepicker__time-list-item { padding:12px 12px; background: #fff;}
+.react-datepicker__time-list-item + .react-datepicker__time-list-item {border-top:1px solid #bfc3d5;}

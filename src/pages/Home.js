@@ -56,7 +56,6 @@ const Home = () => {
     const changeMeetingStatus = () => {
         let meet = curMeeting;
         let newMeeting = [];
-        console.log(meet.mt_idx)
         if(meet.mt_status === 0){
             axios.put(SERVER_URL + '/meet/room/open', {"idx_meeting": meet.mt_idx}, AXIOS_OPTION)
                 .then(res => {
@@ -68,6 +67,7 @@ const Home = () => {
                                 newMeeting.push(cur);
                             }
                         }
+                        console.log(newMeeting);
                         setMeeting({...meeting, mt_meetMyList: newMeeting});
                         modalClose();
                     }
@@ -147,6 +147,9 @@ const Home = () => {
         getMainEndList();
     }, []);
 
+    useEffect(() => {
+        getMain();
+    }, [meeting])
 
     // useEffect(() => {
     //     axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
