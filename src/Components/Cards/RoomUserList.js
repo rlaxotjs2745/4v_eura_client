@@ -23,8 +23,11 @@ const RoomUserList = ({invites, idx, roomInfo}) =>
                                     <figure><img
                                         src={inv.ui_pic ? inv.ui_pic : require('../../assets/image/image_profile.png')}
                                         alt=""/></figure>
-                                    <span className="team__user">{inv.uname}<img
-                                        src={require('../../assets/image/ic_host.png')} alt=""/><em>{inv.email}</em></span>
+                                    <span className="team__user">
+                                        <img src={require('../../assets/image/ic_host.png')} alt=""/>
+                                        {inv.uname}
+                                        <em>{inv.email}</em>
+                                    </span>
                                     {!!inv.is_iam ? <span className="team__badge">나</span> : ''}
                                     </>
                                 </li> : null)

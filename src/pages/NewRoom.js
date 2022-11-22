@@ -17,6 +17,7 @@ const NewRoom = () => {
     const pathSplit = Number(pathname.split('/')[2])
     console.log(pathSplit)
     const navigate = useNavigate();
+    const fileReader = new FileReader();
 
     const [roomInfo, setRoomInfo] = useState({});
     const [isNew, setIsNew] = useState(0);
@@ -42,68 +43,10 @@ const NewRoom = () => {
 
     const [fileLimit, setFileLimit] = useState(false);
 
+    const [groupModal, setGroupModal] = useState('pop__detail');
+
 
     // const chosenFiles = Array.prototype.slice.call(e.target.files)
-
-    const handleUploadFiles = files => {
-        const uploaded = [...uploadedFiles];
-        let limitExceeded = false;
-        files.some((file) => {
-            if(uploaded.findIndex((f) => f.name === file.name) === -1) {
-                uploaded.push(file);
-                if (uploaded.length === MAX_COUNT) setFileLimit(true);
-                uploaded.length === MAX_COUNT ? setFileLimit(true) : setFileLimit(false)
-                if(uploaded.length > MAX_COUNT) {
-                    alert(`파일은 최대 ${MAX_COUNT}개 까지 첨부할 수 있습니다.`)
-                    setFileLimit(false);
-                    limitExceeded = true;
-                    return true;
-                }
-            }
-        })
-        if (!limitExceeded) setUploadedFiles(uploaded)
-    }
-
-    const handleFileEvent =  (e) => {
-        const chosenFiles = Array.prototype.slice.call(e.target.files)
-        handleUploadFiles(chosenFiles)
-    }
-
-
-    const handleFileDeleteEvent = (e) => {
-        let uploaded = [...uploadedFiles]
-        let indexNumber = e.target.parentNode.parentNode
-        let i = 0;
-        while( indexNumber = indexNumber.previousSibling ) {
-            if( indexNumber.nodeType === 1 ) {
-                i++;
-            }
-        }
-        let index2 = i
-        setUploadedFiles(uploaded.filter((i , index) => index !== index2))
-        setFileLimit(false)
-    }
-
-    const handleFileDeleteEvent2 = (e) => {
-        let uploaded = [...uploadedFilesPlus]
-        // console.log(uploaded)
-        let indexNumber = e.target.parentNode.parentNode
-        let i = 0;
-        while( indexNumber = indexNumber.previousSibling ) {
-            if( indexNumber.nodeType === 1 ) {
-                i++;
-            }
-        }
-        let index2 = i
-        setUploadedFilesPlus(uploaded.filter((i , index) => {
-            if(index === index2){
-                setDelFiles([...delFiles ,i.idx])
-            }
-            return index !== index2
-        }))
-        setFileLimit(false)
-    }
-
     useEffect(() => {
         if(pathname.indexOf('reopen')>-1){
         // if(window.location.pathname.split('/')[window.location.pathname.split('/').length-2] === 'reopen'){
@@ -152,6 +95,78 @@ const NewRoom = () => {
     }, [roomInfo]);
 
 
+    const handleUploadFiles = files => {
+        const uploaded = [...uploadedFiles];
+        let limitExceeded = false;
+        files.some((file) => {
+            if(uploaded.findIndex((f) => f.name === file.name) === -1) {
+                uploaded.push(file);
+                if (uploaded.length === MAX_COUNT) setFileLimit(true);
+                uploaded.length === MAX_COUNT ? setFileLimit(true) : setFileLimit(false)
+                if(uploaded.length > MAX_COUNT) {
+                    alert(`파일은 최대 ${MAX_COUNT}개 까지 첨부할 수 있습니다.`)
+                    setFileLimit(false);
+                    limitExceeded = true;
+                    return true;
+                }
+            }
+        })
+        if (!limitExceeded) setUploadedFiles(uploaded)
+    }
+
+    const handleFileEvent =  (e) => {
+        const chosenFiles = Array.prototype.slice.call(e.target.files)
+        handleUploadFiles(chosenFiles)
+    }
+
+    const handleModal = (e) => {
+        e.preventDefault();
+        if(groupModal === 'pop__detail'){
+            setGroupModal('pop__detail is-on');
+            $('#shade').addClass('is-on');
+        } else {
+            setGroupModal('pop__detail');
+            $('#shade').removeClass('is-on');
+        }
+    }
+
+
+    const handleFileDeleteEvent = (e) => {
+        let uploaded = [...uploadedFiles]
+        let indexNumber = e.target.parentNode.parentNode
+        let i = 0;
+        while( indexNumber = indexNumber.previousSibling ) {
+            if( indexNumber.nodeType === 1 ) {
+                i++;
+            }
+        }
+        let index2 = i
+        setUploadedFiles(uploaded.filter((i , index) => index !== index2))
+        setFileLimit(false)
+    }
+
+    const handleFileDeleteEvent2 = (e) => {
+        let uploaded = [...uploadedFilesPlus]
+        // console.log(uploaded)
+        let indexNumber = e.target.parentNode.parentNode
+        let i = 0;
+        while( indexNumber = indexNumber.previousSibling ) {
+            if( indexNumber.nodeType === 1 ) {
+                i++;
+            }
+        }
+        let index2 = i
+        setUploadedFilesPlus(uploaded.filter((i , index) => {
+            if(index === index2){
+                setDelFiles([...delFiles ,i.idx])
+            }
+            return index !== index2
+        }))
+        setFileLimit(false)
+    }
+
+
+
     const searchInviteUserList = (e) => {
         let searchWord = e.target.value;
         axios.get(SERVER_URL +
@@ -160,6 +175,17 @@ const NewRoom = () => {
             .then(res => {
                 setSearchUser(res.data.data.mt_invites);
             })
+    }
+
+    const getGroupFile = (e) => {
+        const chosenFile = e.target.files[0];
+        console.log(chosenFile);
+
+        fileReader.onload((ev) => {
+            const csvOutput = ev.target.result;
+        })
+
+        console.log(fileReader.readAsText(chosenFile));
     }
 
     const excludeUser = (user) => {
@@ -519,9 +545,9 @@ const NewRoom = () => {
                         {/*<div className="list__count"><a href="#none" className="btn btn__download">엑셀 양식 다운로드</a></div>*/}
                         <div className="flow_box input__inline">
                             <input id="make_team" type="text" className="text" placeholder="이메일 또는 이름을 입력해 참석자를 추가하세요." onChange={searchInviteUserList} />
-                            {/*<a href="#popup__team" className="btn btn__team js-modal-alert">*/}
-                            {/*    <img src="../assets/image/ic_participant_14.png" alt="" />단체추가하기*/}
-                            {/*</a>*/}
+                            <button onClick={handleModal} className="btn btn__team js-modal-alert">
+                                <img src="../assets/image/ic_participant_14.png" alt="" />단체추가하기
+                            </button>
                         </div>
                         <div className="flow__team">
                             <ul>
@@ -577,7 +603,7 @@ const NewRoom = () => {
                     </div>
                 </div>
             </form>
-            <div id="popup__team" className="pop__detail ">
+            <div id="popup__team" className={groupModal}>
                 <div className="popup__cnt">
                     <div className="pop__message">
                         <h3>참석자 단체 등록하기</h3>
@@ -585,7 +611,7 @@ const NewRoom = () => {
                             <div className="upload__box ">
                                 <input className="upload-name" value="이메일이 입력된 엑셀파일을 첨부해주세요." disabled />
                                 <label htmlFor="ex_filename"><img src="../assets/image/ic_attachment_24.png" alt=""/></label>
-                                <input type="file" id="ex_filename" className="upload-hidden"/>
+                                <input type="file" id="ex_filename" onChange={getGroupFile} className="upload-hidden"/>
                             </div>
                             <div className="upload__list">
 
@@ -593,8 +619,9 @@ const NewRoom = () => {
                         </div>
                     </div>
                     <div className="btn__group align__right">
-                        <a href="#none" className="btn btn__normal btn__s">취소</a>
-                        <a href="#none" className="btn btn__able btn__s js-modal-close">완료</a>
+                        <button onClick={handleModal} className="btn btn__normal btn__s">참석자 찾기</button>
+                        <button onClick={handleModal} className="btn btn__normal btn__s">취소</button>
+                        <button onClick={''} className="btn btn__able btn__s js-modal-close">완료</button>
                     </div>
                 </div>
             </div>
