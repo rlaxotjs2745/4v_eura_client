@@ -15,6 +15,7 @@ const NewRoom = () => {
 
     const { pathname } = useLocation();
     const pathSplit = Number(pathname.split('/')[2])
+
     const navigate = useNavigate();
     const fileReader = new FileReader();
 
@@ -625,8 +626,19 @@ const NewRoom = () => {
                 if(res.data.result_code === "SUCCESS"){
                     $('#popup__notice').removeClass('is-on');
                     $('#shade2').removeClass('is-on');
+
+                    axios.put(SERVER_URL + 'meet/room/open', {"mt_status":1}, AXIOS_OPTION).then(res => {
+                        console.log(res.data)
+                        console.log('1 잘 보냈어요')
+                    }).catch(errors => {
+                        console.log(errors)
+                    })
+
                     alert('미팅룸을 공개하였습니다.');
                     navigate('/');
+
+                } else if (res.data.result_code === "FAIL01"){
+                    navigate(`/newroom/${pathSplit}`)
                 }
             }).catch(err => {
             console.log(err);

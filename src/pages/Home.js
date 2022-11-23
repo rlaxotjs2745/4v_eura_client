@@ -61,6 +61,7 @@ const Home = () => {
     }
 
     const changeMeetingStatus = () => {
+
         let meet = curMeeting;
         let newMeeting = [];
         if(meet.mt_status === 0){
@@ -76,7 +77,17 @@ const Home = () => {
                         }
                         console.log(newMeeting);
                         setMeeting({...meeting, mt_meetMyList: newMeeting});
+
+                        axios.put(SERVER_URL + 'meet/room/open', {"mt_status":1}, AXIOS_OPTION).then(res => {
+                            console.log(res.data)
+                            console.log('1 잘 보냈어요')
+                        }).catch(errors => {
+                            console.log(errors)
+                        })
+
                         modalClose();
+                    } else if (res.data.result_code === "FAIL01"){
+                        navigate(`/newroom/${meet.mt_idx}`)
                     }
                 }).catch(err => {
                 console.log(err);

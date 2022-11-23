@@ -27,6 +27,8 @@ const MeetingRoom = (props) => {
             .then(res => {
                 if(res.data && res.data.data && res.data.data.mt_finish === 1){
                     navigate(`/analyse/${pathSplit}`);
+                } else if (res.data.result_code === 'FAIL01') {
+                    navigate(`/analyse/${pathSplit}`);
                 }
                 setRoomInfo(res.data.data);
             }).catch(res => console.log(res))
