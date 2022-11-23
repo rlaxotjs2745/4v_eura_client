@@ -40,9 +40,14 @@ const AnalyseMeeting = () => {
     };
 
     const [lecture, setLecture] = useState({})
+    const [attendIdx, setAttendIdx] = useState(0)
+    const [attend, seetAttend] = useState({}) // 참석자
+
     const [btmdata, setBtmdata] = useState([])
     const [piedata, setPiedata] = useState([])
     const [middata, setMiddata] = useState([])
+
+
     const colors = ['#3377ff', '#3377ff', '#ffc633', '#ffc633']
     const _colors = ['#3377ff', '#ffc633', 'gray']
     let chartIns = null
@@ -152,6 +157,7 @@ const AnalyseMeeting = () => {
                 if(res.data.result_code === 'SUCCESS'){
                     let _data = res.data.data
                     setLecture(_data)
+                    setAttendIdx(_data.mtInviteList)
                     // console.log(res)
                     // setMiddata(_data.mtAnalyMid)
                     // setBtmdata(_data.mtData0)
@@ -170,10 +176,23 @@ const AnalyseMeeting = () => {
                 console.log(error)
         });
 
+        axios.get(SERVER_URL + `/meet/result/mtinviteinfo?idx_meeting=`+pathSplit, AXIOS_OPTION)
+            .then(res => {
+                if(res.data.result_code === 'SUCCESS'){
+                    let _data = res.data.data
+                    setLecture(_data)
+                }else{
+                    alert(res.data.result_str)
+                }
+            }).catch((error)=>{
+            console.log(error)
+        });
+
         return () => {
             console.log('END')
             console.log("movieSrc1:" + movieSrc)
         }
+
     }, [])
     
     // const [dur, setDuration] = useState(0)
@@ -283,8 +302,28 @@ const AnalyseMeeting = () => {
                             :
                             // 미팅 참석한 호스트가 아닌자
                             <>
-                                <div className="result__user">
-                                    <h4 className="result__title">분석요약</h4>
+                                <div className="result__user not_host">
+                                    <h4 className="result__title">참석자 목록({!lecture || !lecture.mtInviteInfo ? '0' : lecture.mtInviteInfo.user_invite}/{!lecture || !lecture.mtInviteInfo ? '0' : lecture.mtInviteInfo.user_total})</h4>
+                                    <div className="result__watch">
+                                        <ul>
+                                            {
+                                                !lecture.mtInviteList || !lecture.mtInviteList.length
+                                                    ?
+                                                    <span className="file__name">참석자가 없습니다.</span>
+                                                    :
+                                                    lecture.mtInviteList.map(member => {
+                                                        return (
+                                                            <li key={member.idx}>
+                                                                <button type="button">
+                                                                    <figure><img src={member.upic?member.upic:profile} alt=""/></figure>
+                                                                    <div className="watch__td"><span>{member.uname}</span><div>{member.uemail}</div></div>
+                                                                </button>
+                                                            </li>
+                                                        )
+                                                    })
+                                            }
+                                        </ul>
+                                    </div>
                                 </div>
                                 <div className="result__mov" title="영상자리 (860 x 407)">
                                     {/* <video id="MeetMovie" controls width={860} height={407} playsInline={true} src={movieSrc} /> */}
@@ -327,7 +366,7 @@ const AnalyseMeeting = () => {
                     :
                     // 호스트가 보는 화면
                     <>
-                        <div className="result__user">
+                        <div className="result__user not_host">
                             <h4 className="result__title">참석자 목록({!lecture || !lecture.mtInviteInfo ? '0' : lecture.mtInviteInfo.user_invite}/{!lecture || !lecture.mtInviteInfo ? '0' : lecture.mtInviteInfo.user_total})</h4>
                             <div className="result__watch">
                                 <ul>
@@ -354,7 +393,20 @@ const AnalyseMeeting = () => {
                                     }
                                 </ul>
                             </div>
+                            <div className="result__user summary">
+                                <h4 className="result__title">분석 요약</h4>
+                                <div className="user_summary">
+                                    분석 요약 굿 배드 그래프가 들어갈 자리 입니다.
+                                </div>
+                                <div className="dl_good_bad_box">
+                                    <dl>
+                                        <dt>Good</dt>
+                                        <dd>{lecture}</dd>
+                                    </dl>
+                                </div>
+                            </div>
                         </div>
+
                         <div className="result__mov" title="영상자리 (860 x 407)">
                             {/* <video id="MeetMovie" controls width={860} height={407} playsInline={true} src={movieSrc} /> */}
                             <Player src={movieSrc} width={860} height={407}></Player>

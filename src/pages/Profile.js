@@ -434,7 +434,7 @@ const Profile = () => {
                 </div>
 
 
-                <h2>성격 선택 유형</h2>
+                <h2>성격 유형 (선택사항)</h2>
 
                 <div className="my__box">
                     {characterVisible ?

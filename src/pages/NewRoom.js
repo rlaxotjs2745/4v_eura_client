@@ -56,18 +56,39 @@ const NewRoom = () => {
     const min_time2_math = dtPlusDefault.getMinutes() // 현재 시간에서 30분 뒤를 가진 값을 가짐
     const min_time2 = Math.floor(min_time2_math/10) * 10 + 10 // 현재 시간에서 30분뒤의 10분 뒤
 
-    const [Selected1, setSelected1] = useState(()=>{
-        if (min >= 50) { // 현재 시간 분이 50분 이상이면 10분 이상으로 00표시 되게 되어있으므로 시간을 1시간 플러스 해서 반환
-            return hour + 1
-        } else {
-            return hour
+
+    // const [Selected1, setSelected1] = useState(()=>{
+    //     if (min >= 50) { // 현재 시간 분이 50분 이상이면 10분 이상으로 00표시 되게 되어있으므로 시간을 1시간 플러스 해서 반환
+    //         return hour + 1
+    //     } else {
+    //         return hour
+    //     }
+    // });
+    // const [Selected2, setSelected2] = useState(`${min_time}`);
+    // const [Selected3, setSelected3] = useState(`${hour2}`);
+    // const [Selected4, setSelected4] = useState(`${min_time2}`);
+
+    const [Selected1, setSelected1] = useState('00');
+    const [Selected2, setSelected2] = useState('00');
+    const [Selected3, setSelected3] = useState('00');
+    const [Selected4, setSelected4] = useState('00');
+
+    useEffect(() => {
+        let curTIme = new Date();
+
+        if(curTIme.getMinutes() % 10 !== 0){ // 현재 시간의 분을 나눈 나머지가 0이 아닐경우 (분이 10의 자리로 떨어지지 않을 경우)
+            curTIme.setMinutes(curTIme.getMinutes() + (10 - curTIme.getMinutes() % 10) ); // 분을 다시 설정함, 현재
         }
-    });
-    const [Selected2, setSelected2] = useState(`${min_time}`);
-    const [Selected3, setSelected3] = useState(`${hour2}`);
-    const [Selected4, setSelected4] = useState(`${min_time2}`);
 
+        setSelected1(curTIme.getHours());
+        setSelected2(curTIme.getMinutes());
 
+        curTIme.setMinutes(curTIme.getMinutes() + 30);
+
+        setSelected3(curTIme.getHours());
+        setSelected4(curTIme.getMinutes());
+
+    },[])
 
     const select1_opiton = [
         { value: "00", label: "00", idx:"00"},

@@ -4682,12 +4682,12 @@ input[type=date].under-scope, input[type=time].under-scope {cursor: pointer}
 .input__group .flex_box label img{min-width:22px; height:22px;}
 
 /*.flex_time .react-datepicker__header {display: none;}*/
-
 /*.flex_time .relative {position: relative;}*/
-
-
-
 /*.react-datepicker__time {width:100%; border:1px solid #bfc3d5; border-radius: 8px;  box-sizing: border-box; font-size:14px; font-weight: 500; height:300px; overflow-y: auto; cursor: pointer}*/
 /*.react-datepicker-popper {width: 100%; box-sizing: border-box; z-index: 99; }*/
 /*.react-datepicker__time-list-item { padding:12px 12px; background: #fff;}*/
 /*.react-datepicker__time-list-item + .react-datepicker__time-list-item {border-top:1px solid #bfc3d5;}*/
+
+.result__user.not_host {height: 330px}
+.result__user.not_host .result__watch {height:270px;}
+.result__user.not_host .result__user.summary {height:372px; margin-top: 15px;}
