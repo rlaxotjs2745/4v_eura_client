@@ -14,6 +14,10 @@ const MAX_COUNT = 99;
 const NewRoom = () => {
 
     const { pathname } = useLocation();
+    const location = useLocation(); // navigate 에서 받은 스테이트값 넘겨받기위함. result_code FAIL01로 넘겨줌
+
+    console.log(location)
+
     const pathSplit = Number(pathname.split('/')[2])
 
     const navigate = useNavigate();
@@ -221,6 +225,7 @@ const NewRoom = () => {
                     setInvCount(res.data.data.mt_invites.length);
                     setInvites(res.data.data.mt_invites);
                 })
+
 
     }, [])
 
@@ -486,6 +491,16 @@ const NewRoom = () => {
 
         // formData.append('file', uploadedFiles);
 
+        if(location.state !== null && location.state.resultCode === 'FAIL01') {
+            axios.put(SERVER_URL + 'meet/room/open', {"mt_status":1}, AXIOS_OPTION).then(res => {
+                console.log(res.data)
+                console.log('1 잘 보냈어요')
+            }).catch(errors => {
+                console.log(errors)
+            })
+        }
+
+
         if(isNew === 0) {
             axios.post(SERVER_URL + '/meet/create', formData, AXIOS_OPTION)
                 .then(res => {
@@ -627,18 +642,18 @@ const NewRoom = () => {
                     $('#popup__notice').removeClass('is-on');
                     $('#shade2').removeClass('is-on');
 
-                    axios.put(SERVER_URL + 'meet/room/open', {"mt_status":1}, AXIOS_OPTION).then(res => {
-                        console.log(res.data)
-                        console.log('1 잘 보냈어요')
-                    }).catch(errors => {
-                        console.log(errors)
-                    })
+                    // axios.put(SERVER_URL + 'meet/room/open', {"mt_status":1}, AXIOS_OPTION).then(res => {
+                    //     console.log(res.data)
+                    //     console.log('1 잘 보냈어요')
+                    // }).catch(errors => {
+                    //     console.log(errors)
+                    // })
 
                     alert('미팅룸을 공개하였습니다.');
                     navigate('/');
 
                 } else if (res.data.result_code === "FAIL01"){
-                    navigate(`/newroom/${pathSplit}`)
+                    navigate(`/newroom/${pathSplit}`, {state:{'resultCode':'FAIL01'}})
                 }
             }).catch(err => {
             console.log(err);
