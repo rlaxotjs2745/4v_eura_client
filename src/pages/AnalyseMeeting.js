@@ -270,19 +270,21 @@ const AnalyseMeeting = () => {
                     </div>
                 </div>
                     {lecture.is_host === 0 ?
+                    // 호스트가 아닌 사람이 보는 화면
                     <>
                         {lecture.mtInviteInfo === null && lecture.mtData0 === null && lecture.mtData1 === null?
+                            // 미팅 미 참석자
                             <>
-                                <div className="result__mov" id="result__mov" title="영상자리 (1180 x 407)">
+                                <div className="result__mo w100" id="result__mov" title="영상자리 (1180 x 407)">
                                     {/* <EuraPlayer moveUrl={movieSrc} src={movieSrc} width={1180} height={407} videoWidth={1180} videoHeight={407} /> */}
                                     <Player src={movieSrc} width={1180} height={407}></Player>
                                 </div>
                             </>
                             :
+                            // 미팅 참석한 호스트가 아닌자
                             <>
                                 <div className="result__user">
                                     <h4 className="result__title">분석요약</h4>
-
                                 </div>
                                 <div className="result__mov" title="영상자리 (860 x 407)">
                                     {/* <video id="MeetMovie" controls width={860} height={407} playsInline={true} src={movieSrc} /> */}
@@ -292,37 +294,38 @@ const AnalyseMeeting = () => {
                                 <div className="result__graph" title="그래프자리 (860 x 218)">
                                     {
                                         !middata || !middata.length ?'':
-                                        <>
-                                        <ResponsiveContainer width="100%" height="100%">
-                                        <BarChart
-                                        width={860}
-                                        height={218}
-                                        data={middata}
-                                        stackOffset="sign"
-                                        margin={{
-                                          top: 5,
-                                          right: 30,
-                                          left: 20,
-                                          bottom: 5,
-                                        }}
-                                      >
-                                        <CartesianGrid strokeDasharray="3 3" />
-                                        <XAxis dataKey="name" />
-                                        <YAxis />
-                                        <Tooltip />
-                                        <Legend />
-                                        <ReferenceLine y={0} stroke="#000" />
-                                        <Bar dataKey="Good" fill="#3377ff" stackId="stack" />
-                                        <Bar dataKey="Bad" fill="#ffc633" stackId="stack" />
-                                      </BarChart>
-                                      </ResponsiveContainer>
-                                        </>
+                                            <>
+                                                <ResponsiveContainer width="100%" height="100%">
+                                                    <BarChart
+                                                        width={860}
+                                                        height={218}
+                                                        data={middata}
+                                                        stackOffset="sign"
+                                                        margin={{
+                                                            top: 5,
+                                                            right: 30,
+                                                            left: 20,
+                                                            bottom: 5,
+                                                        }}
+                                                    >
+                                                        <CartesianGrid strokeDasharray="3 3" />
+                                                        <XAxis dataKey="name" />
+                                                        <YAxis />
+                                                        <Tooltip />
+                                                        <Legend />
+                                                        <ReferenceLine y={0} stroke="#000" />
+                                                        <Bar dataKey="Good" fill="#3377ff" stackId="stack" />
+                                                        <Bar dataKey="Bad" fill="#ffc633" stackId="stack" />
+                                                    </BarChart>
+                                                </ResponsiveContainer>
+                                            </>
                                     }
                                 </div>
                             </>
                         }
                     </>
                     :
+                    // 호스트가 보는 화면
                     <>
                         <div className="result__user">
                             <h4 className="result__title">참석자 목록({!lecture || !lecture.mtInviteInfo ? '0' : lecture.mtInviteInfo.user_invite}/{!lecture || !lecture.mtInviteInfo ? '0' : lecture.mtInviteInfo.user_total})</h4>

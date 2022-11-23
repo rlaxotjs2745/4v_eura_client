@@ -2238,6 +2238,9 @@ td {
 }
 .box.is-before:hover {background: #fff;}
 .box.is-before:hover * {opacity: 1}
+.box.is-cancel:hover {background: #fff;}
+.box.is-cancel:hover * {opacity: 1}
+
 .box.is-before {
     background: rgba(255, 255, 255, .4)
 }
@@ -3931,6 +3934,9 @@ html.js-overflow {
     /* height: 407px; */
     background: #ccc;
 }
+.result__mov.w100 {
+    width:100%;
+}
 
 .result__graph {
     float: left;
@@ -3946,7 +3952,7 @@ html.js-overflow {
     clear: both;
     float: right;
     width: 304px;
-    height: 641px;
+    height: 718px;
     background: #fff;
     margin-top: 16px;
     border-radius: 20px;
