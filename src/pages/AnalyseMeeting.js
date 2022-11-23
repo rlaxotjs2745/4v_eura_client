@@ -32,6 +32,9 @@ const AnalyseMeeting = () => {
     const [movieSrc, setMovieSrc] = useState('');
     const [playMovieNo, setPlayMovieNo] = useState(0);
     const [lecture, setLecture] = useState({})
+    const [attendIdx, setAttendIdx] = useState(0)
+    const [attend, seetAttend] = useState({}) // 참석자
+
     const [btmdata, setBtmdata] = useState([])
     const [piedata, setPiedata] = useState([])
     const [middata, setMiddata] = useState([])
@@ -319,6 +322,7 @@ const AnalyseMeeting = () => {
                     let _data = res.data.data
                     console.log(_data);
                     setLecture(_data)
+                    setAttendIdx(_data.mtInviteList)
                     // console.log(res)
                     // setMiddata(_data.mtAnalyMid)
                     // setBtmdata(_data.mtData0)
@@ -337,10 +341,23 @@ const AnalyseMeeting = () => {
                 console.log(error)
         });
 
+        axios.get(SERVER_URL + `/meet/result/mtinviteinfo?idx_meeting=`+pathSplit, AXIOS_OPTION)
+            .then(res => {
+                if(res.data.result_code === 'SUCCESS'){
+                    let _data = res.data.data
+                    setLecture(_data)
+                }else{
+                    alert(res.data.result_str)
+                }
+            }).catch((error)=>{
+            console.log(error)
+        });
+
         return () => {
             console.log('END')
             console.log("movieSrc1:" + movieSrc)
         }
+
     }, [])
 
     // useEffect(() => {
@@ -455,14 +472,30 @@ const AnalyseMeeting = () => {
                         <Player src={movieSrc} width={860} height={407}></Player>
                     </div>
 
+
                     <AllUserBarGraph middata={middata} />
                     <div className="result__anal_timeline">
 
                     </div>
-
-                    <OneUserBarGraph btmdata={btmdata} />
-
                 </div>
+                <div className="result__download">
+                    <h4 className="result__title">첨부파일({!lecture || !lecture.mtAttachedFiles ? '0' : [...lecture.mtAttachedFiles].length})</h4>
+                    <div className="result__list">
+                        {
+                            !lecture.mtAttachedFiles || !lecture.mtAttachedFiles.length ?
+                                <a>
+                                    <span className="file__name">강의에 업로드 된 파일이 없습니다.</span>
+                                </a>
+                                : lecture.mtAttachedFiles.map(file => {
+                                    return (
+                                    <a download key={file.idx} href={file.fileUrl}><img src={require('../assets/image/ic_file_14.png')} alt=""/> {file.filename}</a>
+                                    )
+                                })
+                        }
+                    </div>
+                </div>
+                    <OneUserBarGraph btmdata={btmdata} />
+                {/*</div>*/}
             </section>
         </>
     )

@@ -14,7 +14,12 @@ const MAX_COUNT = 99;
 const NewRoom = () => {
 
     const { pathname } = useLocation();
+    const location = useLocation(); // navigate 에서 받은 스테이트값 넘겨받기위함. result_code FAIL01로 넘겨줌
+
+    console.log(location)
+
     const pathSplit = Number(pathname.split('/')[2])
+
     const navigate = useNavigate();
     const fileReader = new FileReader();
 
@@ -56,18 +61,39 @@ const NewRoom = () => {
     const min_time2_math = dtPlusDefault.getMinutes() // 현재 시간에서 30분 뒤를 가진 값을 가짐
     const min_time2 = Math.floor(min_time2_math/10) * 10 + 10 // 현재 시간에서 30분뒤의 10분 뒤
 
-    const [Selected1, setSelected1] = useState(()=>{
-        if (min >= 50) { // 현재 시간 분이 50분 이상이면 10분 이상으로 00표시 되게 되어있으므로 시간을 1시간 플러스 해서 반환
-            return hour + 1
-        } else {
-            return hour
+
+    // const [Selected1, setSelected1] = useState(()=>{
+    //     if (min >= 50) { // 현재 시간 분이 50분 이상이면 10분 이상으로 00표시 되게 되어있으므로 시간을 1시간 플러스 해서 반환
+    //         return hour + 1
+    //     } else {
+    //         return hour
+    //     }
+    // });
+    // const [Selected2, setSelected2] = useState(`${min_time}`);
+    // const [Selected3, setSelected3] = useState(`${hour2}`);
+    // const [Selected4, setSelected4] = useState(`${min_time2}`);
+
+    const [Selected1, setSelected1] = useState('00');
+    const [Selected2, setSelected2] = useState('00');
+    const [Selected3, setSelected3] = useState('00');
+    const [Selected4, setSelected4] = useState('00');
+
+    useEffect(() => {
+        let curTIme = new Date();
+
+        if(curTIme.getMinutes() % 10 !== 0){ // 현재 시간의 분을 나눈 나머지가 0이 아닐경우 (분이 10의 자리로 떨어지지 않을 경우)
+            curTIme.setMinutes(curTIme.getMinutes() + (10 - curTIme.getMinutes() % 10) ); // 분을 다시 설정함, 현재
         }
-    });
-    const [Selected2, setSelected2] = useState(`${min_time}`);
-    const [Selected3, setSelected3] = useState(`${hour2}`);
-    const [Selected4, setSelected4] = useState(`${min_time2}`);
 
+        setSelected1(curTIme.getHours());
+        setSelected2(curTIme.getMinutes());
 
+        curTIme.setMinutes(curTIme.getMinutes() + 30);
+
+        setSelected3(curTIme.getHours());
+        setSelected4(curTIme.getMinutes());
+
+    },[])
 
     const select1_opiton = [
         { value: "00", label: "00", idx:"00"},
@@ -199,6 +225,7 @@ const NewRoom = () => {
                     setInvCount(res.data.data.mt_invites.length);
                     setInvites(res.data.data.mt_invites);
                 })
+
 
     }, [])
 
@@ -464,6 +491,16 @@ const NewRoom = () => {
 
         // formData.append('file', uploadedFiles);
 
+        if(location.state !== null && location.state.resultCode === 'FAIL01') {
+            axios.put(SERVER_URL + 'meet/room/open', {"mt_status":1}, AXIOS_OPTION).then(res => {
+                console.log(res.data)
+                console.log('1 잘 보냈어요')
+            }).catch(errors => {
+                console.log(errors)
+            })
+        } // 공개하기 때 result_code FAIL01 받을경우 수정하기 페이지로 이동하는데, 이때 navigate로 스테이터스 값을 지정해서 보내줌. 그 값이 있으면 mt_status값을 전달 하게 하기 위함.
+
+
         if(isNew === 0) {
             axios.post(SERVER_URL + '/meet/create', formData, AXIOS_OPTION)
                 .then(res => {
@@ -501,7 +538,129 @@ const NewRoom = () => {
         handleModal();
     })
 
+    const openModal = () => {
+        if($('#make_new').val() == ''){
+            return alert('미팅 이름을 입력해주세요.')
+        }
 
+        if($('#make_date').val() == ''){
+            return alert('미팅 일자가 입력되지 않았습니다.')
+        }
+
+        if(new Date(endTime) <= new Date(startTime)){
+            return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
+        }
+
+        if($('#make_time1').val() == ''){
+            return alert('미팅 시작 시간이 입력되지 않았습니다.')
+        }
+
+        if($('#make_time2').val() == ''){
+            return alert('미팅 종료 시간이 입력되지 않았습니다.')
+        }
+
+        if($('#make_room').val() == ''){
+            return alert('미팅 정보가 입력되지 않았습니다.');
+        }
+
+        const formData = new FormData();
+        formData.append('mt_name', title);
+        formData.append('mt_start_dt',  `${startDate} ${Selected1}:${Selected2}:00`);
+        formData.append('mt_end_dt',   `${startDate} ${Selected3}:${Selected4}:00`);
+        formData.append('mt_info', meetingInfo);
+        formData.append('mt_invite_email', invites.map(inv => inv.email).join());
+        for (let i = 0; i < uploadedFiles.length; i++) {
+            formData.append("file", uploadedFiles[i]);
+        }
+        if(remindBool){
+            formData.append('mt_remind_type', parseInt(selectValue));
+            formData.append('mt_remind_count', remindCount);
+            if(selectValue == 2){
+                formData.append('mt_remind_week', weekday.join());
+            }
+            formData.append('mt_remind_end', endDate);
+        } else {
+            formData.append('mt_remind_type', 0);
+        }
+
+        if(isNew === 0) {
+            axios.post(SERVER_URL + '/meet/create', formData, AXIOS_OPTION)
+                .then(res => {
+                    if(res.data.result_code === 'SUCCESS'){
+                        alert('미팅룸을 생성했습니다.');
+                        navigate('/');
+                    }else{
+                        alert(res.data.result_str);
+                    }
+                }).catch(res => console.log(res))
+        } else {
+            formData.append('idx_meeting', window.location.pathname.split('/')[window.location.pathname.split('/').length-1]);
+            if(delFiles.length > 0){
+                formData.append('file_del', delFiles.join());
+            }
+            if(delUser.length > 0){
+                formData.append('invite_del', delUser);
+            }
+            for(let i of formData){
+                console.log(i);
+            }
+            axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_OPTION)
+                .then(res => {
+                    if(res.data.result_code === 'SUCCESS'){
+                        console.log(res.data.result_code)
+                        $('#popup__notice').addClass('is-on');
+                        $('#shade2').addClass('is-on');
+                        // alert('미팅룸을 재개설했습니다.');
+                        // navigate('/');
+                    }else{
+                        alert(res.data.result_str);
+                    }
+                }).catch(res => console.log(res))
+        }
+
+
+    }
+
+    const modalClose = () => {
+        $('#popup__notice').removeClass('is-on');
+        $('#shade2').removeClass('is-on');
+        alert('미팅룸을 비공개상태로 수정하였습니다.');
+        navigate('/');
+    }
+
+    $('#shade2').off().on('click', () => {
+        $('#popup__notice').removeClass('is-on');
+        $('#shade2').removeClass('is-on');
+        alert('미팅룸을 비공개상태로 수정하였습니다.');
+        navigate('/');
+    })
+
+    const changeMeetingStatus2 = () => {
+        axios.put(SERVER_URL + '/meet/room/open', {"idx_meeting": window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}, AXIOS_OPTION)
+            .then(res => {
+                if(res.data.result_code === "SUCCESS"){
+                    $('#popup__notice').removeClass('is-on');
+                    $('#shade2').removeClass('is-on');
+
+                    // axios.put(SERVER_URL + 'meet/room/open', {"mt_status":1}, AXIOS_OPTION).then(res => {
+                    //     console.log(res.data)
+                    //     console.log('1 잘 보냈어요')
+                    // }).catch(errors => {
+                    //     console.log(errors)
+                    // })
+
+                    alert('미팅룸을 공개하였습니다.');
+                    navigate('/');
+
+                } else if (res.data.result_code === "FAIL01"){
+                    // 여기에 팝업 띄우는 함수 추가하고 navigate를 미팅 수정 버튼에 추가 예정
+                    navigate(`/newroom/${pathSplit}`, {state:{'resultCode':'FAIL01'}})
+                }
+            }).catch(err => {
+            console.log(err);
+        });
+
+    }
 
     return (
         <div className="room">
@@ -777,7 +936,17 @@ const NewRoom = () => {
                                 :
                                 <div onClick={() => navigate(`/meetingroom/${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`)} className="btn btn__normal">취소</div>
                         }
-                        <div onClick={handleSubmit} className="btn btn__able">{isNew === 2 ? '재개설' : '저장'}</div>
+                        {isNew === 2 ?
+                            <a onClick={openModal} className="btn btn__able">
+                                재개설
+                            </a>
+                            :
+                            <div onClick={handleSubmit} className="btn btn__able">저장</div>
+                        }
+
+
+
+
                     </div>
                 </div>
             </form>
@@ -810,6 +979,22 @@ const NewRoom = () => {
                 </div>
             </div>
 
+            <div id="popup__notice" className="pop__detail">
+                <div onClick={modalClose} className="btn__close js-modal-close"><img src={require('../assets/image/ic_close_24.png')} alt=""/></div>
+                <div className="popup__cnt">
+                    <div className="pop__message">
+                        <img src={require('../assets/image/ic_warning_80.png')} alt=""/>
+                        <div id="mt_status_2">
+                            <strong>재개설 된 미팅룸을 공개하시겠습니까?</strong>
+                            <span>미팅을 공개하면 초대한 참석자들에게 메일이 발송됩니다.</span>
+                        </div>
+                    </div>
+                    <div className="btn__group">
+                        <button onClick={changeMeetingStatus2} className="btn btn__able btn__s">예</button>
+                        <button onClick={modalClose} className="btn btn__normal btn__s js-modal-close">아니오</button>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

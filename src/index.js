@@ -17,6 +17,7 @@ root.render(
               <ScrollToTop/>
               <App />
               <div id="shade"></div>
+              <div id="shade2"></div>
           </BrowserRouter>
       </CookiesProvider>
     </HttpsRedirect>
