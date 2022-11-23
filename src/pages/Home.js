@@ -88,6 +88,7 @@ const Home = () => {
                         modalClose();
 
                     } else if (res.data.result_code === "FAIL01"){
+                        // 여기에 팝업 띄우는 함수 추가하고 navigate를 미팅 수정 버튼에 추가 예정
                         navigate(`/newroom/${meet.mt_idx}`, {state:{'resultCode':'FAIL01'}})
                     }
                 }).catch(err => {

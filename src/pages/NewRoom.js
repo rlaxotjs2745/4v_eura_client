@@ -498,7 +498,7 @@ const NewRoom = () => {
             }).catch(errors => {
                 console.log(errors)
             })
-        }
+        } // 공개하기 때 result_code FAIL01 받을경우 수정하기 페이지로 이동하는데, 이때 navigate로 스테이터스 값을 지정해서 보내줌. 그 값이 있으면 mt_status값을 전달 하게 하기 위함.
 
 
         if(isNew === 0) {
@@ -653,6 +653,7 @@ const NewRoom = () => {
                     navigate('/');
 
                 } else if (res.data.result_code === "FAIL01"){
+                    // 여기에 팝업 띄우는 함수 추가하고 navigate를 미팅 수정 버튼에 추가 예정
                     navigate(`/newroom/${pathSplit}`, {state:{'resultCode':'FAIL01'}})
                 }
             }).catch(err => {
