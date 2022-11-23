@@ -51,6 +51,7 @@ const NewRoom = () => {
     dtPlusDefault.setMinutes(dtPlusDefault.getMinutes() + 30); // dtPlusDefault 를 30분뒤로 설정 해줌.
 
     const hour = dt.getHours(); // 현재 시간
+    const hour2 = dtPlusDefault.getHours(); // 현재 시간
     const min = dt.getMinutes(); // 현재 분
     const min_time = Math.floor(min/10) * 10 + 10 // 현재 시간에서 10분 뒤
     const min_time2_math = dtPlusDefault.getMinutes() // 현재 시간에서 30분 뒤를 가진 값을 가짐
@@ -58,7 +59,7 @@ const NewRoom = () => {
 
     const [Selected1, setSelected1] = useState(`${hour}`);
     const [Selected2, setSelected2] = useState(`${min_time}`);
-    const [Selected3, setSelected3] = useState(`${hour}`);
+    const [Selected3, setSelected3] = useState(`${hour2}`);
     const [Selected4, setSelected4] = useState(`${min_time2}`);
 
     const select1_opiton = [
