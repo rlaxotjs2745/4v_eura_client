@@ -271,6 +271,7 @@ const SignUp = () => {
     }
 
     const Sign3Open = (e) => {
+        e.preventDefault();
         // let join_tel = $('#join_tel')
         // if (join_tel.val() == '' || join_tel.parent().hasClass('is-alert')) {
         //     e.preventDefault();
@@ -308,7 +309,8 @@ const SignUp = () => {
         // alert(this.value);
     });
 
-    const Sign_prev3 = () => {
+    const Sign_prev3 = (e) => {
+        e.preventDefault()
         $('#step3').removeClass('active')
         $('#step2').addClass('active')
     }
