@@ -3795,17 +3795,27 @@ html.js-overflow {
     width: 860px;
     height: 215px;
     background: #fff;
-    text-align: left;
+    /*text-align: left;*/
     border-radius: 20px;
     padding: 30px;
     box-sizing: border-box;
-    overflow: hidden
+    overflow: hidden;
+    display: flex;
+    /*justify-content: center;*/
+    /*align-content: center;*/
+}
+
+
+.result__dash div {
+    width: 50%;
 }
 
 .result__dash h3 {
     font-size: 20px;
     font-weight: 700;
-    margin-bottom: 10px
+    margin-bottom: 10px;
+    text-align: left;
+    /*width: 50%;*/
 }
 
 .result__dash dl {
@@ -3869,10 +3879,53 @@ html.js-overflow {
 }
 
 .result__dash .summary__graph {
-    float: right;
-    width: 310px;
-    text-align: left
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
 }
+
+.result__dash .summary__graph .all_user_pie_graph {
+    margin-top: 84px;
+}
+
+.result__dash .summary__graph .analysis_sumup {
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    /*width: 40%;*/
+}
+
+.result__dash .summary__graph .analysis_sumup .analysis_sum__title {
+    color: #999;
+    font-weight: 700;
+    font-size: 14px;
+    width: 80%;
+    text-align: start;
+    /*margin-top: 54px;*/
+}
+
+.result__dash .summary__graph .analysis_sumup .analysis_sum_category {
+    margin-top: 7px;
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
+    align-content: space-between;
+}
+
+.result__dash .summary__graph .analysis_sumup div.good_sum {
+    color: #3377ff;
+}
+
+.result__dash .summary__graph .analysis_sumup div.bad_sum {
+    color: #ffc633;
+}
+
+.result__dash .summary__graph .analysis_sumup div.camera_off_sum {
+    color: gray;
+}
+
 
 .result__download {
     float: left;
@@ -3947,6 +4000,26 @@ html.js-overflow {
     margin-top: 16px;
     display: block;
 }
+
+
+.result_all_levels {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.emotion__wraper {
+    height: 100%;
+    width: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.emotion__num {
+    color: gray;
+}
+
 
 .result__user {
     clear: both;
@@ -4051,6 +4124,32 @@ html.js-overflow {
 
 .result__user .result__watch ul li .watch__percent.is-bad {
     color: #ffc633
+}
+
+.result__one_user {
+    clear: both;
+    float: right;
+    width: 304px;
+    height: 485px;
+    background: #fff;
+    margin-top: 16px;
+    border-radius: 20px;
+    display: block;
+}
+
+.result__anal_timeline {
+    /*clear: both;*/
+    float: right;
+    width: 304px;
+    height: 218px;
+    background: #fff;
+    margin-top: 16px;
+    border-radius: 20px;
+    display: block;
+}
+
+.pieImage {
+    z-index: 1000;
 }
 
 .result__analysis {
