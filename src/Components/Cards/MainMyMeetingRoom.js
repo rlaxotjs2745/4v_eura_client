@@ -1,6 +1,7 @@
 import React, {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 
-const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, mouseOut, isLast}) => {
+const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, mouseOut, isLast, idx}) => {
 
     const getSubtractionDate = () => {
         let thisTime = new Date();
@@ -10,8 +11,12 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
         return Math.floor((new Date(room.mt_start_dt.split(' ')[0]) - new Date(`${thisYear}-${thisMonth}-${thisDate}`)) / 86400000);
     }
 
+    const navigate = useNavigate();
 
 
+    const idxCheck = () => {
+        navigate(`/reopen/${room.mt_idx}`)
+    }
 
     // console.log('피니쉬?', room.is_finish)
 
@@ -49,10 +54,14 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
                         {
                             room.mt_status === 0 ?
                                 <div onClick={() => modalOpen(room)} onMouseOver={mouseOver} onMouseLeave={mouseOut} className="btn btn__setting js-modal-alert">공개하기</div>
-                            :     room.mt_status === 2 ?
+                            : room.mt_status === 2 && room.is_host === 1 ?
+                                    <div onClick={idxCheck} onMouseOver={mouseOver} onMouseLeave={mouseOut} className="btn btn__setting js-modal-alert">재개설하기</div>
+                                    :
+                                        room.mt_status === 2 ?
                                 ''
                                 // <div onClick={() => modalOpen(room)} onMouseOver={mouseOver} onMouseLeave={mouseOut} className="btn btn__setting">재개설 하기</div>
                             : ''
+
                         }
                     </div>
                 : ''

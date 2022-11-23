@@ -522,7 +522,117 @@ const NewRoom = () => {
         handleModal();
     })
 
+    const openModal = () => {
+        if($('#make_new').val() == ''){
+            return alert('미팅 이름을 입력해주세요.')
+        }
 
+        if($('#make_date').val() == ''){
+            return alert('미팅 일자가 입력되지 않았습니다.')
+        }
+
+        if(new Date(endTime) <= new Date(startTime)){
+            return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
+        }
+
+        if($('#make_time1').val() == ''){
+            return alert('미팅 시작 시간이 입력되지 않았습니다.')
+        }
+
+        if($('#make_time2').val() == ''){
+            return alert('미팅 종료 시간이 입력되지 않았습니다.')
+        }
+
+        if($('#make_room').val() == ''){
+            return alert('미팅 정보가 입력되지 않았습니다.');
+        }
+
+        const formData = new FormData();
+        formData.append('mt_name', title);
+        formData.append('mt_start_dt',  `${startDate} ${Selected1}:${Selected2}:00`);
+        formData.append('mt_end_dt',   `${startDate} ${Selected3}:${Selected4}:00`);
+        formData.append('mt_info', meetingInfo);
+        formData.append('mt_invite_email', invites.map(inv => inv.email).join());
+        for (let i = 0; i < uploadedFiles.length; i++) {
+            formData.append("file", uploadedFiles[i]);
+        }
+        if(remindBool){
+            formData.append('mt_remind_type', parseInt(selectValue));
+            formData.append('mt_remind_count', remindCount);
+            if(selectValue == 2){
+                formData.append('mt_remind_week', weekday.join());
+            }
+            formData.append('mt_remind_end', endDate);
+        } else {
+            formData.append('mt_remind_type', 0);
+        }
+
+        if(isNew === 0) {
+            axios.post(SERVER_URL + '/meet/create', formData, AXIOS_OPTION)
+                .then(res => {
+                    if(res.data.result_code === 'SUCCESS'){
+                        alert('미팅룸을 생성했습니다.');
+                        navigate('/');
+                    }else{
+                        alert(res.data.result_str);
+                    }
+                }).catch(res => console.log(res))
+        } else {
+            formData.append('idx_meeting', window.location.pathname.split('/')[window.location.pathname.split('/').length-1]);
+            if(delFiles.length > 0){
+                formData.append('file_del', delFiles.join());
+            }
+            if(delUser.length > 0){
+                formData.append('invite_del', delUser);
+            }
+            for(let i of formData){
+                console.log(i);
+            }
+            axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_OPTION)
+                .then(res => {
+                    if(res.data.result_code === 'SUCCESS'){
+                        console.log(res.data.result_code)
+                        $('#popup__notice').addClass('is-on');
+                        $('#shade2').addClass('is-on');
+                        // alert('미팅룸을 재개설했습니다.');
+                        // navigate('/');
+                    }else{
+                        alert(res.data.result_str);
+                    }
+                }).catch(res => console.log(res))
+        }
+
+
+    }
+
+    const modalClose = () => {
+        $('#popup__notice').removeClass('is-on');
+        $('#shade2').removeClass('is-on');
+        alert('미팅룸을 비공개상태로 수정하였습니다.');
+        navigate('/');
+    }
+
+    $('#shade2').off().on('click', () => {
+        $('#popup__notice').removeClass('is-on');
+        $('#shade2').removeClass('is-on');
+        alert('미팅룸을 비공개상태로 수정하였습니다.');
+        navigate('/');
+    })
+
+    const changeMeetingStatus2 = () => {
+        axios.put(SERVER_URL + '/meet/room/open', {"idx_meeting": window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}, AXIOS_OPTION)
+            .then(res => {
+                if(res.data.result_code === "SUCCESS"){
+                    $('#popup__notice').removeClass('is-on');
+                    $('#shade2').removeClass('is-on');
+                    alert('미팅룸을 공개하였습니다.');
+                    navigate('/');
+                }
+            }).catch(err => {
+            console.log(err);
+        });
+
+    }
 
     return (
         <div className="room">
@@ -798,7 +908,17 @@ const NewRoom = () => {
                                 :
                                 <div onClick={() => navigate(`/meetingroom/${window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}`)} className="btn btn__normal">취소</div>
                         }
-                        <div onClick={handleSubmit} className="btn btn__able">{isNew === 2 ? '재개설' : '저장'}</div>
+                        {isNew === 2 ?
+                            <a onClick={openModal} className="btn btn__able">
+                                재개설
+                            </a>
+                            :
+                            <div onClick={handleSubmit} className="btn btn__able">저장</div>
+                        }
+
+
+
+
                     </div>
                 </div>
             </form>
@@ -831,6 +951,22 @@ const NewRoom = () => {
                 </div>
             </div>
 
+            <div id="popup__notice" className="pop__detail">
+                <div onClick={modalClose} className="btn__close js-modal-close"><img src={require('../assets/image/ic_close_24.png')} alt=""/></div>
+                <div className="popup__cnt">
+                    <div className="pop__message">
+                        <img src={require('../assets/image/ic_warning_80.png')} alt=""/>
+                        <div id="mt_status_2">
+                            <strong>재개설 된 미팅룸을 공개하시겠습니까?</strong>
+                            <span>미팅을 공개하면 초대한 참석자들에게 메일이 발송됩니다.</span>
+                        </div>
+                    </div>
+                    <div className="btn__group">
+                        <button onClick={changeMeetingStatus2} className="btn btn__able btn__s">예</button>
+                        <button onClick={modalClose} className="btn btn__normal btn__s js-modal-close">아니오</button>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
