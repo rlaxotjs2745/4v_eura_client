@@ -32,9 +32,6 @@ const AnalyseMeeting = () => {
     const [movieSrc, setMovieSrc] = useState('');
     const [playMovieNo, setPlayMovieNo] = useState(0);
     const [lecture, setLecture] = useState({})
-    const [attendIdx, setAttendIdx] = useState(0)
-    const [attend, seetAttend] = useState({}) // 참석자
-
     const [btmdata, setBtmdata] = useState([])
     const [piedata, setPiedata] = useState([])
     const [middata, setMiddata] = useState([])
@@ -53,48 +50,48 @@ const AnalyseMeeting = () => {
     useEffect(() => {
         // 개인 집중도 그래프
         setBtmdata([
-              {
+            {
                 name: "00:00:05",
                 Bad: -80,
                 Good: 0,
                 amt: 0
-              },
-              {
+            },
+            {
                 name: "00:00:10",
                 Bad: 0,
                 Good: 30,
                 amt: 0
-              },
-              {
+            },
+            {
                 name: "00:00:15",
                 Bad: -60,
                 Good: 0,
                 amt: 0
-              },
-              {
+            },
+            {
                 name: "00:00:20",
                 Bad: -50,
                 Good: 0,
                 amt: 0
-              },
-              {
+            },
+            {
                 name: "00:00:25",
                 Bad: 0,
                 Good: 60,
                 amt: 0
-              },
-              {
+            },
+            {
                 name: "00:00:30",
                 Bad: -30,
                 Good: 0,
                 amt: 0
-              },
-              {
+            },
+            {
                 name: "00:00:35",
                 Bad: 0,
                 Good: 80,
                 amt: 0
-              },
+            },
             {
                 name: "00:00:05",
                 Bad: -80,
@@ -137,7 +134,7 @@ const AnalyseMeeting = () => {
                 Good: 80,
                 amt: 0
             }
-          ])
+        ])
         // 전체 집중도 원형그래프
         setPiedata([
             { name: "Good", value: 700 },
@@ -151,43 +148,43 @@ const AnalyseMeeting = () => {
                 Bad: -80,
                 Good: 20,
                 amt: 0
-              },
-              {
+            },
+            {
                 name: "00:00:10",
                 Bad: -70,
                 Good: 30,
                 amt: 0
-              },
-              {
+            },
+            {
                 name: "00:00:15",
                 Bad: -60,
                 Good: 40,
                 amt: 0
-              },
-              {
+            },
+            {
                 name: "00:00:20",
                 Bad: -50,
                 Good: 50,
                 amt: 0
-              },
-              {
+            },
+            {
                 name: "00:00:25",
                 Bad: -40,
                 Good: 60,
                 amt: 0
-              },
-              {
+            },
+            {
                 name: "00:00:30",
                 Bad: -30,
                 Good: 70,
                 amt: 0
-              },
-              {
+            },
+            {
                 name: "00:00:35",
                 Bad: -20,
                 Good: 80,
                 amt: 0
-              },
+            },
             {
                 name: "00:00:05",
                 Bad: -80,
@@ -314,15 +311,14 @@ const AnalyseMeeting = () => {
                 Good: 80,
                 amt: 0
             },
-          ])
-    
+        ])
+
         axios.get(SERVER_URL + `/meet/result/meeting?idx_meeting=`+pathSplit, AXIOS_OPTION)
             .then(res => {
                 if(res.data.result_code === 'SUCCESS'){
                     let _data = res.data.data
                     console.log(_data);
                     setLecture(_data)
-                    setAttendIdx(_data.mtInviteList)
                     // console.log(res)
                     // setMiddata(_data.mtAnalyMid)
                     // setBtmdata(_data.mtData0)
@@ -338,18 +334,6 @@ const AnalyseMeeting = () => {
                     alert(res.data.result_str)
                 }
             }).catch((error)=>{
-                console.log(error)
-        });
-
-        axios.get(SERVER_URL + `/meet/result/mtinviteinfo?idx_meeting=`+pathSplit, AXIOS_OPTION)
-            .then(res => {
-                if(res.data.result_code === 'SUCCESS'){
-                    let _data = res.data.data
-                    setLecture(_data)
-                }else{
-                    alert(res.data.result_str)
-                }
-            }).catch((error)=>{
             console.log(error)
         });
 
@@ -357,7 +341,6 @@ const AnalyseMeeting = () => {
             console.log('END')
             console.log("movieSrc1:" + movieSrc)
         }
-
     }, [])
 
     // useEffect(() => {
@@ -389,7 +372,7 @@ const AnalyseMeeting = () => {
         { name: 'Group C', value: 100 },
     ];
     const COLORS = ['#3377ff', '#ffc633', 'gray'];
-    
+
     return (
         <>
             <section className="content" id="content">
@@ -437,7 +420,7 @@ const AnalyseMeeting = () => {
                                     </a>
                                     : lecture.mtAttachedFiles.map(file => {
                                         return (
-                                        <a download key={file.idx} href={file.fileUrl}><img src={require('../assets/image/ic_file_14.png')} alt=""/> {file.filename}</a>
+                                            <a download key={file.idx} href={file.fileUrl}><img src={require('../assets/image/ic_file_14.png')} alt=""/> {file.filename}</a>
                                         )
                                     })
                             }
@@ -472,30 +455,14 @@ const AnalyseMeeting = () => {
                         <Player src={movieSrc} width={860} height={407}></Player>
                     </div>
 
-
                     <AllUserBarGraph middata={middata} />
                     <div className="result__anal_timeline">
 
                     </div>
-                </div>
-                <div className="result__download">
-                    <h4 className="result__title">첨부파일({!lecture || !lecture.mtAttachedFiles ? '0' : [...lecture.mtAttachedFiles].length})</h4>
-                    <div className="result__list">
-                        {
-                            !lecture.mtAttachedFiles || !lecture.mtAttachedFiles.length ?
-                                <a>
-                                    <span className="file__name">강의에 업로드 된 파일이 없습니다.</span>
-                                </a>
-                                : lecture.mtAttachedFiles.map(file => {
-                                    return (
-                                    <a download key={file.idx} href={file.fileUrl}><img src={require('../assets/image/ic_file_14.png')} alt=""/> {file.filename}</a>
-                                    )
-                                })
-                        }
-                    </div>
-                </div>
+
                     <OneUserBarGraph btmdata={btmdata} />
-                {/*</div>*/}
+
+                </div>
             </section>
         </>
     )
