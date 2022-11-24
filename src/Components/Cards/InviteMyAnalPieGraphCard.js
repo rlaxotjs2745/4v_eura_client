@@ -69,9 +69,7 @@ const InviteMyAnalPieGraphCard = () => {
 
             return (
                 <div className="result__one_user">
-                    <div className="one_user_graph_image">
-                        <img className="pieImage" src={require('../../assets/image/icon_angry.png')}/>
-                    </div>
+
                     <div className="one_user_graph">
                         <PieChart width={200} height={200}>
                             <Pie
@@ -87,6 +85,9 @@ const InviteMyAnalPieGraphCard = () => {
                                 ))}
                             </Pie>
                         </PieChart>
+                        <div className="one_user_graph_image">
+                            <img className="pieImage" src={require('../../assets/image/icon_angry.png')}/>
+                        </div>
                     </div>
                 </div>
             );

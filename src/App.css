@@ -4130,13 +4130,15 @@ html.js-overflow {
     clear: both;
     float: right;
     width: 304px;
-    height: 485px;
+    height: 390px;
     background: #fff;
     margin-top: 16px;
     border-radius: 20px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
+    padding-top: 40px;
+    box-sizing: border-box;
 }
 
 .one_user_graph {
@@ -4145,13 +4147,14 @@ html.js-overflow {
 
 .one_user_graph_image {
     position: absolute;
+    top: 50%; left:50%; transform: translate(-50%, -50%);
 }
 
 .result__anal_timeline {
     /*clear: both;*/
     float: right;
     width: 304px;
-    height: 218px;
+    height: 312px;
     background: #fff;
     margin-top: 16px;
     border-radius: 20px;

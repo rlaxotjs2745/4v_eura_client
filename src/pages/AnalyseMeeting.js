@@ -454,11 +454,11 @@ const AnalyseMeeting = () => {
                     <div className="result__mov" title="영상자리 (860 x 407)">
                         <Player src={movieSrc} width={860} height={407}></Player>
                     </div>
-
-                    <AllUserBarGraph middata={middata} />
                     <div className="result__anal_timeline">
 
                     </div>
+
+                    <AllUserBarGraph middata={middata} />
 
                     <OneUserBarGraph btmdata={btmdata} />
 
