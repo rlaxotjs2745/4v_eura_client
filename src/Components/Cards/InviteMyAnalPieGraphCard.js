@@ -14,37 +14,17 @@ import {
 } from 'recharts';
 
 const renderActiveShape = props => {
-    const RADIAN = Math.PI / 180;
-    console.log(RADIAN);
     const {
         cx,
         cy,
-        midAngle,
         innerRadius,
         outerRadius,
         startAngle,
         endAngle,
         fill,
-        payload,
-        percent,
-        value
     } = props;
-    console.log("midAngle", midAngle);
-    const sin = Math.sin(-RADIAN * midAngle);
-    const cos = Math.cos(-RADIAN * midAngle);
-    const sx = cx + (outerRadius + 10) * cos;
-    const sy = cy + (outerRadius + 10) * sin;
-    const mx = cx + (outerRadius + 30) * cos;
-    const my = cy + (outerRadius + 30) * sin;
-    const ex = mx + (cos >= 0 ? 1 : -1) * 22;
-    const ey = my;
-    const textAnchor = cos >= 0 ? "start" : "end";
-
     return (
         <g>
-            <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
-                {/*{payload.name}*/}
-            </text>
             <Sector
                 cx={cx}
                 cy={cy}
@@ -69,24 +49,33 @@ const InviteMyAnalPieGraphCard = () => {
 
             return (
                 <div className="result__one_user">
-
-                    <div className="one_user_graph">
-                        <PieChart width={200} height={200}>
-                            <Pie
-                                activeIndex={initialState.activeIndex}
-                                activeShape={renderActiveShape}
-                                data={data}
-                                innerRadius={80}
-                                outerRadius={100}
-                                // onMouseEnter={this.onPieEnter}
-                            >
-                                {data.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={COLORS[index]} />
-                                ))}
-                            </Pie>
-                        </PieChart>
+                    <div className="result__one_user_title"><span>분석 요약</span><span></span><span></span></div>
+                    <div className="one_user_graph_box">
+                        <div className="one_user_graph">
+                            <PieChart width={200} height={200}>
+                                <Pie
+                                    activeIndex={initialState.activeIndex}
+                                    activeShape={renderActiveShape}
+                                    data={data}
+                                    innerRadius={80}
+                                    outerRadius={100}
+                                >
+                                    {data.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                                    ))}
+                                </Pie>
+                            </PieChart>
+                        </div>
                         <div className="one_user_graph_image">
-                            <img className="pieImage" src={require('../../assets/image/icon_angry.png')}/>
+                            <img className="pie_graph_image" src={require('../../assets/image/icon_one_user_good.png')}/>
+                            <div className="pie_graph_word imotion_good">GOOD</div>
+                        </div>
+                    </div>
+                    <div className="one_user_graph_sum_box">
+                        <div className="one_user_graph_sum_category_box">
+                            <div className="good_sum one_user_graph_sum_category"><span>Good</span><span>70%</span></div>
+                            <div className="bad_sum one_user_graph_sum_category"><span>Bad</span><span>20%</span></div>
+                            <div className="camera_off_sum one_user_graph_sum_category"><span>Camera Off</span><span>10%</span></div>
                         </div>
                     </div>
                 </div>

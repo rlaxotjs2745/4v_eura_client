@@ -25,6 +25,7 @@ import OneUserBarGraph from "../Components/Cards/OneUserBarGraph";
 import AnalysisUserList from "../Components/Cards/AnalysisUserList";
 import MeetingAnalysisPieGraph from "../Components/Cards/MeetingAnalysisPieGraph";
 import InviteMyAnalPieGraphCard from "../Components/Cards/InviteMyAnalPieGraphCard";
+import AnalysisTimeLine from "../Components/Cards/AnalysisTimeLine";
 
 
 
@@ -313,7 +314,10 @@ const AnalyseMeeting = () => {
             },
         ])
 
-        axios.get(SERVER_URL + `/meet/result/meeting?idx_meeting=`+pathSplit, AXIOS_OPTION)
+        axios.get(
+            SERVER_URL
+            // 'http://192.168.0.12:10000'
+            + `/meet/result/meeting?idx_meeting=`+pathSplit, AXIOS_OPTION)
             .then(res => {
                 if(res.data.result_code === 'SUCCESS'){
                     let _data = res.data.data
@@ -427,36 +431,13 @@ const AnalyseMeeting = () => {
                         </div>
                     </div>
 
-                    {/*<AnalysisUserList lecture={lecture} />*/}
                     <InviteMyAnalPieGraphCard />
-                    {/*<div className="result__one_user">*/}
-                    {/*    <PieChart width={400} height={400} >*/}
-                    {/*        <Pie*/}
-                    {/*            data={data}*/}
-                    {/*            // cx={120}*/}
-                    {/*            // cy={200}*/}
-                    {/*            startAngle={0}*/}
-                    {/*            innerRadius={60}*/}
-                    {/*            outerRadius={80}*/}
-                    {/*            fill="#8884d8"*/}
-                    {/*            // paddingAngle={5}*/}
-                    {/*            dataKey="value"*/}
-                    {/*        >*/}
-                    {/*            {data.map((entry, index) => (*/}
-                    {/*                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />*/}
-                    {/*            ))}*/}
-                    {/*            <div><img className="pieImage" src={require('../assets/image/icon_angry.png')}/></div>*/}
-                    {/*        </Pie>*/}
-                    {/*    </PieChart>*/}
-                    {/*</div>*/}
-
 
                     <div className="result__mov" title="영상자리 (860 x 407)">
                         <Player src={movieSrc} width={860} height={407}></Player>
                     </div>
-                    <div className="result__anal_timeline">
 
-                    </div>
+                    <AnalysisTimeLine />
 
                     <AllUserBarGraph middata={middata} />
 

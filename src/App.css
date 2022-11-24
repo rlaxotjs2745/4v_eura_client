@@ -3914,16 +3914,19 @@ html.js-overflow {
     align-content: space-between;
 }
 
-.result__dash .summary__graph .analysis_sumup div.good_sum {
+.good_sum {
     color: #3377ff;
+    font-weight: 600;
 }
 
-.result__dash .summary__graph .analysis_sumup div.bad_sum {
+.bad_sum {
     color: #ffc633;
+    font-weight: 600;
 }
 
-.result__dash .summary__graph .analysis_sumup div.camera_off_sum {
+.camera_off_sum {
     color: gray;
+    font-weight: 600;
 }
 
 
@@ -4119,7 +4122,7 @@ html.js-overflow {
 }
 
 .result__user .result__watch ul li .watch__percent.is-good {
-    color: #37f
+    color: #3377FF
 }
 
 .result__user .result__watch ul li .watch__percent.is-bad {
@@ -4135,13 +4138,29 @@ html.js-overflow {
     margin-top: 16px;
     border-radius: 20px;
     display: flex;
-    justify-content: center;
     align-items: start;
-    padding-top: 40px;
+    flex-direction: column;
+    padding-top: 30px;
     box-sizing: border-box;
 }
 
-.one_user_graph {
+.result__one_user_title {
+    display: flex;
+    width: 100%;
+    height: 8%;
+    justify-content: space-around;
+    font-weight: 700;
+    font-size: 16px;
+    color: #17171A;
+    line-height: 19px;
+    letter-spacing: 0.5px;
+}
+
+.one_user_graph_box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
     position: relative;
 }
 
@@ -4150,15 +4169,90 @@ html.js-overflow {
     top: 50%; left:50%; transform: translate(-50%, -50%);
 }
 
+.pie_graph_image {
+    width: 65px;
+}
+
+.pie_graph_word {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.imotion_good {
+    color: #3377ff;
+}
+
+.imotion_bad {
+    color: #ffc633;
+}
+
+.one_user_graph_sum_box {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+    height: 30%;
+    font-size: 15px;
+    margin-top: 30px;
+}
+
+.one_user_graph_sum_category_box {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    align-content: start;
+}
+
+.one_user_graph_sum_category {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3px;
+}
+
 .result__anal_timeline {
     /*clear: both;*/
     float: right;
     width: 304px;
-    height: 312px;
+    height: 290px;
     background: #fff;
     margin-top: 16px;
     border-radius: 20px;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 23px;
+}
+
+.result__anal_timeline_title {
+    width: 80%;
+    text-align: start;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: 0.5px;
+    color: #17171A;
+}
+
+.result__anal_timeline_point {
+    margin-top: 72px;
+}
+
+.anal_timeline_point {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 100%;
+    color: #794CFF;
+}
+
+.anal_timeline_point_desc {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: 0.5px;
+    color: #8A8C99;
 }
 
 .pieImage {
