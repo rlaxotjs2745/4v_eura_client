@@ -24,7 +24,7 @@ const OneUserBarGraph = ({btmdata}) => {
                                     left: 0,
                                     bottom: 5,
                                 }}
-                                maxBarSize={100}
+                                maxBarSize={200}
                             >
                                 {/*<CartesianGrid strokeDasharray="3 3" />*/}
                                 {/*<XAxis dataKey="name" />*/}
@@ -32,8 +32,8 @@ const OneUserBarGraph = ({btmdata}) => {
                                 <Tooltip />
                                 {/*<Legend />*/}
                                 <ReferenceLine y={0} stroke="#000" />
-                                <Bar dataKey="Good" fill="#3377ff" stackId="stack" />
-                                <Bar dataKey="Bad" fill="#ffc633" stackId="stack" />
+                                <Bar dataKey="good" fill="#3377ff" stackId="stack" />
+                                <Bar dataKey="bad" fill="#ffc633" stackId="stack" />
                             </BarChart>
                         </ResponsiveContainer>
                     </>

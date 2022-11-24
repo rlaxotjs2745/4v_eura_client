@@ -32,10 +32,13 @@ import AnalysisTimeLine from "../Components/Cards/AnalysisTimeLine";
 const AnalyseMeeting = () => {
     const [movieSrc, setMovieSrc] = useState('');
     const [playMovieNo, setPlayMovieNo] = useState(0);
-    const [lecture, setLecture] = useState({})
-    const [btmdata, setBtmdata] = useState([])
-    const [piedata, setPiedata] = useState([])
-    const [middata, setMiddata] = useState([])
+    const [lecture, setLecture] = useState({});
+    const [btmdata, setBtmdata] = useState([]);
+    const [piedata, setPiedata] = useState([]);
+    const [middata, setMiddata] = useState([]);
+    const [oneUserData, setOneUserData] = useState({});
+    const [oneUserLevel, setOneUserLevel] = useState([]);
+    const [oneUserBool, setOneUserBool] = useState(false);
 
     const location = useLocation(); // 홈에서 넘겨준 스테이트 값
     const pathSplit = location.pathname.split('/')[2] // pathname /로 뜯어서 2번째값
@@ -314,23 +317,21 @@ const AnalyseMeeting = () => {
             },
         ])
 
-        axios.get(
-            SERVER_URL
-            // 'http://192.168.0.12:10000'
-            + `/meet/result/meeting?idx_meeting=`+pathSplit, AXIOS_OPTION)
+        axios.get(SERVER_URL + `/meet/result/meeting?idx_meeting=${pathSplit}`, AXIOS_OPTION)
             .then(res => {
                 if(res.data.result_code === 'SUCCESS'){
                     let _data = res.data.data
                     console.log(_data);
                     setLecture(_data)
                     // console.log(res)
-                    setMiddata(_data.mtAnalyMid)
+                    setMiddata([{longP:100, longM:-100},..._data.mtAnalyMid])
                     setBtmdata(_data.mtData0)
                     setPiedata([
                         { name: "Good", value: _data.mtAnalyTop.good },
                         { name: "Bad", value: _data.mtAnalyTop.bad },
                         { name: "Camera off", value: _data.mtAnalyTop.off },
                     ])
+
                     let _mfile = _data.mtMovieFiles
                     if(_mfile.length>0){setMovieSrc(_mfile[0].fileUrl)}
                     console.log('_mfile.length : '+ _mfile.length)
@@ -348,7 +349,17 @@ const AnalyseMeeting = () => {
     }, [])
 
     const clickUser = (idx) => {
-
+        axios.get(SERVER_URL + `/meet/result/mtinviteinfo?idx_meeting=${pathSplit}&idx_user=${idx}`, AXIOS_OPTION)
+            .then(res => {
+                console.log(res.data.data)
+                setOneUserLevel(res.data.data.mtData0.map(data => {
+                    if(data.bad > 0){
+                        return {...data, bad: data.bad * -1};
+                    }
+                }));
+                setOneUserData(res.data.data.mtData1);
+                setOneUserBool(true);
+            })
     }
 
     // useEffect(() => {
@@ -448,6 +459,12 @@ const AnalyseMeeting = () => {
                         <AllUserBarGraph middata={middata} />
                         :
                         <OneUserBarGraph btmdata={btmdata} />
+                    }
+                    {
+                        oneUserBool ?
+                            <OneUserBarGraph btmdata={oneUserLevel} />
+                            :
+                            null
                     }
 
 

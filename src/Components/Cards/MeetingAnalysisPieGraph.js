@@ -3,21 +3,22 @@ import React, {useEffect, useState} from "react";
 
 
 const MeetingAnalysisPieGraph = ({data}) => {
-    const [good , setGood] = useState(100);
-    const [bad, setBad] = useState(0);
-    const [cameraOff, setCameraOff] = useState(0);
-
-    useEffect(() => {
-        data.forEach(d => {
-            if(d.name === 'Good'){
-                setGood(Math.round(d.value));
-            } else if(d.name === 'Bad'){
-                setBad(Math.round(d.value));
-            } else if(d.name === 'Camera off'){
-                setCameraOff(Math.round(d.value));
-            }
-        })
-    },[])
+    // const [good , setGood] = useState(100);
+    // const [bad, setBad] = useState(0);
+    // const [cameraOff, setCameraOff] = useState(0);
+    //
+    // useEffect(() => {
+    //     data.forEach(d => {
+    //         console.log(d.name);
+    //         if(d.name === 'Good'){
+    //             setGood(Math.round(d.value));
+    //         } else if(d.name === 'Bad'){
+    //             setBad(Math.round(d.value));
+    //         } else if(d.name === 'Camera off'){
+    //             setCameraOff(Math.round(d.value));
+    //         }
+    //     })
+    // },[])
 
     const COLORS = ['#3377ff', '#ffc633', 'gray'];
 
@@ -57,11 +58,20 @@ const MeetingAnalysisPieGraph = ({data}) => {
             </div>
             <div className="analysis_sumup">
                 <div className="analysis_sum__title">분석 요약</div>
-                <div className="good_sum analysis_sum_category"><span>Good</span><span>{good}%</span></div>
-                <div className="bad_sum analysis_sum_category"><span>Bad</span><span>{bad}%</span></div>
-                <div className="camera_off_sum analysis_sum_category"><span>Camera Off</span><span>{cameraOff}%</span></div>
+                {
+                    data.map(d => {
+                        return (
+                            d.name == 'Good' ?
+                                <div className="good_sum analysis_sum_category"><span>Good</span><span>{Math.round(d.value)}%</span></div>
+                                : d.name == 'Bad' ?
+                                <div className="bad_sum analysis_sum_category"><span>Bad</span><span>{Math.round(d.value)}%</span></div>
+                                : d.name == 'Camera off' ?
+                                <div className="camera_off_sum analysis_sum_category"><span>Camera Off</span><span>{Math.round(d.value)}%</span></div>
+                                    : null
+                        )
+                    })
+                }
             </div>
-
         </div>
     )
 }
