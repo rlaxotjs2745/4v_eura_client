@@ -2222,7 +2222,7 @@ td {
     background: #fff;
     border-radius: 20px;
     box-sizing: border-box;
-    box-shadow: 0 3px 20px rgba(177, 206, 248, .3);
+    box-shadow: 6px 6px 25px rgba(11, 54, 118, 0.06);
     position: relative;
     margin-top: 17px;
     padding: 30px 33px;
@@ -2234,7 +2234,7 @@ td {
 .box:hover {
     transition: .1s top ease-in;
     top: -9px;
-    box-shadow: 5px 12px 25px rgba(11, 54, 118, .1)
+    box-shadow: 5px 12px 25px rgba(11, 54, 118, 0.1);
 }
 .box.is-before:hover {background: #fff;}
 .box.is-before:hover * {opacity: 1}
@@ -4510,6 +4510,7 @@ html.js-overflow {
 }
 
 .pop__detail.is-on .btn__close {
+    cursor: pointer;
     position: absolute;
     z-index: 821;
     top: 20px;

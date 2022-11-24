@@ -203,6 +203,7 @@ const NewRoom = () => {
                     console.log(room)
                     setTitle(room.mt_name);
                     setStartDate(room.mt_start_dt.split(' ')[0]);
+                    setDt2(room.mt_start_dt.split(' ')[0]);
                     setStartTime(room.mt_start_dt.split(' ')[1]);
                     setEndTime(room.mt_end_dt.split(' ')[1]);
                     setSelectValue(room.mt_remind_type);
@@ -457,8 +458,6 @@ const NewRoom = () => {
 
     const handleSubmit = () => {
 
-
-
         if($('#make_new').val() == ''){
             return alert('미팅 이름을 입력해주세요.')
         }
@@ -467,7 +466,7 @@ const NewRoom = () => {
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
 
-        if(Selected1 < new Date().getHours()){
+        if(Selected1 < new Date().getHours() && startDate === new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3)){
             return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
         }
 
@@ -486,8 +485,7 @@ const NewRoom = () => {
         if($('#make_room').val() == ''){
             return alert('미팅 정보가 입력되지 않았습니다.');
         }
-        // console.log('dt2값', dt2) 미팅 시작값
-        // console.log('dtValidation', dtValidation) 미팅 종료일자
+
         if(dt2 > dtValidation && remindBool === true){
             return alert('되풀이 미팅의 종료날짜는 미팅 시작날짜 이후여야 합니다.');
         }
@@ -512,15 +510,8 @@ const NewRoom = () => {
             formData.append('mt_remind_type', 0);
         }
 
-        // formData.append('file', uploadedFiles);
-
         if(location.state !== null && location.state.resultCode === 'FAIL01') {
-            axios.put(SERVER_URL + 'meet/room/open', {"mt_status":1}, AXIOS_OPTION).then(res => {
-                console.log(res.data)
-                console.log('1 잘 보냈어요')
-            }).catch(errors => {
-                console.log(errors)
-            })
+            formData.append('mt_status', 1);
         } // 공개하기 때 result_code FAIL01 받을경우 수정하기 페이지로 이동하는데, 이때 navigate로 스테이터스 값을 지정해서 보내줌. 그 값이 있으면 mt_status값을 전달 하게 하기 위함.
 
 
@@ -570,6 +561,10 @@ const NewRoom = () => {
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
 
+        if(Selected1 < new Date().getHours() && startDate === new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3)){
+            return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
+        }
+
         if(new Date(endTime) <= new Date(startTime)){
             return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
         }
@@ -584,6 +579,10 @@ const NewRoom = () => {
 
         if($('#make_room').val() == ''){
             return alert('미팅 정보가 입력되지 않았습니다.');
+        }
+
+        if(dt2 > dtValidation && remindBool === true){
+            return alert('되풀이 미팅의 종료날짜는 미팅 시작날짜 이후여야 합니다.');
         }
 
         const formData = new FormData();
@@ -605,6 +604,10 @@ const NewRoom = () => {
         } else {
             formData.append('mt_remind_type', 0);
         }
+
+        if(location.state !== null && location.state.resultCode === 'FAIL01') {
+            formData.append('mt_status', 1);
+        } // 공개 실패시
 
         if(isNew === 0) {
             axios.post(SERVER_URL + '/meet/create', formData, AXIOS_OPTION)
@@ -676,7 +679,7 @@ const NewRoom = () => {
                     navigate('/');
 
                 } else if (res.data.result_code === "FAIL01"){
-                    // 여기에 팝업 띄우는 함수 추가하고 navigate를 미팅 수정 버튼에 추가 예정
+                    // 재개설 하기 에서 공개하기가 실패할 경우 수정하기 화면으로 이동하기 위함
                     navigate(`/newroom/${pathSplit}`, {state:{'resultCode':'FAIL01'}})
                 }
             }).catch(err => {
@@ -1021,6 +1024,7 @@ const NewRoom = () => {
                     </div>
                 </div>
             </div>
+
         </div>
     )
 }
