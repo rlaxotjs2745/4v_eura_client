@@ -4134,7 +4134,17 @@ html.js-overflow {
     background: #fff;
     margin-top: 16px;
     border-radius: 20px;
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.one_user_graph {
+    position: relative;
+}
+
+.one_user_graph_image {
+    position: absolute;
 }
 
 .result__anal_timeline {
