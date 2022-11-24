@@ -30,6 +30,13 @@ const AllUserBarGraph = ({middata}) => {
                                 {/*<YAxis />*/}
                                 <Tooltip
                                     separator={"  "}
+                                    payload={[...middata.map(data => {
+                                        return {
+                                            ...data,
+                                            Bad: Math.ceil(data.Bad),
+                                            Good: Math.floor(data.Good)
+                                        }
+                                    })]}
                                 />
                                 {/*<Legend />*/}
                                 <ReferenceLine y={0} stroke="#000" />

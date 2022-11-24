@@ -324,13 +324,13 @@ const AnalyseMeeting = () => {
                     console.log(_data);
                     setLecture(_data)
                     // console.log(res)
-                    // setMiddata(_data.mtAnalyMid)
-                    // setBtmdata(_data.mtData0)
-                    // setPiedata([
-                    //     { name: "Good", value: _data.mtAnalyTop.good },
-                    //     { name: "Bad", value: _data.mtAnalyTop.bad },
-                    //     { name: "Camera off", value: _data.mtAnalyTop.off },
-                    // ])
+                    setMiddata(_data.mtAnalyMid)
+                    setBtmdata(_data.mtData0)
+                    setPiedata([
+                        { name: "Good", value: _data.mtAnalyTop.good },
+                        { name: "Bad", value: _data.mtAnalyTop.bad },
+                        { name: "Camera off", value: _data.mtAnalyTop.off },
+                    ])
                     let _mfile = _data.mtMovieFiles
                     if(_mfile.length>0){setMovieSrc(_mfile[0].fileUrl)}
                     console.log('_mfile.length : '+ _mfile.length)
@@ -346,6 +346,10 @@ const AnalyseMeeting = () => {
             console.log("movieSrc1:" + movieSrc)
         }
     }, [])
+
+    const clickUser = (idx) => {
+
+    }
 
     // useEffect(() => {
     //     console.log("movieSrc2:" + movieSrc)
@@ -370,12 +374,6 @@ const AnalyseMeeting = () => {
     //     textAlign:"center"
     // }
 
-    const data = [
-        { name: 'Group A', value: 700 },
-        { name: 'Group B', value: 200 },
-        { name: 'Group C', value: 100 },
-    ];
-    const COLORS = ['#3377ff', '#ffc633', 'gray'];
 
     return (
         <>
@@ -410,9 +408,7 @@ const AnalyseMeeting = () => {
                                 </dd>
                             </dl>
                         </div>
-
                         <MeetingAnalysisPieGraph data={piedata} />
-
                     </div>
                     <div className="result__download">
                         <h4 className="result__title">첨부파일({!lecture || !lecture.mtAttachedFiles ? '0' : [...lecture.mtAttachedFiles].length})</h4>
@@ -430,18 +426,30 @@ const AnalyseMeeting = () => {
                             }
                         </div>
                     </div>
-
-                    <InviteMyAnalPieGraphCard />
+                    {
+                        lecture.is_host ?
+                            <AnalysisUserList lecture={lecture} clickUser={clickUser} />
+                            :
+                            <InviteMyAnalPieGraphCard  />
+                    }
 
                     <div className="result__mov" title="영상자리 (860 x 407)">
                         <Player src={movieSrc} width={860} height={407}></Player>
                     </div>
+                    {
+                        lecture.is_host === 0 ?
+                        <AnalysisTimeLine />
+                            :
+                            null
+                    }
 
-                    <AnalysisTimeLine />
+                    {
+                        lecture.is_host ?
+                        <AllUserBarGraph middata={middata} />
+                        :
+                        <OneUserBarGraph btmdata={btmdata} />
+                    }
 
-                    <AllUserBarGraph middata={middata} />
-
-                    <OneUserBarGraph btmdata={btmdata} />
 
                 </div>
             </section>

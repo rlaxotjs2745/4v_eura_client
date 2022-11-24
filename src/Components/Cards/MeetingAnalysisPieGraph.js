@@ -1,8 +1,24 @@
 import {Cell, Pie, PieChart, ResponsiveContainer} from "recharts";
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 
 const MeetingAnalysisPieGraph = ({data}) => {
+    const [good , setGood] = useState(100);
+    const [bad, setBad] = useState(0);
+    const [cameraOff, setCameraOff] = useState(0);
+
+    useEffect(() => {
+        data.forEach(d => {
+            if(d.name === 'Good'){
+                setGood(Math.round(d.value));
+            } else if(d.name === 'Bad'){
+                setBad(Math.round(d.value));
+            } else if(d.name === 'Camera off'){
+                setCameraOff(Math.round(d.value));
+            }
+        })
+    },[])
+
     const COLORS = ['#3377ff', '#ffc633', 'gray'];
 
     const RADIAN = Math.PI / 180;
@@ -41,9 +57,9 @@ const MeetingAnalysisPieGraph = ({data}) => {
             </div>
             <div className="analysis_sumup">
                 <div className="analysis_sum__title">분석 요약</div>
-                <div className="good_sum analysis_sum_category"><span>Good</span><span>70%</span></div>
-                <div className="bad_sum analysis_sum_category"><span>Bad</span><span>20%</span></div>
-                <div className="camera_off_sum analysis_sum_category"><span>Camera Off</span><span>10%</span></div>
+                <div className="good_sum analysis_sum_category"><span>Good</span><span>{good}%</span></div>
+                <div className="bad_sum analysis_sum_category"><span>Bad</span><span>{bad}%</span></div>
+                <div className="camera_off_sum analysis_sum_category"><span>Camera Off</span><span>{cameraOff}%</span></div>
             </div>
 
         </div>

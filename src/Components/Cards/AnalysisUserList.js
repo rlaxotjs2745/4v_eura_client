@@ -1,6 +1,6 @@
 import React from "react";
 
-const AnalysisUserList = ({lecture}) => {
+const AnalysisUserList = ({lecture, clickUser}) => {
     return (
         <div className="result__user">
             <h4 className="result__title">참석자 목록({!lecture || !lecture.mtInviteInfo ? '0' : lecture.mtInviteInfo.user_invite}/{!lecture || !lecture.mtInviteInfo ? '0' : lecture.mtInviteInfo.user_total})</h4>
@@ -14,13 +14,13 @@ const AnalysisUserList = ({lecture}) => {
                             lecture.mtInviteList.map(member => {
                                 return (
                                     <li key={member.idx}>
-                                        <button>
+                                        <button onClick={() => clickUser(member.idx)}>
                                             <figure><img src={member.upic?member.upic: require('../../assets/image/image_profile.png')} alt=""/></figure>
                                             <div className="watch__td"><span>{member.uname}</span><div>{member.uemail}</div></div>
                                             {member.value > 60 ?
-                                                <div className="watch__percent is-good">{member.value}%</div>
+                                                <div className="watch__percent is-good">{Math.round(member.value)}%</div>
                                                 :
-                                                <div className="watch__percent is-bad">{member.value}%</div>
+                                                <div className="watch__percent is-bad">{Math.round(member.value)}%</div>
                                             }
                                         </button>
                                     </li>
