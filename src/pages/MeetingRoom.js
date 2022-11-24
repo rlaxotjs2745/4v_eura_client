@@ -179,7 +179,7 @@ const MeetingRoom = (props) => {
                         <div className="case-1">
                             <div className="case__title">{roomInfo.mt_name}
                                 {
-                                    roomInfo.mt_ishost === '1' ?
+                                    roomInfo.mt_ishost === '1' && roomInfo.mt_live !== 1 ?
                                     <Link to={
                                             roomInfo.mt_status === 2 ?
                                             "/reopen/" + window.location.pathname.split('/')[window.location.pathname.split('/').length-1]
