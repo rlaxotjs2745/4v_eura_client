@@ -210,9 +210,9 @@ const NewRoom = () => {
                     setSelected3(room.mt_end_dt.split(' ')[1].split(':')[0])
                     setSelected4(room.mt_end_dt.split(' ')[1].split(':')[1])
 
-                    if(room.mt_remind_type !== 0){
-                        setRemindBool(true);
-                    }
+                    // if(room.mt_remind_type !== 0){
+                    //     setRemindBool(true);
+                    // } 기본으로 되풀이미팅 체크 기능 삭제
 
                     if(room.mt_remind_week !== null) {
                         setWeekday(room.mt_remind_week.split(','));
@@ -229,9 +229,9 @@ const NewRoom = () => {
 
     }, [])
 
-    useEffect(() => {
-        setRemindBool(!!roomInfo.mt_remind_type);
-    }, [roomInfo]);
+    // useEffect(() => {
+    //     setRemindBool(!!roomInfo.mt_remind_type);
+    // }, [roomInfo]); 기본으로 되풀이미팅 체크 기능 삭제
 
 
     const handleUploadFiles = files => {
