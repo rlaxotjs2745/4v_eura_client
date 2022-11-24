@@ -60,6 +60,29 @@ const Home = () => {
         $('#shade').removeClass('is-on');
     }
 
+    const modalFailOpen = () => {
+        modalClose();
+        $('#popup__fail').addClass('is-on')
+        $('#shade2').addClass('is-on');
+    }
+
+    const modalFailclose = () => {
+        $('#popup__fail').removeClass('is-on')
+        $('#shade2').removeClass('is-on');
+    }
+
+    $('#shade2').off().on('click', function (){
+        $('#popup__fail').removeClass('is-on')
+        $('#shade2').removeClass('is-on');
+    })
+
+    const openFailNavi = () => {
+        let meet = curMeeting;
+        $('#popup__fail').removeClass('is-on')
+        $('#shade2').removeClass('is-on');
+        navigate(`/newroom/${meet.mt_idx}`, {state:{'resultCode':'FAIL01'}})
+    }
+
     const changeMeetingStatus = () => {
 
         let meet = curMeeting;
@@ -78,18 +101,9 @@ const Home = () => {
                         console.log(newMeeting);
                         setMeeting({...meeting, mt_meetMyList: newMeeting});
 
-                        // axios.put(SERVER_URL + 'meet/room/open', {"mt_status":1}, AXIOS_OPTION).then(res => {
-                        //     console.log(res.data)
-                        //     console.log('1 잘 보냈어요')
-                        // }).catch(errors => {
-                        //     console.log(errors)
-                        // })
-                        // navigate(`/newroom/${meet.mt_idx}`, {state:{'resultCode':'FAIL01'}})
                         modalClose();
-
                     } else if (res.data.result_code === "FAIL01"){
-                        // 여기에 팝업 띄우는 함수 추가하고 navigate를 미팅 수정 버튼에 추가 예정
-                        navigate(`/newroom/${meet.mt_idx}`, {state:{'resultCode':'FAIL01'}})
+                        modalFailOpen()
                     }
                 }).catch(err => {
                 console.log(err);
@@ -291,15 +305,15 @@ const Home = () => {
                         <div className="popup__cnt">
                             <div className="pop__message">
                                 <img src={require('../assets/image/ic_warning_80.png')} alt=""/>
-                                        <div id="mt_status_0">
-                                            <strong>미팅룸을 공개하면 다시 비공개로 설정할 수 없습니다. <br/>
-                                                미팅룸을 공개 하시겠습니까?</strong>
-                                            <span>미팅을 공개하면 초대한 참석자들에게 메일이 발송됩니다.</span>
-                                        </div>
-                                        <div id="mt_status_2">
-                                            <strong>미팅룸을 재개설 하시겠습니까?</strong>
-                                            <span>미팅을 재개설하면 초대한 참석자들에게 메일이 발송됩니다.</span>
-                                        </div>
+                                <div id="mt_status_0">
+                                    <strong>미팅룸을 공개하면 다시 비공개로 설정할 수 없습니다. <br/>
+                                        미팅룸을 공개 하시겠습니까?</strong>
+                                    <span>미팅을 공개하면 초대한 참석자들에게 메일이 발송됩니다.</span>
+                                </div>
+                                <div id="mt_status_2">
+                                    <strong>미팅룸을 재개설 하시겠습니까?</strong>
+                                    <span>미팅을 재개설하면 초대한 참석자들에게 메일이 발송됩니다.</span>
+                                </div>
                             </div>
                             <div className="btn__group">
                                 <button onClick={changeMeetingStatus} className="btn btn__able btn__s">예</button>
@@ -307,6 +321,23 @@ const Home = () => {
                             </div>
                         </div>
                     </div>
+
+                <div id="popup__fail" className="pop__detail">
+                    <div onClick={modalFailclose} className="btn__close js-modal-close"><img src={require('../assets/image/ic_close_24.png')} alt=""/></div>
+                    <div className="popup__cnt">
+                        <div className="pop__message">
+                            <img src={require('../assets/image/ic_warning_80.png')} alt=""/>
+                            <div>
+                                <strong>미팅일정이 현재시간보다 이전시간으로 설정되어 있습니다. <br/>미팅룸 일정을 수정해주세요!</strong>
+                                <span>미팅을 재개설하면 초대한 참석자들에게 메일이 발송됩니다.</span>
+                            </div>
+                        </div>
+                        <div className="btn__group">
+                            <button onClick={modalFailclose} className="btn btn__normal btn__s js-modal-close">취소</button>
+                            <button onClick={openFailNavi} className="btn btn__able btn__s">미팅 수정</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </>
     )

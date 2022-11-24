@@ -51,15 +51,21 @@ const NewRoom = () => {
     const [groupFileName, setGroupFileName] = useState('이메일이 입력된 엑셀파일을 첨부해주세요.')
     const [groupSearchUser, setGroupSearchUser] = useState([]);
 
-    const dt = new Date() // 현재 시간 전체
-    const dtPlusDefault = new Date() // 30분뒤로 세팅할 현재시간 기본 디폴트 값
-    dtPlusDefault.setMinutes(dtPlusDefault.getMinutes() + 30); // dtPlusDefault 를 30분뒤로 설정 해줌.
-    const hour = dt.getHours()
-    const hour2 = dtPlusDefault.getHours(); // 30분 뒤의 현재 시간
-    const min = dt.getMinutes(); // 현재 분
-    const min_time = Math.floor(min/10) * 10 + 10 // 현재 시간에서 10분 뒤
-    const min_time2_math = dtPlusDefault.getMinutes() // 현재 시간에서 30분 뒤를 가진 값을 가짐
-    const min_time2 = Math.floor(min_time2_math/10) * 10 + 10 // 현재 시간에서 30분뒤의 10분 뒤
+    const [dt, setDt] = useState(new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3));
+    const [dt2, setDt2] = useState(new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3));
+
+    const [dtValidation, setDtValidation] = useState('')
+
+
+    // const dt = new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3)
+    // const dtPlusDefault = new Date() // 30분뒤로 세팅할 현재시간 기본 디폴트 값
+    // dtPlusDefault.setMinutes(dtPlusDefault.getMinutes() + 30); // dtPlusDefault 를 30분뒤로 설정 해줌.
+    // const hour = dt.getHours()
+    // const hour2 = dtPlusDefault.getHours(); // 30분 뒤의 현재 시간
+    // const min = dt.getMinutes(); // 현재 분
+    // const min_time = Math.floor(min/10) * 10 + 10 // 현재 시간에서 10분 뒤
+    // const min_time2_math = dtPlusDefault.getMinutes() // 현재 시간에서 30분 뒤를 가진 값을 가짐
+    // const min_time2 = Math.floor(min_time2_math/10) * 10 + 10 // 현재 시간에서 30분뒤의 10분 뒤
 
 
     // const [Selected1, setSelected1] = useState(()=>{
@@ -197,6 +203,7 @@ const NewRoom = () => {
                     console.log(room)
                     setTitle(room.mt_name);
                     setStartDate(room.mt_start_dt.split(' ')[0]);
+                    setDt2(room.mt_start_dt.split(' ')[0]);
                     setStartTime(room.mt_start_dt.split(' ')[1]);
                     setEndTime(room.mt_end_dt.split(' ')[1]);
                     setSelectValue(room.mt_remind_type);
@@ -258,12 +265,7 @@ const NewRoom = () => {
         handleUploadFiles(chosenFiles)
     }
 
-
-
     const handleModal = (e) => {
-        // if (e.keyCode === 13) {
-        //     e.preventDefault();
-        // }
         if(e) e.preventDefault()
         if(groupModal === 'pop__detail'){
             setGroupModal('pop__detail is-on');
@@ -426,7 +428,12 @@ const NewRoom = () => {
 
     const makeDate = (e) => {
         setStartDate(e.target.value);
+        setDt2(e.target.value)
     }
+
+    useEffect(()=> {
+        setDt2(dt2)
+    },[dt2])
 
     const makeTime1 = (e) => {
         setStartTime(e.target.value);
@@ -438,6 +445,7 @@ const NewRoom = () => {
 
     const makeEndDate = (e) => {
         setEndDate(e.target.value);
+        setDtValidation(e.target.value)
     }
 
     const makeMeetingInfo = (e) => {
@@ -458,6 +466,10 @@ const NewRoom = () => {
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
 
+        if(Selected1 < new Date().getHours() && startDate === new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3)){
+            return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
+        }
+
         if(new Date(endTime) <= new Date(startTime)){
             return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
         }
@@ -472,6 +484,10 @@ const NewRoom = () => {
 
         if($('#make_room').val() == ''){
             return alert('미팅 정보가 입력되지 않았습니다.');
+        }
+
+        if(dt2 > dtValidation && remindBool === true){
+            return alert('되풀이 미팅의 종료날짜는 미팅 시작날짜 이후여야 합니다.');
         }
 
         const formData = new FormData();
@@ -494,15 +510,8 @@ const NewRoom = () => {
             formData.append('mt_remind_type', 0);
         }
 
-        // formData.append('file', uploadedFiles);
-
         if(location.state !== null && location.state.resultCode === 'FAIL01') {
-            axios.put(SERVER_URL + 'meet/room/open', {"mt_status":1}, AXIOS_OPTION).then(res => {
-                console.log(res.data)
-                console.log('1 잘 보냈어요')
-            }).catch(errors => {
-                console.log(errors)
-            })
+            formData.append('mt_status', 1);
         } // 공개하기 때 result_code FAIL01 받을경우 수정하기 페이지로 이동하는데, 이때 navigate로 스테이터스 값을 지정해서 보내줌. 그 값이 있으면 mt_status값을 전달 하게 하기 위함.
 
 
@@ -552,6 +561,10 @@ const NewRoom = () => {
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
 
+        if(Selected1 < new Date().getHours() && startDate === new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3)){
+            return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
+        }
+
         if(new Date(endTime) <= new Date(startTime)){
             return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
         }
@@ -566,6 +579,10 @@ const NewRoom = () => {
 
         if($('#make_room').val() == ''){
             return alert('미팅 정보가 입력되지 않았습니다.');
+        }
+
+        if(dt2 > dtValidation && remindBool === true){
+            return alert('되풀이 미팅의 종료날짜는 미팅 시작날짜 이후여야 합니다.');
         }
 
         const formData = new FormData();
@@ -587,6 +604,10 @@ const NewRoom = () => {
         } else {
             formData.append('mt_remind_type', 0);
         }
+
+        if(location.state !== null && location.state.resultCode === 'FAIL01') {
+            formData.append('mt_status', 1);
+        } // 공개 실패시
 
         if(isNew === 0) {
             axios.post(SERVER_URL + '/meet/create', formData, AXIOS_OPTION)
@@ -658,7 +679,7 @@ const NewRoom = () => {
                     navigate('/');
 
                 } else if (res.data.result_code === "FAIL01"){
-                    // 여기에 팝업 띄우는 함수 추가하고 navigate를 미팅 수정 버튼에 추가 예정
+                    // 재개설 하기 에서 공개하기가 실패할 경우 수정하기 화면으로 이동하기 위함
                     navigate(`/newroom/${pathSplit}`, {state:{'resultCode':'FAIL01'}})
                 }
             }).catch(err => {
@@ -686,6 +707,7 @@ const NewRoom = () => {
                             <input id="make_date" type="date" className="text under-scope width-flexble"
                                    onChange={makeDate}
                                    value={startDate}
+                                   min={dt}
                             />
                             <label htmlFor="make_time" className="input__time"><img src="../assets/image/ic_time_24.png" alt="" /></label>
                             <div className="flex_time">
@@ -852,7 +874,7 @@ const NewRoom = () => {
                                 <dl className="inline__type">
                                     <dt><label htmlFor="종료 날짜">종료 날짜</label></dt>
                                     <dd>
-                                        <input id="meeting_end_date" type="date" onChange={makeEndDate} className="text under-scope" />
+                                        <input id="meeting_end_date" type="date" onChange={makeEndDate} min={dt2} className="text under-scope" />
                                     </dd>
                                 </dl>
                             </div>
@@ -887,11 +909,11 @@ const NewRoom = () => {
                         <label>참석자 추가</label>
                         <div className="list__count"><a onClick={() => window.open('https://eura-server.s3.ap-northeast-2.amazonaws.com/upload/EURA_%EB%AF%B8%ED%8C%85_%EC%B0%B8%EC%84\[%E2%80%A6]B2%B4_%EC%B6%94%EA%B0%80_%EC%96%91%EC%8B%9D.csv')} className="btn btn__download">엑셀 양식 다운로드</a></div>
                         <div className="flow_box input__inline">
-
-                            <input id="make_team" type="text" autoComplete="off" className="text" placeholder="이메일 또는 이름을 입력해 참석자를 추가하세요." onChange={searchInviteUserList} />
-                            <button onClick={handleModal} className="btn btn__team js-modal-alert">
+                            <input type="hidden"/>
+                            <input id="make_team" type="text" autoComplete="off" className="text" placeholder="이메일 또는 이름을 입력해 참석자를 추가하세요." onChange={searchInviteUserList}/>
+                            <div onClick={handleModal} className="btn btn__team js-modal-alert">
                                 <img src="../assets/image/ic_participant_14.png" alt="" />단체추가하기
-                            </button>
+                            </div>
                         </div>
                         <div className="flow__team">
                             <ul>
@@ -1002,6 +1024,7 @@ const NewRoom = () => {
                     </div>
                 </div>
             </div>
+
         </div>
     )
 }
