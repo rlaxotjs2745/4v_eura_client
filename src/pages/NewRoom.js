@@ -236,9 +236,9 @@ const NewRoom = () => {
 
     }, [])
 
-    // useEffect(() => {
-    //     setRemindBool(!!roomInfo.mt_remind_type);
-    // }, [roomInfo]); 기본으로 되풀이미팅 체크 기능 삭제
+    useEffect(() => {
+        setRemindBool(!!roomInfo.mt_remind_type);
+    }, [roomInfo]);
 
 
     const handleUploadFiles = files => {
@@ -457,7 +457,7 @@ const NewRoom = () => {
     }
 
     const handleSubmit = () => {
-
+        console.log('remindBool은? ', remindBool)
         if($('#make_new').val() == ''){
             return alert('미팅 이름을 입력해주세요.')
         }
@@ -499,6 +499,7 @@ const NewRoom = () => {
         for (let i = 0; i < uploadedFiles.length; i++) {
             formData.append("file", uploadedFiles[i]);
         }
+
         if(remindBool){
             formData.append('mt_remind_type', parseInt(selectValue));
             formData.append('mt_remind_count', remindCount);
@@ -602,6 +603,7 @@ const NewRoom = () => {
             }
             formData.append('mt_remind_end', endDate);
         } else {
+            // console.log('되풀이 미팅 체크 안된것으로 봄')
             formData.append('mt_remind_type', 0);
         }
 
