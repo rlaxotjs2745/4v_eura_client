@@ -143,7 +143,7 @@ const Profile = () => {
                     // navigate('/')
                 } else if(res.data.result_code === 'SUCCESS02'){
                     console.log('======================', res.data.result_str);
-                    // window.location.reload();
+                    window.location.reload();
                     // alert(res.data.result_str)
                 }
             }).catch(err => {
