@@ -6,6 +6,7 @@ import {AXIOS_OPTION, SERVER_URL} from "../util/env";
 // import queryString from "query-string";
 import { Player, ControlBar } from "video-react";
 import "/node_modules/video-react/dist/video-react.css";
+import Hls from "hls.js";
 import EuraPlayer from "../util/EuraPlayer";
 import {
     BarChart,
@@ -26,6 +27,8 @@ import AnalysisUserList from "../Components/Cards/AnalysisUserList";
 import MeetingAnalysisPieGraph from "../Components/Cards/MeetingAnalysisPieGraph";
 import InviteMyAnalPieGraphCard from "../Components/Cards/InviteMyAnalPieGraphCard";
 import AnalysisTimeLine from "../Components/Cards/AnalysisTimeLine";
+import HLSSource from "../Components/Cards/HLSSource";
+import {getCookie} from "../util/cookie";
 
 
 
@@ -36,12 +39,16 @@ const AnalyseMeeting = () => {
     const [btmdata, setBtmdata] = useState([]);
     const [piedata, setPiedata] = useState([]);
     const [middata, setMiddata] = useState([]);
-    const [oneUserData, setOneUserData] = useState({});
+    const [oneUserData, setOneUserData] = useState([]);
     const [oneUserLevel, setOneUserLevel] = useState([]);
     const [oneUserBool, setOneUserBool] = useState(false);
+    const [oneUserResult, setOneUserResult] = useState([]);
+    const [oneUserResultab, setOneUserResultab] = useState({})
+    const [hls, setHls] = useState(new Hls());
 
     const location = useLocation(); // 홈에서 넘겨준 스테이트 값
     const pathSplit = location.pathname.split('/')[2] // pathname /로 뜯어서 2번째값
+    const user_cookie_id = getCookie('user_id');
 
 
     // const params = {idx_meeting:pathSplit};
@@ -53,337 +60,335 @@ const AnalyseMeeting = () => {
 
     useEffect(() => {
         // 개인 집중도 그래프
-        setBtmdata([
-            {
-                name: "00:00:05",
-                Bad: -80,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:10",
-                Bad: 0,
-                Good: 30,
-                amt: 0
-            },
-            {
-                name: "00:00:15",
-                Bad: -60,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:20",
-                Bad: -50,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:25",
-                Bad: 0,
-                Good: 60,
-                amt: 0
-            },
-            {
-                name: "00:00:30",
-                Bad: -30,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:35",
-                Bad: 0,
-                Good: 80,
-                amt: 0
-            },
-            {
-                name: "00:00:05",
-                Bad: -80,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:10",
-                Bad: 0,
-                Good: 30,
-                amt: 0
-            },
-            {
-                name: "00:00:15",
-                Bad: -60,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:20",
-                Bad: -50,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:25",
-                Bad: 0,
-                Good: 60,
-                amt: 0
-            },
-            {
-                name: "00:00:30",
-                Bad: -30,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:35",
-                Bad: 0,
-                Good: 80,
-                amt: 0
-            }
-        ])
-        // 전체 집중도 원형그래프
-        setPiedata([
-            { name: "Good", value: 700 },
-            { name: "Bad", value: 200 },
-            { name: "Camera off", value: 100 },
-        ])
-        // 전체 집중도 그래프
-        setMiddata([
-            {
-                name: "00:00:05",
-                Bad: -80,
-                Good: 20,
-                amt: 0
-            },
-            {
-                name: "00:00:10",
-                Bad: -70,
-                Good: 30,
-                amt: 0
-            },
-            {
-                name: "00:00:15",
-                Bad: -60,
-                Good: 40,
-                amt: 0
-            },
-            {
-                name: "00:00:20",
-                Bad: -50,
-                Good: 50,
-                amt: 0
-            },
-            {
-                name: "00:00:25",
-                Bad: -40,
-                Good: 60,
-                amt: 0
-            },
-            {
-                name: "00:00:30",
-                Bad: -30,
-                Good: 70,
-                amt: 0
-            },
-            {
-                name: "00:00:35",
-                Bad: -20,
-                Good: 80,
-                amt: 0
-            },
-            {
-                name: "00:00:05",
-                Bad: -80,
-                Good: 20,
-                amt: 0
-            },
-            {
-                name: "00:00:10",
-                Bad: -70,
-                Good: 30,
-                amt: 0
-            },
-            {
-                name: "00:00:15",
-                Bad: -60,
-                Good: 40,
-                amt: 0
-            },
-            {
-                name: "00:00:20",
-                Bad: -50,
-                Good: 50,
-                amt: 0
-            },
-            {
-                name: "00:00:25",
-                Bad: -40,
-                Good: 60,
-                amt: 0
-            },
-            {
-                name: "00:00:30",
-                Bad: -30,
-                Good: 70,
-                amt: 0
-            },
-            {
-                name: "00:00:35",
-                Bad: -20,
-                Good: 80,
-                amt: 0
-            },
-            {
-                name: "00:00:05",
-                Bad: -80,
-                Good: 20,
-                amt: 0
-            },
-            {
-                name: "00:00:10",
-                Bad: -70,
-                Good: 30,
-                amt: 0
-            },
-            {
-                name: "00:00:15",
-                Bad: -60,
-                Good: 40,
-                amt: 0
-            },
-            {
-                name: "00:00:20",
-                Bad: -50,
-                Good: 50,
-                amt: 0
-            },
-            {
-                name: "00:00:25",
-                Bad: -40,
-                Good: 60,
-                amt: 0
-            },
-            {
-                name: "00:00:30",
-                Bad: -30,
-                Good: 70,
-                amt: 0
-            },
-            {
-                name: "00:00:35",
-                Bad: -20,
-                Good: 80,
-                amt: 0
-            },
-            {
-                name: "00:00:05",
-                Bad: -100,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:10",
-                Bad: -70,
-                Good: 30,
-                amt: 0
-            },
-            {
-                name: "00:00:15",
-                Bad: -60,
-                Good: 40,
-                amt: 0
-            },
-            {
-                name: "00:00:20",
-                Bad: -50,
-                Good: 50,
-                amt: 0
-            },
-            {
-                name: "00:00:25",
-                Bad: -40,
-                Good: 60,
-                amt: 0
-            },
-            {
-                name: "00:00:30",
-                Bad: -30,
-                Good: 70,
-                amt: 0
-            },
-            {
-                name: "00:00:35",
-                Bad: -20,
-                Good: 80,
-                amt: 0
-            },
-        ])
+        // setBtmdata([
+        //     {
+        //         name: "00:00:05",
+        //         Bad: -80,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:10",
+        //         Bad: 0,
+        //         Good: 30,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:15",
+        //         Bad: -60,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:20",
+        //         Bad: -50,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:25",
+        //         Bad: 0,
+        //         Good: 60,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:30",
+        //         Bad: -30,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:35",
+        //         Bad: 0,
+        //         Good: 80,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:05",
+        //         Bad: -80,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:10",
+        //         Bad: 0,
+        //         Good: 30,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:15",
+        //         Bad: -60,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:20",
+        //         Bad: -50,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:25",
+        //         Bad: 0,
+        //         Good: 60,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:30",
+        //         Bad: -30,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:35",
+        //         Bad: 0,
+        //         Good: 80,
+        //         amt: 0
+        //     }
+        // ])
+        // // 전체 집중도 원형그래프
+        // setPiedata([
+        //     { name: "Good", value: 700 },
+        //     { name: "Bad", value: 200 },
+        //     { name: "Camera off", value: 100 },
+        // ])
+        // // 전체 집중도 그래프
+        // setMiddata([
+        //     {
+        //         name: "00:00:05",
+        //         Bad: -80,
+        //         Good: 20,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:10",
+        //         Bad: -70,
+        //         Good: 30,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:15",
+        //         Bad: -60,
+        //         Good: 40,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:20",
+        //         Bad: -50,
+        //         Good: 50,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:25",
+        //         Bad: -40,
+        //         Good: 60,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:30",
+        //         Bad: -30,
+        //         Good: 70,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:35",
+        //         Bad: -20,
+        //         Good: 80,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:05",
+        //         Bad: -80,
+        //         Good: 20,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:10",
+        //         Bad: -70,
+        //         Good: 30,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:15",
+        //         Bad: -60,
+        //         Good: 40,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:20",
+        //         Bad: -50,
+        //         Good: 50,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:25",
+        //         Bad: -40,
+        //         Good: 60,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:30",
+        //         Bad: -30,
+        //         Good: 70,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:35",
+        //         Bad: -20,
+        //         Good: 80,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:05",
+        //         Bad: -80,
+        //         Good: 20,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:10",
+        //         Bad: -70,
+        //         Good: 30,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:15",
+        //         Bad: -60,
+        //         Good: 40,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:20",
+        //         Bad: -50,
+        //         Good: 50,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:25",
+        //         Bad: -40,
+        //         Good: 60,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:30",
+        //         Bad: -30,
+        //         Good: 70,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:35",
+        //         Bad: -20,
+        //         Good: 80,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:05",
+        //         Bad: -100,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:10",
+        //         Bad: -70,
+        //         Good: 30,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:15",
+        //         Bad: -60,
+        //         Good: 40,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:20",
+        //         Bad: -50,
+        //         Good: 50,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:25",
+        //         Bad: -40,
+        //         Good: 60,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:30",
+        //         Bad: -30,
+        //         Good: 70,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:35",
+        //         Bad: -20,
+        //         Good: 80,
+        //         amt: 0
+        //     },
+        // ])
 
         axios.get(SERVER_URL + `/meet/result/meeting?idx_meeting=${pathSplit}`, AXIOS_OPTION)
             .then(res => {
                 if(res.data.result_code === 'SUCCESS'){
-                    let _data = res.data.data
+                    let _data = res.data.data;
                     console.log(_data);
-                    setLecture(_data)
+                    setLecture({..._data, is_host:0});
                     // console.log(res)
-                    setMiddata([{longP:100, longM:-100},..._data.mtAnalyMid])
-                    setBtmdata(_data.mtData0)
+                    setMiddata(_data.mtAnalyMid ? [{longP:100, longM:-100},..._data.mtAnalyMid] : []);
+                    setBtmdata(_data.mtData0 ? [{longP:100, longM:-100},..._data.mtData0] : []);
                     setPiedata([
                         { name: "Good", value: _data.mtAnalyTop.good },
                         { name: "Bad", value: _data.mtAnalyTop.bad },
                         { name: "Camera off", value: _data.mtAnalyTop.off },
                     ])
+                    setOneUserResult(_data.mtData1 ? [
+                        { name: "Good", value: _data.mtData1.good },
+                        { name: "Bad", value: _data.mtData1.bad },
+                        { name: "Camera Off", value: _data.mtData1.off },
+                    ]
+                        : {});
+                    setOneUserResultab(_data.mtData1 ? _data.mtData1 : {});
 
-                    let _mfile = _data.mtMovieFiles
-                    if(_mfile.length>0){setMovieSrc(_mfile[0].fileUrl)}
-                    console.log('_mfile.length : '+ _mfile.length)
+
+
+                    let _mfile = _data.mtMovieFiles;
+                    if(_mfile.length>0){setMovieSrc(_mfile[0].fileUrl)};
                 }else{
                     alert(res.data.result_str)
                 }
             }).catch((error)=>{
-            console.log(error)
+            console.log(error);
         });
-
-        return () => {
-            console.log('END')
-            console.log("movieSrc1:" + movieSrc)
-        }
     }, [])
+
+    useEffect(() => {
+        console.log(oneUserLevel)
+    },[oneUserLevel])
+
+
 
     const clickUser = (idx) => {
         axios.get(SERVER_URL + `/meet/result/mtinviteinfo?idx_meeting=${pathSplit}&idx_user=${idx}`, AXIOS_OPTION)
             .then(res => {
                 console.log(res.data.data)
-                setOneUserLevel(res.data.data.mtData0.map(data => {
+                const mtData0 = res.data.data.mtData0;
+                const mtData1 = res.data.data.mtData1;
+                console.log(mtData0);
+                console.log(mtData1)
+
+                setOneUserLevel([...oneUserLevel, {mtData0: [{longP:100, longM:-100}, ...mtData0.map(data => {
                     if(data.bad > 0){
                         return {...data, bad: data.bad * -1};
                     }
-                }));
-                setOneUserData(res.data.data.mtData1);
+                    return data;
+                })], mtData1: [
+                            { name: "Good", value: mtData1.good },
+                            { name: "Bad", value: mtData1.bad },
+                            { name: "Camera Off", value: mtData1.off },
+                        ], mtData1ab: {...mtData1, bad: mtData1.bad * -1}
+                    }]
+                );
+                setOneUserData([...oneUserData, mtData1]);
                 setOneUserBool(true);
             })
     }
-
-    // useEffect(() => {
-    //     console.log("movieSrc2:" + movieSrc)
-    // }, [movieSrc])
-
-    //
-    // let movie1180 = {
-    //     width:"1180px !important",
-    //     height:"407px !important"
-    // }
-    //
-    // let moviebox1180 = {
-    //     width:"1180px !important",
-    //     height:"407px !important",
-    //     overflow:"hidden",
-    //     textAlign:"center"
-    // }
-    // let moviebox860 = {
-    //     width:"806px !important",
-    //     height:"407px !important",
-    //     overflow:"hidden",
-    //     textAlign:"center"
-    // }
 
 
     return (
@@ -437,21 +442,21 @@ const AnalyseMeeting = () => {
                             }
                         </div>
                     </div>
-                    {
-                        lecture.is_host ?
-                            <AnalysisUserList lecture={lecture} clickUser={clickUser} />
-                            :
-                            <InviteMyAnalPieGraphCard  />
-                    }
+                    <AnalysisUserList lecture={lecture} clickUser={clickUser} isHost={lecture.is_host} />
+
 
                     <div className="result__mov" title="영상자리 (860 x 407)">
-                        <Player src={movieSrc} width={860} height={407}></Player>
+                        {/*<Player src={movieSrc} width={860} height={407}></Player>*/}
+                        <Player>
+                           <HLSSource isVideoChild src={movieSrc} />
+                        </Player>
                     </div>
+
                     {
-                        lecture.is_host === 0 ?
-                        <AnalysisTimeLine />
-                            :
+                        lecture.is_host ?
                             null
+                            :
+                            <InviteMyAnalPieGraphCard oneUserResult={oneUserResult} oneUserResultab={oneUserResultab} />
                     }
 
                     {
@@ -461,13 +466,18 @@ const AnalyseMeeting = () => {
                         <OneUserBarGraph btmdata={btmdata} />
                     }
                     {
-                        oneUserBool ?
-                            <OneUserBarGraph btmdata={oneUserLevel} />
+                        oneUserBool && oneUserLevel ?
+                            oneUserLevel.map(data => {
+                                return (
+                                    <>
+                                        <InviteMyAnalPieGraphCard oneUserResult={data.mtData1} oneUserResultab={data.mtData1ab} />
+                                        <OneUserBarGraph btmdata={data.mtData0} />
+                                    </>
+                                )
+                            })
                             :
                             null
                     }
-
-
                 </div>
             </section>
         </>

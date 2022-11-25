@@ -21,6 +21,17 @@ const Home = () => {
     const [curSort, setCurSort] = useState(1);
     const [curLastSort, setCurLastSort] = useState(1);
 
+    useEffect(() => {
+        modalClose();
+        getMain();
+        getMainList();
+        getMainEndList();
+    }, []);
+
+    useEffect(() => {
+        getMain();
+    }, [meeting])
+
     const pageSort = (e) => {
         let endPoint;
         let resMtd;
@@ -135,7 +146,7 @@ const Home = () => {
     const getMeetMore = () => {
         axios.get(SERVER_URL + `/meet/main/list?currentPage=${curPage+1}&pageSort=${curSort}`, AXIOS_OPTION)
             .then(res => {
-                setMeeting(res.data.data);
+                setMeeting({...meeting, mt_meetMyList: [...meeting.mt_meetMyList, res.data.data.mt_meetMyList]});
                 setCurPage(curPage+1);
             })
     }
@@ -176,47 +187,6 @@ const Home = () => {
         modalClose();
     })
 
-    useEffect(() => {
-        modalClose();
-        getMain();
-        getMainList();
-        getMainEndList();
-    }, []);
-
-    useEffect(() => {
-        getMain();
-    }, [meeting])
-
-    // useEffect(() => {
-    //     axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
-    //         .then(res => {
-    //             setUser(res.data.data);
-    //             if(res.data.data.mt_meetShort){
-    //                 setSchedule(res.data.data.mt_meetShort);
-    //                 return () => {
-    //                     console.log("cleanup1");
-    //                 }
-    //             }
-    //         });
-    // },[]);
-    // useEffect(() => {
-    //     axios.get(SERVER_URL + '/meet/main/list', AXIOS_OPTION)
-    //         .then(res => {
-    //             setMeeting(res.data.data);
-    //             return () => {
-    //                 console.log("cleanup2");
-    //             }
-    //         })
-    // },[]);
-    // useEffect(() => {
-    //     axios.get(SERVER_URL + '/meet/main/endlist', AXIOS_OPTION)
-    //         .then(res => {
-    //             setLastMeeting(res.data.data);
-    //             return () => {
-    //                 console.log("cleanup3");
-    //             }
-    //         })
-    // },[]);
 
     return (
         <>

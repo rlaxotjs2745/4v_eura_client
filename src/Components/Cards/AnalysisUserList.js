@@ -1,8 +1,8 @@
 import React from "react";
 
-const AnalysisUserList = ({lecture, clickUser}) => {
+const AnalysisUserList = ({lecture, clickUser, isHost}) => {
     return (
-        <div className="result__user">
+        <div className={isHost ? 'result__user' : 'result__user not_host'}>
             <h4 className="result__title">참석자 목록({!lecture || !lecture.mtInviteInfo ? '0' : lecture.mtInviteInfo.user_invite}/{!lecture || !lecture.mtInviteInfo ? '0' : lecture.mtInviteInfo.user_total})</h4>
             <div className="result__watch">
                 <ul>
