@@ -32,7 +32,7 @@ const NewRoom = () => {
     const [remindBool, setRemindBool] = useState(false);
     const [weekday, setWeekday] = useState([]);
 
-    const [selectValue, setSelectValue] = useState(1);
+    const [selectValue, setSelectValue] = useState(0);
     const [remindCount, setRemindCount] = useState(0);
     const [title, setTitle] = useState('');
     const [startDate, setStartDate] = useState(new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3));
@@ -409,14 +409,38 @@ const NewRoom = () => {
         $(".flow__team").slideUp();
     });
 
-    const remindChange = (e) => {
+    const remindChange = () => {
+        if (!remindBool) {
+            if (roomInfo.mt_remind_type) {
+                setSelectValue(roomInfo.mt_remind_type);
+            } else {
+                if (!selectValue) {
+                    setSelectValue(1)
+                }
+            }
+        } else setSelectValue(0);
+
         setRemindBool(!remindBool);
-        // e.target.checked = !remindBool;
     }
 
     const getWeekDay = (num) => {
-        setWeekday([...new Set([...weekday, num])]);
+        let bool = false;
+        weekday.forEach(d => {
+            if(d === num){
+                bool = true;
+            }
+        })
+
+        if(!bool){
+            setWeekday([...new Set([...weekday, num])]);
+        } else {
+            setWeekday(weekday.filter(d => d !== num));
+        }
     }
+
+    useEffect(()=> {
+        console.log(selectValue)
+    },[selectValue])
 
     const handleChange = (e) => {
         setSelectValue(parseInt(e.target.value))
