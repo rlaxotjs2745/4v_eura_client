@@ -596,6 +596,10 @@ const NewRoom = () => {
             return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
         }
 
+        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes()){
+            return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
+        }
+
         if(new Date(endTime) <= new Date(startTime)){
             return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
         }
