@@ -4,7 +4,7 @@ import {Link, useNavigate, useLocation, json} from "react-router-dom";
 import axios from "axios";
 import {AXIOS_OPTION, SERVER_URL} from "../util/env";
 // import queryString from "query-string";
-import { Player, ControlBar } from "video-react";
+import { Player, ControlBar, VolumeMenuButton } from 'video-react';
 import "/node_modules/video-react/dist/video-react.css";
 import Hls from "hls.js";
 import EuraPlayer from "../util/EuraPlayer";
@@ -329,7 +329,7 @@ const AnalyseMeeting = () => {
                 if(res.data.result_code === 'SUCCESS'){
                     let _data = res.data.data;
                     console.log(_data);
-                    setLecture({..._data, is_host:0});
+                    setLecture(_data);
                     // console.log(res)
                     setMiddata(_data.mtAnalyMid ? [{longP:100, longM:-100},..._data.mtAnalyMid] : []);
                     setBtmdata(_data.mtData0 ? [{longP:100, longM:-100},..._data.mtData0] : []);
