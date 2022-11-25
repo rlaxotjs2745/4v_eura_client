@@ -116,8 +116,11 @@ const Profile = () => {
         }
     }, [image]);
 
+
     const profileEditSubmit = (data) => {
-        console.log(data.file)
+
+        const fileUpload = data.file && data.file.length > 0 ? data.file[0] : ''
+        console.log('파일 0번째는 뭘까', fileUpload)
         // axios.defaults.withCredentials = true;
         // console.log(data)
         // console.log(data.file[0])
@@ -125,7 +128,7 @@ const Profile = () => {
         // let formData = new FormData();
         // formData.append('file', data.file[0]);
         const formData = new FormData();
-        formData.append("file", data.file[0]);
+        formData.append("file", fileUpload);
 
         axios.post(SERVER_URL + '/modify_profile'
             , formData
@@ -140,7 +143,7 @@ const Profile = () => {
                 // navigate('/')
             } else if(res.data.result_code === 'SUCCESS02'){
                 console.log('======================', res.data.result_str);
-                window.location.reload();
+                // window.location.reload();
                 // alert(res.data.result_str)
             }
         }).catch(err => {
