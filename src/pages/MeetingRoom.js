@@ -192,7 +192,7 @@ const MeetingRoom = (props) => {
                                 }
                             </div>
                             <dl className="type__host">
-                                <dt>강의내용</dt>
+                                <dt>미팅내용</dt>
                                 <dd>{roomInfo.mt_info}</dd>
                             </dl>
                             <dl className="">
@@ -233,7 +233,7 @@ const MeetingRoom = (props) => {
                                         !roomInfo.mt_files || !roomInfo.mt_files.length ?
                                             <li>
                                                 <a>
-                                                   <span className="file__name">강의에 업로드 된 파일이 없습니다.</span>
+                                                   <span className="file__name">미팅에 업로드 된 파일이 없습니다.</span>
                                                 </a>
                                             </li>
                                         : roomInfo.mt_files.map(file => {

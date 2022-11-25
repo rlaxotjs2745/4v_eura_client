@@ -227,9 +227,9 @@ const Home = () => {
 
 
                 <div className="main__meetingroom">
-                    <h3><img src={require('../assets/image/ic_video.png')} alt=""/> 나의 미팅룸 <em>({  !meeting ||
+                    <h3><img src={require('../assets/image/ic_video.png')} alt=""/> 나의 미팅룸 <em>{  !meeting ||
                     !meeting.mt_meetMyList ||
-                    !meeting.mt_meetMyList.length ? 0 : meeting.mt_meetMyList.length})</em>
+                    !meeting.mt_meetMyList.length ? 0 : meeting.mt_meetMyList.length}</em>
                         <Link to="/newroom" className="btn btn__make"><img src={require('../assets/image/ic_plus.png')} alt=""/>새 미팅룸 만들기</Link>
                         <div className="sorting">
                             <select name="" id="meetSort" onChange={pageSort}>
@@ -270,7 +270,7 @@ const Home = () => {
                 </div>
 
                 <div className="main__history">
-                    <h3><img src="" alt=""/><img src={require('../assets/image/ic_last.png')} alt=""/> 지난 미팅 <em>({lastMeeting.mt_meetEndMyList ? lastMeeting.mt_meetEndMyList.length : 0})</em>
+                    <h3><img src="" alt=""/><img src={require('../assets/image/ic_last.png')} alt=""/> 지난 미팅 <em>{lastMeeting.mt_meetEndMyList ? lastMeeting.mt_meetEndMyList.length : 0}</em>
                         <div className="sorting">
                             <select name="" id="lastMeetSort" onChange={pageSort}>
                                 <option value="1">최신순</option>

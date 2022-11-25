@@ -407,7 +407,7 @@ const AnalyseMeeting = () => {
                                     {
                                         !lecture.mtMovieFiles || !lecture.mtMovieFiles.length ?
                                             <a>
-                                                <span className="file__name">강의에 업로드 된 파일이 없습니다.</span>
+                                                <span className="file__name">미팅에 업로드 된 파일이 없습니다.</span>
                                             </a>
                                             :
                                             lecture.mtMovieFiles.map(file => {
@@ -427,7 +427,7 @@ const AnalyseMeeting = () => {
                             {
                                 !lecture.mtAttachedFiles || !lecture.mtAttachedFiles.length ?
                                     <a>
-                                        <span className="file__name">강의에 업로드 된 파일이 없습니다.</span>
+                                        <span className="file__name">미팅에 업로드 된 파일이 없습니다.</span>
                                     </a>
                                     : lecture.mtAttachedFiles.map(file => {
                                         return (
