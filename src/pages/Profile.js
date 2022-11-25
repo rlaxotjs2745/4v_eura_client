@@ -129,26 +129,27 @@ const Profile = () => {
         // formData.append('file', data.file[0]);
         const formData = new FormData();
         formData.append("file", fileUpload);
-
-        axios.post(SERVER_URL + '/modify_profile'
-            , formData
-            , AXIOS_OPTION
-        ).then(res => {
-            // console.log(res)
-            // console.log('res.data.result_code :: ', res.data.result_code)
-            // console.log('res.data.msg :: ', res.data.result_str)
-            if(res.data.result_code === 'FAIL'){
-                console.log('======================',res.data.result_str);
-                alert(res.data.result_str)
-                // navigate('/')
-            } else if(res.data.result_code === 'SUCCESS02'){
-                console.log('======================', res.data.result_str);
-                // window.location.reload();
-                // alert(res.data.result_str)
-            }
-        }).catch(err => {
-            console.log(err);
-        });
+        if (data.file && data.file.length > 0) {
+            axios.post(SERVER_URL + '/modify_profile'
+                , formData
+                , AXIOS_OPTION
+            ).then(res => {
+                // console.log(res)
+                // console.log('res.data.result_code :: ', res.data.result_code)
+                // console.log('res.data.msg :: ', res.data.result_str)
+                if(res.data.result_code === 'FAIL'){
+                    console.log('======================',res.data.result_str);
+                    alert(res.data.result_str)
+                    // navigate('/')
+                } else if(res.data.result_code === 'SUCCESS02'){
+                    console.log('======================', res.data.result_str);
+                    // window.location.reload();
+                    // alert(res.data.result_str)
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+        }
     }
 
     const onError = (errors) => {
