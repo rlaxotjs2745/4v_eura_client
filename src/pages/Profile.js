@@ -116,8 +116,11 @@ const Profile = () => {
         }
     }, [image]);
 
+
     const profileEditSubmit = (data) => {
-        console.log(data.file)
+
+        const fileUpload = data.file && data.file.length > 0 ? data.file[0] : ''
+        console.log('파일 0번째는 뭘까', fileUpload)
         // axios.defaults.withCredentials = true;
         // console.log(data)
         // console.log(data.file[0])
@@ -125,27 +128,28 @@ const Profile = () => {
         // let formData = new FormData();
         // formData.append('file', data.file[0]);
         const formData = new FormData();
-        formData.append("file", data.file[0]);
-
-        axios.post(SERVER_URL + '/modify_profile'
-            , formData
-            , AXIOS_OPTION
-        ).then(res => {
-            // console.log(res)
-            // console.log('res.data.result_code :: ', res.data.result_code)
-            // console.log('res.data.msg :: ', res.data.result_str)
-            if(res.data.result_code === 'FAIL'){
-                console.log('======================',res.data.result_str);
-                alert(res.data.result_str)
-                // navigate('/')
-            } else if(res.data.result_code === 'SUCCESS02'){
-                console.log('======================', res.data.result_str);
-                window.location.reload();
-                // alert(res.data.result_str)
-            }
-        }).catch(err => {
-            console.log(err);
-        });
+        formData.append("file", fileUpload);
+        if (data.file && data.file.length > 0) {
+            axios.post(SERVER_URL + '/modify_profile'
+                , formData
+                , AXIOS_OPTION
+            ).then(res => {
+                // console.log(res)
+                // console.log('res.data.result_code :: ', res.data.result_code)
+                // console.log('res.data.msg :: ', res.data.result_str)
+                if(res.data.result_code === 'FAIL'){
+                    console.log('======================',res.data.result_str);
+                    alert(res.data.result_str)
+                    // navigate('/')
+                } else if(res.data.result_code === 'SUCCESS02'){
+                    console.log('======================', res.data.result_str);
+                    window.location.reload();
+                    // alert(res.data.result_str)
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+        }
     }
 
     const onError = (errors) => {

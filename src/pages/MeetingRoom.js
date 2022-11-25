@@ -29,6 +29,9 @@ const MeetingRoom = (props) => {
                     navigate(`/analyse/${pathSplit}`);
                 } else if (res.data.result_code === 'FAIL01') {
                     navigate(`/analyse/${pathSplit}`);
+                } else if (res.data.result_code === 'FAIL') {
+                    alert(`${res.data.result_str}`)
+                    navigate('/');
                 }
                 setRoomInfo(res.data.data);
             }).catch(res => console.log(res))

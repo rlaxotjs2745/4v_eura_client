@@ -164,7 +164,7 @@ const Home = () => {
 
     };
     async function getMainList() {
-        axios.get(SERVER_URL + '/meet/main/list', AXIOS_OPTION)
+        axios.get(SERVER_URL + `/meet/main/list?currentPage=1`, AXIOS_OPTION)
         .then(res => {
             setMeeting(res.data.data);
             return () => {

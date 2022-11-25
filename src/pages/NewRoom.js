@@ -482,8 +482,7 @@ const NewRoom = () => {
 
     const handleSubmit = () => {
         console.log('isNew ??', isNew)
-        console.log('selectValue은? ', selectValue)
-        console.log('remindBool은? ', remindBool)
+        console.log('Selected2? ', Selected2)
         if($('#make_new').val() == ''){
             return alert('미팅 이름을 입력해주세요.')
         }
@@ -493,6 +492,10 @@ const NewRoom = () => {
         }
 
         if(Selected1 < new Date().getHours() && startDate === new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3)){
+            return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
+        }
+
+        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes()){
             return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
         }
 
@@ -549,8 +552,8 @@ const NewRoom = () => {
                         alert('미팅룸을 생성했습니다.');
                         navigate('/');
                     }else{
-                        console.log(res.data)
-                        // alert(res.data.result_str);
+                        // console.log(res.data)
+                        alert(res.data.result_str);
                     }
                 }).catch(res => console.log(res))
         } else {
@@ -590,6 +593,10 @@ const NewRoom = () => {
         }
 
         if(Selected1 < new Date().getHours() && startDate === new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3)){
+            return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
+        }
+
+        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes()){
             return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
         }
 
