@@ -40,7 +40,7 @@ const AnalyseMeeting = () => {
     const [piedata, setPiedata] = useState([]);
     const [middata, setMiddata] = useState([]);
     const [oneUserData, setOneUserData] = useState([]);
-    const [oneUserLevel, setOneUserLevel] = useState([]);
+    const [oneUserLevel, setOneUserLevel] = useState({});
     const [oneUserBool, setOneUserBool] = useState(false);
     const [oneUserResult, setOneUserResult] = useState([]);
     const [oneUserResultab, setOneUserResultab] = useState({})
@@ -359,35 +359,37 @@ const AnalyseMeeting = () => {
     }, [])
 
     useEffect(() => {
-        console.log(oneUserLevel)
-    },[oneUserLevel])
+        console.log(oneUserResult)
+    },[oneUserResult])
 
 
 
     const clickUser = (idx) => {
-        axios.get(SERVER_URL + `/meet/result/mtinviteinfo?idx_meeting=${pathSplit}&idx_user=${idx}`, AXIOS_OPTION)
-            .then(res => {
-                console.log(res.data.data)
-                const mtData0 = res.data.data.mtData0;
-                const mtData1 = res.data.data.mtData1;
-                console.log(mtData0);
-                console.log(mtData1)
+        if(lecture.is_host){
+            axios.get(SERVER_URL + `/meet/result/mtinviteinfo?idx_meeting=${pathSplit}&idx_user=${idx}`, AXIOS_OPTION)
+                .then(res => {
+                    console.log(res.data.data)
+                    const mtData0 = res.data.data.mtData0;
+                    const mtData1 = res.data.data.mtData1;
+                    console.log(mtData0);
+                    console.log(mtData1)
 
-                setOneUserLevel([...oneUserLevel, {mtData0: [{longP:100, longM:-100}, ...mtData0.map(data => {
-                    if(data.bad > 0){
-                        return {...data, bad: data.bad * -1};
-                    }
-                    return data;
-                })], mtData1: [
-                            { name: "Good", value: mtData1.good },
-                            { name: "Bad", value: mtData1.bad },
-                            { name: "Camera Off", value: mtData1.off },
-                        ], mtData1ab: {...mtData1, bad: mtData1.bad * -1}
-                    }]
-                );
-                setOneUserData([...oneUserData, mtData1]);
-                setOneUserBool(true);
-            })
+                    setOneUserLevel ({mtData0: [{longP:100, longM:-100}, ...mtData0.map(data => {
+                        if(data.bad > 0){
+                            return {...data, bad: data.bad * -1};
+                        }
+                        return data;
+                    })], mtData1: [
+                                { name: "Good", value: mtData1.good },
+                                { name: "Bad", value: mtData1.bad },
+                                { name: "Camera Off", value: mtData1.off },
+                            ], mtData1ab: {...mtData1, bad: mtData1.bad * -1}
+                        }
+                    );
+                    setOneUserData([...oneUserData, mtData1]);
+                    setOneUserBool(true);
+                })
+        }
     }
 
 
@@ -446,7 +448,6 @@ const AnalyseMeeting = () => {
 
 
                     <div className="result__mov" title="영상자리 (860 x 407)">
-                        {/*<Player src={movieSrc} width={860} height={407}></Player>*/}
                         <Player>
                            <HLSSource isVideoChild src={movieSrc} />
                         </Player>
@@ -467,14 +468,10 @@ const AnalyseMeeting = () => {
                     }
                     {
                         oneUserBool && oneUserLevel ?
-                            oneUserLevel.map(data => {
-                                return (
                                     <>
-                                        <InviteMyAnalPieGraphCard oneUserResult={data.mtData1} oneUserResultab={data.mtData1ab} />
-                                        <OneUserBarGraph btmdata={data.mtData0} />
+                                        <InviteMyAnalPieGraphCard oneUserResult={oneUserLevel.mtData1} oneUserResultab={oneUserLevel.mtData1ab} />
+                                        <OneUserBarGraph btmdata={oneUserLevel.mtData0} />
                                     </>
-                                )
-                            })
                             :
                             null
                     }
