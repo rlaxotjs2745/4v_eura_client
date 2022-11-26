@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import $ from "jquery";
 import {Link, useNavigate, useLocation, json} from "react-router-dom";
 import axios from "axios";
@@ -10,6 +10,7 @@ import OneUserBarGraph from "../Components/Cards/OneUserBarGraph";
 import AnalysisUserList from "../Components/Cards/AnalysisUserList";
 import MeetingAnalysisPieGraph from "../Components/Cards/MeetingAnalysisPieGraph";
 import InviteMyAnalPieGraphCard from "../Components/Cards/InviteMyAnalPieGraphCard";
+import videojs from 'video.js';
 import HLSSource from "../Components/Cards/HLSSource";
 
 
@@ -25,7 +26,7 @@ const AnalyseMeeting = () => {
     const [oneUserBool, setOneUserBool] = useState(false);
     const [oneUserResult, setOneUserResult] = useState([]);
     const [oneUserResultab, setOneUserResultab] = useState({})
-    const [player, setPlayer] = useState({});
+    const player = useRef();
 
     const location = useLocation(); // 홈에서 넘겨준 스테이트 값
     const pathSplit = location.pathname.split('/')[2] // pathname /로 뜯어서 2번째값
@@ -304,6 +305,7 @@ const AnalyseMeeting = () => {
         //     },
         // ])
 
+
         axios.get(SERVER_URL + `/meet/result/meeting?idx_meeting=${pathSplit}`, AXIOS_OPTION)
             .then(res => {
                 if(res.data.result_code === 'SUCCESS'){
@@ -335,7 +337,281 @@ const AnalyseMeeting = () => {
             }).catch((error)=>{
             console.log(error);
         });
+
+        // 개인 집중도 그래프
+        setBtmdata([
+            {
+                name: "00:00:05",
+                Bad: -80,
+                Good: 0,
+                amt: 0
+            },
+            {
+                name: "00:00:10",
+                Bad: 0,
+                Good: 30,
+                amt: 0
+            },
+            {
+                name: "00:00:15",
+                Bad: -60,
+                Good: 0,
+                amt: 0
+            },
+            {
+                name: "00:00:20",
+                Bad: -50,
+                Good: 0,
+                amt: 0
+            },
+            {
+                name: "00:00:25",
+                Bad: 0,
+                Good: 60,
+                amt: 0
+            },
+            {
+                name: "00:00:30",
+                Bad: -30,
+                Good: 0,
+                amt: 0
+            },
+            {
+                name: "00:00:35",
+                Bad: 0,
+                Good: 80,
+                amt: 0
+            },
+            {
+                name: "00:00:05",
+                Bad: -80,
+                Good: 0,
+                amt: 0
+            },
+            {
+                name: "00:00:10",
+                Bad: 0,
+                Good: 30,
+                amt: 0
+            },
+            {
+                name: "00:00:15",
+                Bad: -60,
+                Good: 0,
+                amt: 0
+            },
+            {
+                name: "00:00:20",
+                Bad: -50,
+                Good: 0,
+                amt: 0
+            },
+            {
+                name: "00:00:25",
+                Bad: 0,
+                Good: 60,
+                amt: 0
+            },
+            {
+                name: "00:00:30",
+                Bad: -30,
+                Good: 0,
+                amt: 0
+            },
+            {
+                name: "00:00:35",
+                Bad: 0,
+                Good: 80,
+                amt: 0
+            }
+        ])
+        // 전체 집중도 원형그래프
+        setPiedata([
+            { name: "Good", value: 700 },
+            { name: "Bad", value: 200 },
+            { name: "Camera off", value: 100 },
+        ])
+        // 전체 집중도 그래프
+        setMiddata([
+            {
+                name: "00:00:05",
+                Bad: -80,
+                Good: 20,
+                amt: 0
+            },
+            {
+                name: "00:00:10",
+                Bad: -70,
+                Good: 30,
+                amt: 0
+            },
+            {
+                name: "00:00:15",
+                Bad: -60,
+                Good: 40,
+                amt: 0
+            },
+            {
+                name: "00:00:20",
+                Bad: -50,
+                Good: 50,
+                amt: 0
+            },
+            {
+                name: "00:00:25",
+                Bad: -40,
+                Good: 60,
+                amt: 0
+            },
+            {
+                name: "00:00:30",
+                Bad: -30,
+                Good: 70,
+                amt: 0
+            },
+            {
+                name: "00:00:35",
+                Bad: -20,
+                Good: 80,
+                amt: 0
+            },
+            {
+                name: "00:00:05",
+                Bad: -80,
+                Good: 20,
+                amt: 0
+            },
+            {
+                name: "00:00:10",
+                Bad: -70,
+                Good: 30,
+                amt: 0
+            },
+            {
+                name: "00:00:15",
+                Bad: -60,
+                Good: 40,
+                amt: 0
+            },
+            {
+                name: "00:00:20",
+                Bad: -50,
+                Good: 50,
+                amt: 0
+            },
+            {
+                name: "00:00:25",
+                Bad: -40,
+                Good: 60,
+                amt: 0
+            },
+            {
+                name: "00:00:30",
+                Bad: -30,
+                Good: 70,
+                amt: 0
+            },
+            {
+                name: "00:00:35",
+                Bad: -20,
+                Good: 80,
+                amt: 0
+            },
+            {
+                name: "00:00:05",
+                Bad: -80,
+                Good: 20,
+                amt: 0
+            },
+            {
+                name: "00:00:10",
+                Bad: -70,
+                Good: 30,
+                amt: 0
+            },
+            {
+                name: "00:00:15",
+                Bad: -60,
+                Good: 40,
+                amt: 0
+            },
+            {
+                name: "00:00:20",
+                Bad: -50,
+                Good: 50,
+                amt: 0
+            },
+            {
+                name: "00:00:25",
+                Bad: -40,
+                Good: 60,
+                amt: 0
+            },
+            {
+                name: "00:00:30",
+                Bad: -30,
+                Good: 70,
+                amt: 0
+            },
+            {
+                name: "00:00:35",
+                Bad: -20,
+                Good: 80,
+                amt: 0
+            },
+            {
+                name: "00:00:05",
+                Bad: -100,
+                Good: 0,
+                amt: 0
+            },
+            {
+                name: "00:00:10",
+                Bad: -70,
+                Good: 30,
+                amt: 0
+            },
+            {
+                name: "00:00:15",
+                Bad: -60,
+                Good: 40,
+                amt: 0
+            },
+            {
+                name: "00:00:20",
+                Bad: -50,
+                Good: 50,
+                amt: 0
+            },
+            {
+                name: "00:00:25",
+                Bad: -40,
+                Good: 60,
+                amt: 0
+            },
+            {
+                name: "00:00:30",
+                Bad: -30,
+                Good: 70,
+                amt: 0
+            },
+            {
+                name: "00:00:35",
+                Bad: -20,
+                Good: 80,
+                amt: 0
+            },
+        ])
     }, [])
+
+
+    // useEffect(() => {
+    //     // setInterval(() => console.log(player.current), 1000);
+    //     setInterval(() => console.log(player.current.manager.video.props.player.currentTime), 1000); // 영상 현재 시간
+    // },[player]);
+
+
+
 
 
 
@@ -420,7 +696,7 @@ const AnalyseMeeting = () => {
 
 
                     <div className="result__mov" title="영상자리 (860 x 407)">
-                        <Player>
+                        <Player ref={player}>
                            {/*<HLSSource isVideoChild src={movieSrc} />*/}
                             <source src="http://peach.themazzone.com/durian/movies/sintel-1024-surround.mp4" />
                             <ControlBar>
