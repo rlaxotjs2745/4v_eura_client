@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Bar, BarChart, ReferenceArea, ReferenceLine, ResponsiveContainer, Tooltip} from "recharts";
+import {Bar, BarChart, ReferenceArea, ReferenceLine, ResponsiveContainer, XAxis, Tooltip} from "recharts";
 
 
 const AllUserBarGraph = ({middata}) => {
@@ -13,7 +13,7 @@ const AllUserBarGraph = ({middata}) => {
                             <div><img src={require('../../assets/image/icon_smile.png')}/></div>
                             <div><img src={require('../../assets/image/icon_angry.png')}/></div>
                         </div>
-                        <ResponsiveContainer width="92%" height="90%">
+                        <ResponsiveContainer width="92%" height="100%">
                             <BarChart
                                 data={middata}
                                 stackOffset={"sign"}
@@ -26,6 +26,7 @@ const AllUserBarGraph = ({middata}) => {
                                 maxBarSize={100}
                                 baseValue={0}
                             >
+                                <XAxis dataKey="name" />
                                 <Tooltip
                                     separator={"  "}
                                     payload={[...middata.map(data => {

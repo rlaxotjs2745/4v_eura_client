@@ -12,8 +12,7 @@ import MeetingAnalysisPieGraph from "../Components/Cards/MeetingAnalysisPieGraph
 import InviteMyAnalPieGraphCard from "../Components/Cards/InviteMyAnalPieGraphCard";
 import videojs from 'video.js';
 import HLSSource from "../Components/Cards/HLSSource";
-
-
+import { browserName, isSafari } from "react-device-detect";
 
 const AnalyseMeeting = () => {
     const [movieSrc, setMovieSrc] = useState('');
@@ -327,10 +326,10 @@ const AnalyseMeeting = () => {
                         : []);
                     setOneUserResultab(_data.mtData1 ? _data.mtData1 : {});
 
-
-
                     let _mfile = _data.mtMovieFiles;
-                    if(_mfile.length>0){setMovieSrc(_mfile[0].fileUrl)};
+                    if(_mfile.length>0){
+                        isSafari ? setMovieSrc(_mfile[0].fileUrl) : setMovieSrc(_mfile[0].fileUrl2)
+                    }
                 }else{
                     alert(res.data.result_str)
                 }
@@ -339,269 +338,269 @@ const AnalyseMeeting = () => {
         });
 
         // 개인 집중도 그래프
-        setBtmdata([
-            {
-                name: "00:00:05",
-                Bad: -80,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:10",
-                Bad: 0,
-                Good: 30,
-                amt: 0
-            },
-            {
-                name: "00:00:15",
-                Bad: -60,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:20",
-                Bad: -50,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:25",
-                Bad: 0,
-                Good: 60,
-                amt: 0
-            },
-            {
-                name: "00:00:30",
-                Bad: -30,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:35",
-                Bad: 0,
-                Good: 80,
-                amt: 0
-            },
-            {
-                name: "00:00:05",
-                Bad: -80,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:10",
-                Bad: 0,
-                Good: 30,
-                amt: 0
-            },
-            {
-                name: "00:00:15",
-                Bad: -60,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:20",
-                Bad: -50,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:25",
-                Bad: 0,
-                Good: 60,
-                amt: 0
-            },
-            {
-                name: "00:00:30",
-                Bad: -30,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:35",
-                Bad: 0,
-                Good: 80,
-                amt: 0
-            }
-        ])
-        // 전체 집중도 원형그래프
-        setPiedata([
-            { name: "Good", value: 700 },
-            { name: "Bad", value: 200 },
-            { name: "Camera off", value: 100 },
-        ])
-        // 전체 집중도 그래프
-        setMiddata([
-            {
-                name: "00:00:05",
-                Bad: -80,
-                Good: 20,
-                amt: 0
-            },
-            {
-                name: "00:00:10",
-                Bad: -70,
-                Good: 30,
-                amt: 0
-            },
-            {
-                name: "00:00:15",
-                Bad: -60,
-                Good: 40,
-                amt: 0
-            },
-            {
-                name: "00:00:20",
-                Bad: -50,
-                Good: 50,
-                amt: 0
-            },
-            {
-                name: "00:00:25",
-                Bad: -40,
-                Good: 60,
-                amt: 0
-            },
-            {
-                name: "00:00:30",
-                Bad: -30,
-                Good: 70,
-                amt: 0
-            },
-            {
-                name: "00:00:35",
-                Bad: -20,
-                Good: 80,
-                amt: 0
-            },
-            {
-                name: "00:00:05",
-                Bad: -80,
-                Good: 20,
-                amt: 0
-            },
-            {
-                name: "00:00:10",
-                Bad: -70,
-                Good: 30,
-                amt: 0
-            },
-            {
-                name: "00:00:15",
-                Bad: -60,
-                Good: 40,
-                amt: 0
-            },
-            {
-                name: "00:00:20",
-                Bad: -50,
-                Good: 50,
-                amt: 0
-            },
-            {
-                name: "00:00:25",
-                Bad: -40,
-                Good: 60,
-                amt: 0
-            },
-            {
-                name: "00:00:30",
-                Bad: -30,
-                Good: 70,
-                amt: 0
-            },
-            {
-                name: "00:00:35",
-                Bad: -20,
-                Good: 80,
-                amt: 0
-            },
-            {
-                name: "00:00:05",
-                Bad: -80,
-                Good: 20,
-                amt: 0
-            },
-            {
-                name: "00:00:10",
-                Bad: -70,
-                Good: 30,
-                amt: 0
-            },
-            {
-                name: "00:00:15",
-                Bad: -60,
-                Good: 40,
-                amt: 0
-            },
-            {
-                name: "00:00:20",
-                Bad: -50,
-                Good: 50,
-                amt: 0
-            },
-            {
-                name: "00:00:25",
-                Bad: -40,
-                Good: 60,
-                amt: 0
-            },
-            {
-                name: "00:00:30",
-                Bad: -30,
-                Good: 70,
-                amt: 0
-            },
-            {
-                name: "00:00:35",
-                Bad: -20,
-                Good: 80,
-                amt: 0
-            },
-            {
-                name: "00:00:05",
-                Bad: -100,
-                Good: 0,
-                amt: 0
-            },
-            {
-                name: "00:00:10",
-                Bad: -70,
-                Good: 30,
-                amt: 0
-            },
-            {
-                name: "00:00:15",
-                Bad: -60,
-                Good: 40,
-                amt: 0
-            },
-            {
-                name: "00:00:20",
-                Bad: -50,
-                Good: 50,
-                amt: 0
-            },
-            {
-                name: "00:00:25",
-                Bad: -40,
-                Good: 60,
-                amt: 0
-            },
-            {
-                name: "00:00:30",
-                Bad: -30,
-                Good: 70,
-                amt: 0
-            },
-            {
-                name: "00:00:35",
-                Bad: -20,
-                Good: 80,
-                amt: 0
-            },
-        ])
+        // setBtmdata([
+        //     {
+        //         name: "00:00:05",
+        //         Bad: -80,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:10",
+        //         Bad: 0,
+        //         Good: 30,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:15",
+        //         Bad: -60,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:20",
+        //         Bad: -50,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:25",
+        //         Bad: 0,
+        //         Good: 60,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:30",
+        //         Bad: -30,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:35",
+        //         Bad: 0,
+        //         Good: 80,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:05",
+        //         Bad: -80,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:10",
+        //         Bad: 0,
+        //         Good: 30,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:15",
+        //         Bad: -60,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:20",
+        //         Bad: -50,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:25",
+        //         Bad: 0,
+        //         Good: 60,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:30",
+        //         Bad: -30,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:35",
+        //         Bad: 0,
+        //         Good: 80,
+        //         amt: 0
+        //     }
+        // ])
+        // // 전체 집중도 원형그래프
+        // setPiedata([
+        //     { name: "Good", value: 700 },
+        //     { name: "Bad", value: 200 },
+        //     { name: "Camera off", value: 100 },
+        // ])
+        // // 전체 집중도 그래프
+        // setMiddata([
+        //     {
+        //         name: "00:00:05",
+        //         Bad: -80,
+        //         Good: 20,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:10",
+        //         Bad: -70,
+        //         Good: 30,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:15",
+        //         Bad: -60,
+        //         Good: 40,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:20",
+        //         Bad: -50,
+        //         Good: 50,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:25",
+        //         Bad: -40,
+        //         Good: 60,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:30",
+        //         Bad: -30,
+        //         Good: 70,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:35",
+        //         Bad: -20,
+        //         Good: 80,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:05",
+        //         Bad: -80,
+        //         Good: 20,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:10",
+        //         Bad: -70,
+        //         Good: 30,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:15",
+        //         Bad: -60,
+        //         Good: 40,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:20",
+        //         Bad: -50,
+        //         Good: 50,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:25",
+        //         Bad: -40,
+        //         Good: 60,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:30",
+        //         Bad: -30,
+        //         Good: 70,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:35",
+        //         Bad: -20,
+        //         Good: 80,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:05",
+        //         Bad: -80,
+        //         Good: 20,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:10",
+        //         Bad: -70,
+        //         Good: 30,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:15",
+        //         Bad: -60,
+        //         Good: 40,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:20",
+        //         Bad: -50,
+        //         Good: 50,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:25",
+        //         Bad: -40,
+        //         Good: 60,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:30",
+        //         Bad: -30,
+        //         Good: 70,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:35",
+        //         Bad: -20,
+        //         Good: 80,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:05",
+        //         Bad: -100,
+        //         Good: 0,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:10",
+        //         Bad: -70,
+        //         Good: 30,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:15",
+        //         Bad: -60,
+        //         Good: 40,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:20",
+        //         Bad: -50,
+        //         Good: 50,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:25",
+        //         Bad: -40,
+        //         Good: 60,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:30",
+        //         Bad: -30,
+        //         Good: 70,
+        //         amt: 0
+        //     },
+        //     {
+        //         name: "00:00:35",
+        //         Bad: -20,
+        //         Good: 80,
+        //         amt: 0
+        //     },
+        // ])
     }, [])
 
 
@@ -609,10 +608,6 @@ const AnalyseMeeting = () => {
     //     // setInterval(() => console.log(player.current), 1000);
     //     setInterval(() => console.log(player.current.manager.video.props.player.currentTime), 1000); // 영상 현재 시간
     // },[player]);
-
-
-
-
 
 
     const clickUser = (idx) => {
@@ -696,15 +691,26 @@ const AnalyseMeeting = () => {
 
 
                     <div className="result__mov" title="영상자리 (860 x 407)">
+                    {
+                        isSafari ?
                         <Player ref={player}>
-                           {/*<HLSSource isVideoChild src={movieSrc} />*/}
-                            <source src="http://peach.themazzone.com/durian/movies/sintel-1024-surround.mp4" />
+                            <HLSSource isVideoChild src={movieSrc} />
+                            {/* <source src="http://peach.themazzone.com/durian/movies/sintel-1024-surround.mp4" /> */}
                             <ControlBar>
                                 <VolumeMenuButton disabled />
                                 <CurrentTimeDisplay disabled/>
                                 <DurationDisplay disabled/>
                             </ControlBar>
                         </Player>
+                                :
+                        <Player src={movieSrc}>
+                            <ControlBar>
+                                <VolumeMenuButton disabled />
+                                <CurrentTimeDisplay disabled/>
+                                <DurationDisplay disabled/>
+                            </ControlBar>
+                        </Player>
+                    }
                     </div>
 
                     {

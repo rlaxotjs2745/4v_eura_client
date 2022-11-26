@@ -4017,6 +4017,7 @@ html.js-overflow {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    margin-top: -33px;
 }
 
 .emotion__num {
@@ -4924,3 +4925,5 @@ input[type=date].under-scope, input[type=time].under-scope {cursor: pointer}
 .result__user.not_host {height: 485px}
 .result__user.not_host .result__watch {height:415px;}
 .result__user.not_host .result__user.summary {height:372px; margin-top: 15px;}
+
+.recharts-xAxis{font-size: 12px;}
