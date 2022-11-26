@@ -20,6 +20,7 @@ const Home = () => {
     const [curPage, setCurPage] = useState(1);
     const [curSort, setCurSort] = useState(1);
     const [curLastSort, setCurLastSort] = useState(1);
+    const [morePageBool, setMorePageBool] = useState(true);
 
     useEffect(() => {
         modalClose();
@@ -110,7 +111,6 @@ const Home = () => {
                                 newMeeting.push(cur);
                             }
                         }
-                        console.log(newMeeting);
                         setMeeting({...meeting, mt_meetMyList: newMeeting});
 
                         modalClose();
@@ -145,17 +145,13 @@ const Home = () => {
     const getMeetMore = () => {
         axios.get(SERVER_URL + `/meet/main/list?currentPage=${curPage+1}&pageSort=${curSort}`, AXIOS_OPTION)
             .then(res => {
-                console.log(res.data.data)
-                console.log(meeting)
+                if(!res.data || !res.data.data || !res.data.data.mt_meetMyList || res.data.data.mt_meetMyList.length === 0){
+                    setMorePageBool(false);
+                }
                 setMeeting({...meeting, mt_meetMyList: [...meeting.mt_meetMyList, ...res.data.data.mt_meetMyList]});
                 setCurPage(curPage+1);
             })
     }
-
-    useEffect(() => {
-        console.log(meeting);
-    },[meeting])
-
 
     async function getMain() {
         axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
@@ -180,7 +176,6 @@ const Home = () => {
     async function getMainEndList() {
         axios.get(SERVER_URL + '/meet/main/endlist', AXIOS_OPTION)
         .then(res => {
-            console.log(res.data.data)
             setLastMeeting(res.data.data);
             return () => {
                 console.log("cleanup3");
@@ -237,7 +232,7 @@ const Home = () => {
                     {
                         !meeting ||
                         !meeting.mt_meetMyList || meeting.mt_meetMyList.length === 0 ||
-                        meeting.mt_meetMyList.length % 8 != 0 ? '' :
+                        meeting.mt_meetMyList.length % 8 != 0 || !morePageBool ? '' :
                             <div className="btn__group">
                                 <button onClick={getMeetMore} className="btn btn__more">더 보기</button>
                             </div>

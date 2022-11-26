@@ -3,38 +3,19 @@ import $ from "jquery";
 import {Link, useNavigate, useLocation, json} from "react-router-dom";
 import axios from "axios";
 import {AXIOS_OPTION, SERVER_URL} from "../util/env";
-// import queryString from "query-string";
-import { Player, ControlBar, VolumeMenuButton } from 'video-react';
+import { Player, ControlBar, VolumeMenuButton, CurrentTimeDisplay, DurationDisplay } from 'video-react';
 import "/node_modules/video-react/dist/video-react.css";
-import Hls from "hls.js";
-import EuraPlayer from "../util/EuraPlayer";
-import {
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    Legend,
-    ReferenceLine,
-    ResponsiveContainer,
-    Pie,
-    PieChart, Cell
-} from 'recharts';
 import AllUserBarGraph from "../Components/Cards/AllUserBarGraph";
 import OneUserBarGraph from "../Components/Cards/OneUserBarGraph";
 import AnalysisUserList from "../Components/Cards/AnalysisUserList";
 import MeetingAnalysisPieGraph from "../Components/Cards/MeetingAnalysisPieGraph";
 import InviteMyAnalPieGraphCard from "../Components/Cards/InviteMyAnalPieGraphCard";
-import AnalysisTimeLine from "../Components/Cards/AnalysisTimeLine";
 import HLSSource from "../Components/Cards/HLSSource";
-import {getCookie} from "../util/cookie";
 
 
 
 const AnalyseMeeting = () => {
     const [movieSrc, setMovieSrc] = useState('');
-    const [playMovieNo, setPlayMovieNo] = useState(0);
     const [lecture, setLecture] = useState({});
     const [btmdata, setBtmdata] = useState([]);
     const [piedata, setPiedata] = useState([]);
@@ -44,11 +25,10 @@ const AnalyseMeeting = () => {
     const [oneUserBool, setOneUserBool] = useState(false);
     const [oneUserResult, setOneUserResult] = useState([]);
     const [oneUserResultab, setOneUserResultab] = useState({})
-    const [hls, setHls] = useState(new Hls());
+    const [player, setPlayer] = useState({});
 
     const location = useLocation(); // 홈에서 넘겨준 스테이트 값
     const pathSplit = location.pathname.split('/')[2] // pathname /로 뜯어서 2번째값
-    const user_cookie_id = getCookie('user_id');
 
 
     // const params = {idx_meeting:pathSplit};
@@ -328,7 +308,6 @@ const AnalyseMeeting = () => {
             .then(res => {
                 if(res.data.result_code === 'SUCCESS'){
                     let _data = res.data.data;
-                    console.log(_data);
                     setLecture(_data);
                     // console.log(res)
                     setMiddata(_data.mtAnalyMid ? [{longP:100, longM:-100},..._data.mtAnalyMid] : []);
@@ -343,7 +322,7 @@ const AnalyseMeeting = () => {
                         { name: "Bad", value: _data.mtData1.bad },
                         { name: "Camera Off", value: _data.mtData1.off },
                     ]
-                        : {});
+                        : []);
                     setOneUserResultab(_data.mtData1 ? _data.mtData1 : {});
 
 
@@ -358,21 +337,14 @@ const AnalyseMeeting = () => {
         });
     }, [])
 
-    useEffect(() => {
-        console.log(oneUserResult)
-    },[oneUserResult])
-
 
 
     const clickUser = (idx) => {
         if(lecture.is_host){
             axios.get(SERVER_URL + `/meet/result/mtinviteinfo?idx_meeting=${pathSplit}&idx_user=${idx}`, AXIOS_OPTION)
                 .then(res => {
-                    console.log(res.data.data)
                     const mtData0 = res.data.data.mtData0;
                     const mtData1 = res.data.data.mtData1;
-                    console.log(mtData0);
-                    console.log(mtData1)
 
                     setOneUserLevel ({mtData0: [{longP:100, longM:-100}, ...mtData0.map(data => {
                         if(data.bad > 0){
@@ -449,7 +421,13 @@ const AnalyseMeeting = () => {
 
                     <div className="result__mov" title="영상자리 (860 x 407)">
                         <Player>
-                           <HLSSource isVideoChild src={movieSrc} />
+                           {/*<HLSSource isVideoChild src={movieSrc} />*/}
+                            <source src="http://peach.themazzone.com/durian/movies/sintel-1024-surround.mp4" />
+                            <ControlBar>
+                                <VolumeMenuButton disabled />
+                                <CurrentTimeDisplay disabled/>
+                                <DurationDisplay disabled/>
+                            </ControlBar>
                         </Player>
                     </div>
 

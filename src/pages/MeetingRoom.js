@@ -13,7 +13,6 @@ const MeetingRoom = (props) => {
     const navigate = useNavigate();
     const { pathname } = useLocation();
     const pathSplit = Number(pathname.split('/')[2])
-    console.log(pathSplit)
 
     const [roomInfo, setRoomInfo] = useState('');
     const [invites, setInvites] = useState('');
@@ -46,9 +45,6 @@ const MeetingRoom = (props) => {
 
     }, [])
 
-    useEffect(() => {
-        console.log(roomInfo);
-    }, [roomInfo])
 
     const openModal = () => {
         // setModal(true);
@@ -84,7 +80,6 @@ const MeetingRoom = (props) => {
             '/meet/room/cancel', {idx_meeting:window.location.pathname.split('/')[window.location.pathname.split('/').length-1]},
             AXIOS_OPTION)
             .then(res => {
-                console.log(res)
                 if(res.data.result_code === 'SUCCESS'){
                     axios.get(SERVER_URL +
                         `/meet/room/info?idx_meeting=${pathSplit}`,
@@ -132,7 +127,6 @@ const MeetingRoom = (props) => {
             }
         })
         setInvites(res);
-        console.log(invites)
     }
 
     const startMeeting = () => {
