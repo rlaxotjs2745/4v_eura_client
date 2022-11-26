@@ -42,9 +42,10 @@ const Home = () => {
             endPoint = `/meet/main/list?pageSort=${e.target.value}`;
             resMtd = (res) => setMeeting(res);
         }
-        axios.get(SERVER_URL + endPoint + `&currentPage=${curPage}`, AXIOS_OPTION)
+        axios.get(SERVER_URL + endPoint + `&currentPage=1`, AXIOS_OPTION)
             .then(res => {
                 resMtd(res.data.data);
+                setCurPage(1);
                 if(e.target.id == 'lastMeetSort'){
                     setCurLastSort(e.target.value);
                 } else {
@@ -134,22 +135,26 @@ const Home = () => {
     }
 
     const mouseOver = () => {
-        console.log('over');
         setCurEvent(false);
     }
 
     const mouseOut = () => {
-        console.log('out')
         setCurEvent(true);
     }
 
     const getMeetMore = () => {
         axios.get(SERVER_URL + `/meet/main/list?currentPage=${curPage+1}&pageSort=${curSort}`, AXIOS_OPTION)
             .then(res => {
-                setMeeting({...meeting, mt_meetMyList: [...meeting.mt_meetMyList, res.data.data.mt_meetMyList]});
+                console.log(res.data.data)
+                console.log(meeting)
+                setMeeting({...meeting, mt_meetMyList: [...meeting.mt_meetMyList, ...res.data.data.mt_meetMyList]});
                 setCurPage(curPage+1);
             })
     }
+
+    useEffect(() => {
+        console.log(meeting);
+    },[meeting])
 
 
     async function getMain() {

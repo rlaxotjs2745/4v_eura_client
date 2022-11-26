@@ -16,7 +16,6 @@ const NewRoom = () => {
     const { pathname } = useLocation();
     const location = useLocation(); // navigate 에서 받은 스테이트값 넘겨받기위함. result_code FAIL01로 넘겨줌
 
-    console.log(location)
 
     const pathSplit = Number(pathname.split('/')[2])
 
@@ -332,7 +331,6 @@ const NewRoom = () => {
                 `/meet/invite?searchTxt=${csvOutput.toString().trim().replace(/\r\n/g, '$%&').split('$%&').slice(1).join(',')}`,
                 AXIOS_OPTION)
                 .then(res => {
-                    console.log(res);
                     setGroupSearchUser(res.data.data.mt_invites);
                 })
         }
