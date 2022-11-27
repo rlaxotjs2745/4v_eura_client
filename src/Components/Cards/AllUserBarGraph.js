@@ -6,6 +6,7 @@ const AllUserBarGraph = ({middata}) => {
 
     return (
         <div className="result__graph result_all_levels" title="그래프자리 (860 x 218)">
+            <div className="graph_on_seek"><div class="v-line"></div><div class="v-box"></div></div>
             {
                 !middata || !middata.length ?'':
                     <>

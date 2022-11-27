@@ -3,7 +3,7 @@ import $ from "jquery";
 import {Link, useNavigate, useLocation, json} from "react-router-dom";
 import axios from "axios";
 import {AXIOS_OPTION, SERVER_URL} from "../util/env";
-import { Player, ControlBar, VolumeMenuButton, CurrentTimeDisplay, DurationDisplay } from 'video-react';
+import { Player, ControlBar, VolumeMenuButton, CurrentTimeDisplay, DurationDisplay, BigPlayButton, TimeDivider, LoadingSpinner } from 'video-react';
 import "/node_modules/video-react/dist/video-react.css";
 import AllUserBarGraph from "../Components/Cards/AllUserBarGraph";
 import OneUserBarGraph from "../Components/Cards/OneUserBarGraph";
@@ -14,8 +14,9 @@ import videojs from 'video.js';
 import HLSSource from "../Components/Cards/HLSSource";
 import { browserName, isSafari } from "react-device-detect";
 
-const AnalyseMeeting = () => {
+const AnalyseMeeting = (props) => {
     const [movieSrc, setMovieSrc] = useState('');
+    const [moviefile, setMovieFile] = useState([]);
     const [lecture, setLecture] = useState({});
     const [btmdata, setBtmdata] = useState([]);
     const [piedata, setPiedata] = useState([]);
@@ -26,10 +27,27 @@ const AnalyseMeeting = () => {
     const [oneUserResult, setOneUserResult] = useState([]);
     const [oneUserResultab, setOneUserResultab] = useState({})
     const player = useRef();
+    const vLine = useRef();
 
     const location = useLocation(); // 홈에서 넘겨준 스테이트 값
     const pathSplit = location.pathname.split('/')[2] // pathname /로 뜯어서 2번째값
 
+    useEffect(() => {
+        player.current.subscribeToStateChange(handleStateChange.bind(this))
+    }, [player])
+  
+    useEffect(() => {
+        player.current.load()
+    }, [movieSrc])
+
+    const handleStateChange = (state, prev) => {
+        $(".v-line").css({left:$(".video-react-play-progress.video-react-slider-bar").width()})
+        $(".v-box").css({left:$(".video-react-play-progress.video-react-slider-bar").width()})
+    }
+
+    const thisPlayer = (_no) => {
+        setMovieSrc(moviefile[_no-1].fileUrl)
+    }
 
     // const params = {idx_meeting:pathSplit};
     // const AXIOS_OPTION_TEMP = {
@@ -328,6 +346,7 @@ const AnalyseMeeting = () => {
 
                     let _mfile = _data.mtMovieFiles;
                     if(_mfile.length>0){
+                        setMovieFile(_mfile)
                         isSafari ? setMovieSrc(_mfile[0].fileUrl) : setMovieSrc(_mfile[0].fileUrl2)
                     }
                 }else{
@@ -604,12 +623,6 @@ const AnalyseMeeting = () => {
     }, [])
 
 
-    // useEffect(() => {
-    //     // setInterval(() => console.log(player.current), 1000);
-    //     setInterval(() => console.log(player.current.manager.video.props.player.currentTime), 1000); // 영상 현재 시간
-    // },[player]);
-
-
     const clickUser = (idx) => {
         if(lecture.is_host){
             axios.get(SERVER_URL + `/meet/result/mtinviteinfo?idx_meeting=${pathSplit}&idx_user=${idx}`, AXIOS_OPTION)
@@ -634,7 +647,6 @@ const AnalyseMeeting = () => {
                 })
         }
     }
-
 
     return (
         <>
@@ -662,7 +674,7 @@ const AnalyseMeeting = () => {
                                             :
                                             lecture.mtMovieFiles.map(file => {
                                                 return (
-                                                    <a href="#" className="file__anchor" title={file.filename}><span>{file.fileNo}</span></a>
+                                                    <a href="#" onClick={() => thisPlayer(file.fileNo)} className="file__anchor" title={file.filename}><span>{file.fileNo}</span></a>
                                                 )
                                             })
                                     }
@@ -700,15 +712,21 @@ const AnalyseMeeting = () => {
                                 <VolumeMenuButton disabled />
                                 <CurrentTimeDisplay disabled/>
                                 <DurationDisplay disabled/>
+                                <TimeDivider disabled />
                             </ControlBar>
+                            <LoadingSpinner />
+                            <BigPlayButton position="center" />
                         </Player>
                                 :
-                        <Player src={movieSrc}>
+                        <Player ref={player} src={movieSrc}>
                             <ControlBar>
                                 <VolumeMenuButton disabled />
                                 <CurrentTimeDisplay disabled/>
                                 <DurationDisplay disabled/>
+                                <TimeDivider disabled />
                             </ControlBar>
+                            <LoadingSpinner />
+                            <BigPlayButton position="center" />
                         </Player>
                     }
                     </div>
