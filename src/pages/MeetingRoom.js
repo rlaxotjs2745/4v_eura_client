@@ -141,7 +141,7 @@ const MeetingRoom = (props) => {
                     const mcid = res.data.data.mcid;
                     const token = res.data.data.token;
                     window.location.href = `EuraEmotionService://mcid=${mcid},token=${token}`;
-                    window.location.reload();
+                    setTimeout(function(){window.location.reload();},5000);
                 }else{
                     alert(res.data.result_str);
                 }
