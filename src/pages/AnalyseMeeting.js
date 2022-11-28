@@ -16,6 +16,7 @@ import { browserName, isSafari } from "react-device-detect";
 const AnalyseMeeting = (props) => {
     const [movieSrc, setMovieSrc] = useState('');
     const [moviefile, setMovieFile] = useState([]);
+    const [movieNo, setMevieNo] = useState(1);
     const [lecture, setLecture] = useState({});
     const [btmdata, setBtmdata] = useState([]);
     const [piedata, setPiedata] = useState([]);
@@ -37,6 +38,7 @@ const AnalyseMeeting = (props) => {
   
     useEffect(() => {
         player.current.load()
+        _getMeetResult(pathSplit, movieNo)
     }, [movieSrc])
 
     const handleStateChange = (state, prev) => {
@@ -45,11 +47,28 @@ const AnalyseMeeting = (props) => {
     }
 
     const thisPlayer = (_no) => {
+        setMevieNo(_no)
         setMovieSrc(moviefile[_no-1].fileUrl)
     }
 
+    // 동영상 변경에 따른 그래프 변경
+    const _getMeetResult = (_idx, _no) => {
+        axios.get(SERVER_URL + `/meet/result/meeting?idx_meeting=`+_idx+`&fileno=`+_no, AXIOS_OPTION)
+            .then(res => {
+                if(res.data.result_code === 'SUCCESS'){
+                    let _data = res.data.data;
+                    setMiddata(_data.mtAnalyMid ? [{longP:100, longM:-100},..._data.mtAnalyMid] : []);
+                    setBtmdata(_data.mtData0 ? [{longP:100, longM:-100},..._data.mtData0] : []);
+                }else{
+                    alert(res.data.result_str)
+                }
+            }).catch((error)=>{
+            console.log(error);
+        });
+    }
+
     useEffect(() => {
-        axios.get(SERVER_URL + `/meet/result/meeting?idx_meeting=${pathSplit}`, AXIOS_OPTION)
+        axios.get(SERVER_URL + `/meet/result/meeting?idx_meeting=${pathSplit}&fileno=1`, AXIOS_OPTION)
             .then(res => {
                 if(res.data.result_code === 'SUCCESS'){
                     let _data = res.data.data;
