@@ -13,8 +13,6 @@ const AddMeetingUser = ({user, addUser}) => {
                     <em>{user.email}</em>
                 </span>
                 <div className="checkbox type__square">
-                    {/*<input type="checkbox" className="checkbox" name="user" />*/}
-                    {/*<label></label>*/}
                 </div>
             </div>
         </li>

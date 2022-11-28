@@ -40,26 +40,17 @@ const FindPW = () => {
     });
 
     const onError = (errors) => {
-        console.log(errors);
-        console.log('에러메세지 입니다. 제출 되지 않습니다.');
+        // console.log(errors);
     };
 
 
     const findIdSubmit = (data) => {
-        console.log(data)
         axios.post(SERVER_URL + '/pw_find_mail'
             , data, AXIOS_OPTION
         ).then(res => {
-            console.log(res)
-            console.log('res.data.userId :: ', res.data.result_code)
-            console.log('res.data.msg :: ', res.data.result_str)
             if(res.data.result_code === 'FAIL'){
-                console.log('======================',res.data.result_str);
-                // alert(res.data.result_str)
-                // alert(res.data.result_str)
                 setEmailMessage(res.data.result_str)
             } else if(res.data.result_code === 'SUCCESS'){
-                console.log('======================', res.data.result_str);
                 alert(res.data.result_str)
                 navigate('/login')
             }

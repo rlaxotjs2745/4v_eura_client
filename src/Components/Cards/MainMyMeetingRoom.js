@@ -18,7 +18,6 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
         navigate(`/reopen/${room.mt_idx}`)
     }
 
-    // console.log('피니쉬?', room.is_finish)
 
     return (
         <div
@@ -59,7 +58,6 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
                                     :
                                         room.mt_status === 2 ?
                                 ''
-                                // <div onClick={() => modalOpen(room)} onMouseOver={mouseOver} onMouseLeave={mouseOut} className="btn btn__setting">재개설 하기</div>
                             : ''
 
                         }

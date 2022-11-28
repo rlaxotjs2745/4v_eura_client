@@ -13,8 +13,6 @@ const Header = (props) => {
     const navigate = useNavigate();
 
     const logOut = () => {
-        // getCookie('user_id')
-        // console.log(getCookie('user_id'))
         removeCookie('user_id'); // 쿠키를 삭제
         document.cookie = 'user_id' + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=.eura.site;path=/;'; //임시 도메인 날리기 (서버에서 보내주는 쿠키 삭제용)
         navigate('/login'); // 로그인 페이지로 이동

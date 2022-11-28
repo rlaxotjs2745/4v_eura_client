@@ -30,11 +30,7 @@ const OneUserBarGraph = ({btmdata}) => {
                                 }}
                                 maxBarSize={50}
                             >
-                                {/*<CartesianGrid strokeDasharray="3 3" />*/}
-                                {/*<XAxis dataKey="name" />*/}
-                                {/*<YAxis />*/}
                                 <Tooltip />
-                                {/*<Legend />*/}
                                 <ReferenceLine y={0} stroke="#000" />
 
                                 <Bar dataKey="longP" fill="transparent" stackId="stack"/>

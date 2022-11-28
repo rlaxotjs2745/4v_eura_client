@@ -3839,6 +3839,9 @@ html.js-overflow {
 .result__dash dl dt.th__file {
     padding: 6px 0
 }
+.result__dash dl dt.th__file + dd {
+    padding:5px 0;
+}
 
 .result__dash dl dd {
     color: #17171a;

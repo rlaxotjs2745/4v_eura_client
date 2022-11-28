@@ -56,29 +56,6 @@ const NewRoom = () => {
 
     const [dtValidation, setDtValidation] = useState('')
 
-
-    // const dt = new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3)
-    // const dtPlusDefault = new Date() // 30분뒤로 세팅할 현재시간 기본 디폴트 값
-    // dtPlusDefault.setMinutes(dtPlusDefault.getMinutes() + 30); // dtPlusDefault 를 30분뒤로 설정 해줌.
-    // const hour = dt.getHours()
-    // const hour2 = dtPlusDefault.getHours(); // 30분 뒤의 현재 시간
-    // const min = dt.getMinutes(); // 현재 분
-    // const min_time = Math.floor(min/10) * 10 + 10 // 현재 시간에서 10분 뒤
-    // const min_time2_math = dtPlusDefault.getMinutes() // 현재 시간에서 30분 뒤를 가진 값을 가짐
-    // const min_time2 = Math.floor(min_time2_math/10) * 10 + 10 // 현재 시간에서 30분뒤의 10분 뒤
-
-
-    // const [Selected1, setSelected1] = useState(()=>{
-    //     if (min >= 50) { // 현재 시간 분이 50분 이상이면 10분 이상으로 00표시 되게 되어있으므로 시간을 1시간 플러스 해서 반환
-    //         return hour + 1
-    //     } else {
-    //         return hour
-    //     }
-    // });
-    // const [Selected2, setSelected2] = useState(`${min_time}`);
-    // const [Selected3, setSelected3] = useState(`${hour2}`);
-    // const [Selected4, setSelected4] = useState(`${min_time2}`);
-
     const [Selected1, setSelected1] = useState('00');
     const [Selected2, setSelected2] = useState('00');
     const [Selected3, setSelected3] = useState('00');
@@ -186,10 +163,8 @@ const NewRoom = () => {
         setSelected4(e.target.value);
     };
 
-    // const chosenFiles = Array.prototype.slice.call(e.target.files)
     useEffect(() => {
         if(pathname.indexOf('reopen')>-1){
-        // if(window.location.pathname.split('/')[window.location.pathname.split('/').length-2] === 'reopen'){
             setIsNew(2);
         }else if(pathname.indexOf('/newroom/')>-1){
             setIsNew(1);
@@ -201,9 +176,7 @@ const NewRoom = () => {
                 `/meet/room/info?idx_meeting=${pathSplit}`,
                 AXIOS_OPTION)
                 .then(res => {
-                    // console.log(res.data.data)
                     const room = res.data.data;
-                    console.log(room)
                     setTitle(room.mt_name);
                     setStartDate(room.mt_start_dt.split(' ')[0]);
                     setDt2(room.mt_start_dt.split(' ')[0]);
@@ -219,10 +192,6 @@ const NewRoom = () => {
                     setSelected2(room.mt_start_dt.split(' ')[1].split(':')[1])
                     setSelected3(room.mt_end_dt.split(' ')[1].split(':')[0])
                     setSelected4(room.mt_end_dt.split(' ')[1].split(':')[1])
-
-                    // if(room.mt_remind_type !== 0){
-                    //     setRemindBool(true);
-                    // } 기본으로 되풀이미팅 체크 기능 삭제
 
                     if(room.mt_remind_week !== null) {
                         setWeekday(room.mt_remind_week.split(','));
@@ -296,7 +265,6 @@ const NewRoom = () => {
 
     const handleFileDeleteEvent2 = (e) => {
         let uploaded = [...uploadedFilesPlus]
-        // console.log(uploaded)
         let indexNumber = e.target.parentNode.parentNode
         let i = 0;
         while( indexNumber = indexNumber.previousSibling ) {
@@ -441,7 +409,7 @@ const NewRoom = () => {
     }
 
     useEffect(()=> {
-        console.log(selectValue)
+        // console.log(selectValue)
     },[selectValue])
 
     const handleChange = (e) => {
@@ -483,8 +451,6 @@ const NewRoom = () => {
     }
 
     const handleSubmit = () => {
-        console.log('isNew ??', isNew)
-        console.log('Selected2? ', Selected2)
         if($('#make_new').val() == ''){
             return alert('미팅 이름을 입력해주세요.')
         }
@@ -555,7 +521,6 @@ const NewRoom = () => {
                         alert('미팅룸을 생성했습니다.');
                         navigate('/');
                     }else{
-                        // console.log(res.data)
                         alert(res.data.result_str);
                     }
                 }).catch(res => console.log(res))
@@ -568,7 +533,7 @@ const NewRoom = () => {
                 formData.append('invite_del', delUser);
             }
             for(let i of formData){
-                console.log(i);
+                // console.log(i);
             }
             axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_OPTION)
                 .then(res => {
@@ -669,16 +634,13 @@ const NewRoom = () => {
                 formData.append('invite_del', delUser);
             }
             for(let i of formData){
-                console.log(i);
+                // console.log(i);
             }
             axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_OPTION)
                 .then(res => {
                     if(res.data.result_code === 'SUCCESS'){
-                        console.log(res.data.result_code)
                         $('#popup__notice').addClass('is-on');
                         $('#shade2').addClass('is-on');
-                        // alert('미팅룸을 재개설했습니다.');
-                        // navigate('/');
                     }else{
                         alert(res.data.result_str);
                     }
@@ -708,14 +670,6 @@ const NewRoom = () => {
                 if(res.data.result_code === "SUCCESS"){
                     $('#popup__notice').removeClass('is-on');
                     $('#shade2').removeClass('is-on');
-
-                    // axios.put(SERVER_URL + 'meet/room/open', {"mt_status":1}, AXIOS_OPTION).then(res => {
-                    //     console.log(res.data)
-                    //     console.log('1 잘 보냈어요')
-                    // }).catch(errors => {
-                    //     console.log(errors)
-                    // })
-
                     alert('미팅룸을 공개하였습니다.');
                     navigate('/');
 
