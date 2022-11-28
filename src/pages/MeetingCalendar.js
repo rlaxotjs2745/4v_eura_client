@@ -24,10 +24,6 @@ const MeetingCalendar = () => {
             })
     }, [thisMonth, thisYear])
 
-    const getNow = (e) => {
-        console.log(e)
-    }
-
     useEffect(()=>{
         // console.log(clickedDay);
     }, [clickedDay]);
