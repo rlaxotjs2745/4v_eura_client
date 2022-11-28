@@ -1,4 +1,4 @@
-import {Bar, BarChart, ReferenceLine, ResponsiveContainer, Tooltip} from "recharts";
+import {Bar, BarChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis} from "recharts";
 import React from "react";
 
 
@@ -30,6 +30,7 @@ const OneUserBarGraph = ({btmdata}) => {
                                 }}
                                 maxBarSize={50}
                             >
+                                <XAxis dataKey="name" />
                                 <Tooltip />
                                 <ReferenceLine y={0} stroke="#000" />
 
