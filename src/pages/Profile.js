@@ -202,6 +202,7 @@ const Profile = () => {
 
     const logOut = () => {
         removeCookie('user_id'); // 쿠키를 삭제
+        document.cookie = 'user_id' + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=.eura.site;path=/;'; //임시 도메인 날리기 (서버에서 보내주는 쿠키 삭제용)
         navigate('/login'); // 로그인 페이지로 이동
     };
 
@@ -306,6 +307,9 @@ const Profile = () => {
     const viewProfile = () => {
 
     }
+    const errorsClear = () => {
+        setPasswordAlert('')
+    }
 
 
 
@@ -383,7 +387,7 @@ const Profile = () => {
                             <form onSubmit={handleSubmit(pwdEdit, onError)}>
                                 <div className="input__group">
                                     <label htmlFor="join_password">이전 비밀번호</label>
-                                    <input placeholder="현재 사용하고 있는 비밀번호를 입력해 주세요" type="password" name="user_pwd_origin" className="text" id="join_password" {...register('user_pwd_origin')}/>
+                                    <input placeholder="현재 사용하고 있는 비밀번호를 입력해 주세요" onKeyDown={errorsClear} type="password" name="user_pwd_origin" className="text" id="join_password" {...register('user_pwd_origin')}/>
                                     {errors.user_pwd_origin && <div className="error_tip">{errors.user_pwd_origin.message}</div>}
                                     {passwordAlert == '' ? null : <div className="error_tip">{passwordAlert}</div> }
                                 </div>
