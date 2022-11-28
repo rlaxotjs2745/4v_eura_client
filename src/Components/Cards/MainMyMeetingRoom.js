@@ -79,7 +79,7 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
                 <dl className="">
                     <dt>참여도 {room.mt_iData}%</dt>
                     <dd>
-                        <div className="graph"><span className="graph__gage" style={`width: ${room.mt_iData}%;`} ></span></div>
+                        <div className="graph"><span className="graph__gage" style={{width: room.mt_iData +"%"}}></span></div>
                     </dd>
                 </dl> : ''
             }
