@@ -17,6 +17,7 @@ const AnalyseMeeting = (props) => {
     const [movieSrc, setMovieSrc] = useState('');
     const [moviefile, setMovieFile] = useState([]);
     const [movieNo, setMevieNo] = useState(1);
+    // const [duration, setDuration] = useState(0);
     const [lecture, setLecture] = useState({});
     const [btmdata, setBtmdata] = useState([]);
     const [piedata, setPiedata] = useState([]);
@@ -31,17 +32,23 @@ const AnalyseMeeting = (props) => {
 
     const location = useLocation(); // 홈에서 넘겨준 스테이트 값
     const pathSplit = location.pathname.split('/')[2] // pathname /로 뜯어서 2번째값
+    let _mplay = false;
 
     useEffect(() => {
         player.current.subscribeToStateChange(handleStateChange.bind(this))
     }, [player])
   
     useEffect(() => {
+        _mplay = false;
         player.current.load()
-        _getMeetResult(pathSplit, movieNo)
     }, [movieSrc])
 
     const handleStateChange = (state, prev) => {
+        if(!_mplay && !!state.duration){
+            _mplay = true;
+            // setDuration(Math.ceil(state.duration))
+            _getMeetResult(pathSplit, movieNo, Math.ceil(state.duration))
+        }
         $(".v-line").css({left:$(".video-react-play-progress.video-react-slider-bar").width()})
         $(".v-box").css({left:$(".video-react-play-progress.video-react-slider-bar").width()})
     }
@@ -52,8 +59,8 @@ const AnalyseMeeting = (props) => {
     }
 
     // 동영상 변경에 따른 그래프 변경
-    const _getMeetResult = (_idx, _no) => {
-        axios.get(SERVER_URL + `/meet/result/meeting?idx_meeting=`+_idx+`&fileno=`+_no, AXIOS_OPTION)
+    const _getMeetResult = (_idx, _no, _duration) => {
+        axios.get(SERVER_URL + `/meet/result/meeting?idx_meeting=`+_idx+`&fileno=`+_no+`&duration=`+_duration, AXIOS_OPTION)
             .then(res => {
                 if(res.data.result_code === 'SUCCESS'){
                     let _data = res.data.data;
@@ -74,8 +81,8 @@ const AnalyseMeeting = (props) => {
                     let _data = res.data.data;
                     setLecture(_data);
                     // console.log(res)
-                    setMiddata(_data.mtAnalyMid ? [{longP:100, longM:-100},..._data.mtAnalyMid] : []);
-                    setBtmdata(_data.mtData0 ? [{longP:100, longM:-100},..._data.mtData0] : []);
+                    // setMiddata(_data.mtAnalyMid ? [{longP:100, longM:-100},..._data.mtAnalyMid] : []);
+                    // setBtmdata(_data.mtData0 ? [{longP:100, longM:-100},..._data.mtData0] : []);
                     setPiedata([
                         { name: "Good", value: _data.mtAnalyTop.good },
                         { name: "Bad", value: _data.mtAnalyTop.bad },
