@@ -31,6 +31,7 @@ const NewRoom = () => {
     const [remindBool, setRemindBool] = useState(false);
     const [remindShowBool, setRemindShowBool] = useState(true);
     const [weekday, setWeekday] = useState([]);
+    const [groupInvites, setGroupInvites] = useState([]);
 
     const [selectValue, setSelectValue] = useState(0);
     const [remindCount, setRemindCount] = useState(0);
@@ -299,15 +300,14 @@ const NewRoom = () => {
         setGroupFileName(chosenFile && chosenFile.name ? chosenFile.name : '이메일이 입력된 엑셀파일을 첨부해주세요.');
         fileReader.onload = (eve) => {
             const csvOutput = eve.target.result;
-            axios.get(SERVER_URL +
-                `/meet/invite?searchTxt=${csvOutput.toString().trim().replace(/\r\n/g, '$%&').split('$%&').slice(1).join(',')}`,
-                AXIOS_OPTION)
-                .then(res => {
-                    setGroupSearchUser(res.data.data.mt_invites);
-                })
+            setGroupInvites([...groupInvites, ...csvOutput.toString().trim().replace(/\r\n/g, '$%&').split('$%&').slice(1)]);
         }
 
         fileReader.readAsText(chosenFile);
+    }
+
+    const deleteGroupInvites = (inv) => {
+        setGroupInvites(groupInvites.filter(gInv => gInv != inv));
     }
 
     const excludeUser = (user, isSearch) => {
@@ -360,7 +360,7 @@ const NewRoom = () => {
     }
 
     const addSearchGroupUser = () => {
-        setInvites([...invites, ...groupSearchUser.filter(user => {
+        setGroupInvites(groupInvites.filter(user => {
             let result = true;
             invites.forEach(inv => {
                 if(inv.email === user.email){
@@ -368,7 +368,7 @@ const NewRoom = () => {
                 }
             })
             return result;
-        })]);
+        }));
         handleModal();
     }
 
@@ -493,7 +493,7 @@ const NewRoom = () => {
         formData.append('mt_start_dt',  `${startDate} ${Selected1}:${Selected2}:00`);
         formData.append('mt_end_dt',   `${startDate} ${Selected3}:${Selected4}:00`);
         formData.append('mt_info', meetingInfo);
-        formData.append('mt_invite_email', invites.map(inv => inv.email).join());
+        formData.append('mt_invite_email', [...invites.map(inv => inv.email), ...groupInvites].join());
         for (let i = 0; i < uploadedFiles.length; i++) {
             formData.append("file", uploadedFiles[i]);
         }
@@ -594,7 +594,7 @@ const NewRoom = () => {
         formData.append('mt_start_dt',  `${startDate} ${Selected1}:${Selected2}:00`);
         formData.append('mt_end_dt',   `${startDate} ${Selected3}:${Selected4}:00`);
         formData.append('mt_info', meetingInfo);
-        formData.append('mt_invite_email', invites.map(inv => inv.email).join());
+        formData.append('mt_invite_email', [...invites.map(inv => inv.email), ...groupInvites].join());
         for (let i = 0; i < uploadedFiles.length; i++) {
             formData.append("file", uploadedFiles[i]);
         }
@@ -990,10 +990,9 @@ const NewRoom = () => {
                             <div className="upload__list">
                                 <ul>
                                     {
-                                        !groupSearchUser || !groupSearchUser.length ? '' :
-                                            groupSearchUser.map(user => {
-                                                return <ModifyRoomUser user={user} isSearch={1} excludeUser={excludeUser}/>
-                                            })
+                                        groupInvites.map(inv => <li>{inv}<div className="btn btn__delete" onClick={() => deleteGroupInvites(inv)}>
+                                            <img src={require('../assets/image/ic_cancle-circle_18.png')} alt="삭제"/>
+                                        </div></li>)
                                     }
                                 </ul>
                             </div>

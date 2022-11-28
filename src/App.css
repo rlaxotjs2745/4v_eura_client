@@ -4786,8 +4786,10 @@ html.js-overflow {
 
 .pop__detail .popup__cnt .pop__body .upload__list ul li {
     float: left;
-    width: calc(50% - 15px);
-    margin: 6px 15px 6px 0
+    width: 100%;
+    padding: 6px 15px 6px 3px;
+    /*border-radius: 10px;*/
+    border: grey;
 }
 
 .pop__detail .popup__cnt .pop__body .upload__list ul li figure {
@@ -4821,7 +4823,6 @@ html.js-overflow {
 
 .pop__detail .popup__cnt .pop__body .upload__list ul li .btn__delete {
     float: right;
-    margin-top: 13px
 }
 
 .pop__detail .popup__cnt .pop__body .upload__list ul li .btn__delete img {
