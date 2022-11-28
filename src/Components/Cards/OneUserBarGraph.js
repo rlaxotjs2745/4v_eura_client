@@ -7,6 +7,10 @@ const OneUserBarGraph = ({btmdata}) => {
 
     return (
         <div className="result__analysis result_all_levels" title="분석그래프">
+            <div className="graph_on_seek">
+                <div className="v-line"></div>
+                <div className="v-box"></div>
+            </div>
             {
                 !btmdata || !btmdata.length ?'':
                     <>

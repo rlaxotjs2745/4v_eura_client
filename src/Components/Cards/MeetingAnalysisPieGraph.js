@@ -3,27 +3,15 @@ import React, {useEffect, useState} from "react";
 
 
 const MeetingAnalysisPieGraph = ({data}) => {
-    // const [good , setGood] = useState(100);
-    // const [bad, setBad] = useState(0);
-    // const [cameraOff, setCameraOff] = useState(0);
-    //
-    // useEffect(() => {
-    //     data.forEach(d => {
-    //         console.log(d.name);
-    //         if(d.name === 'Good'){
-    //             setGood(Math.round(d.value));
-    //         } else if(d.name === 'Bad'){
-    //             setBad(Math.round(d.value));
-    //         } else if(d.name === 'Camera off'){
-    //             setCameraOff(Math.round(d.value));
-    //         }
-    //     })
-    // },[])
 
-    const COLORS = ['#3377ff', '#ffc633', 'gray'];
+    const COLORS = [
+        '#3377ff',
+        '#ffc633',
+        // 'gray'
+    ];
 
     const RADIAN = Math.PI / 180;
-    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
         const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
         const x = cx + radius * Math.cos(-midAngle * RADIAN);
         const y = cy + radius * Math.sin(-midAngle * RADIAN);
@@ -65,8 +53,8 @@ const MeetingAnalysisPieGraph = ({data}) => {
                                 <div className="good_sum analysis_sum_category"><span>Good</span><span>{Math.round(d.value)}%</span></div>
                                 : d.name == 'Bad' ?
                                 <div className="bad_sum analysis_sum_category"><span>Bad</span><span>{Math.round(d.value)}%</span></div>
-                                : d.name == 'Camera off' ?
-                                <div className="camera_off_sum analysis_sum_category"><span>Camera Off</span><span>{Math.round(d.value)}%</span></div>
+                                // : d.name == 'Camera off' ?
+                                // <div className="camera_off_sum analysis_sum_category"><span>Camera Off</span><span>{Math.round(d.value)}%</span></div>
                                     : null
                         )
                     })

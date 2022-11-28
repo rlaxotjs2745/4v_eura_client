@@ -60,12 +60,12 @@ const AnalyseMeeting = (props) => {
                     setPiedata([
                         { name: "Good", value: _data.mtAnalyTop.good },
                         { name: "Bad", value: _data.mtAnalyTop.bad },
-                        { name: "Camera off", value: _data.mtAnalyTop.off },
+                        // { name: "Camera off", value: _data.mtAnalyTop.off },
                     ])
                     setOneUserResult(_data.mtData1 ? [
                         { name: "Good", value: _data.mtData1.good },
                         { name: "Bad", value: _data.mtData1.bad },
-                        { name: "Camera Off", value: _data.mtData1.off },
+                        // { name: "Camera Off", value: _data.mtData1.off },
                     ]
                         : []);
                     setOneUserResultab(_data.mtData1 ? _data.mtData1 : {});
@@ -350,28 +350,28 @@ const AnalyseMeeting = (props) => {
 
 
     const clickUser = (idx) => {
-        if(lecture.is_host){
-            axios.get(SERVER_URL + `/meet/result/mtinviteinfo?idx_meeting=${pathSplit}&idx_user=${idx}`, AXIOS_OPTION)
-                .then(res => {
-                    const mtData0 = res.data.data.mtData0;
-                    const mtData1 = res.data.data.mtData1;
-
-                    setOneUserLevel ({mtData0: [{longP:100, longM:-100}, ...mtData0.map(data => {
-                        if(data.bad > 0){
-                            return {...data, bad: data.bad * -1};
-                        }
-                        return data;
-                    })], mtData1: [
-                                { name: "Good", value: mtData1.good },
-                                { name: "Bad", value: mtData1.bad },
-                                { name: "Camera Off", value: mtData1.off },
-                            ], mtData1ab: {...mtData1, bad: mtData1.bad * -1}
-                        }
-                    );
-                    setOneUserData([...oneUserData, mtData1]);
-                    setOneUserBool(true);
-                })
-        }
+        // if(lecture.is_host){
+        //     axios.get(SERVER_URL + `/meet/result/mtinviteinfo?idx_meeting=${pathSplit}&idx_user=${idx}`, AXIOS_OPTION)
+        //         .then(res => {
+        //             const mtData0 = res.data.data.mtData0;
+        //             const mtData1 = res.data.data.mtData1;
+        //
+        //             setOneUserLevel ({mtData0: [{longP:100, longM:-100}, ...mtData0.map(data => {
+        //                 if(data.bad > 0){
+        //                     return {...data, bad: data.bad * -1};
+        //                 }
+        //                 return data;
+        //             })], mtData1: [
+        //                         { name: "Good", value: mtData1.good },
+        //                         { name: "Bad", value: mtData1.bad },
+        //                         // { name: "Camera Off", value: mtData1.off },
+        //                     ], mtData1ab: {...mtData1, bad: mtData1.bad * -1}
+        //                 }
+        //             );
+        //             setOneUserData([...oneUserData, mtData1]);
+        //             setOneUserBool(true);
+        //         })
+        // }
     }
 
     return (
@@ -470,15 +470,15 @@ const AnalyseMeeting = (props) => {
                         :
                         <OneUserBarGraph btmdata={btmdata} />
                     }
-                    {
-                        oneUserBool && oneUserLevel ?
-                                    <>
-                                        <InviteMyAnalPieGraphCard oneUserResult={oneUserLevel.mtData1} oneUserResultab={oneUserLevel.mtData1ab} />
-                                        <OneUserBarGraph btmdata={oneUserLevel.mtData0} />
-                                    </>
-                            :
-                            null
-                    }
+                    {/*{*/}
+                    {/*    oneUserBool && oneUserLevel ?*/}
+                    {/*                <>*/}
+                    {/*                    <InviteMyAnalPieGraphCard oneUserResult={oneUserLevel.mtData1} oneUserResultab={oneUserLevel.mtData1ab} />*/}
+                    {/*                    <OneUserBarGraph btmdata={oneUserLevel.mtData0} />*/}
+                    {/*                </>*/}
+                    {/*        :*/}
+                    {/*        null*/}
+                    {/*}*/}
                 </div>
             </section>
         </>

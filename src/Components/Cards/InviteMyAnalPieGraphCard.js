@@ -1,16 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    Legend,
-    ReferenceLine,
-    ResponsiveContainer,
-    Pie,
-    PieChart, Cell, Sector
+    Pie, PieChart, Cell, Sector
 } from 'recharts';
 
 const renderActiveShape = props => {
@@ -40,7 +30,11 @@ const renderActiveShape = props => {
 
 const InviteMyAnalPieGraphCard = ({oneUserResult, oneUserResultab}) => {
     const [initialState, setInitialState] = useState({activeIndex: 0});
-    const COLORS = ['#3377ff', '#ffc633', 'gray'];
+    const COLORS = [
+        '#3377ff',
+        '#ffc633',
+        // 'gray'
+    ];
 
             return (
                 <div className="result__one_user">
@@ -71,7 +65,7 @@ const InviteMyAnalPieGraphCard = ({oneUserResult, oneUserResultab}) => {
                             <div className="one_user_graph_sum_category_box">
                                 <div className="good_sum one_user_graph_sum_category"><span>Good</span><span>{oneUserResultab.good}%</span></div>
                                 <div className="bad_sum one_user_graph_sum_category"><span>Bad</span><span>{oneUserResultab.bad}%</span></div>
-                                <div className="camera_off_sum one_user_graph_sum_category"><span>Camera Off</span><span>{oneUserResultab.off}%</span></div>
+                                {/*<div className="camera_off_sum one_user_graph_sum_category"><span>Camera Off</span><span>{oneUserResultab.off}%</span></div>*/}
                             </div>
                         </div>
                     </div>

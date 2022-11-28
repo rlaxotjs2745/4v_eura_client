@@ -17,11 +17,11 @@ const AnalysisUserList = ({lecture, clickUser, isHost}) => {
                                         <button onClick={() => clickUser(member.idx)}>
                                             <figure><img src={member.upic?member.upic: require('../../assets/image/image_profile.png')} alt=""/></figure>
                                             <div className="watch__td"><span>{member.uname}</span><div>{member.uemail}</div></div>
-                                            {member.value > 60 ?
+                                            {/*{member.value > 60 ?*/}
                                                 <div className="watch__percent is-good">{Math.round(member.value)}%</div>
-                                                :
-                                                <div className="watch__percent is-bad">{Math.round(member.value)}%</div>
-                                            }
+                                            {/*    :*/}
+                                            {/*    <div className="watch__percent is-bad">{Math.round(member.value)}%</div>*/}
+                                            {/*}*/}
                                         </button>
                                     </li>
                                 )
