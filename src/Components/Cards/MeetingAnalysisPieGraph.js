@@ -3,22 +3,6 @@ import React, {useEffect, useState} from "react";
 
 
 const MeetingAnalysisPieGraph = ({data}) => {
-    // const [good , setGood] = useState(100);
-    // const [bad, setBad] = useState(0);
-    // const [cameraOff, setCameraOff] = useState(0);
-    //
-    // useEffect(() => {
-    //     data.forEach(d => {
-    //         console.log(d.name);
-    //         if(d.name === 'Good'){
-    //             setGood(Math.round(d.value));
-    //         } else if(d.name === 'Bad'){
-    //             setBad(Math.round(d.value));
-    //         } else if(d.name === 'Camera off'){
-    //             setCameraOff(Math.round(d.value));
-    //         }
-    //     })
-    // },[])
 
     const COLORS = ['#3377ff', '#ffc633', 'gray'];
 

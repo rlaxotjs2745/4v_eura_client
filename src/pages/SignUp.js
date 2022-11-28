@@ -50,7 +50,6 @@ const SignUp = () => {
     }
 
     const handleUserId = (e) => {
-        // console.log(e.target.value);
         setUserId(e.target.value);
         if (userId.length && userName.length && userPwd.length && userPwdChk.length && !($('.input__group').hasClass('is-alert'))) {
             setUserDisabled(true)
@@ -62,9 +61,7 @@ const SignUp = () => {
     const handleTerms = (e) => {
         if ($('#cb-1').val() === '1' && $('#cb-2').val() === '1') {
             setTermDisabled(false)
-            console.log('체크되있어요')
         } else {
-            console.log('체크 안되있어요')
             setTermDisabled(true)
         }
     }
@@ -84,7 +81,6 @@ const SignUp = () => {
             .string()
             .required('이름을 입력해주세요')
             .matches(
-                // /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/,
                 /^[가-힣]{2,7}|[a-zA-Z]{2,10}\s[a-zA-Z]{2,10}|[a-zA-Z]{2,30}$/,
                 '한글, 영어, 숫자만 사용가능합니다.'
             ),
@@ -92,7 +88,6 @@ const SignUp = () => {
         user_id: yup
             .string()
             .required('이메일을 입력해주세요')
-            // .email('이메일 형식이 아닙니다.'),
             .matches(
                 /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
 
@@ -103,7 +98,6 @@ const SignUp = () => {
             .string()
             .required('영문, 숫자, 특수문자 포함 10자리를 입력해주세요.')
             .min(10, '10자 이상의 비밀번호만 사용할 수 있습니다')
-            // .max(15, '최대 15자 까지만 가능합니다')
             .matches(
                 /(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{10,20}$/,
                 '영어, 숫자, 특수문자로 조합된 비밀번호만 사용가능합니다.'
@@ -120,42 +114,22 @@ const SignUp = () => {
                 {excludeEmptyString:true, message:'형식에 맞게 입력해주세요. 예) 01012345678'}
             )
             .nullable(),
-            // .nullable(true)
-            // .transform((_, val) => val === Number(val) ? val : null),
-            // .matches(
-            //     /^\d{3}\d{3,4}\d{4}$/,
-            //     '형식에 맞게 입력해주세요. 예) 01012345678'
-            // ),
-
         privacy_terms:yup
             .number()
             .required('개인정보 처리방침에 동의하셔야 합니다.'),
-            // .oneOf(["1"], '개인정보 처리방침에 동의하셔야 합니다.'),
         service_use_terms:yup
             .number()
             .required('서비스 이용약관에 동의하셔야 합니다.'),
-            // .oneOf(["1"], '서비스 이용약관에 동의하셔야 합니다.'),
         file:yup
             .mixed(),
-            // .test("fileSize", "The file is too large", function(value) {
-            //     console.log('*', value)
-            //     return false
-            // })
-            // .test("fileSize", "The file is too large", (value) => {
-            //     return value && value[0].size < 2000000
-            // })
-            // .test("type", "이미지 파일만 업로드가 가능합니다.", (value) => {
-            //     return value && value[0].type === ("image/png" || "image/jpg" || "image/jpeg")
-            // })
+
         eq_type01:yup
             .number()
             .typeError()
             .nullable(),
-            // .transform((_, val) => val === Number(val) ? val : null),
         eq_type02:yup
             .number()
             .nullable(),
-            // .transform((_, val) => val === Number(val) ? val : null),
 
     });
     const {
@@ -189,9 +163,6 @@ const SignUp = () => {
     const navigate = useNavigate();
 
     const onSubmit = (data) => {
-        // e.preventDefault();
-        console.log(data.privacy_terms)
-        console.log(data.service_use_terms)
         let formData = new FormData();
         formData.append('file', data.file[0]);
         formData.append('user_name', data.user_name)
@@ -208,27 +179,18 @@ const SignUp = () => {
         }
         formData.append('privacy_terms', data.privacy_terms)
         formData.append('service_use_terms', data.service_use_terms)
-        console.log(data.user_phone)
-        console.log(data.eq_type01)
-        console.log(data.eq_type02)
-        console.log(formData)
+
         axios.post(SERVER_URL + '/join_mail'
             , formData
             , AXIOS_OPTION
         ).then(res => {
-            console.log(res)
-            console.log('res.data.userId :: ', res.data.result_code)
-            console.log('res.data.msg :: ', res.data.result_str)
             if(res.data.result_code === 'FAIL'){
-                console.log('======================',res.data.result_str);
                 alert(res.data.result_str)
                 navigate('/')
             } else if(res.data.result_code === 'SUCCESS'){
-                console.log('======================', res.data.result_str);
                 alert(res.data.result_str)
                 $('#signUpForm').addClass('off');
                 $('#sign_up_complete').addClass('on');
-                // navigate('/signup_complete')
             }
         }).catch(err => {
             console.log(err);
@@ -236,8 +198,7 @@ const SignUp = () => {
     }
 
     const onError = (errors) => {
-        console.log(errors);
-        console.log('에러메세지 입니다. 제출 되지 않습니다.');
+        // console.log(errors);
     };
 
     const Sign1Open = (e) => {
@@ -294,8 +255,6 @@ const SignUp = () => {
             $('#step3').removeClass('active')
             $('#step4').addClass('active')
         }
-        console.log(cb1.val())
-        console.log(cb2.val(), '2번째')
 
     }
 
@@ -323,18 +282,12 @@ const SignUp = () => {
     const reMailSubmit = (data) => {
         let formData = new FormData();
         formData.append('user_id', data.user_id)
-        console.log(data.user_id)
         axios.post(SERVER_URL + '/remail_join'
             , data
         ).then(res => {
-            console.log(res)
-            console.log('res.data.userId :: ', res.data.result_code)
-            console.log('res.data.msg :: ', res.data.result_str)
             if(res.data.result_code === 'FAIL'){
-                console.log('======================',res.data.result_str);
                 alert(res.data.result_str)
             } else if(res.data.result_code === 'SUCCESS'){
-                console.log('======================', res.data.result_str);
                 alert(res.data.result_str)
             }
         }).catch(err => {

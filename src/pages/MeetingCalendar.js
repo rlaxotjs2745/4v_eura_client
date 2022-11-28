@@ -29,7 +29,7 @@ const MeetingCalendar = () => {
     }
 
     useEffect(()=>{
-        console.log(clickedDay);
+        // console.log(clickedDay);
     }, [clickedDay]);
 
 
@@ -77,7 +77,7 @@ const MeetingCalendar = () => {
     })
 
     const setYearMonth = (date) => {
-        console.log(date)
+        // console.log(date)
         setThisYear(date.getFullYear());
         setThisMonth(date.getMonth()+1);
     }

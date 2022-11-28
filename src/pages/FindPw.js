@@ -55,8 +55,6 @@ const FindPW = () => {
             console.log('res.data.msg :: ', res.data.result_str)
             if(res.data.result_code === 'FAIL'){
                 console.log('======================',res.data.result_str);
-                // alert(res.data.result_str)
-                // alert(res.data.result_str)
                 setEmailMessage(res.data.result_str)
             } else if(res.data.result_code === 'SUCCESS'){
                 console.log('======================', res.data.result_str);

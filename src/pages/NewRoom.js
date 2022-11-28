@@ -56,29 +56,6 @@ const NewRoom = () => {
 
     const [dtValidation, setDtValidation] = useState('')
 
-
-    // const dt = new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3)
-    // const dtPlusDefault = new Date() // 30분뒤로 세팅할 현재시간 기본 디폴트 값
-    // dtPlusDefault.setMinutes(dtPlusDefault.getMinutes() + 30); // dtPlusDefault 를 30분뒤로 설정 해줌.
-    // const hour = dt.getHours()
-    // const hour2 = dtPlusDefault.getHours(); // 30분 뒤의 현재 시간
-    // const min = dt.getMinutes(); // 현재 분
-    // const min_time = Math.floor(min/10) * 10 + 10 // 현재 시간에서 10분 뒤
-    // const min_time2_math = dtPlusDefault.getMinutes() // 현재 시간에서 30분 뒤를 가진 값을 가짐
-    // const min_time2 = Math.floor(min_time2_math/10) * 10 + 10 // 현재 시간에서 30분뒤의 10분 뒤
-
-
-    // const [Selected1, setSelected1] = useState(()=>{
-    //     if (min >= 50) { // 현재 시간 분이 50분 이상이면 10분 이상으로 00표시 되게 되어있으므로 시간을 1시간 플러스 해서 반환
-    //         return hour + 1
-    //     } else {
-    //         return hour
-    //     }
-    // });
-    // const [Selected2, setSelected2] = useState(`${min_time}`);
-    // const [Selected3, setSelected3] = useState(`${hour2}`);
-    // const [Selected4, setSelected4] = useState(`${min_time2}`);
-
     const [Selected1, setSelected1] = useState('00');
     const [Selected2, setSelected2] = useState('00');
     const [Selected3, setSelected3] = useState('00');
@@ -186,10 +163,8 @@ const NewRoom = () => {
         setSelected4(e.target.value);
     };
 
-    // const chosenFiles = Array.prototype.slice.call(e.target.files)
     useEffect(() => {
         if(pathname.indexOf('reopen')>-1){
-        // if(window.location.pathname.split('/')[window.location.pathname.split('/').length-2] === 'reopen'){
             setIsNew(2);
         }else if(pathname.indexOf('/newroom/')>-1){
             setIsNew(1);
@@ -201,9 +176,8 @@ const NewRoom = () => {
                 `/meet/room/info?idx_meeting=${pathSplit}`,
                 AXIOS_OPTION)
                 .then(res => {
-                    // console.log(res.data.data)
                     const room = res.data.data;
-                    console.log(room)
+                    // console.log(room)
                     setTitle(room.mt_name);
                     setStartDate(room.mt_start_dt.split(' ')[0]);
                     setDt2(room.mt_start_dt.split(' ')[0]);

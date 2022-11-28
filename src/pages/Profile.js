@@ -8,7 +8,6 @@ import axios from 'axios';
 import {useCookies} from "react-cookie";
 import {SERVER_URL2, AXIOS_OPTION, SERVER_URL, AXIOS_FORM_DATA_OPTION} from "../util/env";
 import {setCookie, getCookie} from "../util/cookie";
-import queryString from 'query-string'
 import $ from "jquery";
 
 const Profile = () => {
@@ -34,24 +33,11 @@ const Profile = () => {
     const eq_type_01_val = String(eqType01)
     const eq_type_02_val = String(eqType02)
 
-    console.log('eq_type_01_val', eq_type_01_val)
-    console.log('eq_type_02_val', eq_type_02_val)
-
-
-
-    // useEffect(() => {
-    //     setValue("eq_type01", eq_type01);
-    // }, []);
-
     const formSchema = yup.object({
         user_pwd_origin:yup
             .string(),
-            // .required('현재 사용하고 있는 비밀번호를 입력해주세요.'),
         password:yup
             .string()
-            // .required('새롭게 사용할 비밀번호를 입력해주세요.')
-            // .min(10, '10자 이상의 비밀번호만 사용할 수 있습니다')
-            // .max(15, '최대 15자 까지만 가능합니다')
             .matches(
                 /(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{10,20}$/,
                 {excludeEmptyString:true, message:'영어, 숫자, 특수문자로 조합된 10자리 이상 비밀번호만 사용가능합니다.'}
@@ -67,9 +53,7 @@ const Profile = () => {
             .string()
             // .required('새롭게 사용할 비밀번호를 확인해주세요.')
             .oneOf([yup.ref('password')], '비밀번호가 동일하지 않습니다.'),
-        // user_id:yup
-        //     .string()
-        //     .nullable(),
+
         user_name:yup
             .string()
             .nullable(),
@@ -98,8 +82,6 @@ const Profile = () => {
         resolver: yupResolver(formSchema),
         defaultValues: { // 초기값 설정
             user_id: user_id,
-            // user_name: userName,
-            // user_phone: userPhone,
             eq_type01 : 0,
             eq_type02 : 0
         }
@@ -120,13 +102,7 @@ const Profile = () => {
     const profileEditSubmit = (data) => {
 
         const fileUpload = data.file && data.file.length > 0 ? data.file[0] : ''
-        console.log('파일 0번째는 뭘까', fileUpload)
-        // axios.defaults.withCredentials = true;
-        // console.log(data)
-        // console.log(data.file[0])
-        // // console.log(data.file[0])
-        // let formData = new FormData();
-        // formData.append('file', data.file[0]);
+
         const formData = new FormData();
         formData.append("file", fileUpload);
         if (data.file && data.file.length > 0) {
@@ -134,17 +110,10 @@ const Profile = () => {
                 , formData
                 , AXIOS_OPTION
             ).then(res => {
-                // console.log(res)
-                // console.log('res.data.result_code :: ', res.data.result_code)
-                // console.log('res.data.msg :: ', res.data.result_str)
                 if(res.data.result_code === 'FAIL'){
-                    console.log('======================',res.data.result_str);
                     alert(res.data.result_str)
-                    // navigate('/')
                 } else if(res.data.result_code === 'SUCCESS02'){
-                    console.log('======================', res.data.result_str);
                     window.location.reload();
-                    // alert(res.data.result_str)
                 }
             }).catch(err => {
                 console.log(err);
@@ -153,14 +122,9 @@ const Profile = () => {
     }
 
     const onError = (errors) => {
-        console.log(errors);
-        console.log('에러메세지 입니다. 제출 되지 않습니다.');
+        // console.log(errors);
+        // console.log('에러메세지 입니다. 제출 되지 않습니다.');
     };
-
-    // const profileImgCancle = () => {
-    //     setNameVisible(!nameVisible)
-    //     setValue('user_name', userName)
-    // }
 
     const profileCancle = () => {
         setNameVisible(!nameVisible)
@@ -175,11 +139,9 @@ const Profile = () => {
 
 
     const nameEdit = (data) => {
-        console.log(data.user_name)
         axios.post(SERVER_URL + '/modify_myinfo', {
             user_name : data.user_name
         }, AXIOS_OPTION).then(res => {
-            console.log(res.data)
             window.location.reload();
         }).catch(err => {
             console.log(err);
@@ -187,11 +149,9 @@ const Profile = () => {
     }
 
     const phoneEdit = (data) => {
-        console.log(data.user_phone)
         axios.post(SERVER_URL + '/modify_myinfo', {
             user_phone : data.user_phone
         }, AXIOS_OPTION).then(res => {
-            console.log(res.data)
             window.location.reload();
         }).catch(err => {
             console.log(err);
@@ -207,17 +167,13 @@ const Profile = () => {
     };
 
     const pwdEdit = (data) => {
-        console.log(data.user_pwd_origin)
-        console.log(data.user_pwd)
         axios.post(SERVER_URL + '/modify_myinfo', {
             'user_pwd_origin' : data.user_pwd_origin,
             'user_pwd' : data.user_pwd
         }, AXIOS_OPTION).then(res => {
-            console.log(res.data)
             if(res.data.result_code === 'SUCCESS') {
                 alert('비밀번호가 성공적으로 변경 되었습니다. 다시 로그인 해 주세요.')
                 logOut()
-                // navigate('/login')
             } else if (res.data.result_code === 'FAIL') {
                 setPasswordAlert(res.data.result_str)
             }
@@ -227,13 +183,10 @@ const Profile = () => {
     }
 
     const eqEdit = (data) => {
-        console.log(data.eq_type01)
-        console.log(data.eq_type02)
         axios.post(SERVER_URL + '/modify_myinfo', {
             'eq_type01' : data.eq_type01,
             'eq_type02' : data.eq_type02
         }, AXIOS_OPTION).then(res => {
-            console.log(res.data)
             window.location.reload();
         }).catch(err => {
             console.log(err);
@@ -243,7 +196,6 @@ const Profile = () => {
     useEffect(()=>{
         setValue('eq_type01', eq_type_01_val)
         setValue('eq_type02', eq_type_02_val)
-        // setValue('file', imagePreview)
     },[eqType01, eqType02])
 
     const profileEditCancle = () => {
@@ -263,7 +215,6 @@ const Profile = () => {
         setValue('password', '')
         setValue('user_pwd', '')
         clearErrors()
-        // window.location.reload();
     }
 
     const nameOpen = () => {
@@ -278,11 +229,6 @@ const Profile = () => {
 
     async function getMyinfo() {
         axios.post(SERVER_URL + '/myinfo', {}, AXIOS_OPTION).then(res => {
-            console.log(res.data.data)
-            console.log('user_pic은', res.data.data.user_pic.length)
-            // console.log(res.data)
-            // console.log(res.data.data.eq_type01)
-            // console.log(res.data.data.eq_type02)
             if(res.data.result_code === 'SUCCESS'){
                 setUserName(res.data.data.user_name)
                 setUserPhone(res.data.data.user_phone)
