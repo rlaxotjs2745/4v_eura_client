@@ -493,7 +493,8 @@ const NewRoom = () => {
             return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
         }
 
-        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes()){
+        // 오늘 날짜와 같고, 현재시간이랑 같거나 낮고, 현재 분 보다 낮을때
+        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3)){
             return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
         }
 
@@ -594,7 +595,8 @@ const NewRoom = () => {
             return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
         }
 
-        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes()){
+        // 오늘 날짜와 같고, 현재시간이랑 같거나 낮고, 현재 분 보다 낮을때
+        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3)){
             return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
         }
 
