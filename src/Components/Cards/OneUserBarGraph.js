@@ -12,15 +12,15 @@ const OneUserBarGraph = ({btmdata}) => {
                 <div className="v-box"></div>
             </div>
             {
-                !btmdata || !btmdata.length ?'':
+                // !btmdata || !btmdata.length ?'':
                     <>
-                        <div className="emotion__wraper emotion_num_box">
-                            <div className="emotion__num">1</div>
-                            <div className="emotion__num">0</div>
+                        <div className="emotion__wraper">
+                            <div><img src={require('../../assets/image/icon_smile.png')}/></div>
+                            <div><img src={require('../../assets/image/icon_angry.png')}/></div>
                         </div>
-                        <ResponsiveContainer width="100%" height="80%">
+                        <ResponsiveContainer width="92%" height="80%">
                             <BarChart
-                                data={btmdata}
+                                // data={btmdata}
                                 stackOffset="sign"
                                 margin={{
                                     top: 5,
