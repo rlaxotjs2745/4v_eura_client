@@ -4963,5 +4963,5 @@ input[type=date].under-scope, input[type=time].under-scope {cursor: pointer}
     border-right: 10px solid transparent;
 }
 
-.eura_down_link {display: flex; margin-top: -30px; margin-bottom:20px; justify-content: end; align-items: center; color: #8A8C99;}
+.eura_down_link {display: flex; margin-top: -30px; margin-bottom:17px; justify-content: end; align-items: center; color: #8A8C99;}
 .eura_down_link a {border-radius: 8px; background: #8A8C99; color:#fff; padding:5px 12px; margin-left:10px; font-weight: 600}
