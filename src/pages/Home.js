@@ -18,9 +18,11 @@ const Home = () => {
     const [curEvent, setCurEvent] = useState(true);
     const [eventNow, setEventNow] = useState(0);
     const [curPage, setCurPage] = useState(1);
+    const [curLastPage, setCurLastPage] = useState(1);
     const [curSort, setCurSort] = useState(1);
     const [curLastSort, setCurLastSort] = useState(1);
     const [morePageBool, setMorePageBool] = useState(true);
+    const [moreLastPageBool, setMoreLastPageBool] = useState(true);
 
     useEffect(() => {
         modalClose();
@@ -31,7 +33,7 @@ const Home = () => {
 
     useEffect(() => {
         getMain();
-    }, [meeting])
+    }, [])
 
     const pageSort = (e) => {
         let endPoint;
@@ -142,15 +144,26 @@ const Home = () => {
         setCurEvent(true);
     }
 
-    const getMeetMore = () => {
-        axios.get(SERVER_URL + `/meet/main/list?currentPage=${curPage+1}&pageSort=${curSort}`, AXIOS_OPTION)
-            .then(res => {
-                if(!res.data || !res.data.data || !res.data.data.mt_meetMyList || res.data.data.mt_meetMyList.length === 0){
-                    setMorePageBool(false);
-                }
-                setMeeting({...meeting, mt_meetMyList: [...meeting.mt_meetMyList, ...res.data.data.mt_meetMyList]});
-                setCurPage(curPage+1);
-            })
+    const getMeetMore = (when) => {
+        if(when === 'now'){
+            axios.get(SERVER_URL + `/meet/main/list?currentPage=${curPage+1}&pageSort=${curSort}`, AXIOS_OPTION)
+                .then(res => {
+                    if(!res.data || !res.data.data || !res.data.data.mt_meetMyList || res.data.data.mt_meetMyList.length === 0){
+                        setMorePageBool(false);
+                    }
+                    setMeeting({...meeting, mt_meetMyList: [...meeting.mt_meetMyList, ...res.data.data.mt_meetMyList]});
+                    setCurPage(curPage+1);
+                })
+        } else if(when === 'last'){
+            axios.get(SERVER_URL + `/meet/main/endlist?currentPage=${curLastPage+1}&pageSort=${curLastSort}`, AXIOS_OPTION)
+                .then(res => {
+                    if(!res.data || !res.data.data || !res.data.data.mt_meetMyList || res.data.data.mt_meetEndMyList.length === 0){
+                        setMoreLastPageBool(false);
+                    }
+                    setLastMeeting({...lastMeeting, mt_meetEndMyList: [...lastMeeting.mt_meetEndMyList, ...res.data.data.mt_meetEndMyList]});
+                    setCurLastPage(curLastPage +1);
+                })
+        }
     }
 
     async function getMain() {
@@ -196,7 +209,6 @@ const Home = () => {
 
                 <MainSchedule schedule={schedule} />
 
-
                 <div className="main__meetingroom">
                     <h3><img src={require('../assets/image/ic_video.png')} alt=""/> 나의 미팅룸 <em>{  !meeting ||
                     !meeting.mt_meetMyList ||
@@ -235,7 +247,7 @@ const Home = () => {
                         !meeting.mt_meetMyList || meeting.mt_meetMyList.length === 0 ||
                         meeting.mt_meetMyList.length % 8 != 0 || !morePageBool ? '' :
                             <div className="btn__group">
-                                <button onClick={getMeetMore} className="btn btn__more">더 보기</button>
+                                <button onClick={() => getMeetMore('now')} className="btn btn__more">더 보기</button>
                             </div>
                     }
                 </div>
@@ -268,6 +280,14 @@ const Home = () => {
                                             <MainMyMeetingRoom key={idx} room={room} modalOpen={modalOpen} isLast={1} navigateToMeetingRoom={navigateToMeetingRoom} mouseOver={mouseOver} mouseOut={mouseOut} />
                                     )
                                 })
+                        }
+                        {
+                            !lastMeeting ||
+                            !lastMeeting.mt_meetEndMyList || lastMeeting.mt_meetEndMyList.length === 0 ||
+                            lastMeeting.mt_meetEndMyList.length % 8 != 0 || !morePageBool ? '' :
+                                <div className="btn__group">
+                                    <button onClick={() => getMeetMore('last')} className="btn btn__more">더 보기</button>
+                                </div>
                         }
                     </div>
                 </div>

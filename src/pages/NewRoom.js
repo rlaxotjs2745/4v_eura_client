@@ -29,6 +29,7 @@ const NewRoom = () => {
     const [delUser, setDelUser] = useState('');
     const [searchUser, setSearchUser] = useState([]);
     const [remindBool, setRemindBool] = useState(false);
+    const [remindShowBool, setRemindShowBool] = useState(true);
     const [weekday, setWeekday] = useState([]);
 
     const [selectValue, setSelectValue] = useState(0);
@@ -192,7 +193,10 @@ const NewRoom = () => {
             setIsNew(2);
         }else if(pathname.indexOf('/newroom/')>-1){
             setIsNew(1);
-        }
+        } else return;
+
+        setRemindShowBool(false);
+
             axios.get(SERVER_URL +
                 `/meet/room/info?idx_meeting=${pathSplit}`,
                 AXIOS_OPTION)
@@ -798,11 +802,14 @@ const NewRoom = () => {
                             {/*/>*/}
                         </div>
                         <hr />
-                        <div className="checkbox type__square">
-                            <input type="checkbox" className="checkbox" id="remind_bool" onChange={remindChange} defaultValue={remindBool}/>
-                            <label htmlFor="remind_bool">되풀이 미팅</label>
-                        </div>
-                        {remindBool ?
+                        {
+                            !remindShowBool ? '' :
+                                <div className="checkbox type__square">
+                                    <input type="checkbox" className="checkbox" id="remind_bool" onChange={remindChange} defaultValue={remindBool}/>
+                                    <label htmlFor="remind_bool">되풀이 미팅</label>
+                                </div>
+                        }
+                        {remindBool && remindShowBool ?
                             <div id="remind_meeting">
                                 <dl className="inline__type">
                                     <dt><label htmlFor="room_repeat">반복 주기</label></dt>
@@ -944,7 +951,7 @@ const NewRoom = () => {
                     <div className="input__group" id="hahhhoho">
                         {/*<label htmlFor="make_team">참석자 추가</label>*/}
                         <label>참석자 추가</label>
-                        <div className="list__count"><a onClick={() => window.open('https://eura-server.s3.ap-northeast-2.amazonaws.com/upload/EURA_%EB%AF%B8%ED%8C%85_%EC%B0%B8%EC%84\[%E2%80%A6]B2%B4_%EC%B6%94%EA%B0%80_%EC%96%91%EC%8B%9D.csv')} className="btn btn__download">엑셀 양식 다운로드</a></div>
+                        <div className="list__count"><a onClick={() => window.open('https://file.eura.site/upload/EURA_%EB%AF%B8%ED%8C%85_%EC%B0%B8%EC%84%9D%EC%9E%90_%EB%8B%A8%EC%B2%B4_%EC%B6%94%EA%B0%80_%EC%96%91%EC%8B%9D.csv')} className="btn btn__download">엑셀 양식 다운로드</a></div>
                         <div className="flow_box input__inline">
                             <input type="hidden"/>
                             <input id="make_team" type="text" autoComplete="off" className="text" placeholder="이메일 또는 이름을 입력해 참석자를 추가하세요." onChange={searchInviteUserList}/>
