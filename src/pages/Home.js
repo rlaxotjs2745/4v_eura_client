@@ -191,7 +191,7 @@ const Home = () => {
     return (
         <>
             <div className="page">
-                <div className="eura_down_link">EURA를 사용하기 위해 파일 설치가 필요해요. <a target="_blank" rel="noopener" href="https://drive.google.com/file/d/16XQaguH-MAHmcrCE0j-l8o0QZJBSW_Ay/view?usp=share_link">설치 파일 다운로드</a></div>
+                <div className="eura_down_link">EURA를 사용하기 위해 파일 설치가 필요해요. <a target="_blank" rel="noopener" href="#none">설치 파일 다운로드</a></div>
                 <MainTimer user={user} />
 
                 <MainSchedule schedule={schedule} />
