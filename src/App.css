@@ -2186,6 +2186,11 @@ td {
     margin-top: 4px
 }
 
+.main__history .btn__group {
+    padding-top: 32px;
+    clear: both
+}
+
 .box + .box {
     margin-left: 16px
 }
@@ -4941,7 +4946,7 @@ input[type=date].under-scope, input[type=time].under-scope {cursor: pointer}
     width: 760px;
     height: 0px;
     z-index: 1000;
-    display: block;
+    display: none;
 }
 .graph_on_seek .v-line{
     position:relative;

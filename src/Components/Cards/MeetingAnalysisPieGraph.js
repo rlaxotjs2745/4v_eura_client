@@ -7,7 +7,7 @@ const MeetingAnalysisPieGraph = ({data}) => {
     const COLORS = [
         '#3377ff',
         '#ffc633',
-        // 'gray'
+        'gray'
     ];
 
     const RADIAN = Math.PI / 180;
@@ -53,8 +53,8 @@ const MeetingAnalysisPieGraph = ({data}) => {
                                 <div className="good_sum analysis_sum_category"><span>Good</span><span>{Math.round(d.value)}%</span></div>
                                 : d.name == 'Bad' ?
                                 <div className="bad_sum analysis_sum_category"><span>Bad</span><span>{Math.round(d.value)}%</span></div>
-                                // : d.name == 'Camera off' ?
-                                // <div className="camera_off_sum analysis_sum_category"><span>Camera Off</span><span>{Math.round(d.value)}%</span></div>
+                                : d.name == 'Camera off' ?
+                                <div className="camera_off_sum analysis_sum_category"><span>Camera Off</span><span>{Math.round(d.value)}%</span></div>
                                     : null
                         )
                     })

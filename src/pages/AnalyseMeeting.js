@@ -17,7 +17,6 @@ const AnalyseMeeting = (props) => {
     const [movieSrc, setMovieSrc] = useState('');
     const [moviefile, setMovieFile] = useState([]);
     const [movieNo, setMevieNo] = useState(1);
-    // const [duration, setDuration] = useState(0);
     const [lecture, setLecture] = useState({});
     const [btmdata, setBtmdata] = useState([]);
     const [piedata, setPiedata] = useState([]);
@@ -46,7 +45,6 @@ const AnalyseMeeting = (props) => {
     const handleStateChange = (state, prev) => {
         if(!_mplay && !!state.duration){
             _mplay = true;
-            // setDuration(Math.ceil(state.duration))
             _getMeetResult(pathSplit, movieNo, Math.ceil(state.duration))
         }
         $(".v-line").css({left:$(".video-react-play-progress.video-react-slider-bar").width()})
@@ -66,6 +64,7 @@ const AnalyseMeeting = (props) => {
                     let _data = res.data.data;
                     setMiddata(_data.mtAnalyMid ? [{longP:100, longM:-100},..._data.mtAnalyMid] : []);
                     setBtmdata(_data.mtData0 ? [{longP:100, longM:-100},..._data.mtData0] : []);
+                    $('.graph_on_seek').show();
                 }else{
                     alert(res.data.result_str)
                 }
@@ -86,12 +85,12 @@ const AnalyseMeeting = (props) => {
                     setPiedata([
                         { name: "Good", value: _data.mtAnalyTop.good },
                         { name: "Bad", value: _data.mtAnalyTop.bad },
-                        // { name: "Camera off", value: _data.mtAnalyTop.off },
+                        { name: "Camera off", value: _data.mtAnalyTop.off },
                     ])
                     setOneUserResult(_data.mtData1 ? [
                         { name: "Good", value: _data.mtData1.good },
                         { name: "Bad", value: _data.mtData1.bad },
-                        // { name: "Camera Off", value: _data.mtData1.off },
+                        { name: "Camera Off", value: _data.mtData1.off },
                     ]
                         : []);
                     setOneUserResultab(_data.mtData1 ? _data.mtData1 : {});
@@ -189,13 +188,11 @@ const AnalyseMeeting = (props) => {
                     </div>
                     <AnalysisUserList lecture={lecture} clickUser={clickUser} isHost={lecture.is_host} />
 
-
                     <div className="result__mov" title="영상자리 (860 x 407)">
                     {
                         isSafari ?
                         <Player ref={player}>
                             <HLSSource isVideoChild src={movieSrc} />
-                            {/* <source src="http://peach.themazzone.com/durian/movies/sintel-1024-surround.mp4" /> */}
                             <ControlBar>
                                 <VolumeMenuButton disabled />
                                 <CurrentTimeDisplay disabled/>
