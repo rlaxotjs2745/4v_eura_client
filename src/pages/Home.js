@@ -29,19 +29,6 @@ const Home = () => {
         getMain();
         getMainList();
         getMainEndList();
-        setLastMeeting({mt_meetEndMyList: [{
-            is_host: 1,
-            mt_end_dt: "2022-11-28 10:40:00",
-            mt_hostname: "kiwon",
-            mt_iData: 0,
-            mt_iDataDisplay: 1,
-            mt_idx: 377,
-            mt_name: '1006',
-            mt_start_dt: "2022-11-28 10:10:00",
-            mt_status: 1
-        },
-
-        ]})
     }, []);
 
     useEffect(() => {
@@ -205,7 +192,7 @@ const Home = () => {
         })
     };
     async function getMainEndList() {
-        axios.get(SERVER_URL + '/meet/main/endlist', AXIOS_OPTION)
+        axios.get(SERVER_URL + '/meet/main/endlist?currentPage=1', AXIOS_OPTION)
         .then(res => {
             setLastMeeting(res.data.data);
             return () => {
@@ -283,29 +270,15 @@ const Home = () => {
                     </h3>
                     <div className="boxing ">
                         {
-                            // !lastMeeting ||
-                            // !lastMeeting.mt_meetEndMyList || !lastMeeting.mt_meetEndMyList.length ?
-                            //     <div className="boxing">
-                            //         <div className="msg__nodata">
-                            //             <span>지난 미팅 일정이 없습니다.</span>
-                            //         </div>
-                            //     </div>
-                            //     :
-                            //         lastMeeting.mt_meetEndMyList
-                            [{
-                                is_host: 1,
-                                mt_end_dt: "2022-11-28 10:40:00",
-                                mt_hostname: "kiwon",
-                                mt_iData: 0,
-                                mt_iDataDisplay: 1,
-                                mt_idx: 377,
-                                mt_name: '1006',
-                                mt_start_dt: "2022-11-28 10:10:00",
-                                mt_status: 1
-                            },
-
-                            ]
-                                        .map((room, idx) => {
+                            !lastMeeting ||
+                            !lastMeeting.mt_meetEndMyList || !lastMeeting.mt_meetEndMyList.length ?
+                                <div className="boxing">
+                                    <div className="msg__nodata">
+                                        <span>지난 미팅 일정이 없습니다.</span>
+                                    </div>
+                                </div>
+                                :
+                                    lastMeeting.mt_meetEndMyList.map((room, idx) => {
                                         if(idx > 8) return;
                                         if(room.is_host == 0 && room.mt_status != 1) return;
                                         return (

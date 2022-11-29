@@ -3,7 +3,6 @@ import {Bar, BarChart, ReferenceArea, ReferenceLine, ResponsiveContainer, XAxis,
 
 
 const AllUserBarGraph = ({middata}) => {
-
     return (
         <div className="result__graph result_all_levels" title="그래프자리 (860 x 218)">
             <div className="graph_on_seek"><div class="v-line"></div><div class="v-box"></div></div>
@@ -18,13 +17,14 @@ const AllUserBarGraph = ({middata}) => {
                             <BarChart
                                 data={middata}
                                 stackOffset={"sign"}
+                                height={218}
                                 margin={{
                                     top: 5,
                                     right: 30,
                                     left: 0,
                                     bottom: 5,
                                 }}
-                                maxBarSize={100}
+                                maxBarSize={10}
                                 baseValue={0}
                             >
                                 <XAxis dataKey="name" />
@@ -33,8 +33,8 @@ const AllUserBarGraph = ({middata}) => {
                                     payload={[...middata.map(data => {
                                         return {
                                             ...data,
-                                            Bad: Math.ceil(data.Bad),
-                                            Good: Math.floor(data.Good)
+                                            Bad: data.Bad,
+                                            Good: data.Good
                                         }
                                     })]}
                                 />

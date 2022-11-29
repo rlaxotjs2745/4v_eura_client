@@ -18,22 +18,21 @@ const OneUserBarGraph = ({btmdata}) => {
                             <div><img src={require('../../assets/image/icon_smile.png')}/></div>
                             <div><img src={require('../../assets/image/icon_angry.png')}/></div>
                         </div>
-                        <ResponsiveContainer width="92%" height="80%">
+                        <ResponsiveContainer width="92%" height="100%">
                             <BarChart
-                                // data={btmdata}
-                                stackOffset="sign"
+                                data={btmdata}
+                                stackOffset={"sign"}
                                 margin={{
                                     top: 5,
                                     right: 30,
                                     left: 0,
                                     bottom: 5,
                                 }}
-                                maxBarSize={50}
+                                maxBarSize={10}
                             >
                                 <XAxis dataKey="name" />
                                 <Tooltip />
                                 <ReferenceLine y={0} stroke="#000" />
-
                                 <Bar dataKey="longP" fill="transparent" stackId="stack"/>
                                 <Bar dataKey="longM" fill="transparent" stackId="stack"/>
                                 <Bar dataKey="good" fill="#3377ff" stackId="stack" />

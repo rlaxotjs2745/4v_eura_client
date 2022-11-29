@@ -4288,7 +4288,8 @@ html.js-overflow {
     width: 860px;
     height: 218px;
     float: left;
-    margin-top: 16px
+    margin-top: 16px;
+    position: relative;
 }
 
 .emotion_num_box{
