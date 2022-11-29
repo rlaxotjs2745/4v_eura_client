@@ -22,9 +22,9 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
     return (
         <div
             className={
-                room.mt_status === 0 ? 'box is-before' :
-                room.mt_status === 2 ? 'box is-cancel' :
-                isLast ? 'box' : 'box'
+                room.mt_status === 0 ? 'box is-before box__ts' :
+                room.mt_status === 2 ? 'box is-cancel box__ts' :
+                isLast ? 'box box__ts' : 'box box__ts'
             }
             onClick={() => navigateToMeetingRoom(room.mt_idx, isLast)}
         >

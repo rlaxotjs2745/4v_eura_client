@@ -2231,6 +2231,8 @@ td {
     z-index: 1;
 }
 
+.box.box__ts dl.type__host {width: 50%; margin-top: 18px}
+
 .box:hover {
     transition: .1s top ease-in;
     top: -9px;
@@ -4021,7 +4023,7 @@ html.js-overflow {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    /*margin-top: -33px;*/
+    margin-top: -33px;
     margin-left: -14px;
 }
 
