@@ -74,15 +74,7 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
                     {room.mt_hostname}
                 </dd>
             </dl>
-            {
-                room.mt_iDataDisplay && room.mt_iDataDisplay === 1 && room.is_host === 1 ?
-                <dl className="">
-                    <dt>참여도 {room.mt_iData}%</dt>
-                    <dd>
-                        <div className="graph"><span className="graph__gage" style={{width: room.mt_iData +"%"}}></span></div>
-                    </dd>
-                </dl> : ''
-            }
+
             <dl>
                 <dt>날짜</dt>
                 <dd>{room.mt_start_dt.split(' ')[0]}</dd>
