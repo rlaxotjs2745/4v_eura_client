@@ -32,8 +32,8 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-        console.log( !lastMeeting ||
-            !lastMeeting.mt_meetEndMyList ? false : true);
+        // console.log( !lastMeeting ||
+        //     !lastMeeting.mt_meetEndMyList ? false : true);
     },[lastMeeting])
 
     useEffect(() => {
@@ -153,7 +153,7 @@ const Home = () => {
         if(when === 'now'){
             axios.get(SERVER_URL + `/meet/main/list?currentPage=${curPage+1}&pageSort=${curSort}`, AXIOS_OPTION)
                 .then(res => {
-                    if(!res.data || !res.data.data || !res.data.data.mt_meetMyList || res.data.data.mt_meetMyList.length === 0){
+                    if(!res.data || !res.data.data || !res.data.data.mt_meetMyList || res.data.data.mt_meetMyList.length === 0 || (meeting.mt_meetMyList.length+res.data.data.mt_meetMyList.length) >= res.data.data.mt_meetMyListCount){
                         setMorePageBool(false);
                     }
                     setMeeting({...meeting, mt_meetMyList: [...meeting.mt_meetMyList, ...res.data.data.mt_meetMyList]});
@@ -162,7 +162,7 @@ const Home = () => {
         } else if(when === 'last'){
             axios.get(SERVER_URL + `/meet/main/endlist?currentPage=${curLastPage+1}&pageSort=${curLastSort}`, AXIOS_OPTION)
                 .then(res => {
-                    if(!res.data || !res.data.data || !res.data.data.mt_meetMyList || res.data.data.mt_meetEndMyList.length === 0){
+                    if(!res.data || !res.data.data || !res.data.data.mt_meetEndMyList || res.data.data.mt_meetEndMyList.length === 0 || (lastMeeting.mt_meetEndMyList.length+res.data.data.mt_meetEndMyList.length) >= res.data.data.mt_meetMyListCount){
                         setMoreLastPageBool(false);
                     }
                     setLastMeeting({...lastMeeting, mt_meetEndMyList: [...lastMeeting.mt_meetEndMyList, ...res.data.data.mt_meetEndMyList]});
@@ -185,6 +185,9 @@ const Home = () => {
     async function getMainList() {
         axios.get(SERVER_URL + `/meet/main/list?currentPage=1`, AXIOS_OPTION)
         .then(res => {
+            if(!res.data || !res.data.data || !res.data.data.mt_meetMyList || res.data.data.mt_meetMyList.length === 0 || 8 > res.data.data.mt_meetMyListCount){
+                setMorePageBool(false);
+            }
             setMeeting(res.data.data);
             return () => {
                 console.log("cleanup2");
@@ -194,6 +197,9 @@ const Home = () => {
     async function getMainEndList() {
         axios.get(SERVER_URL + '/meet/main/endlist?currentPage=1', AXIOS_OPTION)
         .then(res => {
+            if(!res.data || !res.data.data || !res.data.data.mt_meetEndMyList || res.data.data.mt_meetEndMyList.length === 0 || 8 > res.data.data.mt_meetMyListCount){
+                setMoreLastPageBool(false);
+            }
             setLastMeeting(res.data.data);
             return () => {
                 console.log("cleanup3");
@@ -216,8 +222,7 @@ const Home = () => {
 
                 <div className="main__meetingroom">
                     <h3><img src={require('../assets/image/ic_video.png')} alt=""/> 나의 미팅룸 <em>{  !meeting ||
-                    !meeting.mt_meetMyList ||
-                    !meeting.mt_meetMyList.length ? 0 : meeting.mt_meetMyList.length}</em>
+                    !meeting.mt_meetMyListCount ? 0 : meeting.mt_meetMyListCount}</em>
                         <Link to="/newroom" className="btn btn__make"><img src={require('../assets/image/ic_plus.png')} alt=""/>새 미팅룸 만들기</Link>
                         <div className="sorting">
                             <select name="" id="meetSort" onChange={pageSort}>
@@ -240,7 +245,6 @@ const Home = () => {
                             </div>
                                 :
                             meeting.mt_meetMyList.map((room, idx) => {
-                                if(room.is_host == 0 && room.mt_status != 1) return;
                                 return (
                                     <MainMyMeetingRoom key={idx} room={room} modalOpen={modalOpen} isLast={0} navigateToMeetingRoom={navigateToMeetingRoom} mouseOver={mouseOver} mouseOut={mouseOut} />
                                 )
@@ -250,7 +254,7 @@ const Home = () => {
                     {
                         !meeting ||
                         !meeting.mt_meetMyList || meeting.mt_meetMyList.length === 0 ||
-                        meeting.mt_meetMyList.length % 8 != 0 || !morePageBool ? '' :
+                        meeting.mt_meetMyListCount % 8 === 0 || !morePageBool ? '' :
                             <div className="btn__group">
                                 <button onClick={() => getMeetMore('now')} className="btn btn__more">더 보기</button>
                             </div>
@@ -258,7 +262,7 @@ const Home = () => {
                 </div>
 
                 <div className="main__history">
-                    <h3><img src="" alt=""/><img src={require('../assets/image/ic_last.png')} alt=""/> 지난 미팅 <em>{lastMeeting.mt_meetEndMyList ? lastMeeting.mt_meetEndMyList.length : 0}</em>
+                    <h3><img src="" alt=""/><img src={require('../assets/image/ic_last.png')} alt=""/> 지난 미팅 <em>{lastMeeting.mt_meetMyListCount ? lastMeeting.mt_meetMyListCount : 0}</em>
                         <div className="sorting">
                             <select name="" id="lastMeetSort" onChange={pageSort}>
                                 <option value="1">최신순</option>
@@ -279,8 +283,6 @@ const Home = () => {
                                 </div>
                                 :
                                     lastMeeting.mt_meetEndMyList.map((room, idx) => {
-                                        if(idx > 8) return;
-                                        // if(room.is_host == 0 && room.mt_status !== 1) return; 
                                         return (
                                             <MainMyMeetingRoom key={idx} room={room} modalOpen={modalOpen} isLast={1} navigateToMeetingRoom={navigateToMeetingRoom} mouseOver={mouseOver} mouseOut={mouseOut} />
                                     )
@@ -289,8 +291,8 @@ const Home = () => {
                         {
                             !lastMeeting ||
                             !lastMeeting.mt_meetEndMyList ||
-                            lastMeeting.mt_meetEndMyList.length === 0 ||
-                            lastMeeting.mt_meetEndMyList.length % 8 != 0 || !moreLastPageBool ? '' :
+                            lastMeeting.mt_meetMyListCount === 0 ||
+                            lastMeeting.mt_meetMyListCount % 8 === 0 || !moreLastPageBool ? '' :
                                 <div className="btn__group">
                                     <button onClick={() => getMeetMore('last')} className="btn btn__more">더 보기</button>
                                 </div>
