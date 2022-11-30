@@ -10,6 +10,7 @@ import {getCookie} from "../util/cookie";
 
 
 const MAX_COUNT = 99;
+const FILE_SIZE_MAX_LIMIT = 100 * 1024 * 1024;  // 100MB
 
 const NewRoom = () => {
 
@@ -215,10 +216,20 @@ const NewRoom = () => {
     }, [roomInfo]);
 
 
-    const handleUploadFiles = files => {
+    const handleUploadFiles = (files) => {
+
+        files.forEach(function(item, index){
+            if (item.size > FILE_SIZE_MAX_LIMIT) {
+                alert(`업로드 가능한 최대 용량은 100MB입니다.`)
+                setFileLimit(false);
+                limitExceeded = true;
+            }
+        });
+
         const uploaded = [...uploadedFiles];
+
         let limitExceeded = false;
-        files.some((file) => {
+        files.some((file, index) => {
             if(uploaded.findIndex((f) => f.name === file.name) === -1) {
                 uploaded.push(file);
                 if (uploaded.length === MAX_COUNT) setFileLimit(true);
@@ -229,6 +240,7 @@ const NewRoom = () => {
                     limitExceeded = true;
                     return true;
                 }
+
             }
         })
         if (!limitExceeded) setUploadedFiles(uploaded)
@@ -1021,7 +1033,8 @@ const NewRoom = () => {
                     </div>
 
                     <div className="input__group">
-                        <div style={{display:"inline-block"}}>첨부파일<input className="sr-only" type="file" name="file_upload" id="fileUpload" multiple accept="application/pdf, image/*" onChange={handleFileEvent} disabled={fileLimit}/><label style={{marginLeft:"10px"}} htmlFor="fileUpload"><span  className="btn btn__download"><img src={require('../assets/image/ic_attachment_14.png')} alt="" />파일 업로드</span></label></div>
+                        {/*<div style={{display:"inline-block"}}>첨부파일<input className="sr-only" type="file" name="file_upload" id="fileUpload" multiple accept="application/pdf, image/*" onChange={handleFileEvent} disabled={fileLimit}/><label style={{marginLeft:"10px"}} htmlFor="fileUpload"><span  className="btn btn__download"><img src={require('../assets/image/ic_attachment_14.png')} alt="" />파일 업로드</span></label></div>*/}
+                        <div style={{display:"inline-block"}}>첨부파일<input className="sr-only" type="file" name="file_upload" id="fileUpload" multiple accept="*" onChange={handleFileEvent} disabled={fileLimit}/><label style={{marginLeft:"10px"}} htmlFor="fileUpload"><span  className="btn btn__download"><img src={require('../assets/image/ic_attachment_14.png')} alt="" />파일 업로드</span></label></div>
 
 
                         <div className="list__upload">
