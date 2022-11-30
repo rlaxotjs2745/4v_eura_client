@@ -99,6 +99,12 @@ const MeetingCalendar = () => {
                     <div className="calendar_clicked_day_meeting_card">
                         <h2>{new Date(clickedDay).getMonth()+1 + '월' + new Date(clickedDay).getDate()}일 일정</h2>
                         <table className="clicked_day_meeting_list">
+                            <colgroup>
+                                <col style={{width:"40%"}}/>
+                                <col style={{width:"10%"}}/>
+                                <col style={{width:"10%"}}/>
+                                <col style={{width:"40%"}}/>
+                            </colgroup>
                             <thead>
                                 <tr>
                                     <th>미팅 이름</th>

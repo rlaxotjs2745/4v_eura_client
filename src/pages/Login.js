@@ -147,8 +147,8 @@ const Login = () => {
     return (
         <div className="content no-head" id="content">
             <div className="login">
-                <h2>EURA</h2>
-                <div className="desc__h2">Emotion Understanding & Recognition Assistant</div>
+                <h2><img src="/assets/image/logo.svg" alt=""/></h2>
+                {/*<div className="desc__h2">Emotion Understanding & Recognition Assistant</div>*/}
                 <form name="loginForm" id="loginForm" onSubmit={handleSubmit(onLogin, onError)}>
                     <div className="login__box">
                     <div className="input__group">

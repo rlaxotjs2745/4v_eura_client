@@ -87,6 +87,11 @@
     padding: 5px;
     border: 1px solid #ffffff;
     font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    max-width: 50px;
 }
 
 .clicked_day_meeting_list tbody tr:hover {
@@ -260,6 +265,15 @@
     justify-self: start;
     grid-column: 1 / 2;
     font-weight: 600;
+}
+
+.react-calendar__tile > div {
+    grid-column: 3/1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    text-align: left;
 }
 
 .react-calendar__tile div span {

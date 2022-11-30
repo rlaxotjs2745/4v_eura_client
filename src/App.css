@@ -1,11 +1,11 @@
 @charset "UTF-8";
-@import url(//db.onlinewebfonts.com/c/51b459eae74df5b00ba922028ccb20be?family=Password);
+/*@import url(//db.onlinewebfonts.com/c/51b459eae74df5b00ba922028ccb20be?family=Password);*/
 
-@font-face {
-    font-family: Password;
-    src: url(//db.onlinewebfonts.com/t/51b459eae74df5b00ba922028ccb20be.eot);
-    src: url(//db.onlinewebfonts.com/t/51b459eae74df5b00ba922028ccb20be.eot?#iefix) format("embedded-opentype"), url(//db.onlinewebfonts.com/t/51b459eae74df5b00ba922028ccb20be.woff2) format("woff2"), url(//db.onlinewebfonts.com/t/51b459eae74df5b00ba922028ccb20be.woff) format("woff"), url(//db.onlinewebfonts.com/t/51b459eae74df5b00ba922028ccb20be.ttf) format("truetype"), url(//db.onlinewebfonts.com/t/51b459eae74df5b00ba922028ccb20be.svg#Password) format("svg")
-}
+/*@font-face {*/
+/*    font-family: Password;*/
+/*    src: url(//db.onlinewebfonts.com/t/51b459eae74df5b00ba922028ccb20be.eot);*/
+/*    src: url(//db.onlinewebfonts.com/t/51b459eae74df5b00ba922028ccb20be.eot?#iefix) format("embedded-opentype"), url(//db.onlinewebfonts.com/t/51b459eae74df5b00ba922028ccb20be.woff2) format("woff2"), url(//db.onlinewebfonts.com/t/51b459eae74df5b00ba922028ccb20be.woff) format("woff"), url(//db.onlinewebfonts.com/t/51b459eae74df5b00ba922028ccb20be.ttf) format("truetype"), url(//db.onlinewebfonts.com/t/51b459eae74df5b00ba922028ccb20be.svg#Password) format("svg")*/
+/*}*/
 
 @font-face {
     font-family: Pretendard;
@@ -3061,7 +3061,7 @@ html.js-overflow {
 
 .login .login__box {
     width: 383px;
-    margin: 37px auto;
+    margin: 115px auto 0;
     text-align: left
 }
 
@@ -3348,6 +3348,10 @@ html.js-overflow {
 .my .my__box .option__type .radio__inline .radio input[type=radio]:disabled + label:before, .my .my__box .option__type .radio__inline .radio input[type=radio]:disabled:checked + label:before {
     content: "";
     border-color: #ccc
+}
+
+.my .my__box .option__type .radio__inline .radio input[type=radio]:disabled:checked + label:before {
+    border-color: #525566;
 }
 
 .my .my__box .option__type .radio__inline .radio input[type=radio]:disabled + label:after, .my .my__box .option__type .radio__inline .radio input[type=radio]:disabled:checked + label:after {
@@ -4336,6 +4340,7 @@ html.js-overflow {
     text-align: left;
     margin-top: 44px
 }
+.meeting__user .btn__group {margin-top:50px;}
 
 .meeting__user h3 {
     font-size: 20px;
