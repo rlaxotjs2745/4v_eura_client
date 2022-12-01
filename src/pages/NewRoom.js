@@ -17,7 +17,6 @@ const NewRoom = () => {
     const { pathname } = useLocation();
     const location = useLocation(); // navigate 에서 받은 스테이트값 넘겨받기위함. result_code FAIL01로 넘겨줌
 
-
     const pathSplit = Number(pathname.split('/')[2])
 
     const navigate = useNavigate();
@@ -37,7 +36,7 @@ const NewRoom = () => {
     const [selectValue, setSelectValue] = useState(0);
     const [remindCount, setRemindCount] = useState(0);
     const [title, setTitle] = useState('');
-    const [startDate, setStartDate] = useState(new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3));
+    const [startDate, setStartDate] = useState(new Date().toISOString().slice(0, 10));
     const [startTime, setStartTime] = useState(new Date().getHours() + ':' + new Date().getMinutes() + ':00');
     const [endTime, setEndTime] = useState(new Date().getHours() + ':' + new Date().getMinutes() + ':00');
     const [endDate, setEndDate] = useState('');
@@ -53,8 +52,8 @@ const NewRoom = () => {
     const [groupFileName, setGroupFileName] = useState('이메일이 입력된 엑셀파일을 첨부해주세요.')
     const [groupSearchUser, setGroupSearchUser] = useState([]);
 
-    const [dt, setDt] = useState(new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3));
-    const [dt2, setDt2] = useState(new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3));
+    const [dt, setDt] = useState(new Date().toISOString().slice(0, 10));
+    const [dt2, setDt2] = useState(new Date().toISOString().slice(0, 10));
 
     const [dtValidation, setDtValidation] = useState('')
 
@@ -472,12 +471,12 @@ const NewRoom = () => {
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
 
-        if(Selected1 < new Date().getHours() && startDate === new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3)){
+        if(Selected1 < new Date().getHours() && startDate === new Date().toISOString().slice(0, 10)){
             return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
         }
 
         // 오늘 날짜와 같고, 현재시간이랑 같거나 낮고, 현재 분 보다 낮을때
-        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3)){
+        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === new Date().toISOString().slice(0, 10)){
             return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
         }
 
@@ -573,12 +572,12 @@ const NewRoom = () => {
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
 
-        if(Selected1 < new Date().getHours() && startDate === new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3)){
+        if(Selected1 < new Date().getHours() && startDate === new Date().toISOString().slice(0, 10)){
             return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
         }
 
         // 오늘 날짜와 같고, 현재시간이랑 같거나 낮고, 현재 분 보다 낮을때
-        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === new Date().toLocaleDateString().replaceAll('. ' , '-').slice(0,new Date().toLocaleDateString().length -3)){
+        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === new Date().toISOString().slice(0, 10)){
             return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
         }
 
