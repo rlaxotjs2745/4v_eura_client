@@ -7,6 +7,8 @@ import {formatDate} from "react-calendar/dist/cjs/shared/dateFormatter";
 import {Link, useNavigate} from "react-router-dom";
 import $ from "jquery";
 
+const dateObj = {};
+
 const MeetingCalendar = () => {
 
     const [meeting, setMeeting] = useState([]);
@@ -24,10 +26,6 @@ const MeetingCalendar = () => {
             })
     }, [thisMonth, thisYear])
 
-    useEffect(()=>{
-        // console.log(clickedDay);
-    }, [clickedDay]);
-
 
     const getDayMeetingInfo = (day) => {
         axios.get(SERVER_URL + '/meet/main/calendar/info?' + `calYear=${day.getFullYear()}&calMonth=${day.getMonth() + 1}&calDay=${day.getDate()}`, AXIOS_OPTION)
@@ -37,18 +35,40 @@ const MeetingCalendar = () => {
             })
     }
 
+
     const navigateToMeetingRoom = (idx) => {
         navigate(`/meetingroom/${idx}`);
     }
 
     const fillTileContent = ({date, view}) => {
-        return !meeting ? '' : meeting.map(day => {
-            return view === 'month'
-            && date.getFullYear() == new Date(day.mt_date).getFullYear()
-            && date.getMonth() == new Date(day.mt_date).getMonth()
-            && date.getDate() == new Date(day.mt_date).getDate() ?
-                <div><span>• </span>{day && day.mt_name && day.mt_name.length > 10 ? day.mt_name.slice(0,8) + '..' : day.mt_name}</div> : null
-        })
+        const resultArr = [];
+
+        if(!!meeting){
+            let num = 0;
+            for(let i = 0; i < meeting.length; i++){
+                const day = meeting[i];
+                const originalDate = day.mt_date;
+                const year = new Date(originalDate).getFullYear();
+                const month = new Date(originalDate).getMonth();
+                const thisDay = new Date(originalDate).getDate();
+
+                if(view === 'month'
+                && date.getFullYear() === year
+                && date.getMonth() === month
+                && date.getDate() === thisDay){
+                    if(resultArr.length > 1){
+                        num++;
+                    } else resultArr.push(<div><span>• </span>{day && day.mt_name && day.mt_name.length > 10 ? day.mt_name.slice(0,8) + '..' : day.mt_name}</div>);
+                }
+
+            }
+
+            if(num != 0){
+                resultArr.push(<div><span className="calendar__etc"> + {num}개의 일정</span></div>);
+            }
+        }
+
+        return resultArr;
     }
 
     const getMonthMeetingList = (date, label) => {
