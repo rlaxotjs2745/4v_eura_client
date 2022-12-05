@@ -7,18 +7,22 @@ import {BrowserRouter} from "react-router-dom";
 import {CookiesProvider} from "react-cookie";
 import ScrollToTop from "./Components/Layout/ScrollToTop";
 import HttpsRedirect from 'react-https-redirect';
+import { StyledEngineProvider } from '@mui/material/styles';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     // <React.StrictMode>
     <HttpsRedirect>
       <CookiesProvider>
-          <BrowserRouter>
-              <ScrollToTop/>
-              <App />
-              <div id="shade"></div>
-              <div id="shade2"></div>
-          </BrowserRouter>
+          <StyledEngineProvider injectFirst>
+              <BrowserRouter>
+                  <ScrollToTop/>
+                  <App />
+                  <div id="shade"></div>
+                  <div id="shade2"></div>
+              </BrowserRouter>
+          </StyledEngineProvider>
       </CookiesProvider>
     </HttpsRedirect>
   // </React.StrictMode>

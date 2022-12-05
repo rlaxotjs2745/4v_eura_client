@@ -519,6 +519,7 @@ input[type=file]::file-selector-button:hover {
     color: #17171a;
     font-size: 14px
 }
+.checkbox.type__square label + strong {margin-left:20px; font-size:14px;}
 
 .checkbox.type__square label:before {
     content: "";
@@ -3570,7 +3571,8 @@ html.js-overflow {
 
 .room .room__box .input__group .inline__type dt {
     display: table-cell;
-    padding: 0 10px 0 0
+    padding: 0 10px 0 0;
+    vertical-align: middle;
 }
 
 .room .room__box .input__group .inline__type dd {
@@ -5000,3 +5002,11 @@ input[type=date].under-scope, input[type=time].under-scope {cursor: pointer}
 .eura_down_link a {border-radius: 8px; background: #8A8C99; color:#fff; padding:5px 12px; margin-left:10px; font-weight: 600}
 
 #loginForm .checkbox label {font-size:16px; color: #8A8C99}
+
+.MuiFormControl-root {}
+#root .MuiFormLabel-root {display: none;}
+#root .MuiInputBase-root {height:46px; border-radius: 8px; max-width: 155px;}
+#root .MuiInputBase-root:hover {border-color: transparent !important;}
+#root .MuiInputBase-input {border:none; padding:0; background: transparent; padding-left: 15px;}
+#root .MuiInputBase-input:focus {border: none !important;}
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline {top: 0; }

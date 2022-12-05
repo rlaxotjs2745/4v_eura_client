@@ -7,13 +7,20 @@ import $ from "jquery";
 import AddMeetingUser from "../Components/Cards/AddMeetingUser";
 import {getCookie} from "../util/cookie";
 // import Select from 'react-select'
-
+import TextField from '@mui/material/TextField';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 
 const MAX_COUNT = 99;
 const FILE_SIZE_MAX_LIMIT = 100 * 1024 * 1024;  // 100MB
 
 const NewRoom = () => {
 
+
+
+    const [value, setValue] = useState(null);
     const { pathname } = useLocation();
     const location = useLocation(); // navigate 에서 받은 스테이트값 넘겨받기위함. result_code FAIL01로 넘겨줌
 
@@ -31,15 +38,23 @@ const NewRoom = () => {
     const [remindBool, setRemindBool] = useState(false);
     const [remindShowBool, setRemindShowBool] = useState(true);
     const [weekday, setWeekday] = useState([]);
+    const weekdayArr = ['일','월','화','수','목','금','토']
+    const [weekdayArrNew, setWeekdayArrNew] = useState([])
+
+    useEffect(()=> {
+        setWeekdayArrNew(weekday.map((value, index, array) => weekdayArr[value - 1]).join())
+    }, [weekday])
+
+
     const [groupInvites, setGroupInvites] = useState([]);
 
     const [selectValue, setSelectValue] = useState(0);
     const [remindCount, setRemindCount] = useState(0);
     const [title, setTitle] = useState('');
-    const [startDate, setStartDate] = useState(new Date().toISOString().slice(0, 10));
+    const [startDate, setStartDate] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
     const [startTime, setStartTime] = useState(new Date().getHours() + ':' + new Date().getMinutes() + ':00');
     const [endTime, setEndTime] = useState(new Date().getHours() + ':' + new Date().getMinutes() + ':00');
-    const [endDate, setEndDate] = useState('');
+    const [endDate, setEndDate] = useState(dayjs(startDate).add(7, 'day'));
     const [meetingInfo, setMeetingInfo] = useState('');
 
     const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -52,10 +67,8 @@ const NewRoom = () => {
     const [groupFileName, setGroupFileName] = useState('이메일이 입력된 엑셀파일을 첨부해주세요.')
     const [groupSearchUser, setGroupSearchUser] = useState([]);
 
-    const [dt, setDt] = useState(new Date().toISOString().slice(0, 10));
-    const [dt2, setDt2] = useState(new Date().toISOString().slice(0, 10));
-
-    const [dtValidation, setDtValidation] = useState('')
+    const [dt, setDt] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
+    const [dt2, setDt2] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
 
     const [Selected1, setSelected1] = useState('00');
     const [Selected2, setSelected2] = useState('00');
@@ -78,7 +91,6 @@ const NewRoom = () => {
         setSelected4(curTIme.getMinutes());
     },[])
 
-    console.log(Selected1)
 
     const select1_opiton = [
         { value: "00", label: "00", idx:"00"},
@@ -417,9 +429,15 @@ const NewRoom = () => {
                     setSelectValue(1)
                 }
             }
-        } else setSelectValue(0);
+        } else {
+            setSelectValue(0);
+
+        }
 
         setRemindBool(!remindBool);
+
+        setWeekdayArrNew([]) // 배열 초기화
+        setWeekday([]) // 배열 초기화
     }
 
     const getWeekDay = (num) => {
@@ -449,35 +467,30 @@ const NewRoom = () => {
         setTitle(e.target.value);
     }
 
-    const makeDate = (e) => {
-        setStartDate(e.target.value);
-        setDt2(e.target.value)
+    const makeDate = (newValue) => {
+        setStartDate(newValue);
     }
 
     useEffect(()=> {
-        setDt2(dt2)
-    },[dt2])
-
-    const makeTime1 = (e) => {
-        setStartTime(e.target.value);
-    }
-
-    const makeTime2 = (e) => {
-        setEndTime(e.target.value);
-    }
+        if(selectValue === 1) {
+            setEndDate(dayjs(startDate).add(7, 'day'));
+        } else if (selectValue === 2) {
+            setEndDate(dayjs(startDate).add(7, 'week'));
+        } else if (selectValue === 3) {
+            setEndDate(dayjs(startDate).add(14, 'week'));
+        } else if (selectValue === 4) {
+            setEndDate(dayjs(startDate).add(7, 'month'));
+        }
+    },[startDate])
 
     const makeEndDate = (e) => {
-        setEndDate(e.target.value);
-        setDtValidation(e.target.value)
+        setEndDate(e);
     }
 
     const makeMeetingInfo = (e) => {
         setMeetingInfo(e.target.value);
     }
 
-    const selectRemindCount = (e) => {
-        setRemindCount(parseInt(e.target.value));
-    }
 
     const handleSubmit = () => {
         if($('#make_new').val() == ''){
@@ -488,12 +501,12 @@ const NewRoom = () => {
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
 
-        if(Selected1 < new Date().getHours() && startDate === new Date().toISOString().slice(0, 10)){
+        if(Selected1 < new Date().getHours() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
             return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
         }
 
         // 오늘 날짜와 같고, 현재시간이랑 같거나 낮고, 현재 분 보다 낮을때
-        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === new Date().toISOString().slice(0, 10)){
+        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
             return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
         }
 
@@ -511,10 +524,6 @@ const NewRoom = () => {
 
         if($('#make_room').val() == ''){
             return alert('미팅 정보가 입력되지 않았습니다.');
-        }
-
-        if(dt2 > dtValidation && remindBool === true){
-            return alert('되풀이 미팅의 종료날짜는 미팅 시작날짜 이후여야 합니다.');
         }
 
         const formData = new FormData();
@@ -589,12 +598,12 @@ const NewRoom = () => {
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
 
-        if(Selected1 < new Date().getHours() && startDate === new Date().toISOString().slice(0, 10)){
+        if(Selected1 < new Date().getHours() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
             return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
         }
 
         // 오늘 날짜와 같고, 현재시간이랑 같거나 낮고, 현재 분 보다 낮을때
-        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === new Date().toISOString().slice(0, 10)){
+        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
             return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
         }
 
@@ -614,9 +623,6 @@ const NewRoom = () => {
             return alert('미팅 정보가 입력되지 않았습니다.');
         }
 
-        if(dt2 > dtValidation && remindBool === true){
-            return alert('되풀이 미팅의 종료날짜는 미팅 시작날짜 이후여야 합니다.');
-        }
 
         const formData = new FormData();
         formData.append('mt_name', title);
@@ -712,6 +718,27 @@ const NewRoom = () => {
 
     }
 
+    const [maxDate, setMaxDate] = useState('')
+
+    useEffect(()=> {
+        if(selectValue === 1) {
+            setEndDate(dayjs(startDate).add(7, 'day'));
+            setMaxDate(dayjs(startDate).add(30, 'day'))
+        } else if (selectValue === 2) {
+            setEndDate(dayjs(startDate).add(7, 'week'));
+            setMaxDate(dayjs(startDate).add(12, 'week'))
+        } else if (selectValue === 3) {
+            setEndDate(dayjs(startDate).add(14, 'week'));
+            setMaxDate(dayjs(startDate).add(24, 'week'))
+        } else if (selectValue === 4) {
+            setEndDate(dayjs(startDate).add(7, 'month'));
+            setMaxDate(dayjs(startDate).add(12, 'month'))
+        }
+    },[selectValue])
+
+    console.log(dayjs(endDate).format('YYYY-MM-DD'), '는 뭔가요')
+    console.log('몇일차이', dayjs(endDate).diff(startDate, 'day'))
+
     return (
         <div className="room">
             <h2>
@@ -725,14 +752,25 @@ const NewRoom = () => {
                         <label htmlFor="make_new">미팅 이름</label>
                         <input type="text" className="text" id="make_new" onChange={makeTitle} placeholder="미팅 이름을 입력해주세요." defaultValue={isNew === 0 ? '' : roomInfo.mt_name}/>
                         <hr />
+
+
                         <div className="flex_box">
                             <label htmlFor="make_date"><img src="../assets/image/ic_calendar_24.png" alt="" /></label>
 
-                            <input id="make_date" type="date" className="text under-scope width-flexble"
-                                   onChange={makeDate}
-                                   value={startDate}
-                                   min={dt}
-                            />
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DatePicker
+                                    id="make_date"
+                                    className="text under-scope width-flexble"
+                                    label="Basic example"
+                                    value={startDate}
+                                    minDate={dayjs(dt)}
+                                    // maxDate={}
+                                    inputFormat="YYYY-MM-DD"
+                                    mask={"____-__-__"}
+                                    onChange={makeDate}
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                            </LocalizationProvider>
                             <label htmlFor="make_time" className="input__time"><img src="../assets/image/ic_time_24.png" alt="" /></label>
                             <div className="flex_time">
                                 <div className="relative">
@@ -790,6 +828,15 @@ const NewRoom = () => {
                                 <div className="checkbox type__square">
                                     <input type="checkbox" className="checkbox" id="remind_bool" onChange={remindChange} defaultValue={remindBool}/>
                                     <label htmlFor="remind_bool">되풀이 미팅</label>
+                                    <strong>
+                                        {
+                                            selectValue === 1 ? `매일, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'day')}개 되풀이 항목` :
+                                                selectValue === 2 ? `매주 ${weekdayArrNew}, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'week')}개 되풀이 항목` :
+                                                    selectValue === 3 ? `매 2주마다, ${weekdayArrNew} ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${(dayjs(endDate).diff(startDate, 'week'))/2}개 되풀이 항목` :
+                                                        selectValue === 4 ? `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'month')}개 되풀이 항목` : ''
+                                        }
+
+                                    </strong>
                                 </div>
                         }
                         {remindBool && remindShowBool ?
@@ -799,154 +846,27 @@ const NewRoom = () => {
                                     <dd>
                                         <select onChange={handleChange} name="" id="room_repeat" className="make-select" defaultValue={selectValue}>
                                             <option value="1">매일</option>
-                                            <option value="2">주</option>
-                                            <option value="3">월</option>
-                                            <option value="4">년</option>
+                                            <option value="2">매주</option>
+                                            <option value="3">격주</option>
+                                            <option value="4">매월</option>
                                         </select>
                                     </dd>
-                                    <dt><label htmlFor="room_repeat2">반복 횟수</label></dt>
+                                    {/*<dt><label htmlFor="room_repeat2">반복 횟수</label></dt>*/}
                                     <dd>
                                         {
-                                            selectValue === 1 ?
-                                                <>
-                                                <select name="" id="room_repeat2" onChange={selectRemindCount} className="make-select" defaultValue={weekday}>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                    <option value="6">6</option>
-                                                    <option value="7">7</option>
-                                                    <option value="8">8</option>
-                                                    <option value="9">9</option>
-                                                    <option value="10">10</option>
-                                                    <option value="11">11</option>
-                                                    <option value="12">12</option>
-                                                    <option value="13">13</option>
-                                                    <option value="14">14</option>
-                                                    <option value="15">15</option>
-                                                    <option value="16">16</option>
-                                                    <option value="17">17</option>
-                                                    <option value="18">18</option>
-                                                    <option value="19">19</option>
-                                                    <option value="20">20</option>
-                                                    <option value="21">21</option>
-                                                    <option value="22">22</option>
-                                                    <option value="23">23</option>
-                                                    <option value="24">24</option>
-                                                    <option value="25">25</option>
-                                                    <option value="26">26</option>
-                                                    <option value="27">27</option>
-                                                    <option value="28">28</option>
-                                                    <option value="29">29</option>
-                                                    <option value="30">30</option>
-                                                    <option value="31">31</option>
-                                                    <option value="32">32</option>
-                                                    <option value="33">33</option>
-                                                    <option value="34">34</option>
-                                                    <option value="35">35</option>
-                                                    <option value="36">36</option>
-                                                    <option value="37">37</option>
-                                                    <option value="38">38</option>
-                                                    <option value="39">39</option>
-                                                    <option value="40">40</option>
-                                                    <option value="41">41</option>
-                                                    <option value="42">42</option>
-                                                    <option value="43">43</option>
-                                                    <option value="44">44</option>
-                                                    <option value="45">45</option>
-                                                    <option value="46">46</option>
-                                                    <option value="47">47</option>
-                                                    <option value="48">48</option>
-                                                    <option value="49">49</option>
-                                                    <option value="50">50</option>
-                                                    <option value="51">51</option>
-                                                    <option value="52">52</option>
-                                                    <option value="53">53</option>
-                                                    <option value="54">54</option>
-                                                    <option value="55">55</option>
-                                                    <option value="56">56</option>
-                                                    <option value="57">57</option>
-                                                    <option value="58">58</option>
-                                                    <option value="59">59</option>
-                                                    <option value="60">60</option>
-                                                    <option value="61">61</option>
-                                                    <option value="62">62</option>
-                                                    <option value="63">63</option>
-                                                    <option value="64">64</option>
-                                                    <option value="65">65</option>
-                                                    <option value="66">66</option>
-                                                    <option value="67">67</option>
-                                                    <option value="68">68</option>
-                                                    <option value="69">69</option>
-                                                    <option value="70">70</option>
-                                                    <option value="71">71</option>
-                                                    <option value="72">72</option>
-                                                    <option value="73">73</option>
-                                                    <option value="74">74</option>
-                                                    <option value="75">75</option>
-                                                    <option value="76">76</option>
-                                                    <option value="77">77</option>
-                                                    <option value="78">78</option>
-                                                    <option value="79">79</option>
-                                                    <option value="80">80</option>
-                                                    <option value="81">81</option>
-                                                    <option value="82">82</option>
-                                                    <option value="83">83</option>
-                                                    <option value="84">84</option>
-                                                    <option value="85">85</option>
-                                                    <option value="86">86</option>
-                                                    <option value="87">87</option>
-                                                    <option value="88">88</option>
-                                                    <option value="89">89</option>
-                                                    <option value="90">90</option>
-                                                </select>
-                                                    일
-                                                </>
-                                                : selectValue === 2 ?
-                                                    <>
-                                                        <select name="" id="room_repeat2" onChange={selectRemindCount} className="make-select">
-                                                            <option value="1">1</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="4">4</option>
-                                                            <option value="5">5</option>
-                                                            <option value="6">6</option>
-                                                            <option value="7">7</option>
-                                                            <option value="8">8</option>
-                                                            <option value="9">9</option>
-                                                            <option value="10">10</option>
-                                                            <option value="11">11</option>
-                                                            <option value="12">12</option>
-                                                        </select>주
-                                                    </>
-                                                    : selectValue === 3 ?
-                                                        <>
-                                                            <select name="" id="room_repeat2" onChange={selectRemindCount} className="make-select">
-                                                                <option value="1">1</option>
-                                                                <option value="2">2</option>
-                                                                <option value="3">3</option>
-                                                                <option value="4">4</option>
-                                                                <option value="5">5</option>
-                                                                <option value="6">6</option>
-                                                                <option value="7">7</option>
-                                                                <option value="8">8</option>
-                                                                <option value="9">9</option>
-                                                                <option value="10">10</option>
-                                                                <option value="11">11</option>
-                                                                <option value="12">12</option>
-                                                            </select>월
-                                                        </>
-                                                        : selectValue === 4 ?
-                                                            <>
-                                                                <select name="" id="room_repeat2" onChange={selectRemindCount} className="make-select">
-                                                                    <option value="1">1</option>
-                                                                    <option value="2">2</option>
-                                                                    <option value="3">3</option>
-                                                                    <option value="4">4</option>
-                                                                    <option value="5">5</option>
-                                                                </select>년
-                                                            </>
+                                            selectValue === 1 ? ''
+                                                : selectValue === 2 ? ''
+                                                    : selectValue === 3 ? ''
+                                                        : selectValue === 4 ? ''
+                                                            // <>
+                                                            //     <select name="" id="room_repeat2" onChange={selectRemindCount} className="make-select">
+                                                            //         <option value="1">1</option>
+                                                            //         <option value="2">2</option>
+                                                            //         <option value="3">3</option>
+                                                            //         <option value="4">4</option>
+                                                            //         <option value="5">5</option>
+                                                            //     </select>년
+                                                            // </>
                                                 : ''
                                         }
                                     </dd>
@@ -988,13 +908,65 @@ const NewRoom = () => {
                                                     </div>
                                                 </dd>
                                             </dl>
-                                        </> : null
+                                        </> :
+                                        selectValue === 3 ?
+                                            <>
+                                                <hr />
+                                                <dl className="inline__type">
+                                                    <dt><label htmlFor="월">반복 요일</label></dt>
+                                                    <dd>
+                                                        <div className="checkbox type__square">
+                                                            <input type="checkbox" className="checkbox" id="week_2" onChange={() => getWeekDay(2)} />
+                                                            <label htmlFor="week_2">월</label>
+                                                        </div>
+                                                        <div className="checkbox type__square">
+                                                            <input type="checkbox" className="checkbox" id="week_3"onChange={() => getWeekDay(3)} />
+                                                            <label htmlFor="week_3">화</label>
+                                                        </div>
+                                                        <div className="checkbox type__square">
+                                                            <input type="checkbox" className="checkbox" id="week_4" onChange={() => getWeekDay(4)} />
+                                                            <label htmlFor="week_4">수</label>
+                                                        </div>
+                                                        <div className="checkbox type__square">
+                                                            <input type="checkbox" className="checkbox" id="week_5"onChange={() => getWeekDay(5)} />
+                                                            <label htmlFor="week_5">목</label>
+                                                        </div>
+                                                        <div className="checkbox type__square">
+                                                            <input type="checkbox" className="checkbox" id="week_6" onChange={() => getWeekDay(6)} />
+                                                            <label htmlFor="week_6">금</label>
+                                                        </div>
+                                                        <div className="checkbox type__square">
+                                                            <input type="checkbox" className="checkbox" id="week_7" onChange={() => getWeekDay(7)} />
+                                                            <label htmlFor="week_7">토</label>
+                                                        </div>
+                                                        <div className="checkbox type__square">
+                                                            <input type="checkbox" className="checkbox" id="week_1" onChange={() => getWeekDay(1)} />
+                                                            <label htmlFor="week_1">일</label>
+                                                        </div>
+                                                    </dd>
+                                                </dl>
+                                            </>
+                                        : null
                                 }
                                 <hr />
                                 <dl className="inline__type">
                                     <dt><label htmlFor="종료 날짜">종료 날짜</label></dt>
                                     <dd>
-                                        <input id="meeting_end_date" type="date" onChange={makeEndDate} min={dt2} className="text under-scope" />
+                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                            <DatePicker
+                                                id="meeting_end_date"
+                                                className="text under-scope"
+                                                // label="Basic example"
+                                                value={endDate}
+                                                minDate={dayjs(startDate).add(7, 'day')}
+                                                mask={"____-__-__"}
+                                                maxDate={maxDate}
+                                                inputFormat="YYYY-MM-DD"
+                                                onChange={makeEndDate}
+                                                renderInput={(params) => <TextField {...params} />}
+                                            />
+                                        </LocalizationProvider>
+                                        {/*<input id="meeting_end_date" type="date" onChange={makeEndDate} min={dt2} className="text under-scope" />*/}
                                     </dd>
                                 </dl>
                             </div>
@@ -1049,9 +1021,7 @@ const NewRoom = () => {
                     </div>
 
                     <div className="input__group">
-                        {/*<div style={{display:"inline-block"}}>첨부파일<input className="sr-only" type="file" name="file_upload" id="fileUpload" multiple accept="application/pdf, image/*" onChange={handleFileEvent} disabled={fileLimit}/><label style={{marginLeft:"10px"}} htmlFor="fileUpload"><span  className="btn btn__download"><img src={require('../assets/image/ic_attachment_14.png')} alt="" />파일 업로드</span></label></div>*/}
-                        <div style={{display:"inline-block"}}>첨부파일<input className="sr-only" type="file" name="file_upload" id="fileUpload" multiple accept="*" onChange={handleFileEvent} disabled={fileLimit}/><label style={{marginLeft:"10px"}} htmlFor="fileUpload"><span  className="btn btn__download"><img src={require('../assets/image/ic_attachment_14.png')} alt="" />파일 업로드</span></label></div>
-
+                        <div style={{display:"inline-block"}}>첨부파일<input className="sr-only" type="file" name="file_upload" id="fileUpload" multiple accept=".pdf, .hwp, .txt, .zip, .docx, .pptx, .xlsx, .png, .jpeg, .jpg, .tiff, .mp4, .avi, .gif, .mkv" onChange={handleFileEvent} disabled={fileLimit}/><label style={{marginLeft:"10px"}} htmlFor="fileUpload"><span  className="btn btn__download"><img src={require('../assets/image/ic_attachment_14.png')} alt="" />파일 업로드</span></label></div>
 
                         <div className="list__upload">
                             <ul>

@@ -44,7 +44,7 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
                         <span className="type__ready">곧 시작</span>
                     : room.mt_iData !== 0 ?
                         <span className="type__ready">약 {Math.floor((new Date(room.mt_start_dt) - new Date()) / 3600000)}시간 뒤 시작</span>
-                    : room.mt_iData === 0 ?
+                    : room.is_join === 0 ?
                         <span className="type__private">미참석</span>
                     : ""
                 }
