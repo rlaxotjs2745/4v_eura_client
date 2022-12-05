@@ -18,6 +18,8 @@ const SignUp = () => {
     const [userDisabled, setUserDisabled] = useState(false)
     const [termDisabled, setTermDisabled] = useState(true)
 
+    const [userIdCheck, setUserIdCheck] = useState(null);
+
     const handleUserName = (e) => {
         setUserName(e.target.value);
         if (userId.length && userName.length && userPwd.length && userPwdChk.length  && !($('.input__group').hasClass('is-alert'))) {
@@ -296,6 +298,21 @@ const SignUp = () => {
 
     }
 
+    const inRegEmail = (data) => {
+        console.log(userId)
+        axios.post(SERVER_URL + '/join_default'
+            , {'user_id':userId}
+        ).then(res => {
+            if(res.data.result_code === 'FAIL'){
+                setUserIdCheck(res.data.result_str)
+            } else if(res.data.result_code === 'SUCCESS'){
+                setUserIdCheck(null)
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
     return (
         <section className="content" id="content">
             <form name="signupForm" className="w100" id="signUpForm" onSubmit={handleSubmit(onSubmit, onError)}>
@@ -323,13 +340,14 @@ const SignUp = () => {
                             <input onKeyUp={handleUserName} required name="user_name" type="text" className="text" id="join_name" placeholder="이름을 입력하세요" {...register('user_name')}/>
                             {errors.user_name && <div className="error_tip">{errors.user_name.message}</div>}
                         </div>
-                        <div className={'input__group ' + (errors.user_id ? "is-alert " : "") + (watch().user_id ? "is-success " : "")}>
+                        <div className={'input__group ' + (errors.user_id ? "is-alert " : "") + (watch().user_id ? "is-success " : "") + (userIdCheck === '중복되는 아이디 입니다.' ? "is-alert " : "" )}>
                             <label htmlFor="join_email">아이디(이메일)</label>
-                            <input onKeyUp={handleUserId} required type="text" className="text" id="join_email"  placeholder="이메일을 입력하세요" {...register('user_id')}/>
+                            <input onKeyUp={handleUserId} onBlurCapture={inRegEmail} required type="text" className="text" id="join_email"  placeholder="이메일을 입력하세요" {...register('user_id')}/>
                             <div className="input__message">
                                 입력하신 이메일로 회원가입 인증메일이 발송됩니다.
                             </div>
                             {errors.user_id && <div className="error_tip">{errors.user_id.message}</div>}
+                            {userIdCheck ? <div className="error_tip">{userIdCheck}</div> : null}
                         </div>
                         <div className={'input__group ' + (errors.password ? "is-alert " : "") + (watch().password ? "is-success " : "")}>
                             {/*is-success is-alert*/}

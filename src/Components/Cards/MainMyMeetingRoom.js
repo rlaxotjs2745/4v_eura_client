@@ -44,6 +44,8 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
                         <span className="type__ready">곧 시작</span>
                     : room.mt_iData !== 0 ?
                         <span className="type__ready">약 {Math.floor((new Date(room.mt_start_dt) - new Date()) / 3600000)}시간 뒤 시작</span>
+                    : room.mt_iData === 0 ?
+                        <span className="type__private">미참석</span>
                     : ""
                 }
             </div>
@@ -64,7 +66,8 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
                     </div>
                 : ''
             }
-            <div className="box__title">{!room.mt_name ? '' : room.mt_name.length > 15 ? room.mt_name.slice(0,14) + '..' : room.mt_name}</div>
+            {/*<div className="box__title">{!room.mt_name ? '' : room.mt_name.length > 15 ? room.mt_name.slice(0,14) + '..' : room.mt_name}</div>*/}
+            <div className="box__title">{!room.mt_name ? '' : room.mt_name}</div>
             <dl className="type__host">
                 <dt>호스트 이름</dt>
                 <dd>

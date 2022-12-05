@@ -2236,9 +2236,12 @@ td {
     z-index: 1;
 }
 
-.box.box__ts dl.type__host {width: 50%; margin-top: 18px}
+/*.box.box__ts dl.type__host {width: 50%; margin-top: 18px}*/
+.box.box__ts dl.type__host {margin-top: 18px}
+
 
 .box:hover {
+    cursor: pointer;
     transition: .1s top ease-in;
     top: -9px;
     box-shadow: 5px 12px 25px rgba(11, 54, 118, 0.1);
@@ -2343,7 +2346,12 @@ td {
     color: #17171a;
     font-size: 16px;
     font-weight: 700;
-    line-height: 1.5
+    line-height: 1.5;
+    white-space: nowrap;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .box dl {
@@ -3699,15 +3707,15 @@ html.js-overflow {
 }
 
 .room .room__box .flow__team {
-    display: none;
     position: absolute;
     z-index: 800;
     top: 76px;
     left: 0;
     width: 100%;
-    height: 240px;
+    height: 0px;
+    overflow: hidden;
     border-radius: 8px;
-    border: solid 1px #bfc3d5;
+
     background-color: #fff;
     vertical-align: middle;
     box-shadow: none;
@@ -3716,9 +3724,17 @@ html.js-overflow {
     font-size: 14px;
     color: #17171a;
     font-weight: 500;
-    padding: 10px 10px;
+
+    box-sizing: border-box;
+    transition: 0.3s ease-in-out;
+}
+.room .room__box .flow__team.on {
+    display: block;
+    height: 240px;
     overflow-X: hidden;
-    overflow-Y: scroll
+    overflow-Y: scroll;
+    padding: 10px 10px;
+    border: solid 1px #bfc3d5;
 }
 
 .room .room__box .flow__team::-webkit-scrollbar {
@@ -4982,3 +4998,5 @@ input[type=date].under-scope, input[type=time].under-scope {cursor: pointer}
 
 .eura_down_link {display: flex; margin-top: -30px; margin-bottom:17px; justify-content: end; align-items: center; color: #8A8C99;}
 .eura_down_link a {border-radius: 8px; background: #8A8C99; color:#fff; padding:5px 12px; margin-left:10px; font-weight: 600}
+
+#loginForm .checkbox label {font-size:16px; color: #8A8C99}

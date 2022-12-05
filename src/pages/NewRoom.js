@@ -384,12 +384,29 @@ const NewRoom = () => {
         handleModal();
     }
 
-    $(document.body).on('click', '#make_team', function () {
-        $(".flow__team").slideDown();
+    $(document.body).on('focus', '#make_team', function () {
+        $(".flow__team").addClass('on');
     });
-    $(document.body).on('mouseleave', '.flow__team', function () {
-        $(".flow__team").slideUp();
+
+    $(document).mouseup(function (e) {
+        var LayerPopup = $("#hahhhoho");
+        if (LayerPopup.has(e.target).length === 0) {
+            $(".flow__team").removeClass('on');
+            // LayerPopup.removeClass("open");
+        }
     });
+
+    // document.querySelector("body").addEventListener("click", function(e) {
+    //     if(e.target.className === e.currentTarget.querySelector(".flow__team").className) {
+    //         console.log("correct")
+    //     } else {
+    //         console.log("wrong")
+    //         $(".flow__team").removeClass('on');
+    //     }
+    // })
+    // $(document.body).on('blur', '.flow__team', function () {
+    //     $(".flow__team").slideUp();
+    // });
 
     const remindChange = () => {
         if (!remindBool) {

@@ -65,7 +65,19 @@ const MeetingRoom = (props) => {
     const cancelMeeting = () => {
         if(roomInfo.mt_status === 2){
             axios.post(SERVER_URL +
-                    '/meet/room/erase', {idx_meeting:window.location.pathname.split('/')[window.location.pathname.split('/').length-1]},
+                '/meet/room/erase', {idx_meeting:window.location.pathname.split('/')[window.location.pathname.split('/').length-1]},
+                AXIOS_OPTION)
+                .then(res => {
+                    if(res.data.result_code === 'SUCCESS'){
+                        setRoomInfo({...roomInfo, mt_status: 3});
+                        navigate('/')
+                    }else{
+                        alert(res.data.result_str);
+                    }
+                })
+        } else if(roomInfo.mt_status === 0){
+            axios.post(SERVER_URL +
+                '/meet/room/erase', {idx_meeting:window.location.pathname.split('/')[window.location.pathname.split('/').length-1]},
                 AXIOS_OPTION)
                 .then(res => {
                     if(res.data.result_code === 'SUCCESS'){
@@ -154,6 +166,11 @@ const MeetingRoom = (props) => {
                         <div className="sorting">
                             {
                                 roomInfo.mt_ishost === '0' ? '' :
+                                    roomInfo.mt_status === 0 ?
+                                        <a onClick={openModal} className="btn btn-delete js-modal-alert">
+                                            <img src={require('../assets/image/ic_delete_16.png')} alt=""/>미팅 삭제하기
+                                        </a>
+                                        :
                                     roomInfo.isLive === 1 && roomInfo.mt_ishost === '1' ? '' :
                                         roomInfo.mt_ishost === '1' && roomInfo.mt_status === 2 ?
                                             <a onClick={openModal} className="btn btn-delete js-modal-alert">
@@ -291,6 +308,12 @@ const MeetingRoom = (props) => {
                         <div className="popup__cnt">
                             {
                                     roomInfo.mt_status === 2 ?
+                                        <div className="pop__message">
+                                            <img src={require('../assets/image/ic_warning_80.png')} alt="" />
+                                            <strong>미팅룸을 삭제 하시겠습니까?</strong>
+                                        </div>
+                                        :
+                                        roomInfo.mt_status === 0 ?
                                         <div className="pop__message">
                                             <img src={require('../assets/image/ic_warning_80.png')} alt="" />
                                             <strong>미팅룸을 삭제 하시겠습니까?</strong>
