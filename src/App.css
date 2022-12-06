@@ -2087,7 +2087,12 @@ td {
     font-size: 16px;
     font-weight: 700;
     float: left;
-    width: 160px
+    width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 10px;
+    box-sizing: border-box;
 }
 
 .main__schedule ul li em {
