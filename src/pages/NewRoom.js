@@ -19,39 +19,44 @@ const FILE_SIZE_MAX_LIMIT = 100 * 1024 * 1024;  // 100MB
 const NewRoom = () => {
     const { pathname } = useLocation();
     const location = useLocation(); // navigate 에서 받은 스테이트값 넘겨받기위함. result_code FAIL01로 넘겨줌
-
-    const pathSplit = Number(pathname.split('/')[2])
-
     const navigate = useNavigate();
     const fileReader = new FileReader();
 
-    const [roomInfo, setRoomInfo] = useState({});
-    const [isNew, setIsNew] = useState(0);
-    const [invites, setInvites] = useState([]);
-    const [invCount, setInvCount] = useState('');
-    const [delUser, setDelUser] = useState('');
-    const [searchUser, setSearchUser] = useState([]);
-    const [remindBool, setRemindBool] = useState(false);
-    const [remindShowBool, setRemindShowBool] = useState(true);
-    const [weekday, setWeekday] = useState([]);
-    const [weekdayArrNew, setWeekdayArrNew] = useState([])
+    const pathSplit = Number(pathname.split('/')[2]) // 수정, 재개설 시 미팅 인덱스
 
+    const [roomInfo, setRoomInfo] = useState({}); // 방 전체 정보
+    const [title, setTitle] = useState(''); // 방 제목
+    const [meetingInfo, setMeetingInfo] = useState(''); // 미팅 설명
 
-    const [groupInvites, setGroupInvites] = useState([]);
+    const [isNew, setIsNew] = useState(0); // 새로운 채팅 개설일 경우
 
-    const [selectValue, setSelectValue] = useState(0);
-    const [remindCount, setRemindCount] = useState(0);
-    const [title, setTitle] = useState('');
+    const [invites, setInvites] = useState([]); // 현재 참석자
+    const [invCount, setInvCount] = useState(''); // 현재 참석자 수
+    const [delUser, setDelUser] = useState(''); // 기존 참석자에서 제거된 명단
+    const [searchUser, setSearchUser] = useState([]); // 검색을 통해 보여지는 명단
+    const [groupInvites, setGroupInvites] = useState([]); // 단체 참석자 추가
+
+    const [remindBool, setRemindBool] = useState(false); // 되풀이 미팅
+    const [remindShowBool, setRemindShowBool] = useState(true); // 되풀이 미팅
+    const [remindCount, setRemindCount] = useState(0); // 되풀이 미팅 횟수
+
     const [startDate, setStartDate] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
     const [startTime, setStartTime] = useState(new Date().getHours() + ':' + new Date().getMinutes() + ':00');
     const [endTime, setEndTime] = useState(new Date().getHours() + ':' + new Date().getMinutes() + ':00');
     const [endDate, setEndDate] = useState(dayjs(startDate).add(7, 'day'));
-    const [meetingInfo, setMeetingInfo] = useState('');
+    const [selectValue, setSelectValue] = useState(0);
+    const [Selected1, setSelected1] = useState('00');
+    const [Selected2, setSelected2] = useState('00');
+    const [Selected3, setSelected3] = useState('00');
+    const [Selected4, setSelected4] = useState('00');
+    const [maxDate, setMaxDate] = useState('')
+    const [dayCount, setdayCount] = useState(0)
+    const [weekday, setWeekday] = useState([]);
+    const [weekdayArrNew, setWeekdayArrNew] = useState([])
 
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [uploadedFilesPlus, setUploadedFilesPlus] = useState([]);
     const [delFiles, setDelFiles] = useState([]);
-
     const [fileLimit, setFileLimit] = useState(false);
 
     const [groupModal, setGroupModal] = useState('pop__detail');
@@ -61,12 +66,6 @@ const NewRoom = () => {
     const [dt, setDt] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
     const [dt2, setDt2] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
 
-    const [Selected1, setSelected1] = useState('00');
-    const [Selected2, setSelected2] = useState('00');
-    const [Selected3, setSelected3] = useState('00');
-    const [Selected4, setSelected4] = useState('00');
-    const [maxDate, setMaxDate] = useState('')
-    const [dayCount, setdayCount] = useState(0)
 
     useEffect(() => {
         let curTIme = new Date();
