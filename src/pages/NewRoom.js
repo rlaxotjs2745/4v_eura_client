@@ -68,8 +68,6 @@ const NewRoom = () => {
     const [maxDate, setMaxDate] = useState('')
     const [dayCount, setdayCount] = useState(0)
 
-    console.log('시작날짜 요일', weekdayArr[dayjs(startDate).day()])
-
     useEffect(() => {
         let curTIme = new Date();
 
@@ -84,25 +82,7 @@ const NewRoom = () => {
 
         setSelected3(curTIme.getHours());
         setSelected4(curTIme.getMinutes());
-    },[])
 
-    useEffect(()=> {
-        if(selectValue === 1) {
-            setEndDate(dayjs(startDate).add(7, 'day'));
-        } else if (selectValue === 2) {
-            setEndDate(dayjs(startDate).add(7, 'week'));
-        } else if (selectValue === 3) {
-            setEndDate(dayjs(startDate).add(14, 'week'));
-        } else if (selectValue === 4) {
-            setEndDate(dayjs(startDate).add(7, 'month'));
-        }
-    },[startDate])
-
-    useEffect(()=> {
-        setWeekdayArrNew(weekday.map((value, index, array) => weekdayArr[value - 1]).join())
-    }, [weekday])
-
-    useEffect(() => {
         if(pathname.indexOf('reopen')>-1){
             setIsNew(2);
         }else if(pathname.indexOf('/newroom/')>-1){
@@ -143,8 +123,23 @@ const NewRoom = () => {
                 setInvites(res.data.data.mt_invites);
             })
 
+    },[])
 
-    }, [])
+    useEffect(()=> {
+        if(selectValue === 1) {
+            setEndDate(dayjs(startDate).add(7, 'day'));
+        } else if (selectValue === 2) {
+            setEndDate(dayjs(startDate).add(7, 'week'));
+        } else if (selectValue === 3) {
+            setEndDate(dayjs(startDate).add(14, 'week'));
+        } else if (selectValue === 4) {
+            setEndDate(dayjs(startDate).add(7, 'month'));
+        }
+    },[startDate])
+
+    useEffect(()=> {
+        setWeekdayArrNew(weekday.map((value, index, array) => weekdayArr[value - 1]).join())
+    }, [weekday])
 
     useEffect(()=> {
         setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
@@ -183,10 +178,7 @@ const NewRoom = () => {
         }
     }, [endDate, startDate])
 
-
-
     const weekdayArr = ['일','월','화','수','목','금','토']
-
 
     const select1_opiton = [
         { value: "00", label: "00", idx:"00"},
@@ -260,22 +252,22 @@ const NewRoom = () => {
         { value: "50", label: "50", idx:"05"},
     ];
 
+
     const handleSelect1 = (e) => {
         setSelected1(e.target.value);
     };
+
     const handleSelect2 = (e) => {
         setSelected2(e.target.value);
     };
+
     const handleSelect3 = (e) => {
         setSelected3(e.target.value);
     };
+
     const handleSelect4 = (e) => {
         setSelected4(e.target.value);
     };
-
-
-
-
 
     const handleUploadFiles = (files) => {
 
@@ -323,7 +315,6 @@ const NewRoom = () => {
         }
     }
 
-
     const handleFileDeleteEvent = (e) => {
         let uploaded = [...uploadedFiles]
         let indexNumber = e.target.parentNode.parentNode
@@ -356,8 +347,6 @@ const NewRoom = () => {
         }))
         setFileLimit(false)
     }
-
-
 
     const searchInviteUserList = (e) => {
         let searchWord = e.target.value;
@@ -400,7 +389,6 @@ const NewRoom = () => {
             setGroupSearchUser(groupSearchUser.filter(inv => inv.email != user.email));
         }
     }
-
 
     const addUser = (user) => {
         if(user.email === getCookie('user_id')){
@@ -452,7 +440,6 @@ const NewRoom = () => {
         handleModal();
     }
 
-
     const pressEnterKey = (e) => {
         if(e.key === 'Enter'){
             const reg_email = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
@@ -476,30 +463,6 @@ const NewRoom = () => {
             }
         }
     }
-
-    $(document.body).on('focus', '#make_team', function () {
-        $(".flow__team").addClass('on');
-    });
-
-    $(document).mouseup(function (e) {
-        var LayerPopup = $("#hahhhoho");
-        if (LayerPopup.has(e.target).length === 0) {
-            $(".flow__team").removeClass('on');
-            // LayerPopup.removeClass("open");
-        }
-    });
-
-    // document.querySelector("body").addEventListener("click", function(e) {
-    //     if(e.target.className === e.currentTarget.querySelector(".flow__team").className) {
-    //         console.log("correct")
-    //     } else {
-    //         console.log("wrong")
-    //         $(".flow__team").removeClass('on');
-    //     }
-    // })
-    // $(document.body).on('blur', '.flow__team', function () {
-    //     $(".flow__team").slideUp();
-    // });
 
     const remindChange = () => {
         if (!remindBool) {
@@ -556,7 +519,6 @@ const NewRoom = () => {
     const makeMeetingInfo = (e) => {
         setMeetingInfo(e.target.value);
     }
-
 
     const handleSubmit = () => {
         console.log(remindCount)
@@ -758,18 +720,6 @@ const NewRoom = () => {
         navigate('/');
     }
 
-
-    $('#shade').click(() => {
-        handleModal();
-    })
-
-    $('#shade2').off().on('click', () => {
-        $('#popup__notice').removeClass('is-on');
-        $('#shade2').removeClass('is-on');
-        alert('미팅룸을 비공개상태로 수정하였습니다.');
-        navigate('/');
-    })
-
     const changeMeetingStatus2 = () => {
         axios.put(SERVER_URL + '/meet/room/open', {"idx_meeting": window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}, AXIOS_OPTION)
             .then(res => {
@@ -789,6 +739,28 @@ const NewRoom = () => {
 
     }
 
+    $(document.body).on('focus', '#make_team', function () {
+        $(".flow__team").addClass('on');
+    });
+
+    $(document).mouseup(function (e) {
+        var LayerPopup = $("#hahhhoho");
+        if (LayerPopup.has(e.target).length === 0) {
+            $(".flow__team").removeClass('on');
+            // LayerPopup.removeClass("open");
+        }
+    });
+
+    $('#shade').click(() => {
+        handleModal();
+    })
+
+    $('#shade2').off().on('click', () => {
+        $('#popup__notice').removeClass('is-on');
+        $('#shade2').removeClass('is-on');
+        alert('미팅룸을 비공개상태로 수정하였습니다.');
+        navigate('/');
+    })
 
 
     // console.log(dayjs(endDate).diff(startDate, 'day'), '는 뭔가요')
@@ -797,7 +769,7 @@ const NewRoom = () => {
     // console.log('remount카운트 몇개', remindCount)
 
 
-    function getDayCountBetweenDates(startDate, endDate, days) {
+    const getDayCountBetweenDates = (startDate, endDate, days) => {
         let date = new Date(startDate);
         let count = 0;
 
