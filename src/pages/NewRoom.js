@@ -17,10 +17,6 @@ const MAX_COUNT = 99;
 const FILE_SIZE_MAX_LIMIT = 100 * 1024 * 1024;  // 100MB
 
 const NewRoom = () => {
-
-
-
-    const [value, setValue] = useState(null);
     const { pathname } = useLocation();
     const location = useLocation(); // navigate 에서 받은 스테이트값 넘겨받기위함. result_code FAIL01로 넘겨줌
 
@@ -38,12 +34,8 @@ const NewRoom = () => {
     const [remindBool, setRemindBool] = useState(false);
     const [remindShowBool, setRemindShowBool] = useState(true);
     const [weekday, setWeekday] = useState([]);
-    const weekdayArr = ['일','월','화','수','목','금','토']
     const [weekdayArrNew, setWeekdayArrNew] = useState([])
 
-    useEffect(()=> {
-        setWeekdayArrNew(weekday.map((value, index, array) => weekdayArr[value - 1]).join())
-    }, [weekday])
 
     const [groupInvites, setGroupInvites] = useState([]);
 
@@ -73,6 +65,8 @@ const NewRoom = () => {
     const [Selected2, setSelected2] = useState('00');
     const [Selected3, setSelected3] = useState('00');
     const [Selected4, setSelected4] = useState('00');
+    const [maxDate, setMaxDate] = useState('')
+    const [dayCount, setdayCount] = useState(0)
 
     console.log('시작날짜 요일', weekdayArr[dayjs(startDate).day()])
 
@@ -91,6 +85,107 @@ const NewRoom = () => {
         setSelected3(curTIme.getHours());
         setSelected4(curTIme.getMinutes());
     },[])
+
+    useEffect(()=> {
+        if(selectValue === 1) {
+            setEndDate(dayjs(startDate).add(7, 'day'));
+        } else if (selectValue === 2) {
+            setEndDate(dayjs(startDate).add(7, 'week'));
+        } else if (selectValue === 3) {
+            setEndDate(dayjs(startDate).add(14, 'week'));
+        } else if (selectValue === 4) {
+            setEndDate(dayjs(startDate).add(7, 'month'));
+        }
+    },[startDate])
+
+    useEffect(()=> {
+        setWeekdayArrNew(weekday.map((value, index, array) => weekdayArr[value - 1]).join())
+    }, [weekday])
+
+    useEffect(() => {
+        if(pathname.indexOf('reopen')>-1){
+            setIsNew(2);
+        }else if(pathname.indexOf('/newroom/')>-1){
+            setIsNew(1);
+
+        } else return;
+
+        axios.get(SERVER_URL +
+            `/meet/room/info?idx_meeting=${pathSplit}`,
+            AXIOS_OPTION)
+            .then(res => {
+                const room = res.data.data;
+                setTitle(room.mt_name);
+                setStartDate(room.mt_start_dt.split(' ')[0]);
+                setDt2(room.mt_start_dt.split(' ')[0]);
+                setStartTime(room.mt_start_dt.split(' ')[1]);
+                setEndTime(room.mt_end_dt.split(' ')[1]);
+                setSelectValue(room.mt_remind_type);
+                setRemindCount(room.mt_remind_count);
+                setEndDate(room.mt_end_dt.split(' ')[0]);
+                setMeetingInfo(room.mt_info);
+                setRoomInfo(room);
+                setUploadedFilesPlus(room.mt_files);
+                setSelected1(room.mt_start_dt.split(' ')[1].split(':')[0])
+                setSelected2(room.mt_start_dt.split(' ')[1].split(':')[1])
+                setSelected3(room.mt_end_dt.split(' ')[1].split(':')[0])
+                setSelected4(room.mt_end_dt.split(' ')[1].split(':')[1])
+
+                if(room.mt_remind_week !== null) {
+                    setWeekday(room.mt_remind_week.split(','));
+                }
+            })
+        axios.get(SERVER_URL +
+            `/meet/room/invite?idx_meeting=${pathSplit}`,
+            AXIOS_OPTION)
+            .then(res => {
+                setInvCount(res.data.data.mt_invites.length);
+                setInvites(res.data.data.mt_invites);
+            })
+
+
+    }, [])
+
+    useEffect(()=> {
+        setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
+        // console.log(getDayCountBetweenDates(startDate2, endDate2, [1,3]))
+    },[weekday, endDate, startDate])
+
+    useEffect(()=> {
+        if(selectValue === 1) {
+            setEndDate(dayjs(startDate).add(7, 'day'));
+            setMaxDate(dayjs(startDate).add(30, 'day'))
+        } else if (selectValue === 2) {
+            setEndDate(dayjs(startDate).add(7, 'week'));
+            setMaxDate(dayjs(startDate).add(12, 'week'))
+        } else if (selectValue === 3) {
+            setEndDate(dayjs(startDate).add(14, 'week'));
+            setMaxDate(dayjs(startDate).add(24, 'week'))
+        } else if (selectValue === 4) {
+            setEndDate(dayjs(startDate).add(7, 'month'));
+            setMaxDate(dayjs(startDate).add(12, 'month'))
+        }
+    },[selectValue])
+
+    useEffect(()=> {
+        if(selectValue === 1) {
+            setRemindCount(dayjs(endDate).diff(startDate, 'day'))
+            setMaxDate(dayjs(startDate).add(30, 'day'))
+        } else if (selectValue === 2) {
+            setRemindCount(dayjs(endDate).diff(startDate, 'week'))
+            setMaxDate(dayjs(startDate).add(12, 'week'))
+        } else if (selectValue === 3) {
+            setRemindCount(dayjs(endDate).diff(startDate, 'week')/2)
+            setMaxDate(dayjs(startDate).add(24, 'week'))
+        } else if (selectValue === 4) {
+            setRemindCount(dayjs(endDate).diff(startDate, 'month'))
+            setMaxDate(dayjs(startDate).add(12, 'month'))
+        }
+    }, [endDate, startDate])
+
+
+
+    const weekdayArr = ['일','월','화','수','목','금','토']
 
 
     const select1_opiton = [
@@ -178,55 +273,7 @@ const NewRoom = () => {
         setSelected4(e.target.value);
     };
 
-    useEffect(() => {
-        if(pathname.indexOf('reopen')>-1){
-            setIsNew(2);
-        }else if(pathname.indexOf('/newroom/')>-1){
-            setIsNew(1);
 
-        } else return;
-
-        // setRemindShowBool(false);
-
-            axios.get(SERVER_URL +
-                `/meet/room/info?idx_meeting=${pathSplit}`,
-                AXIOS_OPTION)
-                .then(res => {
-                    const room = res.data.data;
-                    setTitle(room.mt_name);
-                    setStartDate(room.mt_start_dt.split(' ')[0]);
-                    setDt2(room.mt_start_dt.split(' ')[0]);
-                    setStartTime(room.mt_start_dt.split(' ')[1]);
-                    setEndTime(room.mt_end_dt.split(' ')[1]);
-                    setSelectValue(room.mt_remind_type);
-                    setRemindCount(room.mt_remind_count);
-                    setEndDate(room.mt_end_dt.split(' ')[0]);
-                    setMeetingInfo(room.mt_info);
-                    setRoomInfo(room);
-                    setUploadedFilesPlus(room.mt_files);
-                    setSelected1(room.mt_start_dt.split(' ')[1].split(':')[0])
-                    setSelected2(room.mt_start_dt.split(' ')[1].split(':')[1])
-                    setSelected3(room.mt_end_dt.split(' ')[1].split(':')[0])
-                    setSelected4(room.mt_end_dt.split(' ')[1].split(':')[1])
-
-                    if(room.mt_remind_week !== null) {
-                        setWeekday(room.mt_remind_week.split(','));
-                    }
-                })
-            axios.get(SERVER_URL +
-                `/meet/room/invite?idx_meeting=${pathSplit}`,
-                AXIOS_OPTION)
-                .then(res => {
-                    setInvCount(res.data.data.mt_invites.length);
-                    setInvites(res.data.data.mt_invites);
-                })
-
-
-    }, [])
-
-    useEffect(() => {
-        // setRemindBool(!!roomInfo.mt_remind_type);
-    }, [roomInfo]);
 
 
 
@@ -501,18 +548,6 @@ const NewRoom = () => {
         setStartDate(newValue);
     }
 
-    useEffect(()=> {
-        if(selectValue === 1) {
-            setEndDate(dayjs(startDate).add(7, 'day'));
-        } else if (selectValue === 2) {
-            setEndDate(dayjs(startDate).add(7, 'week'));
-        } else if (selectValue === 3) {
-            setEndDate(dayjs(startDate).add(14, 'week'));
-        } else if (selectValue === 4) {
-            setEndDate(dayjs(startDate).add(7, 'month'));
-        }
-    },[startDate])
-
     const makeEndDate = (e) => {
         setEndDate(e);
 
@@ -620,10 +655,6 @@ const NewRoom = () => {
         }
     }
 
-    $('#shade').click(() => {
-        handleModal();
-    })
-
     const openModal = () => {
         if($('#make_new').val() == ''){
             return alert('미팅 이름을 입력해주세요.')
@@ -727,6 +758,11 @@ const NewRoom = () => {
         navigate('/');
     }
 
+
+    $('#shade').click(() => {
+        handleModal();
+    })
+
     $('#shade2').off().on('click', () => {
         $('#popup__notice').removeClass('is-on');
         $('#shade2').removeClass('is-on');
@@ -753,46 +789,13 @@ const NewRoom = () => {
 
     }
 
-    const [maxDate, setMaxDate] = useState('')
 
-    useEffect(()=> {
-        if(selectValue === 1) {
-            setEndDate(dayjs(startDate).add(7, 'day'));
-            setMaxDate(dayjs(startDate).add(30, 'day'))
-        } else if (selectValue === 2) {
-            setEndDate(dayjs(startDate).add(7, 'week'));
-            setMaxDate(dayjs(startDate).add(12, 'week'))
-        } else if (selectValue === 3) {
-            setEndDate(dayjs(startDate).add(14, 'week'));
-            setMaxDate(dayjs(startDate).add(24, 'week'))
-        } else if (selectValue === 4) {
-            setEndDate(dayjs(startDate).add(7, 'month'));
-            setMaxDate(dayjs(startDate).add(12, 'month'))
-        }
-    },[selectValue])
-
-    useEffect(()=> {
-        if(selectValue === 1) {
-            setRemindCount(dayjs(endDate).diff(startDate, 'day'))
-            setMaxDate(dayjs(startDate).add(30, 'day'))
-        } else if (selectValue === 2) {
-            setRemindCount(dayjs(endDate).diff(startDate, 'week'))
-            setMaxDate(dayjs(startDate).add(12, 'week'))
-        } else if (selectValue === 3) {
-            setRemindCount(dayjs(endDate).diff(startDate, 'week')/2)
-            setMaxDate(dayjs(startDate).add(24, 'week'))
-        } else if (selectValue === 4) {
-            setRemindCount(dayjs(endDate).diff(startDate, 'month'))
-            setMaxDate(dayjs(startDate).add(12, 'month'))
-        }
-    }, [endDate, startDate])
 
     // console.log(dayjs(endDate).diff(startDate, 'day'), '는 뭔가요')
     // console.log(dayjs(endDate).day(), '는 무슨요일')
     // console.log('몇일차이', dayjs(endDate).diff(startDate, 'day'))
     // console.log('remount카운트 몇개', remindCount)
 
-    const [dayCount, setdayCount] = useState(0)
 
     function getDayCountBetweenDates(startDate, endDate, days) {
         let date = new Date(startDate);
@@ -813,11 +816,6 @@ const NewRoom = () => {
     const days = weekday; // 금요일
 
     startDate2.setDate(startDate.getDate() + 1);
-
-    useEffect(()=> {
-        setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
-        // console.log(getDayCountBetweenDates(startDate2, endDate2, [1,3]))
-    },[weekday, endDate, startDate])
 
     console.log(dayCount)
 
