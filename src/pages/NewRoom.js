@@ -808,11 +808,11 @@ const NewRoom = () => {
         return count;
     }
 
-    const startDate2 = dayjs(startDate); // 1월 1일
+    const startDate2 = new Date(startDate); // 1월 1일
     const endDate2 = dayjs(endDate); // 1월 31일
     const days = weekday; // 금요일
 
-    startDate2.setDate(startDate.getDate() + 1);
+    startDate2.setDate(startDate2.getDate() + 1);
 
     useEffect(()=> {
         setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
