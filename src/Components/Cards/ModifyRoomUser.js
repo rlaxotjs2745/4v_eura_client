@@ -3,7 +3,6 @@ import React from "react"
 const ModifyRoomUser = ({user, excludeUser, isSearch}) => {
 
 
-
     return (
         <li>
             {
@@ -13,7 +12,7 @@ const ModifyRoomUser = ({user, excludeUser, isSearch}) => {
                             <img src={require('../../assets/image/image_profile_unknown.png')} alt=""/>
                         </figure>
                         <span className="team__user">
-                            <em>{user}</em>
+                            <em>{user.email}</em>
                                     </span>
                         <div className="btn btn__delete" onClick={() => excludeUser(user, isSearch)}>
                             <img src={require('../../assets/image/ic_cancle-circle_18.png')} alt="삭제"/>

@@ -315,6 +315,7 @@ const NewRoom = () => {
             `/meet/invite?searchTxt=${searchWord}`,
             AXIOS_OPTION)
             .then(res => {
+                console.log(res.data);
                 setSearchUser(res.data.data.mt_invites);
             })
     }
@@ -337,18 +338,11 @@ const NewRoom = () => {
 
     const excludeUser = (user, isSearch) => {
         if(!isSearch){
-            let targetIdx;
             if(user.email === getCookie('user_id')){
                 return alert('호스트는 제거할 수 없습니다.');
             }
 
-            invites.forEach((inv, idx) => {
-                if(inv.idx === user.idx) {
-                    targetIdx = idx;
-                }
-            })
-
-            setInvites([...invites.slice(0, targetIdx), ...invites.slice(targetIdx+1)]);
+            setInvites(invites.filter(inv => inv.email != user.email));
             if(delUser === ''){
                 setDelUser(user.email);
             } else {
@@ -384,18 +378,32 @@ const NewRoom = () => {
         setSearchUser([...searchUser.slice(0, targetIdx), ...searchUser.slice(targetIdx+1)]);
     }
 
-    const addSearchGroupUser = () => {
-        setGroupInvites(groupInvites.filter(user => {
+    const addSearchGroupUser = async () => {
+        const newGroupInvites = groupInvites.filter(user => {
             let result = true;
             invites.forEach(inv => {
-                if(inv.email === user.email){
+                if(inv.email === user){
                     result = false;
                 }
             })
             return result;
-        }));
+        })
+
+        const newInvites = [];
+        for(let gUser of newGroupInvites){
+            const res = await axios.get(SERVER_URL + `/meet/invite?searchTxt=${gUser}`, AXIOS_OPTION);
+            if (res && res.data && res.data.data && res.data.data.mt_invites && res.data.data.mt_invites.length >= 1) {
+                newInvites.push(res.data.data.mt_invites[0]);
+            } else {
+                newInvites.push({email: gUser, unknownUser: true});
+            }
+        }
+
+        setInvites([...invites, ...newInvites]);
+
         handleModal();
     }
+
 
     const pressEnterKey = (e) => {
         if(e.key === 'Enter'){
@@ -404,7 +412,6 @@ const NewRoom = () => {
                 return;
             }
             if(searchUser.length === 0){
-                console.log(invites);
                 let isExist = false;
                 invites.forEach(inv => {
                     if(inv.email === e.target.value){
@@ -480,10 +487,6 @@ const NewRoom = () => {
             setWeekday(weekday.filter(d => d !== num));
         }
     }
-
-    useEffect(()=> {
-        // console.log(selectValue)
-    },[selectValue])
 
     const handleChange = (e) => {
         setSelectValue(parseInt(e.target.value))
@@ -780,9 +783,6 @@ const NewRoom = () => {
         }
     }, [endDate, startDate])
 
-    console.log(dayjs(endDate).format('YYYY-MM-DD'), '는 뭔가요')
-    // console.log('몇일차이', dayjs(endDate).diff(startDate, 'day'))
-    console.log('remount카운트 몇개', remindCount)
 
     return (
         <div className="room">
