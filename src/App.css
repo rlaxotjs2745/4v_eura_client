@@ -5010,3 +5010,9 @@ input[type=date].under-scope, input[type=time].under-scope {cursor: pointer}
 #root .MuiInputBase-input {border:none; padding:0; background: transparent; padding-left: 15px;}
 #root .MuiInputBase-input:focus {border: none !important;}
 .css-1d3z3hw-MuiOutlinedInput-notchedOutline {top: 0; }
+
+.input__group .input_flex {display: flex; align-items: center;}
+.input__group .input_flex button {padding:10px 15px; border:1px solid #794CFF; border-radius: 8px; height:45.5px; text-align: center; width: 120px; font-size:14px; color:#794CFF; margin-left:10px;}
+
+.input__group .input_flex {display: flex; align-items: center;}
+.input__group .input_flex button {padding:10px 15px; border:1px solid #794CFF; border-radius: 8px; height:45.5px; text-align: center; width: 120px; font-size:14px; color:#794CFF; margin-left:10px;}

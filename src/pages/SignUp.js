@@ -17,8 +17,8 @@ const SignUp = () => {
     const [userPwdChk, setUserPwdChk] = useState('')
     const [userDisabled, setUserDisabled] = useState(false)
     const [termDisabled, setTermDisabled] = useState(true)
-
     const [userIdCheck, setUserIdCheck] = useState(null);
+    const [signUp, setSignUp] = useState(null);
 
     const handleUserName = (e) => {
         setUserName(e.target.value);
@@ -53,6 +53,7 @@ const SignUp = () => {
 
     const handleUserId = (e) => {
         setUserId(e.target.value);
+        setSignUp(null)
         if (userId.length && userName.length && userPwd.length && userPwdChk.length && !($('.input__group').hasClass('is-alert'))) {
             setUserDisabled(true)
         } else {
@@ -224,6 +225,8 @@ const SignUp = () => {
             alert('비밀번호 입력 사항을 확인해주세요.')
         } else if (join_password2.val() == '' || join_password2.parent().hasClass('is-alert')) {
             alert('비밀번호 확인 입력 사항을 확인해주세요.')
+        } else if (signUp !== '사용 가능한 아이디 입니다.') {
+            alert('아이디 중복체크를 진행해주세요.')
         }
 
         else {
@@ -305,13 +308,20 @@ const SignUp = () => {
         ).then(res => {
             if(res.data.result_code === 'FAIL'){
                 setUserIdCheck(res.data.result_str)
+                setSignUp(null)
+                setUserDisabled(false)
             } else if(res.data.result_code === 'SUCCESS'){
+                setUserDisabled(true)
                 setUserIdCheck(null)
+                alert(res.data.result_str)
+                setSignUp(res.data.result_str) // 사용 가능한 아이디 입니다.
             }
         }).catch(err => {
             console.log(err);
         });
     }
+
+    console.log(userDisabled)
 
     return (
         <section className="content" id="content">
@@ -342,7 +352,10 @@ const SignUp = () => {
                         </div>
                         <div className={'input__group ' + (errors.user_id ? "is-alert " : "") + (watch().user_id ? "is-success " : "") + (userIdCheck === '중복되는 아이디 입니다.' ? "is-alert " : "" )}>
                             <label htmlFor="join_email">아이디(이메일)</label>
-                            <input onKeyUp={handleUserId} onBlurCapture={inRegEmail} required type="text" className="text" id="join_email"  placeholder="이메일을 입력하세요" {...register('user_id')}/>
+                            <div className="input_flex">
+                                <input onKeyUp={handleUserId} required type="text" className="text" id="join_email"  placeholder="이메일을 입력하세요" {...register('user_id')}/>
+                                <button onClick={inRegEmail}>중복 체크</button>
+                            </div>
                             <div className="input__message">
                                 입력하신 이메일로 회원가입 인증메일이 발송됩니다.
                             </div>
@@ -364,7 +377,7 @@ const SignUp = () => {
                     <div className="btn__box">
                         <div className="btn__group">
                             <Link to="/" className="btn btn__normal">취소</Link>
-                            <button type="button" onClick={(Sign2Open)} className={userDisabled == true ? "btn btn__able" : "btn btn__disable"} >다음</button>
+                            <button type="button" onClick={(Sign2Open)} className={userDisabled === true ? "btn btn__able" : "btn btn__disable"} >다음</button>
                         </div>
                     </div>
                 </div>
