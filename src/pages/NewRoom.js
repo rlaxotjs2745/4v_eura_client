@@ -530,8 +530,8 @@ const NewRoom = () => {
 
         const formData = new FormData();
         formData.append('mt_name', title);
-        formData.append('mt_start_dt',  `${startDate} ${Selected1}:${Selected2}:00`);
-        formData.append('mt_end_dt',   `${startDate} ${Selected3}:${Selected4}:00`);
+        formData.append('mt_start_dt',  `${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`);
+        formData.append('mt_end_dt',   `${dayjs(startDate).format('YYYY-MM-DD')} ${Selected3}:${Selected4}:00`);
         formData.append('mt_info', meetingInfo);
         formData.append('mt_invite_email', [...invites.map(inv => inv.email), ...groupInvites].join());
         for (let i = 0; i < uploadedFiles.length; i++) {
@@ -544,7 +544,7 @@ const NewRoom = () => {
             if(selectValue == 2){
                 formData.append('mt_remind_week', weekday.join());
             }
-            formData.append('mt_remind_end', endDate);
+            formData.append('mt_remind_end', dayjs(endDate).format('YYYY-MM-DD'));
         } else {
             formData.append('mt_remind_type', 0);
         }
@@ -754,7 +754,7 @@ const NewRoom = () => {
         }
     }, [endDate, startDate])
 
-    // console.log(dayjs(endDate).format('YYYY-MM-DD'), '는 뭔가요')
+    console.log(dayjs(endDate).format('YYYY-MM-DD'), '는 뭔가요')
     // console.log('몇일차이', dayjs(endDate).diff(startDate, 'day'))
     console.log('remount카운트 몇개', remindCount)
 
