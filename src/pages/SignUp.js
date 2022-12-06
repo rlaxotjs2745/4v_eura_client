@@ -354,7 +354,7 @@ const SignUp = () => {
                             <label htmlFor="join_email">아이디(이메일)</label>
                             <div className="input_flex">
                                 <input onKeyUp={handleUserId} required type="text" className="text" id="join_email"  placeholder="이메일을 입력하세요" {...register('user_id')}/>
-                                <button onClick={inRegEmail}>중복 체크</button>
+                                <button type="button" onClick={inRegEmail}>중복 체크</button>
                             </div>
                             <div className="input__message">
                                 입력하신 이메일로 회원가입 인증메일이 발송됩니다.

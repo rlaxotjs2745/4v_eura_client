@@ -184,7 +184,7 @@ const NewRoom = () => {
             setIsNew(1);
         } else return;
 
-        setRemindShowBool(false);
+        // setRemindShowBool(false); ?? 1206 오후 12시 14분 잠시 주석처리
 
             axios.get(SERVER_URL +
                 `/meet/room/info?idx_meeting=${pathSplit}`,
@@ -485,6 +485,7 @@ const NewRoom = () => {
 
     const makeEndDate = (e) => {
         setEndDate(e);
+
     }
 
     const makeMeetingInfo = (e) => {
@@ -493,6 +494,7 @@ const NewRoom = () => {
 
 
     const handleSubmit = () => {
+        console.log(remindCount)
         if($('#make_new').val() == ''){
             return alert('미팅 이름을 입력해주세요.')
         }
@@ -736,8 +738,25 @@ const NewRoom = () => {
         }
     },[selectValue])
 
-    console.log(dayjs(endDate).format('YYYY-MM-DD'), '는 뭔가요')
-    console.log('몇일차이', dayjs(endDate).diff(startDate, 'day'))
+    useEffect(()=> {
+        if(selectValue === 1) {
+            setRemindCount(dayjs(endDate).diff(startDate, 'day'))
+            setMaxDate(dayjs(startDate).add(30, 'day'))
+        } else if (selectValue === 2) {
+            setRemindCount(dayjs(endDate).diff(startDate, 'week'))
+            setMaxDate(dayjs(startDate).add(12, 'week'))
+        } else if (selectValue === 3) {
+            setRemindCount(dayjs(endDate).diff(startDate, 'week')/2)
+            setMaxDate(dayjs(startDate).add(24, 'week'))
+        } else if (selectValue === 4) {
+            setRemindCount(dayjs(endDate).diff(startDate, 'month'))
+            setMaxDate(dayjs(startDate).add(12, 'month'))
+        }
+    }, [endDate, startDate])
+
+    // console.log(dayjs(endDate).format('YYYY-MM-DD'), '는 뭔가요')
+    // console.log('몇일차이', dayjs(endDate).diff(startDate, 'day'))
+    console.log('remount카운트 몇개', remindCount)
 
     return (
         <div className="room">
