@@ -19,8 +19,8 @@ const Home = () => {
     const [eventNow, setEventNow] = useState(0);
     const [curPage, setCurPage] = useState(1);
     const [curLastPage, setCurLastPage] = useState(1);
-    const [curSort, setCurSort] = useState(1);
-    const [curLastSort, setCurLastSort] = useState(1);
+    const [curSort, setCurSort] = useState(2);
+    const [curLastSort, setCurLastSort] = useState(2);
     const [morePageBool, setMorePageBool] = useState(true);
     const [moreLastPageBool, setMoreLastPageBool] = useState(true);
 
