@@ -765,6 +765,38 @@ const NewRoom = () => {
     // console.log('몇일차이', dayjs(endDate).diff(startDate, 'day'))
     // console.log('remount카운트 몇개', remindCount)
 
+    const [dayCount, setdayCount] = useState(0)
+
+    function getDayCountBetweenDates(startDate, endDate, days) {
+        let date = new Date(startDate);
+        let count = 0;
+
+        while (date <= endDate) {
+            if (days.includes(date.getDay())) {
+                count++;
+            }
+            date.setDate(date.getDate() + 1);
+        }
+
+        return count;
+    }
+
+    const startDate2 = dayjs(startDate); // 1월 1일
+    const endDate2 = dayjs(endDate); // 1월 31일
+    const days = weekday; // 금요일
+
+    startDate2.setDate(startDate.getDate() + 1);
+
+    useEffect(()=> {
+        setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
+        // console.log(getDayCountBetweenDates(startDate2, endDate2, [1,3]))
+    },[weekday, endDate, startDate])
+
+    console.log(dayCount)
+
+
+
+
     return (
         <div className="room">
             <h2>
