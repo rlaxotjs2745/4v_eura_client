@@ -183,7 +183,7 @@ const Home = () => {
 
     };
     async function getMainList() {
-        axios.get(SERVER_URL + `/meet/main/list?currentPage=1`, AXIOS_OPTION)
+        axios.get(SERVER_URL + `/meet/main/list?currentPage=1&pageSort=2`, AXIOS_OPTION)
         .then(res => {
             if(!res.data || !res.data.data || !res.data.data.mt_meetMyList || res.data.data.mt_meetMyList.length === 0 || 8 > res.data.data.mt_meetMyListCount){
                 setMorePageBool(false);
@@ -195,7 +195,7 @@ const Home = () => {
         })
     };
     async function getMainEndList() {
-        axios.get(SERVER_URL + '/meet/main/endlist?currentPage=1', AXIOS_OPTION)
+        axios.get(SERVER_URL + '/meet/main/endlist?currentPage=1&pageSort=2', AXIOS_OPTION)
         .then(res => {
             if(!res.data || !res.data.data || !res.data.data.mt_meetEndMyList || res.data.data.mt_meetEndMyList.length === 0 || 8 > res.data.data.mt_meetMyListCount){
                 setMoreLastPageBool(false);
@@ -226,8 +226,8 @@ const Home = () => {
                         <Link to="/newroom" className="btn btn__make"><img src={require('../assets/image/ic_plus.png')} alt=""/>새 미팅룸 만들기</Link>
                         <div className="sorting">
                             <select name="" id="meetSort" onChange={pageSort}>
-                                <option value="1">최신순</option>
                                 <option value="2">미팅 시간 순</option>
+                                <option value="1">미팅 생성 순</option>
                                 <option value="3">비공개 미팅 순</option>
                                 <option value="4">취소된 미팅 순</option>
                             </select>
@@ -265,8 +265,8 @@ const Home = () => {
                     <h3><img src="" alt=""/><img src={require('../assets/image/ic_last.png')} alt=""/> 지난 미팅 <em>{lastMeeting.mt_meetMyListCount ? lastMeeting.mt_meetMyListCount : 0}</em>
                         <div className="sorting">
                             <select name="" id="lastMeetSort" onChange={pageSort}>
-                                <option value="1">최신순</option>
                                 <option value="2">미팅 시간 순</option>
+                                <option value="1">미팅 생성 순</option>
                                 <option value="3">비공개 미팅 순</option>
                                 <option value="4">취소된 미팅 순</option>
                             </select>
