@@ -45,7 +45,6 @@ const NewRoom = () => {
         setWeekdayArrNew(weekday.map((value, index, array) => weekdayArr[value - 1]).join())
     }, [weekday])
 
-
     const [groupInvites, setGroupInvites] = useState([]);
 
     const [selectValue, setSelectValue] = useState(0);
@@ -74,6 +73,8 @@ const NewRoom = () => {
     const [Selected2, setSelected2] = useState('00');
     const [Selected3, setSelected3] = useState('00');
     const [Selected4, setSelected4] = useState('00');
+
+    console.log('시작날짜 요일', weekdayArr[dayjs(startDate).day()])
 
     useEffect(() => {
         let curTIme = new Date();
@@ -182,9 +183,10 @@ const NewRoom = () => {
             setIsNew(2);
         }else if(pathname.indexOf('/newroom/')>-1){
             setIsNew(1);
+
         } else return;
 
-        // setRemindShowBool(false); ?? 1206 오후 12시 14분 잠시 주석처리
+        // setRemindShowBool(false);
 
             axios.get(SERVER_URL +
                 `/meet/room/info?idx_meeting=${pathSplit}`,
@@ -223,8 +225,9 @@ const NewRoom = () => {
     }, [])
 
     useEffect(() => {
-        setRemindBool(!!roomInfo.mt_remind_type);
+        // setRemindBool(!!roomInfo.mt_remind_type);
     }, [roomInfo]);
+
 
 
     const handleUploadFiles = (files) => {
@@ -544,6 +547,9 @@ const NewRoom = () => {
             if(selectValue == 2){
                 formData.append('mt_remind_week', weekday.join());
             }
+            if(selectValue == 3){
+                formData.append('mt_remind_week', weekday.join());
+            }
             formData.append('mt_remind_end', dayjs(endDate).format('YYYY-MM-DD'));
         } else {
             formData.append('mt_remind_type', 0);
@@ -754,9 +760,10 @@ const NewRoom = () => {
         }
     }, [endDate, startDate])
 
-    console.log(dayjs(endDate).format('YYYY-MM-DD'), '는 뭔가요')
+    // console.log(dayjs(endDate).diff(startDate, 'day'), '는 뭔가요')
+    // console.log(dayjs(endDate).day(), '는 무슨요일')
     // console.log('몇일차이', dayjs(endDate).diff(startDate, 'day'))
-    console.log('remount카운트 몇개', remindCount)
+    // console.log('remount카운트 몇개', remindCount)
 
     return (
         <div className="room">
@@ -848,13 +855,16 @@ const NewRoom = () => {
                                     <input type="checkbox" className="checkbox" id="remind_bool" onChange={remindChange} defaultValue={remindBool}/>
                                     <label htmlFor="remind_bool">되풀이 미팅</label>
                                     <strong>
-                                        {
-                                            selectValue === 1 ? `매일, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'day')}개 되풀이 항목` :
-                                                selectValue === 2 ? `매주 ${weekdayArrNew}, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'week')}개 되풀이 항목` :
-                                                    selectValue === 3 ? `매 2주마다, ${weekdayArrNew} ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${(dayjs(endDate).diff(startDate, 'week'))/2}개 되풀이 항목` :
-                                                        selectValue === 4 ? `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'month')}개 되풀이 항목` : ''
+                                        {remindBool && remindShowBool ?
+                                            <>
+                                            {
+                                                selectValue === 1 ? `매일, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'day')}개 되풀이 항목` :
+                                                    selectValue === 2 ? `매주 ${weekdayArrNew}, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'week')}개 되풀이 항목` :
+                                                        selectValue === 3 ? `매 2주마다, ${weekdayArrNew} ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${(dayjs(endDate).diff(startDate, 'week'))/2}개 되풀이 항목` :
+                                                            selectValue === 4 ? `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'month')}개 되풀이 항목` : ''
+                                            }
+                                        </> : ''
                                         }
-
                                     </strong>
                                 </div>
                         }
