@@ -28,7 +28,7 @@ const renderActiveShape = props => {
     );
 };
 
-const InviteMyAnalPieGraphCard = ({oneUserResult, oneUserResultab}) => {
+const InviteMyAnalPieGraphCard = ({oneUserResult, oneUserResultab, isJoin}) => {
     const [initialState, setInitialState] = useState({activeIndex: 0});
     const COLORS = [
         '#3377ff',
@@ -46,26 +46,32 @@ const InviteMyAnalPieGraphCard = ({oneUserResult, oneUserResultab}) => {
                                     <Pie
                                         activeIndex={initialState.activeIndex}
                                         activeShape={renderActiveShape}
-                                        data={oneUserResult}
+                                        data={isJoin ? oneUserResult : [
+                                            { name: "Good", value: 0 },
+                                            { name: "Bad", value: 0 },
+                                            { name: "Camera Off", value: 100 },
+                                        ]}
                                         innerRadius={48}
                                         outerRadius={60}
                                     >
-                                        {oneUserResult.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={COLORS[index]} />
-                                        ))}
+                                        {
+                                            oneUserResult.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={COLORS[index]}/>
+                                            ))
+                                        }
                                     </Pie>
                                 </PieChart>
                             </div>
                             <div className="one_user_graph_image">
-                                <img className="pie_graph_image" src={require(oneUserResultab.good >= 60 ? '../../assets/image/icon_one_user_good.png' : '../../assets/image/icon_one_user_bad.png')}/>
-                                <div className={oneUserResultab.good >= 60 ? 'pie_graph_word imotion_good' : 'pie_graph_word imotion_bad'}>{oneUserResultab.good >= 60 ? 'GOOD' : 'BAD'}</div>
+                                {isJoin ? <img className="pie_graph_image" src={require(oneUserResultab.good >= 60 ? '../../assets/image/icon_one_user_good.png' : '../../assets/image/icon_one_user_bad.png')}/> : null}
+                                {isJoin ? <div className={oneUserResultab.good >= 60 ? 'pie_graph_word imotion_good' : 'pie_graph_word imotion_bad'}>{oneUserResultab.good >= 60 ? 'GOOD' : 'BAD'}</div>: null}
                             </div>
                         </div>
                         <div className="one_user_graph_sum_box">
                             <div className="one_user_graph_sum_category_box">
-                                <div className="good_sum one_user_graph_sum_category"><span>Good</span><span>{oneUserResultab.good}%</span></div>
-                                <div className="bad_sum one_user_graph_sum_category"><span>Bad</span><span>{oneUserResultab.bad}%</span></div>
-                                <div className="camera_off_sum one_user_graph_sum_category"><span>Camera Off</span><span>{oneUserResultab.off}%</span></div>
+                                <div className="good_sum one_user_graph_sum_category"><span>Good</span><span>{isJoin ? oneUserResultab.good + '%' : '-'}</span></div>
+                                <div className="bad_sum one_user_graph_sum_category"><span>Bad</span><span>{isJoin ? oneUserResultab.bad + '%' : '-'}</span></div>
+                                <div className="camera_off_sum one_user_graph_sum_category"><span>Camera Off</span><span>{isJoin ? oneUserResultab.off + '%' : '-'}</span></div>
                             </div>
                         </div>
                     </div>

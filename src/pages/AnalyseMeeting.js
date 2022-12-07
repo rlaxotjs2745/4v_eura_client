@@ -201,7 +201,7 @@ const AnalyseMeeting = (props) => {
                             </dl>
                         </div>
                         {
-                            lecture.is_host === 1 ? 
+                            lecture.is_host === 1 && lecture.join ?
                         <MeetingAnalysisPieGraph data={piedata} />
                         : "" }
                     </div>
@@ -221,7 +221,12 @@ const AnalyseMeeting = (props) => {
                             }
                         </div>
                     </div>
-                    <AnalysisUserList lecture={lecture} userList={userList} clickUser={clickUser} isHost={lecture.is_host} />
+                    {
+                        lecture.join ?
+                        <AnalysisUserList lecture={lecture} userList={userList} clickUser={clickUser} isHost={lecture.is_host} />
+                        :
+                        null
+                    }
 
                     <div className="result__mov" title="영상자리 (860 x 407)">
                     {
@@ -255,14 +260,14 @@ const AnalyseMeeting = (props) => {
                         lecture.is_host ?
                             null
                             :
-                            <InviteMyAnalPieGraphCard oneUserResult={oneUserResult} oneUserResultab={oneUserResultab} />
+                            <InviteMyAnalPieGraphCard isJoin={lecture.join} oneUserResult={oneUserResult} oneUserResultab={oneUserResultab} />
                     }
 
                     {
                         lecture.is_host ?
-                        <AllUserBarGraph middata={middata} />
-                        :
-                        <OneUserBarGraph btmdata={btmdata} />
+                            <AllUserBarGraph middata={middata} />
+                            :
+                            <OneUserBarGraph btmdata={btmdata} isJoin={lecture.join} />
                     }
                     {/*{*/}
                     {/*    oneUserBool && oneUserLevel ?*/}

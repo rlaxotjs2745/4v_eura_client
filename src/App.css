@@ -4049,6 +4049,15 @@ html.js-overflow {
     justify-content: center;
 }
 
+.result_all_levels span {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    letter-spacing: 0.5px;
+    color: #8A8C99;
+}
+
 .emotion__wraper {
     height: 100%;
     width: 5%;
@@ -4521,6 +4530,7 @@ html.js-overflow {
     top: 25px;
     right: 20px
 }
+
 
 .meeting__user .usering .user ul li .badge__camera img {
     width: auto;
