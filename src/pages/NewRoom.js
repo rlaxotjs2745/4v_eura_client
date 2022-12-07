@@ -50,8 +50,8 @@ const NewRoom = () => {
     const [Selected3, setSelected3] = useState('00');
     const [Selected4, setSelected4] = useState('00');
     const [maxDate, setMaxDate] = useState('')
-    const [dayCount, setdayCount] = useState(0)
     const [weekday, setWeekday] = useState([]);
+    const [weekdayMinus1, setWeekdayMinus1] = useState([])
     const [weekdayArrNew, setWeekdayArrNew] = useState([])
 
     const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -138,12 +138,9 @@ const NewRoom = () => {
 
     useEffect(()=> {
         setWeekdayArrNew(weekday.map((value, index, array) => weekdayArr[value - 1]).join())
+        setWeekdayMinus1(weekday.map(day => day - 1))
     }, [weekday])
 
-    useEffect(()=> {
-        setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
-        // console.log(getDayCountBetweenDates(startDate2, endDate2, [1,3]))
-    },[weekday, endDate, startDate])
 
     useEffect(()=> {
         if(selectValue === 1) {
@@ -166,10 +163,10 @@ const NewRoom = () => {
             setRemindCount(dayjs(endDate).diff(startDate, 'day'))
             setMaxDate(dayjs(startDate).add(30, 'day'))
         } else if (selectValue === 2) {
-            setRemindCount(dayjs(endDate).diff(startDate, 'week'))
+            setRemindCount(dayjs(endDate).diff(startDate, 'week') + 1)
             setMaxDate(dayjs(startDate).add(12, 'week'))
         } else if (selectValue === 3) {
-            setRemindCount(dayjs(endDate).diff(startDate, 'week')/2)
+            setRemindCount(Math.floor(dayjs(endDate).diff(startDate, 'week')/2))
             setMaxDate(dayjs(startDate).add(24, 'week'))
         } else if (selectValue === 4) {
             setRemindCount(dayjs(endDate).diff(startDate, 'month'))
@@ -768,6 +765,16 @@ const NewRoom = () => {
     // console.log('remount카운트 몇개', remindCount)
 
 
+    const [dayCount, setdayCount] = useState(0)
+
+
+    const startDate2 = new Date(startDate); // 1월 1일
+    const endDate2 = new Date(endDate); // 1월 31일
+    const days = weekdayMinus1; // 금요일
+
+    startDate2.setDate(startDate2.getDate() + 1);
+    endDate2.setDate(endDate2.getDate() + 1);
+
     const getDayCountBetweenDates = (startDate, endDate, days) => {
         let date = new Date(startDate);
         let count = 0;
@@ -782,13 +789,15 @@ const NewRoom = () => {
         return count;
     }
 
-    const startDate2 = new Date(startDate); // 1월 1일
-    const endDate2 = dayjs(endDate); // 1월 31일
-    const days = weekday; // 금요일
+    useEffect(()=> {
+        setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
+    },[weekdayMinus1, endDate, startDate])
 
-    startDate2.setDate(startDate2.getDate() + 1);
+    // useEffect(() => {console.log(dayCount)}, [dayCount])
 
-    console.log(dayCount)
+    console.log(weekdayMinus1, '요일 배열 확인')
+    console.log(dayCount, '개수 확인')
+    console.log(remindCount, '매주 미팅룸 생성 개수')
 
 
 
@@ -887,8 +896,8 @@ const NewRoom = () => {
                                             <>
                                             {
                                                 selectValue === 1 ? `매일, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'day')}개 되풀이 항목` :
-                                                    selectValue === 2 ? `매주 ${weekdayArrNew}, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'week')}개 되풀이 항목` :
-                                                        selectValue === 3 ? `매 2주마다, ${weekdayArrNew} ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${(dayjs(endDate).diff(startDate, 'week'))/2}개 되풀이 항목` :
+                                                    selectValue === 2 ? `매주 ${weekdayArrNew}, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayCount}개 되풀이 항목` :
+                                                        selectValue === 3 ? `매 2주마다, ${weekdayArrNew} ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${Math.floor(dayjs(endDate).diff(startDate, 'week')/2)+1}개 되풀이 항목` :
                                                             selectValue === 4 ? `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'month')}개 되풀이 항목` : ''
                                             }
                                         </> : ''
@@ -1015,7 +1024,8 @@ const NewRoom = () => {
                                                 className="text under-scope"
                                                 // label="Basic example"
                                                 value={endDate}
-                                                minDate={dayjs(startDate).add(7, 'day')}
+                                                minDate={dayjs(startDate)}
+                                                // minDate={dayjs(startDate).add(7, 'day')}
                                                 mask={"____-__-__"}
                                                 maxDate={maxDate}
                                                 inputFormat="YYYY-MM-DD"
