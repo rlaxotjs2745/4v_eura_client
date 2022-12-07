@@ -221,12 +221,7 @@ const AnalyseMeeting = (props) => {
                             }
                         </div>
                     </div>
-                    {
-                        lecture.join ?
                         <AnalysisUserList lecture={lecture} userList={userList} clickUser={clickUser} isHost={lecture.is_host} />
-                        :
-                        null
-                    }
 
                     <div className="result__mov" title="영상자리 (860 x 407)">
                     {
