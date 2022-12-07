@@ -14,12 +14,13 @@ const AnalysisUserList = ({lecture ,userList, clickUser, isHost}) => {
                                 return (
                                     <li key={member.idx} className={member.join ? 'analyse_join_person' : 'analyse_not_join_person'}>
                                         <button onClick={() => clickUser(member.idx)}>
-                                            <figure><img src={member.upic?member.upic: require('../../assets/image/image_profile.png')} alt=""/></figure>
+                                            <div className="me_box">
+                                                <figure><img src={member.upic?member.upic: require('../../assets/image/image_profile.png')} alt=""/></figure>
+                                                {member.is_iam ? <img className="team__badge" src={require('../../assets/image/team__badge.png')} alt=""/> : null}
+                                            </div>
                                             <div className="watch__td">
-                                                {member.is_host ? <img src={require('../../assets/image/ic_host.png')} alt=""/> : null}
-                                                <span>{member.uname}</span>
+                                                <span className="flex">{member.uname}{member.is_host ? <img src={require('../../assets/image/ic_host.png')} alt=""/> : null}</span>
                                                 <div>{member.uemail}</div>
-                                                {member.is_iam ? <span className="team__badge">나</span> : null}
                                             </div>
                                             {
                                                 member.value !== null ?

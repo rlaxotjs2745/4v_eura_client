@@ -12,6 +12,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
+import moment from 'moment';
+
+
 
 const MAX_COUNT = 99;
 const FILE_SIZE_MAX_LIMIT = 100 * 1024 * 1024;  // 100MB
@@ -773,33 +776,34 @@ const NewRoom = () => {
         return count;
     }
 
-    const getWeekCountBetweenDates = (startDate, endDate, days) => {
-        let date = new Date(startDate);
+    const getWeekdayCountBetweenDates = (startDate2, endDate2, days2) => {
+        let date2 = new Date(startDate2);
         let count = 0;
 
-        while (date <= endDate) {
-            if (days.includes(date.getDay())) {
+        while (date2 <= endDate2) {
+            if (days2.includes(date2.getDay())) {
                 count++;
             }
-            date.setDate(date.getDate() + 14); // 기존 코드에서는 일 단위로 날짜를 증가시켰지만, 격주의 개수를 구하기 위해선 일주일 단위로 날짜를 증가시켜야 합니다.
+            date2.setDate(date2.getDate() + 1);
         }
 
         return count;
-    };
+    }
 
 
 
     const [selected, setSelected] = useState([]);
-    const [dayCount, setdayCount] = useState([])
-    const [weekCount, setWeekCount] = useState([])
+    const [dayCount, setdayCount] = useState(0)
+    const [weekCount, setWeekCount] = useState(0)
     const [todayWeekday, setTodayWeekday] = useState(null);
 
     const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
 
     useEffect(()=> {
         setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
-        console.log('days값', days)
-        setWeekCount(getWeekCountBetweenDates(startDate2, endDate2, days));
+        setWeekCount(getWeekdayCountBetweenDates(startDate2, endDate2, days))
+        console.log(days, 'days')
+        console.log(weekCount, '격주 카운트')
     },[weekdayMinus1, endDate, startDate])
 
     useEffect(() => {
@@ -840,6 +844,28 @@ const NewRoom = () => {
             setSelected(selected.filter((option) => option !== day));
         }
     };
+
+
+    const jjinCount = () => {
+        const startDate3 = moment('2022-12-07');
+        const endDate3 = moment('2022-12-23');
+
+        let weekdays3 = 0;
+        let currentDate = startDate3;
+
+        while (currentDate.isBefore(endDate3)) {
+            if (currentDate.day() === 5 && currentDate.isSameOrBefore(endDate3)) { // 5는 금요일을 의미합니다.
+                weekdays3++;
+            }
+            currentDate.add(1, 'weeks'); // 기간을 격주 단위로 증가시킵니다.
+        }
+
+        console.log('진짜 격주 카운트?', weekdays3); // 5개
+    }
+
+    useEffect(()=> {
+        jjinCount()
+    },[weekday])
 
     return (
         <div className="room">
