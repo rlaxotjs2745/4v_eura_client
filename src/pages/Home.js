@@ -7,7 +7,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {SERVER_URL, AXIOS_OPTION} from "../util/env";
 import $ from "jquery";
 
-const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
+const Home = ({curSort, setCurSort, curLastSort, setCurLastSort, curPage, curLastPage, setCurPage, setCurLastPage}) => {
     const navigate = useNavigate();
     const [user, setUser] = useState({});
     const [schedule, setSchedule] = useState([]);
@@ -17,8 +17,8 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
     const [curMeeting, setCurMeeting] = useState(false)
     const [curEvent, setCurEvent] = useState(true);
     const [eventNow, setEventNow] = useState(0);
-    const [curPage, setCurPage] = useState(1);
-    const [curLastPage, setCurLastPage] = useState(1);
+    // const [curPage, setCurPage] = useState(1);
+    // const [curLastPage, setCurLastPage] = useState(1);
     // const [curSort, setCurSort] = useState(2);
     // const [curLastSort, setCurLastSort] = useState(2);
     const [morePageBool, setMorePageBool] = useState(true);

@@ -16,8 +16,11 @@ import MeetingCalendar from "../pages/MeetingCalendar";
 import AnalyseMeeting from "../pages/AnalyseMeeting";
 
 const Routers = () => {
+
     const [curSort, setCurSort] = useState(2);
     const [curLastSort, setCurLastSort] = useState(2);
+    const [curPage, setCurPage] = useState(1);
+    const [curLastPage, setCurLastPage] = useState(1);
 
 
     return (
@@ -26,7 +29,16 @@ const Routers = () => {
             {/* PrivateRoute 안에는 로그인 해야 접근 가능, 로그인 안되어 있으면 /login으로 이동*/}
             <Route path="/" element={<PrivateRoute><LayoutType1/></PrivateRoute>}>
                 {/*<Route path="*" element={<Error/>}/>*/}
-                <Route index element={<Home curLastSort={curLastSort} setCurLastSort={setCurLastSort} curSort={curSort} setCurSort={setCurSort} />}/>
+                <Route index element={
+                    <Home
+                        curLastSort={curLastSort}
+                        setCurLastSort={setCurLastSort}
+                        curSort={curSort}
+                        setCurSort={setCurSort}
+                        curPage={curPage}
+                        curLastPage={curLastPage}
+                        setCurPage={setCurPage}
+                        setCurLastPage={setCurLastPage} />}/>
                 <Route path="/profile" element={<Profile/>} />
                 <Route path="/meetingroom/:idx" element={<MeetingRoom />} />
                 <Route path="/newroom" element={<NewRoom />} />
