@@ -6,9 +6,6 @@ import MainMyMeetingRoom from "../Components/Cards/MainMyMeetingRoom";
 import {Link, useNavigate} from "react-router-dom";
 import {SERVER_URL, AXIOS_OPTION} from "../util/env";
 import $ from "jquery";
-import Select from "react-select";
-
-
 
 const Home = () => {
     const navigate = useNavigate();
@@ -27,13 +24,13 @@ const Home = () => {
     const [morePageBool, setMorePageBool] = useState(true);
     const [moreLastPageBool, setMoreLastPageBool] = useState(true);
 
-    const sortOption = [
+
+    const allSort = [
         { value: '2', label: '미팅 시간 순'},
         { value: '1', label: '미팅 생성 순' },
         { value: '3', label: '비공개 미팅 순'},
-        { value: '4', label: '취소된 미팅 순'},
+        { value: '4', label: '취소된 미팅 순'}
     ];
-
     useEffect(() => {
         modalClose();
         getMain();
@@ -45,24 +42,25 @@ const Home = () => {
         getMain();
     }, [])
 
-    const pageSort = (e) => {
+    const pageSort = (where, sort) => {
         let endPoint;
         let resMtd;
-        if(e.target.id == 'lastMeetSort'){
-            endPoint = `/meet/main/endlist?pageSort=${e.target.value}`;
+        if(where == 'lastMeetSort'){
+            endPoint = `/meet/main/endlist?pageSort=${sort}&currentPage=${curPage}`;
             resMtd = (res) => setLastMeeting(res);
         } else {
-            endPoint = `/meet/main/list?pageSort=${e.target.value}`;
+            endPoint = `/meet/main/list?pageSort=${sort}&currentPage=${curLastPage}`;
             resMtd = (res) => setMeeting(res);
         }
-        axios.get(SERVER_URL + endPoint + `&currentPage=1`, AXIOS_OPTION)
+        axios.get(SERVER_URL + endPoint, AXIOS_OPTION)
             .then(res => {
                 resMtd(res.data.data);
-                setCurPage(1);
-                if(e.target.id == 'lastMeetSort'){
-                    setCurLastSort(e.target.value);
+                if(where == 'lastMeetSort'){
+                    setCurLastSort(sort);
+                    sortLastMouseOut();
                 } else {
-                    setCurSort(e.target.value);
+                    setCurSort(sort);
+                    sortMouseOut();
                 }
             })
     }
@@ -176,6 +174,24 @@ const Home = () => {
         }
     }
 
+    const sortMouseOver = () => {
+        $('#cur_meet_sort').removeClass('meet_sort_select_hide')
+    }
+
+    const sortLastMouseOver = () => {
+        $('#last_meet_sort').removeClass('meet_sort_select_hide')
+    }
+
+    const sortMouseOut = () => {
+        $('#cur_meet_sort').addClass('meet_sort_select_hide')
+    }
+
+    const sortLastMouseOut = () => {
+        $('#last_meet_sort').addClass('meet_sort_select_hide')
+    }
+
+
+
     async function getMain() {
         axios.get(SERVER_URL + '/meet/main', AXIOS_OPTION)
         .then(res => {
@@ -229,19 +245,17 @@ const Home = () => {
                     <h3><img src={require('../assets/image/ic_video.png')} alt=""/> 나의 미팅룸 <em>{  !meeting ||
                     !meeting.mt_meetMyListCount ? 0 : meeting.mt_meetMyListCount}</em>
                         <Link to="/newroom" className="btn btn__make"><img src={require('../assets/image/ic_plus.png')} alt=""/>새 미팅룸 만들기</Link>
-                        <div className="sorting">
-                            <Select
-                                className=""
-                                classNamePrefix=""
-                                // name="color"
-                                options={sortOption}
-                            />
-                            <select name="" id="meetSort" onChange={pageSort}>
-                                <option value="2">미팅 시간 순</option>
-                                <option value="1">미팅 생성 순</option>
-                                <option value="3">비공개 미팅 순</option>
-                                <option value="4">취소된 미팅 순</option>
-                            </select>
+                        <div className="sorting" onMouseOver={sortMouseOver} onMouseOut={sortMouseOut}>
+                            <div className="meet_sort_select">
+                                <span>{allSort.filter(sort => sort.value == curSort)[0].label}</span>
+                                <div id="cur_meet_sort" className="meet_sort_select__anchor meet_sort_select_hide">
+                                    <ul>
+                                        {
+                                            allSort.filter(aSort => aSort.value != curSort).map(sort => <li onClick={() => pageSort('curSort', sort.value)}>{sort.label}</li>)
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </h3>
                     <div className="boxing">
@@ -274,13 +288,17 @@ const Home = () => {
 
                 <div className="main__history">
                     <h3><img src="" alt=""/><img src={require('../assets/image/ic_last.png')} alt=""/> 지난 미팅 <em>{lastMeeting.mt_meetMyListCount ? lastMeeting.mt_meetMyListCount : 0}</em>
-                        <div className="sorting">
-                            <select name="" id="lastMeetSort" onChange={pageSort}>
-                                <option value="2">미팅 시간 순</option>
-                                <option value="1">미팅 생성 순</option>
-                                <option value="3">비공개 미팅 순</option>
-                                <option value="4">취소된 미팅 순</option>
-                            </select>
+                        <div className="sorting" onMouseOver={sortLastMouseOver} onMouseOut={sortLastMouseOut}>
+                            <div className="meet_sort_select">
+                                <span>{allSort.filter(sort => sort.value == curLastSort)[0].label}</span>
+                                <div id="last_meet_sort" className="meet_sort_select__anchor meet_sort_select_hide">
+                                    <ul>
+                                        {
+                                            allSort.filter(aSort => aSort.value != curLastSort).map(sort => <li onClick={() => pageSort('lastMeetSort', sort.value)}>{sort.label}</li>)
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </h3>
                     <div className="boxing ">
