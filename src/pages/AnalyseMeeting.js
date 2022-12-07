@@ -16,44 +16,44 @@ import { browserName, isSafari } from "react-device-detect";
 const AnalyseMeeting = (props) => {
     const [movieSrc, setMovieSrc] = useState('');
     const [moviefile, setMovieFile] = useState([]);
-    const [movieNo, setMevieNo] = useState(1);
+    // const [movieNo, setMevieNo] = useState(1);
     const [lecture, setLecture] = useState({});
     const [userList, setUserList] = useState([]);
     const [btmdata, setBtmdata] = useState([]);
     const [piedata, setPiedata] = useState([]);
     const [middata, setMiddata] = useState([]);
-    const [oneUserData, setOneUserData] = useState([]);
-    const [oneUserLevel, setOneUserLevel] = useState({});
-    const [oneUserBool, setOneUserBool] = useState(false);
+    // const [oneUserData, setOneUserData] = useState([]);
+    // const [oneUserLevel, setOneUserLevel] = useState({});
+    // const [oneUserBool, setOneUserBool] = useState(false);
     const [oneUserResult, setOneUserResult] = useState([]);
     const [oneUserResultab, setOneUserResultab] = useState({})
     const player = useRef();
-    const vLine = useRef();
+    // const vLine = useRef();
 
     const location = useLocation(); // 홈에서 넘겨준 스테이트 값
     const pathSplit = location.pathname.split('/')[2] // pathname /로 뜯어서 2번째값
-    let _mplay = false;
+    // let _mplay = false;
 
     useEffect(() => {
         player.current.subscribeToStateChange(handleStateChange.bind(this))
     }, [player])
   
     useEffect(() => {
-        _mplay = false;
+        // _mplay = false;
         player.current.load()
     }, [movieSrc])
 
     const handleStateChange = (state, prev) => {
-        if(!_mplay && !!state.duration){
-            _mplay = true;
-            _getMeetResult(pathSplit, movieNo, Math.ceil(state.duration))
-        }
+        // if(!_mplay && !!state.duration){
+            // _mplay = true;
+            // _getMeetResult(pathSplit, movieNo, Math.ceil(state.duration))
+        // }
         $(".v-line").css({left:$(".video-react-play-progress.video-react-slider-bar").width()})
         $(".v-box").css({left:$(".video-react-play-progress.video-react-slider-bar").width()})
     }
 
     const thisPlayer = (_no) => {
-        setMevieNo(_no)
+        // setMevieNo(_no)
         setMovieSrc(moviefile[_no-1].fileUrl)
     }
 
@@ -109,6 +109,32 @@ const AnalyseMeeting = (props) => {
                     // console.log(res)
                     // setMiddata(_data.mtAnalyMid ? [{longP:100, longM:-100},..._data.mtAnalyMid] : []);
                     // setBtmdata(_data.mtData0 ? [{longP:100, longM:-100},..._data.mtData0] : []);
+                    let _maxmid = 0;
+                    if(!!_data.mtAnalyMid){
+                        for(let i=0;i<_data.mtAnalyMid.length;i++){
+                            let data = _data.mtAnalyMid[i];
+                            if(_maxmid < parseInt(data.Good)){
+                                _maxmid = parseInt(data.Good);
+                            }
+                            if(_maxmid < Math.abs(data.Bad)){
+                                _maxmid = Math.abs(data.Bad);
+                            }
+                        }
+                    }
+                    let _maxbtm = 0;
+                    if(!!_data.mtData0){
+                        for(let i=0;i<_data.mtData0.length;i++){
+                            let data = _data.mtData0[i];
+                            if(_maxbtm < parseInt(data.good)){
+                                _maxbtm = parseInt(data.good);
+                            }
+                            if(_maxbtm < Math.abs(data.bad)){
+                                _maxbtm = Math.abs(data.bad);
+                            }
+                        }
+                    }
+                    setMiddata(_data.mtAnalyMid ? [{longP:_maxmid ? _maxmid : 100, longM:_maxmid ? (_maxmid * -1) : 100},..._data.mtAnalyMid] : []);
+                    setBtmdata(_data.mtData0 ? [{longP:_maxbtm ? _maxbtm : 100, longM: _maxbtm ? (_maxbtm * -1) : 100},..._data.mtData0] : []);
                     if(!!res.data.data.mtInviteList && !!res.data.data.mtInviteList.length){
                         setUserList([
                             ...res.data.data.mtInviteList.filter(user => !!user.is_iam),
