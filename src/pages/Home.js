@@ -32,11 +32,6 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-        // console.log( !lastMeeting ||
-        //     !lastMeeting.mt_meetEndMyList ? false : true);
-    },[lastMeeting])
-
-    useEffect(() => {
         getMain();
     }, [])
 

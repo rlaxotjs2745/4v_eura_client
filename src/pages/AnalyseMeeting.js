@@ -18,6 +18,7 @@ const AnalyseMeeting = (props) => {
     const [moviefile, setMovieFile] = useState([]);
     const [movieNo, setMevieNo] = useState(1);
     const [lecture, setLecture] = useState({});
+    const [userList, setUserList] = useState([]);
     const [btmdata, setBtmdata] = useState([]);
     const [piedata, setPiedata] = useState([]);
     const [middata, setMiddata] = useState([]);
@@ -106,6 +107,13 @@ const AnalyseMeeting = (props) => {
                     // console.log(res)
                     // setMiddata(_data.mtAnalyMid ? [{longP:100, longM:-100},..._data.mtAnalyMid] : []);
                     // setBtmdata(_data.mtData0 ? [{longP:100, longM:-100},..._data.mtData0] : []);
+                    if(!!res.data.data.mtInviteList && !!res.data.data.mtInviteList.length){
+                        setUserList([
+                            ...res.data.data.mtInviteList.filter(user => !!user.is_iam),
+                            ...res.data.data.mtInviteList.filter(user => !user.is_iam && user.is_host),
+                            ...res.data.data.mtInviteList.filter(user => !user.is_iam && !user.is_host)
+                        ])
+                    }
                     setPiedata([
                         { name: "Good", value: _data.mtAnalyTop.good },
                         { name: "Bad", value: _data.mtAnalyTop.bad },
@@ -213,7 +221,7 @@ const AnalyseMeeting = (props) => {
                             }
                         </div>
                     </div>
-                    <AnalysisUserList lecture={lecture} clickUser={clickUser} isHost={lecture.is_host} />
+                    <AnalysisUserList lecture={lecture} userList={userList} clickUser={clickUser} isHost={lecture.is_host} />
 
                     <div className="result__mov" title="영상자리 (860 x 407)">
                     {

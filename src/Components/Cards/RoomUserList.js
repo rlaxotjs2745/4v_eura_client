@@ -14,10 +14,26 @@ const RoomUserList = ({invites, idx, roomInfo}) =>
 
             <div className="user" id={'slide_' + idx}>
                 <ul>
-
                     {
                         invites.map(inv =>
-                            inv.is_host ?
+                            !!inv.is_iam ?
+                                <li className={roomInfo.mt_live ? 'user' : 'user is-disabled'}>
+                                    <>
+                                        <figure><img
+                                            src={inv.ui_pic ? inv.ui_pic : require('../../assets/image/image_profile.png')}
+                                            alt=""/></figure>
+                                        <span className="team__user">
+                                        {inv.is_host ? <img src={require('../../assets/image/ic_host.png')} alt=""/> : null}
+                                            {inv.uname}
+                                            <em>{inv.email}</em>
+                                    </span>
+                                        <span className="team__badge">나</span>
+                                    </>
+                                </li> : null)
+                    }
+                    {
+                        invites.map(inv =>
+                            inv.is_host && !inv.is_iam ?
                                 <li className={roomInfo.mt_live ? 'user' : 'user is-disabled'}>
                                     <>
                                     <figure><img
@@ -28,7 +44,6 @@ const RoomUserList = ({invites, idx, roomInfo}) =>
                                         {inv.uname}
                                         <em>{inv.email}</em>
                                     </span>
-                                    {!!inv.is_iam ? <span className="team__badge">나</span> : ''}
                                     </>
                                 </li> : null)
                     }
