@@ -139,6 +139,7 @@ const NewRoom = () => {
     useEffect(()=> {
         setWeekdayArrNew(weekday.map((value, index, array) => weekdayArr[value - 1]).join())
         setWeekdayMinus1(weekday.map(day => day - 1))
+
     }, [weekday])
 
 
@@ -166,7 +167,7 @@ const NewRoom = () => {
             setRemindCount(dayjs(endDate).diff(startDate, 'week') + 1)
             setMaxDate(dayjs(startDate).add(12, 'week'))
         } else if (selectValue === 3) {
-            setRemindCount(Math.floor(dayjs(endDate).diff(startDate, 'week')/2))
+            setRemindCount(Math.floor(dayjs(endDate).diff(startDate, 'week')/2) + 1)
             setMaxDate(dayjs(startDate).add(24, 'week'))
         } else if (selectValue === 4) {
             setRemindCount(dayjs(endDate).diff(startDate, 'month'))
@@ -480,20 +481,6 @@ const NewRoom = () => {
         setWeekday([]) // 배열 초기화
     }
 
-    const getWeekDay = (num) => {
-        let bool = false;
-        weekday.forEach(d => {
-            if(d === num){
-                bool = true;
-            }
-        })
-
-        if(!bool){
-            setWeekday([...new Set([...weekday, num])]);
-        } else {
-            setWeekday(weekday.filter(d => d !== num));
-        }
-    }
 
     const handleChange = (e) => {
         setSelectValue(parseInt(e.target.value))
@@ -765,15 +752,12 @@ const NewRoom = () => {
     // console.log('remount카운트 몇개', remindCount)
 
 
-    const [dayCount, setdayCount] = useState(0)
+    const startDate2 = new Date(startDate);
+    const endDate2 = new Date(endDate);
+    const days = weekdayMinus1;
 
-
-    const startDate2 = new Date(startDate); // 1월 1일
-    const endDate2 = new Date(endDate); // 1월 31일
-    const days = weekdayMinus1; // 금요일
-
-    startDate2.setDate(startDate2.getDate() + 1);
-    endDate2.setDate(endDate2.getDate() + 1);
+    // startDate2.setDate(startDate2.getDate() + 1);
+    // endDate2.setDate(endDate2.getDate() + 1);
 
     const getDayCountBetweenDates = (startDate, endDate, days) => {
         let date = new Date(startDate);
@@ -789,18 +773,73 @@ const NewRoom = () => {
         return count;
     }
 
+    const getWeekCountBetweenDates = (startDate, endDate, days) => {
+        let date = new Date(startDate);
+        let count = 0;
+
+        while (date <= endDate) {
+            if (days.includes(date.getDay())) {
+                count++;
+            }
+            date.setDate(date.getDate() + 14); // 기존 코드에서는 일 단위로 날짜를 증가시켰지만, 격주의 개수를 구하기 위해선 일주일 단위로 날짜를 증가시켜야 합니다.
+        }
+
+        return count;
+    };
+
+
+
+    const [selected, setSelected] = useState([]);
+    const [dayCount, setdayCount] = useState([])
+    const [weekCount, setWeekCount] = useState([])
+    const [todayWeekday, setTodayWeekday] = useState(null);
+
+    const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+
     useEffect(()=> {
         setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
+        console.log('days값', days)
+        setWeekCount(getWeekCountBetweenDates(startDate2, endDate2, days));
     },[weekdayMinus1, endDate, startDate])
 
-    // useEffect(() => {console.log(dayCount)}, [dayCount])
+    useEffect(() => {
+        if(selectValue === 4 || selectValue === 1) {
+            setWeekdayArrNew([]) // 배열 초기화
+            setWeekday([]) // 배열 초기화
+        }
 
-    console.log(weekdayMinus1, '요일 배열 확인')
-    console.log(dayCount, '개수 확인')
-    console.log(remindCount, '매주 미팅룸 생성 개수')
+        const today = new Date();
+        const index = weekdays.indexOf(todayWeekday);
+
+        setTodayWeekday(weekdays[today.getDay()]);
+        setWeekDay(index + 1);
+
+    }, [selectValue]);
 
 
+    function setWeekDay(day) {
+        if (!weekday.includes(day)) {
+            setWeekday([...weekday, day]);
+            setSelected([...weekday, day]);
+        }
+    }
 
+    const getWeekDay = day => {
+        let bool = false;
+        weekday.forEach(d => {
+            if (d === day) {
+                bool = true;
+            }
+        });
+
+        if (!bool) {
+            setWeekday([...new Set([...weekday, day])]);
+            setSelected([...new Set([...selected, day])]);
+        } else {
+            setWeekday(weekday.filter(d => d !== day));
+            setSelected(selected.filter((option) => option !== day));
+        }
+    };
 
     return (
         <div className="room">
@@ -874,16 +913,6 @@ const NewRoom = () => {
                                     분
                                 </div>
                             </div>
-                            {/*<input id="make_time1" type="time"*/}
-                            {/*       pattern="[0-9]{2}:[0-9]{2}"*/}
-                            {/*       className="text under-scope width-flexble"*/}
-                            {/*       onChange={makeTime1}*/}
-                            {/*       value={startTime}*/}
-                            {/*/>*/}
-                            {/*<input id="make_time2" type="time" className="text under-scope width-flexble"*/}
-                            {/*       onChange={makeTime2}*/}
-                            {/*       value={endTime}*/}
-                            {/*/>*/}
                         </div>
                         <hr />
                         {
@@ -897,7 +926,7 @@ const NewRoom = () => {
                                             {
                                                 selectValue === 1 ? `매일, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'day')}개 되풀이 항목` :
                                                     selectValue === 2 ? `매주 ${weekdayArrNew}, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayCount}개 되풀이 항목` :
-                                                        selectValue === 3 ? `매 2주마다, ${weekdayArrNew} ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${Math.floor(dayjs(endDate).diff(startDate, 'week')/2)+1}개 되풀이 항목` :
+                                                        selectValue === 3 ? `매 2주마다, ${weekdayArrNew} ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${weekCount}개 되풀이 항목` :
                                                             selectValue === 4 ? `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'month')}개 되풀이 항목` : ''
                                             }
                                         </> : ''
@@ -917,22 +946,12 @@ const NewRoom = () => {
                                             <option value="4">매월</option>
                                         </select>
                                     </dd>
-                                    {/*<dt><label htmlFor="room_repeat2">반복 횟수</label></dt>*/}
                                     <dd>
                                         {
                                             selectValue === 1 ? ''
                                                 : selectValue === 2 ? ''
                                                     : selectValue === 3 ? ''
                                                         : selectValue === 4 ? ''
-                                                            // <>
-                                                            //     <select name="" id="room_repeat2" onChange={selectRemindCount} className="make-select">
-                                                            //         <option value="1">1</option>
-                                                            //         <option value="2">2</option>
-                                                            //         <option value="3">3</option>
-                                                            //         <option value="4">4</option>
-                                                            //         <option value="5">5</option>
-                                                            //     </select>년
-                                                            // </>
                                                 : ''
                                         }
                                     </dd>
@@ -944,34 +963,21 @@ const NewRoom = () => {
                                             <dl className="inline__type">
                                                 <dt><label htmlFor="월">반복 요일</label></dt>
                                                 <dd>
-                                                    <div className="checkbox type__square">
-                                                        <input type="checkbox" className="checkbox" id="week_2" onChange={() => getWeekDay(2)} />
-                                                        <label htmlFor="week_2">월</label>
-                                                    </div>
-                                                    <div className="checkbox type__square">
-                                                        <input type="checkbox" className="checkbox" id="week_3"onChange={() => getWeekDay(3)} />
-                                                        <label htmlFor="week_3">화</label>
-                                                    </div>
-                                                    <div className="checkbox type__square">
-                                                        <input type="checkbox" className="checkbox" id="week_4" onChange={() => getWeekDay(4)} />
-                                                        <label htmlFor="week_4">수</label>
-                                                    </div>
-                                                    <div className="checkbox type__square">
-                                                        <input type="checkbox" className="checkbox" id="week_5"onChange={() => getWeekDay(5)} />
-                                                        <label htmlFor="week_5">목</label>
-                                                    </div>
-                                                    <div className="checkbox type__square">
-                                                        <input type="checkbox" className="checkbox" id="week_6" onChange={() => getWeekDay(6)} />
-                                                        <label htmlFor="week_6">금</label>
-                                                    </div>
-                                                    <div className="checkbox type__square">
-                                                        <input type="checkbox" className="checkbox" id="week_7" onChange={() => getWeekDay(7)} />
-                                                        <label htmlFor="week_7">토</label>
-                                                    </div>
-                                                    <div className="checkbox type__square">
-                                                        <input type="checkbox" className="checkbox" id="week_1" onChange={() => getWeekDay(1)} />
-                                                        <label htmlFor="week_1">일</label>
-                                                    </div>
+                                                    {weekdays.map((weekday, index) => (
+                                                        <div className="checkbox type__square" key={weekday}>
+                                                            <input
+                                                                type="checkbox"
+                                                                name="weekday"
+                                                                className="checkbox checkDisabledCheck"
+                                                                id={`week_${index + 1}`}
+                                                                value={index}
+                                                                onChange={() => getWeekDay(index + 1)}
+                                                                defaultChecked={todayWeekday === weekday}
+                                                                disabled={selected.length < 2 && selected.includes(index + 1)}
+                                                            />
+                                                            <label htmlFor={`week_${index + 1}`}>{weekday}</label>
+                                                        </div>
+                                                    ))}
                                                 </dd>
                                             </dl>
                                         </> :
@@ -979,36 +985,23 @@ const NewRoom = () => {
                                             <>
                                                 <hr />
                                                 <dl className="inline__type">
-                                                    <dt><label htmlFor="월">반복 요일</label></dt>
+                                                     <dt><label htmlFor="월">반복 요일</label></dt>
                                                     <dd>
-                                                        <div className="checkbox type__square">
-                                                            <input type="checkbox" className="checkbox" id="week_2" onChange={() => getWeekDay(2)} />
-                                                            <label htmlFor="week_2">월</label>
-                                                        </div>
-                                                        <div className="checkbox type__square">
-                                                            <input type="checkbox" className="checkbox" id="week_3"onChange={() => getWeekDay(3)} />
-                                                            <label htmlFor="week_3">화</label>
-                                                        </div>
-                                                        <div className="checkbox type__square">
-                                                            <input type="checkbox" className="checkbox" id="week_4" onChange={() => getWeekDay(4)} />
-                                                            <label htmlFor="week_4">수</label>
-                                                        </div>
-                                                        <div className="checkbox type__square">
-                                                            <input type="checkbox" className="checkbox" id="week_5"onChange={() => getWeekDay(5)} />
-                                                            <label htmlFor="week_5">목</label>
-                                                        </div>
-                                                        <div className="checkbox type__square">
-                                                            <input type="checkbox" className="checkbox" id="week_6" onChange={() => getWeekDay(6)} />
-                                                            <label htmlFor="week_6">금</label>
-                                                        </div>
-                                                        <div className="checkbox type__square">
-                                                            <input type="checkbox" className="checkbox" id="week_7" onChange={() => getWeekDay(7)} />
-                                                            <label htmlFor="week_7">토</label>
-                                                        </div>
-                                                        <div className="checkbox type__square">
-                                                            <input type="checkbox" className="checkbox" id="week_1" onChange={() => getWeekDay(1)} />
-                                                            <label htmlFor="week_1">일</label>
-                                                        </div>
+                                                        {weekdays.map((weekday, index) => (
+                                                            <div className="checkbox type__square" key={weekday}>
+                                                                <input
+                                                                    type="checkbox"
+                                                                    name="weekday"
+                                                                    className="checkbox checkDisabledCheck"
+                                                                    id={`week_${index + 1}`}
+                                                                    value={index}
+                                                                    onChange={() => getWeekDay(index + 1)}
+                                                                    defaultChecked={todayWeekday === weekday}
+                                                                    disabled={selected.length < 2 && selected.includes(index + 1)}
+                                                                />
+                                                                <label htmlFor={`week_${index + 1}`}>{weekday}</label>
+                                                            </div>
+                                                        ))}
                                                     </dd>
                                                 </dl>
                                             </>

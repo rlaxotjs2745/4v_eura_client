@@ -5032,3 +5032,6 @@ input[type=date].under-scope, input[type=time].under-scope {cursor: pointer}
 
 .input__group .input_flex {display: flex; align-items: center;}
 .input__group .input_flex button {padding:10px 15px; border:1px solid #794CFF; border-radius: 8px; height:45.5px; text-align: center; width: 120px; font-size:14px; color:#794CFF; margin-left:10px; line-height:1;}
+
+.checkbox input[type=checkbox].checkDisabledCheck:disabled + label {opacity: 0.5}
+.checkbox input[type=checkbox].checkDisabledCheck:disabled + label:before {background: url(./assets/image/ic_checkbox_square_checked.png) no-repeat 0 0; background-size: 14px 14px;}
