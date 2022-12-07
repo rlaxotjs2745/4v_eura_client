@@ -6,6 +6,9 @@ import MainMyMeetingRoom from "../Components/Cards/MainMyMeetingRoom";
 import {Link, useNavigate} from "react-router-dom";
 import {SERVER_URL, AXIOS_OPTION} from "../util/env";
 import $ from "jquery";
+import Select from "react-select";
+
+
 
 const Home = () => {
     const navigate = useNavigate();
@@ -23,6 +26,13 @@ const Home = () => {
     const [curLastSort, setCurLastSort] = useState(2);
     const [morePageBool, setMorePageBool] = useState(true);
     const [moreLastPageBool, setMoreLastPageBool] = useState(true);
+
+    const sortOption = [
+        { value: '2', label: '미팅 시간 순'},
+        { value: '1', label: '미팅 생성 순' },
+        { value: '3', label: '비공개 미팅 순'},
+        { value: '4', label: '취소된 미팅 순'},
+    ];
 
     useEffect(() => {
         modalClose();
@@ -220,6 +230,12 @@ const Home = () => {
                     !meeting.mt_meetMyListCount ? 0 : meeting.mt_meetMyListCount}</em>
                         <Link to="/newroom" className="btn btn__make"><img src={require('../assets/image/ic_plus.png')} alt=""/>새 미팅룸 만들기</Link>
                         <div className="sorting">
+                            <Select
+                                className=""
+                                classNamePrefix=""
+                                // name="color"
+                                options={sortOption}
+                            />
                             <select name="" id="meetSort" onChange={pageSort}>
                                 <option value="2">미팅 시간 순</option>
                                 <option value="1">미팅 생성 순</option>
