@@ -66,32 +66,34 @@ const AnalyseMeeting = (props) => {
                     let _maxmid = 0;
                     if(!!_data.mtAnalyMid){
                         for(let i=0;i<_data.mtAnalyMid.length;i++){
-                            let data = _data.mtAnalyMid[i]
+                            let data = _data.mtAnalyMid[i];
                             if(_maxmid < parseInt(data.Good)){
-                                _maxmid = parseInt(data.Good)
+                                _maxmid = parseInt(data.Good);
                             }
                             if(_maxmid < Math.abs(data.Bad)){
-                                _maxmid = Math.abs(data.Bad)
+                                _maxmid = Math.abs(data.Bad);
                             }
                         }
                     }
                     let _maxbtm = 0;
                     if(!!_data.mtData0){
                         for(let i=0;i<_data.mtData0.length;i++){
-                            let data = _data.mtData0[i]
+                            let data = _data.mtData0[i];
                             if(_maxbtm < parseInt(data.good)){
-                                _maxbtm = parseInt(data.good)
+                                _maxbtm = parseInt(data.good);
                             }
                             if(_maxbtm < Math.abs(data.bad)){
-                                _maxbtm = Math.abs(data.bad)
+                                _maxbtm = Math.abs(data.bad);
                             }
                         }
                     }
-                    setMiddata(_data.mtAnalyMid ? [{longP:_maxmid, longM:(_maxmid*-1)},..._data.mtAnalyMid] : []);
-                    setBtmdata(_data.mtData0 ? [{longP:_maxbtm, longM:(_maxbtm*-1)},..._data.mtData0] : []);
+                    // setMiddata(_data.mtAnalyMid ? [{longP:_maxmid, longM:(_maxmid*-1)},..._data.mtAnalyMid] : []);
+                    // setBtmdata(_data.mtData0 ? [{longP:_maxbtm, longM:(_maxbtm*-1)},..._data.mtData0] : []);
+                    setMiddata(_data.mtAnalyMid ? [{longP:_maxmid ? _maxmid : 100, longM:_maxmid ? (_maxmid * -1) : 100},..._data.mtAnalyMid] : []);
+                    setBtmdata(_data.mtData0 ? [{longP:_maxbtm ? _maxbtm : 100, longM: _maxbtm ? (_maxbtm * -1) : 100},..._data.mtData0] : []);
                     $('.graph_on_seek').show();
                 }else{
-                    alert(res.data.result_str)
+                    alert(res.data.result_str);
                 }
             }).catch((error)=>{
             console.log(error);
@@ -112,7 +114,7 @@ const AnalyseMeeting = (props) => {
                             ...res.data.data.mtInviteList.filter(user => !!user.is_iam),
                             ...res.data.data.mtInviteList.filter(user => !user.is_iam && user.is_host),
                             ...res.data.data.mtInviteList.filter(user => !user.is_iam && !user.is_host)
-                        ])
+                        ]);
                     }
                     setPiedata([
                         { name: "Good", value: _data.mtAnalyTop.good },
@@ -129,11 +131,11 @@ const AnalyseMeeting = (props) => {
 
                     let _mfile = _data.mtMovieFiles;
                     if(_mfile.length>0){
-                        setMovieFile(_mfile)
-                        isSafari ? setMovieSrc(_mfile[0].fileUrl) : setMovieSrc(_mfile[0].fileUrl2)
+                        setMovieFile(_mfile);
+                        isSafari ? setMovieSrc(_mfile[0].fileUrl) : setMovieSrc(_mfile[0].fileUrl2);
                     }
                 }else{
-                    alert(res.data.result_str)
+                    alert(res.data.result_str);
                 }
             }).catch((error)=>{
             console.log(error);

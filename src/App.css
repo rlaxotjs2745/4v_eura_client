@@ -4072,6 +4072,10 @@ html.js-overflow {
     color: gray;
 }
 
+.analyse_not_join_person {
+    opacity: 0.4;
+}
+
 
 .result__user {
     clear: both;

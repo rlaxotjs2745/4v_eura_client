@@ -12,7 +12,7 @@ const AnalysisUserList = ({lecture ,userList, clickUser, isHost}) => {
                             :
                             userList.map(member => {
                                 return (
-                                    <li key={member.idx}>
+                                    <li key={member.idx} className={member.join ? 'analyse_join_person' : 'analyse_not_join_person'}>
                                         <button onClick={() => clickUser(member.idx)}>
                                             <figure><img src={member.upic?member.upic: require('../../assets/image/image_profile.png')} alt=""/></figure>
                                             <div className="watch__td">
