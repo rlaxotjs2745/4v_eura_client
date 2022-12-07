@@ -556,7 +556,7 @@ const NewRoom = () => {
         formData.append('mt_start_dt',  `${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`);
         formData.append('mt_end_dt',   `${dayjs(startDate).format('YYYY-MM-DD')} ${Selected3}:${Selected4}:00`);
         formData.append('mt_info', meetingInfo);
-        formData.append('mt_invite_email', [...invites.map(inv => inv.email), ...groupInvites].join());
+        formData.append('mt_invite_email', invites.map(inv => inv.email).join());
         for (let i = 0; i < uploadedFiles.length; i++) {
             formData.append("file", uploadedFiles[i]);
         }
@@ -653,7 +653,7 @@ const NewRoom = () => {
         formData.append('mt_start_dt',  `${startDate} ${Selected1}:${Selected2}:00`);
         formData.append('mt_end_dt',   `${startDate} ${Selected3}:${Selected4}:00`);
         formData.append('mt_info', meetingInfo);
-        formData.append('mt_invite_email', [...invites.map(inv => inv.email), ...groupInvites].join());
+        formData.append('mt_invite_email', invites.map(inv => inv.email).join());
         for (let i = 0; i < uploadedFiles.length; i++) {
             formData.append("file", uploadedFiles[i]);
         }
