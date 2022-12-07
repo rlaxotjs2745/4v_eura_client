@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Route, Routes} from "react-router-dom";
 import LayoutType2 from "../Layout/LayoutType2";
 import LayoutType1 from "../Layout/LayoutType1";
@@ -16,13 +16,17 @@ import MeetingCalendar from "../pages/MeetingCalendar";
 import AnalyseMeeting from "../pages/AnalyseMeeting";
 
 const Routers = () => {
+    const [curSort, setCurSort] = useState(2);
+    const [curLastSort, setCurLastSort] = useState(2);
+
+
     return (
         <Routes>
             {/* type1 푸터 헤더 있는 버전 */}
             {/* PrivateRoute 안에는 로그인 해야 접근 가능, 로그인 안되어 있으면 /login으로 이동*/}
             <Route path="/" element={<PrivateRoute><LayoutType1/></PrivateRoute>}>
                 {/*<Route path="*" element={<Error/>}/>*/}
-                <Route index element={<Home/>}/>
+                <Route index element={<Home curLastSort={curLastSort} setCurLastSort={setCurLastSort} curSort={curSort} setCurSort={setCurSort} />}/>
                 <Route path="/profile" element={<Profile/>} />
                 <Route path="/meetingroom/:idx" element={<MeetingRoom />} />
                 <Route path="/newroom" element={<NewRoom />} />
