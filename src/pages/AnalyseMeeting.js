@@ -183,12 +183,13 @@ const AnalyseMeeting = (props) => {
     }, [])
 
     const showAllUserGraph = () => {
-        if(!allUserBool){
-            $('#show_all_user_graph').show();
-        } else {
-            $('#show_all_user_graph').hide();
-        }
-        setAllUserBool(!allUserBool);
+        $('#show_all_user_graph').hide();
+        setAllUserBool(true);
+    }
+
+    const hideAllUserGraph = () => {
+        $('#show_all_user_graph').show();
+        setAllUserBool(false);
     }
 
 
@@ -312,14 +313,16 @@ const AnalyseMeeting = (props) => {
                         lecture.is_host ?
                             <>
                                 <AllUserBarGraph middata={middata} />
-                                <div id="show_all_user_graph" className="display_all_user_graph" onClick={showAllUserGraph}>참석자별 전체결과 보기</div>
+                                <div id="show_all_user_graph" className="btm_data_box"  onClick={showAllUserGraph}>
+                                    <div className="display_all_user_graph">참석자별 전체결과 보기</div>
+                                </div>
                             </>
                             :
                             <OneUserBarGraph btmdata={btmdata[0]} isJoin={lecture.join} />
                     }
                     {
                         allUserBool ?
-                            <AnalyseAllUserGraphRow showAllUserGraph={showAllUserGraph} btmdata={btmdata} isJoin={lecture.join} oneUserResult={oneUserResult} oneUserResultab={oneUserResultab} />
+                            <AnalyseAllUserGraphRow hideAllUserGraph={hideAllUserGraph} btmdata={btmdata} isJoin={lecture.join} oneUserResult={oneUserResult} oneUserResultab={oneUserResultab} />
                             : null
                     }
 

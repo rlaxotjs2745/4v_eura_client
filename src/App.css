@@ -5017,6 +5017,55 @@ html.js-overflow {
     /*font-*/
 }
 
+.btm_data_box.is-off {
+    display: none;
+}
+
+.btm_data_box {
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.display_all_user_graph {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    width: 177px;
+    left: 0px;
+    top: 0px;
+    border-radius: 5px;
+
+
+    background: #E0E2EB;
+    border-radius: 5px;
+}
+
+.display_all_user_graph div {
+/*    position: absolute;*/
+/*    left: 16.95%;*/
+/*    right: 17.51%;*/
+/*    top: 33.33%;*/
+/*    bottom: 33.33%;*/
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.5px;
+
+
+/*    color: #525566;*/
+
+}
+
 form.w100 {width:100%; position: relative; height:920px; margin:60px auto 0;}
 .join {position: absolute; left:0; right:0; margin:0px auto; opacity: 0; z-index: -1}
 .join.active {opacity: 1; z-index: 1;}
