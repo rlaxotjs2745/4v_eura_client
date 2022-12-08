@@ -5114,3 +5114,8 @@ input[type=date].under-scope, input[type=time].under-scope {cursor: pointer}
 .input_flex input[type=radio]:checked + dl label:before {background-image: url("./assets/image/ic_radio_on.svg")}
 
 .make-select:disabled {background-color:#BFC3D5 !important; opacity: 0.5; border:1px solid #BFC3D5;}
+
+.checkbox.login_checkbox label {padding-left:23px; cursor: pointer}
+.checkbox.login_checkbox label:before {width: 18px; height: 18px; background:url("./assets/image/ico_checkbox_login_off.png") no-repeat center / 18px 18px; margin-top: 0; transform: translateY(-50%);}
+.checkbox.login_checkbox input[type=checkbox]:checked + label:before {background-image: url("./assets/image/ico_checkbox_login_on.png")}
+.checkbox.login_checkbox input[type=checkbox]:checked + label:after {content: none;}
