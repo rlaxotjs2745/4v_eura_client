@@ -125,6 +125,7 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort, curPage, curLas
                         setMeeting({...meeting, mt_meetMyList: newMeeting});
 
                         modalClose();
+                        getMain();
                     } else if (res.data.result_code === "FAIL01"){
                         modalFailOpen()
                     }

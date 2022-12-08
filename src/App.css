@@ -5012,6 +5012,11 @@ html.js-overflow {
     z-index: 10000;
 }
 
+.calendar__etc {
+    color: #3377ff;
+    /*font-*/
+}
+
 form.w100 {width:100%; position: relative; height:920px; margin:60px auto 0;}
 .join {position: absolute; left:0; right:0; margin:0px auto; opacity: 0; z-index: -1}
 .join.active {opacity: 1; z-index: 1;}

@@ -12,6 +12,7 @@ import MeetingAnalysisPieGraph from "../Components/Cards/MeetingAnalysisPieGraph
 import InviteMyAnalPieGraphCard from "../Components/Cards/InviteMyAnalPieGraphCard";
 import HLSSource from "../Components/Cards/HLSSource";
 import { browserName, isSafari } from "react-device-detect";
+import AnalyseAllUserGraphRow from "../Components/Cards/AnalyseAllUserGraphRow";
 
 const AnalyseMeeting = (props) => {
     const [movieSrc, setMovieSrc] = useState('');
@@ -27,6 +28,7 @@ const AnalyseMeeting = (props) => {
     // const [oneUserBool, setOneUserBool] = useState(false);
     const [oneUserResult, setOneUserResult] = useState([]);
     const [oneUserResultab, setOneUserResultab] = useState({})
+    const [allUserBool, setAllUserBool] = useState(false);
     const player = useRef();
     // const vLine = useRef();
 
@@ -136,7 +138,13 @@ const AnalyseMeeting = (props) => {
                         }
                     }
                     setMiddata(_data.mtAnalyMid ? [{longP:_maxmid ? _maxmid : 100, longM:_maxmid ? (_maxmid * -1) : 100},..._data.mtAnalyMid] : []);
-                    setBtmdata(_data.mtData0 ? [{longP:_maxbtm ? _maxbtm : 100, longM: _maxbtm ? (_maxbtm * -1) : 100},..._data.mtData0] : []);
+                    setBtmdata(_data.mtData0 ? _data.mtData0.map(dt => {
+                        return [{
+                            longP:_maxbtm ? _maxbtm : 100,
+                            longM: _maxbtm ? (_maxbtm * -1) : 100},
+                            ...dt
+                        ]}
+                    ) : []);
 
                     if(!!res.data.data.mtInviteList && !!res.data.data.mtInviteList.length){
                         setUserList([
@@ -150,13 +158,15 @@ const AnalyseMeeting = (props) => {
                         { name: "Bad", value: _data.mtAnalyTop.bad },
                         { name: "Camera off", value: _data.mtAnalyTop.off },
                     ])
-                    setOneUserResult(_data.mtData1 ? [
-                        { name: "Good", value: _data.mtData1.good },
-                        { name: "Bad", value: _data.mtData1.bad },
-                        { name: "Camera Off", value: _data.mtData1.off },
-                    ]
+                    setOneUserResult(_data.mtData1 ? _data.mtData1.map(dt => {
+                        return [
+                            { name: "Good", value: dt.good },
+                            { name: "Bad", value: dt.bad },
+                            { name: "Camera Off", value: dt.off },
+                        ]
+                        })
                         : []);
-                    setOneUserResultab(_data.mtData1 ? _data.mtData1 : {});
+                    setOneUserResultab(_data.mtData1 ? _data.mtData1 : []);
 
                     let _mfile = _data.mtMovieFiles;
                     if(_mfile.length>0){
@@ -171,6 +181,15 @@ const AnalyseMeeting = (props) => {
         });
 
     }, [])
+
+    const showAllUserGraph = () => {
+        if(!allUserBool){
+            $('#show_all_user_graph').show();
+        } else {
+            $('#show_all_user_graph').hide();
+        }
+        setAllUserBool(!allUserBool);
+    }
 
 
     const clickUser = (idx) => {
@@ -291,11 +310,20 @@ const AnalyseMeeting = (props) => {
 
                     {
                         lecture.is_host ?
-                            <AllUserBarGraph middata={middata} />
-
+                            <>
+                                <AllUserBarGraph middata={middata} />
+                                <div id="show_all_user_graph" className="display_all_user_graph" onClick={showAllUserGraph}>참석자별 전체결과 보기</div>
+                            </>
                             :
-                            <OneUserBarGraph btmdata={btmdata} isJoin={lecture.join} />
+                            <OneUserBarGraph btmdata={btmdata[0]} isJoin={lecture.join} />
                     }
+                    {
+                        allUserBool ?
+                            <AnalyseAllUserGraphRow showAllUserGraph={showAllUserGraph} btmdata={btmdata} isJoin={lecture.join} oneUserResult={oneUserResult} oneUserResultab={oneUserResultab} />
+                            : null
+                    }
+
+
                     {/* {
                         lecture.is_host ?
                                     <>
