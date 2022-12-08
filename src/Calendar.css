@@ -252,12 +252,13 @@
     grid-column: 1 / 3;
     grid-row: 1 / 2;
     justify-self: end;
+    padding: 3px 3px;
+    font-size: 11px;
 }
 
 .react-calendar__tile--now abbr {
     background-color: #8e57ff;
     color: #f3ebfe;
-    padding: 5px 0px;
     border-radius: 50%;
 }
 
@@ -279,4 +280,5 @@
 .react-calendar__tile div span {
     color: #8e57ff;
     font-weight: bold;
+    font-size: 11px;
 }
