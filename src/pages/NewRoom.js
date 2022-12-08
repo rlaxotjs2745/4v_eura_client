@@ -1249,7 +1249,7 @@ const NewRoom = () => {
                                         <div className="input_flex">
                                             <input type="radio" id="byDate" name="byCheck" checked={radioChecked} onChange={radioSelectHandle} />
                                             <dl className="inline__type">
-                                                <dt><label htmlFor="byDate">종료 날짜</label></dt>
+                                                <dt><label htmlFor="byDate">날짜 기준</label></dt>
                                                 <dd>
                                                     <select className="make-select" onChange={radioSelected1} value={radioSelectedValue1}  disabled={radioChecked2}>
                                                         {by_date_option.map((item) => (
