@@ -277,15 +277,15 @@ const NewRoom = () => {
     ];
 
     const by_date_option = [
-        { value: "1", label: "1", idx:"01"},
-        { value: "2", label: "2", idx:"02"},
-        { value: "3", label: "3", idx:"03"},
-        { value: "4", label: "4", idx:"04"},
-        { value: "5", label: "5", idx:"05"},
-        { value: "6", label: "6", idx:"06"},
-        { value: "7", label: "7", idx:"07"},
-        { value: "8", label: "8", idx:"08"},
-        { value: "9", label: "9", idx:"09"},
+        { value: "01", label: "1", idx:"01"},
+        { value: "02", label: "2", idx:"02"},
+        { value: "03", label: "3", idx:"03"},
+        { value: "04", label: "4", idx:"04"},
+        { value: "05", label: "5", idx:"05"},
+        { value: "06", label: "6", idx:"06"},
+        { value: "07", label: "7", idx:"07"},
+        { value: "08", label: "8", idx:"08"},
+        { value: "09", label: "9", idx:"09"},
         { value: "10", label: "10", idx:"10"},
         { value: "11", label: "11", idx:"11"},
         { value: "12", label: "12", idx:"12"},
@@ -702,7 +702,7 @@ const NewRoom = () => {
                 formData.append('mt_remind_monthType', radioSelectType)
             }
             if(selectValue === 4 && radioChecked){
-                formData.append('mt_remind_monthDay', parseInt(radioSelectedValue1));
+                formData.append('mt_remind_monthDay', radioSelectedValue1);
             }
             if(selectValue === 4 && radioChecked2){
                 formData.append('mt_remind_sequence', parseInt(radioSelectedValue2));
