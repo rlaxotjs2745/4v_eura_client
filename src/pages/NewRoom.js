@@ -14,8 +14,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import moment from 'moment';
 
-
-
 const MAX_COUNT = 99;
 const FILE_SIZE_MAX_LIMIT = 100 * 1024 * 1024;  // 100MB
 
@@ -759,9 +757,6 @@ const NewRoom = () => {
     const endDate2 = new Date(endDate);
     const days = weekdayMinus1;
 
-    // startDate2.setDate(startDate2.getDate() + 1);
-    // endDate2.setDate(endDate2.getDate() + 1);
-
     const getDayCountBetweenDates = (startDate, endDate, days) => {
         let date = new Date(startDate);
         let count = 0;
@@ -776,19 +771,31 @@ const NewRoom = () => {
         return count;
     }
 
-    const getWeekdayCountBetweenDates = (startDate2, endDate2, days2) => {
-        let date2 = new Date(startDate2);
+    const getWeekdayCountBetweenDates = (startDate, endDate, days) => {
+        let date = new Date(startDate);
         let count = 0;
+        let skipWeek = false;
 
-        while (date2 <= endDate2) {
-            if (days2.includes(date2.getDay())) {
+        while (date <= endDate) {
+            if (skipWeek) {
+                date.setDate(date.getDate() + 1);
+                skipWeek = !skipWeek;
+            }
+
+            if (days.includes(date.getDay())) {
                 count++;
             }
-            date2.setDate(date2.getDate() + 1);
+
+            if (date.getDay() === 0) { // 일요일인 경우
+                date.setDate(date.getDate() + 7); // date2의
+                skipWeek = !skipWeek; // skipWeek의 값을 반전시킵니다.
+            } else if (!skipWeek) {
+                date.setDate(date.getDate() + 1);
+            }
         }
 
         return count;
-    }
+    };
 
 
 
@@ -845,27 +852,6 @@ const NewRoom = () => {
         }
     };
 
-
-    const jjinCount = () => {
-        const startDate3 = moment('2022-12-07');
-        const endDate3 = moment('2022-12-23');
-
-        let weekdays3 = 0;
-        let currentDate = startDate3;
-
-        while (currentDate.isBefore(endDate3)) {
-            if (currentDate.day() === 5 && currentDate.isSameOrBefore(endDate3)) { // 5는 금요일을 의미합니다.
-                weekdays3++;
-            }
-            currentDate.add(1, 'weeks'); // 기간을 격주 단위로 증가시킵니다.
-        }
-
-        console.log('진짜 격주 카운트?', weekdays3); // 5개
-    }
-
-    useEffect(()=> {
-        jjinCount()
-    },[weekday])
 
     return (
         <div className="room">
