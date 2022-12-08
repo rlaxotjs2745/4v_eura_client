@@ -101,7 +101,7 @@ const NewRoom = () => {
             .then(res => {
                 const room = res.data.data;
                 setTitle(room.mt_name);
-                setStartDate(room.mt_start_dt.split(' ')[0]);
+                setStartDate(dayjs(new Date(room.mt_start_dt.split(' ')[0])).format('YYYY-MM-DD'));
                 setDt2(room.mt_start_dt.split(' ')[0]);
                 setStartTime(room.mt_start_dt.split(' ')[1]);
                 setEndTime(room.mt_end_dt.split(' ')[1]);
@@ -119,7 +119,7 @@ const NewRoom = () => {
                 if(room.mt_remind_week !== null) {
                     setWeekday(room.mt_remind_week.split(','));
                 }
-                setPrevRoom({...room, mt_remind_week :room.mt_remind_week !== null ? room.mt_remind_week.split(',') : null});
+                setPrevRoom({...room, mt_remind_week :room.mt_remind_week !== null ? room.mt_remind_week.split(',').sort() : null});
             })
         axios.get(SERVER_URL +
             `/meet/room/invite?idx_meeting=${pathSplit}`,
@@ -523,6 +523,36 @@ const NewRoom = () => {
         setModifyBool(compareBool);
     }
 
+    const compareDateTime = () => {
+        let compareBool = false;
+
+        if(!prevRoom.mt_start_dt && !prevRoom.mt_end_dt && !!Selected1 && !!Selected2 && !!Selected3 && !!Selected4){
+            compareBool = true;
+        }
+
+        console.log(prevRoom);
+        if(!!prevRoom.mt_start_dt && !!prevRoom.mt_end_dt){
+            if(
+                Selected1 !== prevRoom.mt_start_dt.split(' ')[1].split(':')[0] ||
+                Selected2 !== prevRoom.mt_start_dt.split(' ')[1].split(':')[1] ||
+                Selected3 !== prevRoom.mt_end_dt.split(' ')[1].split(':')[0] ||
+                Selected4 !== prevRoom.mt_end_dt.split(' ')[1].split(':')[1]
+            ){
+                compareBool = true;
+            }
+
+            if(prevRoom.mt_start_dt.split(' ')[0] !==  dayjs(new Date(startDate)).format('YYYY-MM-DD')){ // 맨 먼저 저장되는
+                compareBool = true;
+            }
+        }
+
+        if(prevRoom.mt_remind_type !== selectValue){
+            compareBool = true;
+        }
+
+        setModifyBool(compareBool);
+    }
+
     const pressEnterKey = (e) => {
         if(e.key === 'Enter'){
             const reg_email = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
@@ -571,6 +601,7 @@ const NewRoom = () => {
 
     const handleChange = (e) => {
         setSelectValue(parseInt(e.target.value))
+        compareDateTime();
     };
 
     const makeTitle = (e) => {
@@ -579,11 +610,12 @@ const NewRoom = () => {
 
     const makeDate = (newValue) => {
         setStartDate(newValue);
+        compareDateTime();
     }
 
     const makeEndDate = (e) => {
         setEndDate(e);
-
+        compareDateTime();
     }
 
     const makeMeetingInfo = (e) => {
@@ -591,7 +623,6 @@ const NewRoom = () => {
     }
 
     const handleSubmit = () => {
-        console.log(remindCount)
         if($('#make_new').val() == ''){
             return alert('미팅 이름을 입력해주세요.')
         }
@@ -624,6 +655,7 @@ const NewRoom = () => {
         if($('#make_room').val() == ''){
             return alert('미팅 정보가 입력되지 않았습니다.');
         }
+
 
         const formData = new FormData();
         formData.append('mt_name', title);
@@ -685,6 +717,11 @@ const NewRoom = () => {
                     }
                 }).catch(res => console.log(res))
         }
+    }
+
+    const openConfirmModal = () => {
+        $('#popup__notice').addClass('is-on');
+        $('#shade2').addClass('is-on');
     }
 
     const openModal = () => {
@@ -786,8 +823,10 @@ const NewRoom = () => {
     const modalClose = () => {
         $('#popup__notice').removeClass('is-on');
         $('#shade2').removeClass('is-on');
-        alert('미팅룸을 비공개상태로 수정하였습니다.');
-        navigate('/');
+        if(isNew === 2){
+            alert('미팅룸을 비공개상태로 수정하였습니다.');
+            navigate('/');
+        }
     }
 
     const changeMeetingStatus2 = () => {
@@ -973,10 +1012,6 @@ const NewRoom = () => {
     const radioSelected3 = (e) => {
         setRadioSelectedValue3(e.target.value);
     };
-
-    console.log(radioSelectedValue1, '1번째 셀렉트')
-    console.log(radioSelectedValue2, '2번째 셀렉트')
-    console.log(radioSelectedValue3, '3번째 셀렉트')
 
 
     return (
@@ -1304,7 +1339,7 @@ const NewRoom = () => {
                                 재개설
                             </a>
                             :
-                            <div onClick={handleSubmit} className="btn btn__able">저장</div>
+                            <div onClick={modifyBool ? openConfirmModal : handleSubmit} className="btn btn__able">저장</div>
                         }
 
 
@@ -1375,7 +1410,7 @@ const NewRoom = () => {
                                 </div>
                                 <div className="btn__group">
                                     <button onClick={modalClose} className="btn btn__normal btn__s js-modal-close">수정취소</button>
-                                    <button onClick={changeMeetingStatus2} className="btn btn__able btn__s">메일발송</button>
+                                    <button onClick={handleSubmit} className="btn btn__able btn__s">메일발송</button>
                                 </div>
                             </div>
                         </>

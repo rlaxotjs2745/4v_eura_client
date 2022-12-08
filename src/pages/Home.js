@@ -40,6 +40,7 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort, curPage, curLas
 
     useEffect(() => {
         getMain();
+        $('#shade2').removeClass('is-on');
     }, [])
 
     const pageSort = (where, sort) => {
