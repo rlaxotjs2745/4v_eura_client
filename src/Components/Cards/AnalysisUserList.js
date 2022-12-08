@@ -7,7 +7,7 @@ const AnalysisUserList = ({lecture ,userList, clickUser, isHost}) => {
             <div className="result__watch">
                 <ul>
                     {
-                        !userList.length ?
+                        userList.length === 0 ?
                             <span className="file__name">참석자가 없습니다.</span>
                             :
                             userList.map(member => {

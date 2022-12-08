@@ -61,49 +61,6 @@ const AnalyseMeeting = (props) => {
         setMovieSrc(moviefile[_no-1].fileUrl)
     }
 
-    // 동영상 변경에 따른 그래프 변경
-    const _getMeetResult = (_idx, _no, _duration) => {
-        axios.get(SERVER_URL + `/meet/result/meeting?idx_meeting=`+_idx+`&fileno=`+_no+`&duration=`+_duration, AXIOS_OPTION)
-            .then(res => {
-                if(res.data.result_code === 'SUCCESS'){
-                    let _data = res.data.data;
-                    let _maxmid = 0;
-                    if(!!_data.mtAnalyMid){
-                        for(let i=0;i<_data.mtAnalyMid.length;i++){
-                            let data = _data.mtAnalyMid[i];
-                            if(_maxmid < parseInt(data.Good)){
-                                _maxmid = parseInt(data.Good);
-                            }
-                            if(_maxmid < Math.abs(data.Bad)){
-                                _maxmid = Math.abs(data.Bad);
-                            }
-                        }
-                    }
-                    let _maxbtm = 0;
-                    if(!!_data.mtData0){
-                        for(let i=0;i<_data.mtData0.length;i++){
-                            let data = _data.mtData0[i];
-                            if(_maxbtm < parseInt(data.good)){
-                                _maxbtm = parseInt(data.good);
-                            }
-                            if(_maxbtm < Math.abs(data.bad)){
-                                _maxbtm = Math.abs(data.bad);
-                            }
-                        }
-                    }
-                    // setMiddata(_data.mtAnalyMid ? [{longP:_maxmid, longM:(_maxmid*-1)},..._data.mtAnalyMid] : []);
-                    // setBtmdata(_data.mtData0 ? [{longP:_maxbtm, longM:(_maxbtm*-1)},..._data.mtData0] : []);
-                    setMiddata(_data.mtAnalyMid ? [{longP:_maxmid ? _maxmid : 100, longM:_maxmid ? (_maxmid * -1) : 100},..._data.mtAnalyMid] : []);
-                    setBtmdata(_data.mtData0 ? [{longP:_maxbtm ? _maxbtm : 100, longM: _maxbtm ? (_maxbtm * -1) : 100},..._data.mtData0] : []);
-                    $('.graph_on_seek').show();
-                }else{
-                    alert(res.data.result_str);
-                }
-            }).catch((error)=>{
-            console.log(error);
-        });
-    }
-
     useEffect(() => {
         axios.get(SERVER_URL + `/meet/result/meeting?idx_meeting=${pathSplit}&fileno=1`, AXIOS_OPTION)
             .then(res => {
@@ -122,12 +79,13 @@ const AnalyseMeeting = (props) => {
                             }
                         }
                     }
-                    let _maxbtm = 0;
+                    const maxbtmArr = [];
                     if(!!_data.mtData0){
+                        let _maxbtm = 0;
                         for(let i=0;i<_data.mtData0.length;i++){
-                            let data = _data.mtData0[i];
-                            for(let j=0;j<data.list.length;j++){
-                                let data2 = data.list[j];
+                            let user = _data.mtData0[i];
+                            for(let j=0;j<user.list.length;j++){
+                                let data2 = user.list[j];
                                 if(_maxbtm < parseInt(data2.good)){
                                     _maxbtm = parseInt(data2.good);
                                 }
@@ -135,22 +93,23 @@ const AnalyseMeeting = (props) => {
                                     _maxbtm = Math.abs(data2.bad);
                                 }
                             }
+                            maxbtmArr.push(_maxbtm);
                         }
                     }
                     setMiddata(_data.mtAnalyMid ? [{longP:_maxmid ? _maxmid : 100, longM:_maxmid ? (_maxmid * -1) : 100},..._data.mtAnalyMid] : []);
-                    setBtmdata(_data.mtData0 ? _data.mtData0.map(dt => {
-                        return [{
-                            longP:_maxbtm ? _maxbtm : 100,
-                            longM: _maxbtm ? (_maxbtm * -1) : 100},
-                            ...dt
-                        ]}
-                    ) : []);
+                    setBtmdata(_data.mtData0 ? _data.mtData0.map((dt, idx) => {
+                        return [{longP: maxbtmArr[idx] ? maxbtmArr[idx] : 100, longM: maxbtmArr[idx] ? (maxbtmArr[idx] * -1) : 100}, ...dt.list]
+                        })
+                        : [])
 
-                    if(!!res.data.data.mtInviteList && !!res.data.data.mtInviteList.length){
+                    let invList = _data.mtInviteList;
+
+
+                    if(!!invList && !! invList.length){
                         setUserList([
-                            ...res.data.data.mtInviteList.filter(user => !!user.is_iam),
-                            ...res.data.data.mtInviteList.filter(user => !user.is_iam && user.is_host),
-                            ...res.data.data.mtInviteList.filter(user => !user.is_iam && !user.is_host)
+                            ...invList.filter(user => user.is_iam),
+                            ...invList.filter(user => !user.is_iam && user.is_host),
+                            ...invList.filter(user => !user.is_iam && !user.is_host)
                         ]);
                     }
                     setPiedata([
@@ -159,6 +118,7 @@ const AnalyseMeeting = (props) => {
                         { name: "Camera off", value: _data.mtAnalyTop.off },
                     ])
                     setOneUserResult(_data.mtData1 ? _data.mtData1.map(dt => {
+                        console.log(dt);
                         return [
                             { name: "Good", value: dt.good },
                             { name: "Bad", value: dt.bad },
@@ -166,6 +126,7 @@ const AnalyseMeeting = (props) => {
                         ]
                         })
                         : []);
+
                     setOneUserResultab(_data.mtData1 ? _data.mtData1 : []);
 
                     let _mfile = _data.mtMovieFiles;
