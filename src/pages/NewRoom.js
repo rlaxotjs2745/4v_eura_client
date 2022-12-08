@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useLayoutEffect} from "react";
 import axios from "axios";
 import {AXIOS_FORM_DATA_OPTION, AXIOS_FORM_DATA_OPTION_NOUSER, AXIOS_OPTION, SERVER_URL} from "../util/env";
 import ModifyRoomUser from "../Components/Cards/ModifyRoomUser";
@@ -40,6 +40,7 @@ const NewRoom = () => {
     const [remindBool, setRemindBool] = useState(false); // 되풀이 미팅
     const [remindShowBool, setRemindShowBool] = useState(true); // 되풀이 미팅
     const [remindCount, setRemindCount] = useState(0); // 되풀이 미팅 횟수
+    const [remindCountEffect, setRemindCountEffect] = useState(0); // 되풀이 미팅 더미용 useEffect 용
 
     const [startDate, setStartDate] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
     const [startTime, setStartTime] = useState(new Date().getHours() + ':' + new Date().getMinutes() + ':00');
@@ -67,6 +68,8 @@ const NewRoom = () => {
     const [dt, setDt] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
     const [dt2, setDt2] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
 
+    const [radioChecked, setRadioChecked] = useState(true)
+    const [radioChecked2, setRadioChecked2] = useState(false)
     const [prevRoom, setPrevRoom] = useState({});
     const [prevInvites, setPrevInvites] = useState({});
 
@@ -178,10 +181,26 @@ const NewRoom = () => {
             setRemindCount(Math.floor(dayjs(endDate).diff(startDate, 'week')/2) + 1)
             setMaxDate(dayjs(startDate).add(24, 'week'))
         } else if (selectValue === 4) {
-            setRemindCount(dayjs(endDate).diff(startDate, 'month'))
             setMaxDate(dayjs(startDate).add(12, 'month'))
         }
+
     }, [endDate, startDate])
+
+    const remindCountEffectAfter = new Date(remindCountEffect); // useEffect 안에 if문이 해당 값이 변경 되고 나서 실행하게 하기 위해 더미로 넣음. 꼭 필요함.
+
+    useLayoutEffect(()=> {
+        if (selectValue === 4 && radioChecked) {
+            setRemindCount(monthCount)
+            // console.log('종료 날짜 체크 된거 실행중')
+        }
+        if (selectValue === 4 && radioChecked2) {
+            setRemindCount(dayjs(endDate).diff(startDate, 'month'))
+            // console.log('요일 기준 체크 된거 실행중')
+        }
+    }, [radioChecked, radioChecked2, remindCountEffectAfter])
+
+
+
 
     const weekdayArr = ['일','월','화','수','목','금','토']
 
@@ -616,6 +635,7 @@ const NewRoom = () => {
     const makeEndDate = (e) => {
         setEndDate(e);
         compareDateTime();
+        setRemindCountEffect(e)
     }
 
     const makeMeetingInfo = (e) => {
@@ -623,6 +643,8 @@ const NewRoom = () => {
     }
 
     const handleSubmit = () => {
+        console.log(remindCount, '카운트 제대로 가나 확인')
+
         if($('#make_new').val() == ''){
             return alert('미팅 이름을 입력해주세요.')
         }
@@ -675,6 +697,16 @@ const NewRoom = () => {
             }
             if(selectValue == 3){
                 formData.append('mt_remind_week', weekday.join());
+            }
+            if(selectValue === 4 ) {
+                formData.append('mt_remind_monthType', radioSelectType)
+            }
+            if(selectValue === 4 && radioChecked){
+                formData.append('mt_remind_monthDay', parseInt(radioSelectedValue1));
+            }
+            if(selectValue === 4 && radioChecked2){
+                formData.append('mt_remind_sequence', parseInt(radioSelectedValue2));
+                formData.append('mt_remind_week', parseInt(radioSelectedValue3));
             }
             formData.append('mt_remind_end', dayjs(endDate).format('YYYY-MM-DD'));
         } else {
@@ -934,8 +966,6 @@ const NewRoom = () => {
     useEffect(()=> {
         setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
         setWeekCount(getWeekdayCountBetweenDates(startDate2, endDate2, days))
-        console.log(days, 'days')
-        console.log(weekCount, '격주 카운트')
     },[weekdayMinus1, endDate, startDate])
 
     useEffect(() => {
@@ -953,7 +983,8 @@ const NewRoom = () => {
         // 되풀이미팅 반복주기 변경시 매월 값 현재 날짜 값으로 초기화
         const firstDay = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
         setRadioSelectedValue(new Date().getDate())
-        setRadioSelectedValue2(Math.ceil(((new Date() - firstDay) / 86400000 + firstDay.getDay()) / 7));
+        setRadioSelectedValue2(Math.min(5, Math.ceil(((new Date() - firstDay) / 86400000 + firstDay.getDay()) / 7))); // 5이상인 번째 ex)6주 나오면 5번째로 바꿔주기
+        // setRadioSelectedValue2(Math.ceil(((new Date() - firstDay) / 86400000 + firstDay.getDay()) / 7));
         setRadioSelectedValue3(new Date().getDay() + 1);
 
     }, [selectValue]);
@@ -982,23 +1013,24 @@ const NewRoom = () => {
         }
     };
 
-    const [radioChecked, setRadioChecked] = useState(true)
-    const [radioChecked2, setRadioChecked2] = useState(false)
 
+
+    const [radioSelectType, setRadioSelectType] = useState(1)
     const [radioSelectedValue1, setRadioSelectedValue] = useState(1)
     const [radioSelectedValue2, setRadioSelectedValue2] = useState(1)
     const [radioSelectedValue3, setRadioSelectedValue3] = useState(1)
 
 
-
     const radioSelectHandle = () => {
         setRadioChecked(true)
         setRadioChecked2(false)
+        setRadioSelectType(1)
     }
 
     const radioSelectHandle2 = () => {
         setRadioChecked2(true)
         setRadioChecked(false)
+        setRadioSelectType(2)
     }
 
     const radioSelected1 = (e) => {
@@ -1012,7 +1044,35 @@ const NewRoom = () => {
     const radioSelected3 = (e) => {
         setRadioSelectedValue3(e.target.value);
     };
+    function countSpecificDates(startDate, endDate, specificDates) {
+        const dates = [];
+        let currentDate = new Date(startDate);
+        while (currentDate <= new Date(endDate)) {
+            dates.push(currentDate);
+            currentDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
+        } // 시작 날짜와 종료 날짜 사이에 있는 날짜를 전부 dates 배열에 담는다.
 
+
+        let count = 0;
+
+        // dates 배열에서 각 요소를 하나씩 꺼내서 date 변수에 담아서 반복문 실행
+        for (let date of dates) {
+            // date 변수의 값의 날짜가 인자값으로 받은 문자열 값을 정수형으로 반환한 값과 일치 할 경우 개수를 반환한다.
+            if (date.getDate() === Number(specificDates)) {
+                count += 1;
+            }
+        }
+
+        // 찾은 특정 날짜의 개수를 반환한다.
+        return count;
+    }
+
+    const [monthCount, setMonthCount] = useState(0)
+
+
+    useEffect(()=>{
+        setMonthCount(countSpecificDates(startDate2, endDate2, radioSelectedValue1))
+    }, [radioSelectedValue1, startDate2, endDate2])
 
     return (
         <div className="room">
@@ -1100,7 +1160,10 @@ const NewRoom = () => {
                                                 selectValue === 1 ? `매일, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'day')}개 되풀이 항목` :
                                                     selectValue === 2 ? `매주 ${weekdayArrNew}, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayCount}개 되풀이 항목` :
                                                         selectValue === 3 ? `매 2주마다, ${weekdayArrNew} ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${weekCount}개 되풀이 항목` :
-                                                            selectValue === 4 ? `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'month')}개 되풀이 항목` : ''
+                                                            selectValue === 4 && radioChecked ?
+                                                                `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${monthCount}개 되풀이 항목` :
+                                                                selectValue === 4 && radioChecked2 ?
+                                                                    `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'month')}개 되풀이 항목` : ''
                                             }
                                         </> : ''
                                         }
@@ -1184,7 +1247,7 @@ const NewRoom = () => {
                                 { selectValue === 4 ?
                                     <>
                                         <div className="input_flex">
-                                            <input type="radio" id="byDate" name="byCheck" defaultChecked={true} checked={radioChecked} onChange={radioSelectHandle} />
+                                            <input type="radio" id="byDate" name="byCheck" checked={radioChecked} onChange={radioSelectHandle} />
                                             <dl className="inline__type">
                                                 <dt><label htmlFor="byDate">종료 날짜</label></dt>
                                                 <dd>
