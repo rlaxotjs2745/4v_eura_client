@@ -157,7 +157,7 @@ const Login = () => {
                     <div className="input__group">
                         <input type="password" className="text" id="login_password" placeholder="비밀번호" name="user_pwd" {...register('user_pwd')}/>
                     </div>
-                    <div className="checkbox">
+                    <div className="checkbox login_checkbox">
                         <input type="checkbox" className="checkbox" id="auto-1" name="autoLogin" {...register('autoLogin')}/>
                         <label htmlFor="auto-1">자동 로그인</label>
                     </div>
