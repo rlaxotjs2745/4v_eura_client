@@ -41,6 +41,7 @@ const AnalyseMeeting = (props) => {
     useEffect(() => {
         // _mplay = false;
         player.current.load()
+        $('.graph_on_seek').show();
     }, [movieSrc])
 
     const handleStateChange = (state, prev) => {
@@ -48,6 +49,7 @@ const AnalyseMeeting = (props) => {
             // _mplay = true;
             // _getMeetResult(pathSplit, movieNo, Math.ceil(state.duration))
         // }
+
         $(".v-line").css({left:$(".video-react-play-progress.video-react-slider-bar").width()})
         $(".v-box").css({left:$(".video-react-play-progress.video-react-slider-bar").width()})
     }
@@ -106,9 +108,6 @@ const AnalyseMeeting = (props) => {
                 if(res.data.result_code === 'SUCCESS'){
                     let _data = res.data.data;
                     setLecture(_data);
-                    // console.log(res)
-                    // setMiddata(_data.mtAnalyMid ? [{longP:100, longM:-100},..._data.mtAnalyMid] : []);
-                    // setBtmdata(_data.mtData0 ? [{longP:100, longM:-100},..._data.mtData0] : []);
                     let _maxmid = 0;
                     if(!!_data.mtAnalyMid){
                         for(let i=0;i<_data.mtAnalyMid.length;i++){
@@ -125,16 +124,20 @@ const AnalyseMeeting = (props) => {
                     if(!!_data.mtData0){
                         for(let i=0;i<_data.mtData0.length;i++){
                             let data = _data.mtData0[i];
-                            if(_maxbtm < parseInt(data.good)){
-                                _maxbtm = parseInt(data.good);
-                            }
-                            if(_maxbtm < Math.abs(data.bad)){
-                                _maxbtm = Math.abs(data.bad);
+                            for(let j=0;j<data.list.length;j++){
+                                let data2 = data.list[j];
+                                if(_maxbtm < parseInt(data2.good)){
+                                    _maxbtm = parseInt(data2.good);
+                                }
+                                if(_maxbtm < Math.abs(data2.bad)){
+                                    _maxbtm = Math.abs(data2.bad);
+                                }
                             }
                         }
                     }
                     setMiddata(_data.mtAnalyMid ? [{longP:_maxmid ? _maxmid : 100, longM:_maxmid ? (_maxmid * -1) : 100},..._data.mtAnalyMid] : []);
                     setBtmdata(_data.mtData0 ? [{longP:_maxbtm ? _maxbtm : 100, longM: _maxbtm ? (_maxbtm * -1) : 100},..._data.mtData0] : []);
+
                     if(!!res.data.data.mtInviteList && !!res.data.data.mtInviteList.length){
                         setUserList([
                             ...res.data.data.mtInviteList.filter(user => !!user.is_iam),
@@ -289,18 +292,19 @@ const AnalyseMeeting = (props) => {
                     {
                         lecture.is_host ?
                             <AllUserBarGraph middata={middata} />
+
                             :
                             <OneUserBarGraph btmdata={btmdata} isJoin={lecture.join} />
                     }
-                    {/*{*/}
-                    {/*    oneUserBool && oneUserLevel ?*/}
-                    {/*                <>*/}
-                    {/*                    <InviteMyAnalPieGraphCard oneUserResult={oneUserLevel.mtData1} oneUserResultab={oneUserLevel.mtData1ab} />*/}
-                    {/*                    <OneUserBarGraph btmdata={oneUserLevel.mtData0} />*/}
-                    {/*                </>*/}
-                    {/*        :*/}
-                    {/*        null*/}
-                    {/*}*/}
+                    {/* {
+                        lecture.is_host ?
+                                    <>
+                                        <InviteMyAnalPieGraphCard oneUserResult={oneUserLevel.mtData1} oneUserResultab={oneUserLevel.mtData1ab} />
+                                        <OneUserBarGraph btmdata={oneUserLevel.mtData0} />
+                                    </>
+                            :
+                            null
+                    } */}
                 </div>
             </section>
         </>

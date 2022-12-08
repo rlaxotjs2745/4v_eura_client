@@ -2222,6 +2222,8 @@ td {
     box-shadow: 0 3px 20px rgba(177, 206, 248, .3);
     width: 109px;
     height: 112px;
+    position: relative;
+    z-index: 99;
 }
 
 .meet_sort_select__anchor.meet_sort_select_hide {
@@ -3713,7 +3715,11 @@ html.js-overflow {
     display: block;
     font-size: 12px;
     color: #17171a;
-    font-weight: 500
+    font-weight: 500;
+    width: 130px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .room .room__box .list__guest ul li .btn__delete {
@@ -4178,14 +4184,19 @@ html.js-overflow {
 .result__user .result__watch ul li button {
     width: 265px;
     padding: 7px 0 7px 6px;
-    display: table;
-    table-layout: fixed;
+    display: flex;
+    align-items: center;
     border-radius: 8px
 }
 
 .result__user .result__watch ul li button:focus, .result__user .result__watch ul li button:hover {
     background: rgba(121, 76, 255, .15)
 }
+
+.me_box {position: relative;}
+.me_box .team__badge {position: absolute; bottom: -5px; right: -5px; width: 24px; height: 24px;}
+.watch__td > .flex {display: flex; align-items: center;}
+.watch__td > .flex > img {display: inline-block; width: 13px; height: 11px; margin-left:3px;}
 
 .result__user .result__watch ul li figure {
     display: table-cell;
@@ -4210,6 +4221,7 @@ html.js-overflow {
 }
 
 .result__user .result__watch ul li .watch__td {
+    position: relative;;
     display: table-cell;
     text-align: left;
     width: 150px;
@@ -5090,3 +5102,10 @@ input[type=date].under-scope, input[type=time].under-scope {cursor: pointer}
 
 .checkbox input[type=checkbox].checkDisabledCheck:disabled + label {opacity: 0.5}
 .checkbox input[type=checkbox].checkDisabledCheck:disabled + label:before {background: url(./assets/image/ic_checkbox_square_checked.png) no-repeat 0 0; background-size: 14px 14px;}
+
+.input_flex input[type=radio] {display: none}
+.input_flex input[type=radio] + dl label {display: flex; align-items: center; margin-bottom: 0;}
+.input_flex input[type=radio] + dl label:before {content:''; display: inline-block; width:24px; height:24px; background: url("./assets/image/ic_radio_off.svg") no-repeat center;}
+.input_flex input[type=radio]:checked + dl label:before {background-image: url("./assets/image/ic_radio_on.svg")}
+
+.make-select:disabled {background-color:#BFC3D5 !important; opacity: 0.5; border:1px solid #BFC3D5;}

@@ -12,6 +12,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
+import moment from 'moment';
 
 const MAX_COUNT = 99;
 const FILE_SIZE_MAX_LIMIT = 100 * 1024 * 1024;  // 100MB
@@ -256,6 +257,58 @@ const NewRoom = () => {
         { value: "50", label: "50", idx:"05"},
     ];
 
+    const by_date_option = [
+        { value: "1", label: "1", idx:"01"},
+        { value: "2", label: "2", idx:"02"},
+        { value: "3", label: "3", idx:"03"},
+        { value: "4", label: "4", idx:"04"},
+        { value: "5", label: "5", idx:"05"},
+        { value: "6", label: "6", idx:"06"},
+        { value: "7", label: "7", idx:"07"},
+        { value: "8", label: "8", idx:"08"},
+        { value: "9", label: "9", idx:"09"},
+        { value: "10", label: "10", idx:"10"},
+        { value: "11", label: "11", idx:"11"},
+        { value: "12", label: "12", idx:"12"},
+        { value: "13", label: "13", idx:"13"},
+        { value: "14", label: "14", idx:"14"},
+        { value: "15", label: "15", idx:"15"},
+        { value: "16", label: "16", idx:"16"},
+        { value: "17", label: "17", idx:"17"},
+        { value: "18", label: "18", idx:"18"},
+        { value: "19", label: "19", idx:"19"},
+        { value: "20", label: "20", idx:"20"},
+        { value: "21", label: "21", idx:"21"},
+        { value: "22", label: "22", idx:"22"},
+        { value: "23", label: "23", idx:"23"},
+        { value: "24", label: "24", idx:"24"},
+        { value: "25", label: "25", idx:"25"},
+        { value: "26", label: "26", idx:"26"},
+        { value: "27", label: "27", idx:"27"},
+        { value: "28", label: "28", idx:"28"},
+        { value: "29", label: "29", idx:"29"},
+        { value: "30", label: "30", idx:"30"},
+        { value: "31", label: "31", idx:"31"},
+    ];
+
+    const by_day_of_week_option = [
+        { value: "1", label: "첫 번째", idx:"00"},
+        { value: "2", label: "두 번째", idx:"01"},
+        { value: "3", label: "세 번째", idx:"02"},
+        { value: "4", label: "네 번째", idx:"03"},
+        { value: "5", label: "마지막", idx:"04"},
+    ];
+
+    const by_day_of_week_option2 = [
+        { value: "1", label: "일요일", idx:"00"},
+        { value: "2", label: "월요일", idx:"01"},
+        { value: "3", label: "화요일", idx:"02"},
+        { value: "4", label: "수요일", idx:"03"},
+        { value: "5", label: "목요일", idx:"04"},
+        { value: "6", label: "금요일", idx:"05"},
+        { value: "7", label: "토요일", idx:"06"},
+    ];
+
 
     const handleSelect1 = (e) => {
         setSelected1(e.target.value);
@@ -272,6 +325,9 @@ const NewRoom = () => {
     const handleSelect4 = (e) => {
         setSelected4(e.target.value);
     };
+
+
+
 
     const handleUploadFiles = (files) => {
 
@@ -787,9 +843,6 @@ const NewRoom = () => {
     const endDate2 = new Date(endDate);
     const days = weekdayMinus1;
 
-    // startDate2.setDate(startDate2.getDate() + 1);
-    // endDate2.setDate(endDate2.getDate() + 1);
-
     const getDayCountBetweenDates = (startDate, endDate, days) => {
         let date = new Date(startDate);
         let count = 0;
@@ -804,15 +857,27 @@ const NewRoom = () => {
         return count;
     }
 
-    const getWeekCountBetweenDates = (startDate, endDate, days) => {
+    const getWeekdayCountBetweenDates = (startDate, endDate, days) => {
         let date = new Date(startDate);
         let count = 0;
+        let skipWeek = false;
 
         while (date <= endDate) {
+            if (skipWeek) {
+                date.setDate(date.getDate() + 1);
+                skipWeek = !skipWeek;
+            }
+
             if (days.includes(date.getDay())) {
                 count++;
             }
-            date.setDate(date.getDate() + 14); // 기존 코드에서는 일 단위로 날짜를 증가시켰지만, 격주의 개수를 구하기 위해선 일주일 단위로 날짜를 증가시켜야 합니다.
+
+            if (date.getDay() === 0) { // 일요일인 경우
+                date.setDate(date.getDate() + 7); // date2의
+                skipWeek = !skipWeek; // skipWeek의 값을 반전시킵니다.
+            } else if (!skipWeek) {
+                date.setDate(date.getDate() + 1);
+            }
         }
 
         return count;
@@ -821,16 +886,17 @@ const NewRoom = () => {
 
 
     const [selected, setSelected] = useState([]);
-    const [dayCount, setdayCount] = useState([])
-    const [weekCount, setWeekCount] = useState([])
+    const [dayCount, setdayCount] = useState(0)
+    const [weekCount, setWeekCount] = useState(0)
     const [todayWeekday, setTodayWeekday] = useState(null);
 
     const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
 
     useEffect(()=> {
         setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
-        console.log('days값', days)
-        setWeekCount(getWeekCountBetweenDates(startDate2, endDate2, days));
+        setWeekCount(getWeekdayCountBetweenDates(startDate2, endDate2, days))
+        console.log(days, 'days')
+        console.log(weekCount, '격주 카운트')
     },[weekdayMinus1, endDate, startDate])
 
     useEffect(() => {
@@ -845,8 +911,13 @@ const NewRoom = () => {
         setTodayWeekday(weekdays[today.getDay()]);
         setWeekDay(index + 1);
 
-    }, [selectValue]);
+        // 되풀이미팅 반복주기 변경시 매월 값 현재 날짜 값으로 초기화
+        const firstDay = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+        setRadioSelectedValue(new Date().getDate())
+        setRadioSelectedValue2(Math.ceil(((new Date() - firstDay) / 86400000 + firstDay.getDay()) / 7));
+        setRadioSelectedValue3(new Date().getDay() + 1);
 
+    }, [selectValue]);
 
     function setWeekDay(day) {
         if (!weekday.includes(day)) {
@@ -871,6 +942,42 @@ const NewRoom = () => {
             setSelected(selected.filter((option) => option !== day));
         }
     };
+
+    const [radioChecked, setRadioChecked] = useState(true)
+    const [radioChecked2, setRadioChecked2] = useState(false)
+
+    const [radioSelectedValue1, setRadioSelectedValue] = useState(1)
+    const [radioSelectedValue2, setRadioSelectedValue2] = useState(1)
+    const [radioSelectedValue3, setRadioSelectedValue3] = useState(1)
+
+
+
+    const radioSelectHandle = () => {
+        setRadioChecked(true)
+        setRadioChecked2(false)
+    }
+
+    const radioSelectHandle2 = () => {
+        setRadioChecked2(true)
+        setRadioChecked(false)
+    }
+
+    const radioSelected1 = (e) => {
+        setRadioSelectedValue(e.target.value);
+    };
+
+    const radioSelected2 = (e) => {
+        setRadioSelectedValue2(e.target.value);
+    };
+
+    const radioSelected3 = (e) => {
+        setRadioSelectedValue3(e.target.value);
+    };
+
+    console.log(radioSelectedValue1, '1번째 셀렉트')
+    console.log(radioSelectedValue2, '2번째 셀렉트')
+    console.log(radioSelectedValue3, '3번째 셀렉트')
+
 
     return (
         <div className="room">
@@ -1039,6 +1146,51 @@ const NewRoom = () => {
                                         : null
                                 }
                                 <hr />
+                                { selectValue === 4 ?
+                                    <>
+                                        <div className="input_flex">
+                                            <input type="radio" id="byDate" name="byCheck" defaultChecked={true} checked={radioChecked} onChange={radioSelectHandle} />
+                                            <dl className="inline__type">
+                                                <dt><label htmlFor="byDate">종료 날짜</label></dt>
+                                                <dd>
+                                                    <select className="make-select" onChange={radioSelected1} value={radioSelectedValue1}  disabled={radioChecked2}>
+                                                        {by_date_option.map((item) => (
+                                                            <option value={item.value} key={item.idx}>
+                                                                {item.label}
+                                                            </option>
+                                                        ))}
+                                                    </select> 일
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                        <hr/>
+                                        <div className="input_flex">
+                                            <input type="radio" id="byDayOfWeek" name="byCheck" checked={radioChecked2} onChange={radioSelectHandle2}/>
+                                            <dl className="inline__type">
+                                                <dt><label htmlFor="byDayOfWeek">요일 기준</label></dt>
+                                                <dd>
+                                                    <select className="make-select" onChange={radioSelected2} value={radioSelectedValue2} disabled={radioChecked}>
+                                                        {by_day_of_week_option.map((item) => (
+                                                            <option value={item.value} key={item.idx}>
+                                                                {item.label}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                    <select className="make-select" onChange={radioSelected3} value={radioSelectedValue3} disabled={radioChecked}>
+                                                        {by_day_of_week_option2.map((item) => (
+                                                            <option value={item.value} key={item.idx}>
+                                                                {item.label}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                        <hr/>
+                                    </>
+                                    : null
+
+                                }
                                 <dl className="inline__type">
                                     <dt><label htmlFor="종료 날짜">종료 날짜</label></dt>
                                     <dd>
@@ -1154,8 +1306,6 @@ const NewRoom = () => {
                             :
                             <div onClick={handleSubmit} className="btn btn__able">저장</div>
                         }
-
-
 
 
                     </div>
