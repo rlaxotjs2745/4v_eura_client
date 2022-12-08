@@ -1068,11 +1068,32 @@ const NewRoom = () => {
     }
 
     const [monthCount, setMonthCount] = useState(0)
-
+    const [monthCount2, setMonthCount2] = useState(0)
 
     useEffect(()=>{
         setMonthCount(countSpecificDates(startDate2, endDate2, radioSelectedValue1))
+        setMonthCount2(getNthWeekNthDay(startDate2, endDate2, week11, dayOfWeek11))
+        console.log(monthCount2);
     }, [radioSelectedValue1, startDate2, endDate2])
+
+    const week11 = radioSelectedValue2   ; // n번째 주
+    const dayOfWeek11 = radioSelectedValue3 - 1; // n요일
+
+
+
+    function getNthWeekNthDay(startDate, endDate, week, dayOfWeek) {
+        let nthDay = 0;
+        let currentDate = startDate;
+        while (currentDate <= endDate) {
+            if (currentDate.getDay() === dayOfWeek && currentDate.getDate() >= week * 7 - 6 && currentDate.getDate() <= week * 7) {
+                nthDay++;
+            }
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        return nthDay;
+    } // 사용할 함수
+
+
 
     return (
         <div className="room">
@@ -1162,8 +1183,10 @@ const NewRoom = () => {
                                                         selectValue === 3 ? `매 2주마다, ${weekdayArrNew} ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${weekCount}개 되풀이 항목` :
                                                             selectValue === 4 && radioChecked ?
                                                                 `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${monthCount}개 되풀이 항목` :
-                                                                selectValue === 4 && radioChecked2 ?
-                                                                    `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'month')}개 되풀이 항목` : ''
+                                                                selectValue === 4 && radioChecked2 && week11 !== '5' ?
+                                                                    `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${monthCount2}개 되풀이 항목` :
+                                                                    selectValue === 4 && radioChecked2 && week11 === '5' ?
+                                                                        `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'month')}개 되풀이 항목` : ''
                                             }
                                         </> : ''
                                         }
