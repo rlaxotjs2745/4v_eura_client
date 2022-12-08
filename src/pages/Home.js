@@ -287,7 +287,7 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort, curPage, curLas
                 </div>
 
                 <div className="main__history">
-                    <h3><img src="" alt=""/><img src={require('../assets/image/ic_last.png')} alt=""/> 지난 미팅 <em>{lastMeeting.mt_meetMyListCount ? lastMeeting.mt_meetMyListCount : 0}</em>
+                    <h3><img src="" alt=""/><img src={require('../assets/image/ic_last.png')} alt=""/> 지난 미팅 <em>{lastMeeting && lastMeeting.mt_meetMyListCount ? lastMeeting.mt_meetMyListCount : 0}</em>
                         <div className="sorting" onMouseOver={sortLastMouseOver} onMouseOut={sortLastMouseOut}>
                             <div className="meet_sort_select">
                                 <span>{allSort.filter(sort => sort.value == curLastSort)[0].label}</span>

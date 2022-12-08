@@ -66,6 +66,11 @@ const NewRoom = () => {
     const [dt, setDt] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
     const [dt2, setDt2] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
 
+    const [prevRoom, setPrevRoom] = useState({});
+    const [prevInvites, setPrevInvites] = useState({});
+
+    const [modifyBool, setModifyBool] = useState(false);
+
 
     useEffect(() => {
         let curTIme = new Date();
@@ -113,6 +118,7 @@ const NewRoom = () => {
                 if(room.mt_remind_week !== null) {
                     setWeekday(room.mt_remind_week.split(','));
                 }
+                setPrevRoom({...room, mt_remind_week :room.mt_remind_week !== null ? room.mt_remind_week.split(',') : null});
             })
         axios.get(SERVER_URL +
             `/meet/room/invite?idx_meeting=${pathSplit}`,
@@ -120,6 +126,7 @@ const NewRoom = () => {
             .then(res => {
                 setInvCount(res.data.data.mt_invites.length);
                 setInvites(res.data.data.mt_invites);
+                setPrevInvites({...res.data.data, mt_invites: res.data.data.mt_invites.sort((a,b) =>  a.email > b.email)});
             })
 
     },[])
@@ -375,8 +382,9 @@ const NewRoom = () => {
             if(user.email === getCookie('user_id')){
                 return alert('호스트는 제거할 수 없습니다.');
             }
-
-            setInvites(invites.filter(inv => inv.email != user.email));
+            const newUserList = invites.filter(inv => inv.email != user.email);
+            setInvites(newUserList);
+            compareInvites(newUserList)
             if(delUser === ''){
                 setDelUser(user.email);
             } else {
@@ -402,7 +410,10 @@ const NewRoom = () => {
             return;
         }
         setInvites([...invites, user]);
-        let targetIdx;
+
+        compareInvites([...invites, user]);
+
+            let targetIdx;
         searchUser.forEach((us, idx) => {
             if(us.idx == user.idx){
                 targetIdx = idx;
@@ -432,9 +443,28 @@ const NewRoom = () => {
             }
         }
 
+        compareInvites([...invites, ...newInvites]);
+
         setInvites([...invites, ...newInvites]);
 
         handleModal();
+    }
+
+    const compareInvites = (arr) => {
+        const compareInv = arr.sort((a,b) => a.email > b.email);
+            let compareBool = false;
+        if(compareInv.length !== prevInvites.mt_invites.length){
+            compareBool = true;
+        } else {
+            for(let i = 0; i < compareInv.length; i++){
+                if(compareInv[i].email !== prevInvites.mt_invites[i].email){
+                    compareBool = true;
+                    break;
+                }
+            }
+        }
+
+        setModifyBool(compareBool);
     }
 
     const pressEnterKey = (e) => {
@@ -452,6 +482,7 @@ const NewRoom = () => {
                 })
                 if(!isExist){
                     setInvites([...invites, {email: e.target.value, unknownUser: true}]);
+                    compareInvites([...invites, {email: e.target.value, unknownUser: true}]);
                 }
                 e.target.value = '';
             } else {
@@ -1159,20 +1190,46 @@ const NewRoom = () => {
             </div>
 
             <div id="popup__notice" className="pop__detail">
-                <div onClick={modalClose} className="btn__close js-modal-close"><img src={require('../assets/image/ic_close_24.png')} alt=""/></div>
-                <div className="popup__cnt">
-                    <div className="pop__message">
-                        <img src={require('../assets/image/ic_warning_80.png')} alt=""/>
-                        <div id="mt_status_2">
-                            <strong>재개설 된 미팅룸을 공개하시겠습니까?</strong>
-                            <span>미팅을 공개하면 초대한 참석자들에게 메일이 발송됩니다.</span>
-                        </div>
-                    </div>
-                    <div className="btn__group">
-                        <button onClick={changeMeetingStatus2} className="btn btn__able btn__s">예</button>
-                        <button onClick={modalClose} className="btn btn__normal btn__s js-modal-close">아니오</button>
-                    </div>
-                </div>
+                {
+                    isNew === 2 ?
+                        <>
+                            <div onClick={modalClose} className="btn__close js-modal-close">
+                                <img src={require('../assets/image/ic_close_24.png')} alt=""/>
+                            </div>
+                            <div className="popup__cnt">
+                                <div className="pop__message">
+                                    <img src={require('../assets/image/ic_warning_80.png')} alt=""/>
+                                    <div id="mt_status_2">
+                                        <strong>재개설 된 미팅룸을 공개하시겠습니까?</strong>
+                                        <span>미팅을 공개하면 초대한 참석자들에게 메일이 발송됩니다.</span>
+                                    </div>
+                                </div>
+                                <div className="btn__group">
+                                    <button onClick={changeMeetingStatus2} className="btn btn__able btn__s">예</button>
+                                    <button onClick={modalClose} className="btn btn__normal btn__s js-modal-close">아니오</button>
+                                </div>
+                            </div>
+                        </>
+                    :
+                        <>
+                            <div onClick={modalClose} className="btn__close js-modal-close">
+                                <img src={require('../assets/image/ic_close_24.png')} alt=""/>
+                            </div>
+                            <div className="popup__cnt">
+                                <div className="pop__message">
+                                    <img src={require('../assets/image/ic_warning_80.png')} alt=""/>
+                                    <div id="mt_status_2">
+                                        <strong>미팅 일정 또는 참석자 명단에 수정사항이 있습니다.</strong>
+                                        <span>참석자에게 메일을 발송하시겠습니까?</span>
+                                    </div>
+                                </div>
+                                <div className="btn__group">
+                                    <button onClick={modalClose} className="btn btn__normal btn__s js-modal-close">수정취소</button>
+                                    <button onClick={changeMeetingStatus2} className="btn btn__able btn__s">메일발송</button>
+                                </div>
+                            </div>
+                        </>
+                }
             </div>
 
         </div>
