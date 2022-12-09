@@ -114,11 +114,11 @@ const AnalyseMeeting = (props) => {
                             ...invList.filter(user => !user.is_iam && !user.is_host)
                         ]);
                     }
-                    setPiedata([
+                    setPiedata(_data.mtAnalyTop ? [
                         { name: "Good", value: _data.mtAnalyTop.good },
                         { name: "Bad", value: _data.mtAnalyTop.bad },
                         { name: "Camera off", value: _data.mtAnalyTop.off },
-                    ])
+                    ] : [])
                     setOneUserResult(_data.mtData1 ? _data.mtData1.map(dt => {
                         return [
                             { name: "Good", value: dt.good },
@@ -143,6 +143,8 @@ const AnalyseMeeting = (props) => {
         });
 
     }, [])
+
+    useEffect(() => {console.log(oneUserResult)}, [oneUserResult, oneUserResultab])
 
     const showAllUserGraph = () => {
         $('#show_all_user_graph').hide();
