@@ -83,12 +83,12 @@ const NewRoom = () => {
             curTIme.setMinutes(curTIme.getMinutes() + (10 - curTIme.getMinutes() % 10) ); // 분을 다시 설정함, 현재
         }
 
-        setSelected1(curTIme.getHours());
+        setSelected1(dayjs(curTIme).format('HH'))
         setSelected2(curTIme.getMinutes());
 
         curTIme.setMinutes(curTIme.getMinutes() + 30);
 
-        setSelected3(curTIme.getHours());
+        setSelected3(dayjs(curTIme).format('HH'))
         setSelected4(curTIme.getMinutes());
 
         if(pathname.indexOf('reopen')>-1){
@@ -144,6 +144,15 @@ const NewRoom = () => {
             setEndDate(dayjs(startDate).add(14, 'week'));
         } else if (selectValue === 4) {
             setEndDate(dayjs(startDate).add(7, 'month'));
+            if(dayjs(startDate).format('DD') === '31') {
+                setEndDate(dayjs(startDate).add(10, 'month'));
+            }
+        }
+
+        if(selectValue === 4 && dayjs(startDate).format('DD') === '31' && monthCount === 6) {
+            setEndDate(dayjs(startDate).add(11, 'month'));
+        } else if (selectValue === 4 && dayjs(startDate).format('DD') === '31') {
+            setEndDate(dayjs(startDate).add(10, 'month'));
         }
     },[startDate])
 
@@ -206,15 +215,15 @@ const NewRoom = () => {
 
     const select1_opiton = [
         { value: "00", label: "00", idx:"00"},
-        { value: "1", label: "01", idx:"01"},
-        { value: "2", label: "02", idx:"02"},
-        { value: "3", label: "03", idx:"03"},
-        { value: "4", label: "04", idx:"04"},
-        { value: "5", label: "05", idx:"05"},
-        { value: "6", label: "06", idx:"06"},
-        { value: "7", label: "07", idx:"07"},
-        { value: "8", label: "08", idx:"08"},
-        { value: "9", label: "09", idx:"09"},
+        { value: "01", label: "01", idx:"01"},
+        { value: "02", label: "02", idx:"02"},
+        { value: "03", label: "03", idx:"03"},
+        { value: "04", label: "04", idx:"04"},
+        { value: "05", label: "05", idx:"05"},
+        { value: "06", label: "06", idx:"06"},
+        { value: "07", label: "07", idx:"07"},
+        { value: "08", label: "08", idx:"08"},
+        { value: "09", label: "09", idx:"09"},
         { value: "10", label: "10", idx:"10"},
         { value: "11", label: "11", idx:"11"},
         { value: "12", label: "12", idx:"12"},
@@ -242,15 +251,15 @@ const NewRoom = () => {
 
     const select3_opiton = [
         { value: "00", label: "00", idx:"00"},
-        { value: "1", label: "01", idx:"01"},
-        { value: "2", label: "02", idx:"02"},
-        { value: "3", label: "03", idx:"03"},
-        { value: "4", label: "04", idx:"04"},
-        { value: "5", label: "05", idx:"05"},
-        { value: "6", label: "06", idx:"06"},
-        { value: "7", label: "07", idx:"07"},
-        { value: "8", label: "08", idx:"08"},
-        { value: "9", label: "09", idx:"09"},
+        { value: "01", label: "01", idx:"01"},
+        { value: "02", label: "02", idx:"02"},
+        { value: "03", label: "03", idx:"03"},
+        { value: "04", label: "04", idx:"04"},
+        { value: "05", label: "05", idx:"05"},
+        { value: "06", label: "06", idx:"06"},
+        { value: "07", label: "07", idx:"07"},
+        { value: "08", label: "08", idx:"08"},
+        { value: "09", label: "09", idx:"09"},
         { value: "10", label: "10", idx:"10"},
         { value: "11", label: "11", idx:"11"},
         { value: "12", label: "12", idx:"12"},
@@ -643,7 +652,7 @@ const NewRoom = () => {
     }
 
     const handleSubmit = () => {
-        console.log(remindCount, '카운트 제대로 가나 확인')
+        // console.log(remindCount, '카운트 제대로 가나 확인')
 
         if($('#make_new').val() == ''){
             return alert('미팅 이름을 입력해주세요.')
@@ -790,11 +799,10 @@ const NewRoom = () => {
             return alert('미팅 정보가 입력되지 않았습니다.');
         }
 
-
         const formData = new FormData();
         formData.append('mt_name', title);
-        formData.append('mt_start_dt',  `${startDate} ${Selected1}:${Selected2}:00`);
-        formData.append('mt_end_dt',   `${startDate} ${Selected3}:${Selected4}:00`);
+        formData.append('mt_start_dt',  `${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`);
+        formData.append('mt_end_dt',   `${dayjs(startDate).format('YYYY-MM-DD')} ${Selected3}:${Selected4}:00`);
         formData.append('mt_info', meetingInfo);
         formData.append('mt_invite_email', invites.map(inv => inv.email).join());
         for (let i = 0; i < uploadedFiles.length; i++) {
@@ -806,9 +814,21 @@ const NewRoom = () => {
             if(selectValue == 2){
                 formData.append('mt_remind_week', weekday.join());
             }
-            formData.append('mt_remind_end', endDate);
+            if(selectValue == 3){
+                formData.append('mt_remind_week', weekday.join());
+            }
+            if(selectValue === 4 ) {
+                formData.append('mt_remind_monthType', radioSelectType)
+            }
+            if(selectValue === 4 && radioChecked){
+                formData.append('mt_remind_monthDay', radioSelectedValue1);
+            }
+            if(selectValue === 4 && radioChecked2){
+                formData.append('mt_remind_sequence', parseInt(radioSelectedValue2));
+                formData.append('mt_remind_week', parseInt(radioSelectedValue3));
+            }
+            formData.append('mt_remind_end', dayjs(endDate).format('YYYY-MM-DD'));
         } else {
-            // console.log('되풀이 미팅 체크 안된것으로 봄')
             formData.append('mt_remind_type', 0);
         }
 
@@ -982,7 +1002,7 @@ const NewRoom = () => {
 
         // 되풀이미팅 반복주기 변경시 매월 값 현재 날짜 값으로 초기화
         const firstDay = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-        setRadioSelectedValue(new Date().getDate())
+        setRadioSelectedValue(dayjs(today).format('DD'))
         setRadioSelectedValue2(Math.min(5, Math.ceil(((new Date() - firstDay) / 86400000 + firstDay.getDay()) / 7))); // 5이상인 번째 ex)6주 나오면 5번째로 바꿔주기
         // setRadioSelectedValue2(Math.ceil(((new Date() - firstDay) / 86400000 + firstDay.getDay()) / 7));
         setRadioSelectedValue3(new Date().getDay() + 1);
@@ -1068,11 +1088,30 @@ const NewRoom = () => {
     }
 
     const [monthCount, setMonthCount] = useState(0)
-
+    const [monthCount2, setMonthCount2] = useState(0)
 
     useEffect(()=>{
         setMonthCount(countSpecificDates(startDate2, endDate2, radioSelectedValue1))
+        setMonthCount2(getNthWeekNthDay(startDate2, endDate2, week11, dayOfWeek11))
+        console.log(monthCount2);
     }, [radioSelectedValue1, startDate2, endDate2])
+
+    const week11 = radioSelectedValue2   ; // n번째 주
+    const dayOfWeek11 = radioSelectedValue3 - 1; // n요일
+
+
+
+    function getNthWeekNthDay(startDate, endDate, week, dayOfWeek) {
+        let nthDay = 0;
+        let currentDate = startDate;
+        while (currentDate <= endDate) {
+            if (currentDate.getDay() === dayOfWeek && currentDate.getDate() >= week * 7 - 6 && currentDate.getDate() <= week * 7) {
+                nthDay++;
+            }
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        return nthDay;
+    } // 사용할 함수
 
     return (
         <div className="room">
@@ -1162,8 +1201,10 @@ const NewRoom = () => {
                                                         selectValue === 3 ? `매 2주마다, ${weekdayArrNew} ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${weekCount}개 되풀이 항목` :
                                                             selectValue === 4 && radioChecked ?
                                                                 `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${monthCount}개 되풀이 항목` :
-                                                                selectValue === 4 && radioChecked2 ?
-                                                                    `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'month')}개 되풀이 항목` : ''
+                                                                selectValue === 4 && radioChecked2 && week11 !== '5' ?
+                                                                    `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${monthCount2}개 되풀이 항목` :
+                                                                    selectValue === 4 && radioChecked2 && week11 === '5' ?
+                                                                        `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'month')}개 되풀이 항목` : ''
                                             }
                                         </> : ''
                                         }
