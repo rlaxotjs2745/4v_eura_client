@@ -83,12 +83,14 @@ const NewRoom = () => {
             curTIme.setMinutes(curTIme.getMinutes() + (10 - curTIme.getMinutes() % 10) ); // 분을 다시 설정함, 현재
         }
 
-        setSelected1(curTIme.getHours());
+        // setSelected1(curTIme.getHours());
+        setSelected1(("00"+new Date().getHours().toString()).slice(-2))
         setSelected2(curTIme.getMinutes());
 
         curTIme.setMinutes(curTIme.getMinutes() + 30);
 
-        setSelected3(curTIme.getHours());
+        // setSelected3(curTIme.getHours());
+        setSelected3(("00"+new Date().getHours().toString()).slice(-2))
         setSelected4(curTIme.getMinutes());
 
         if(pathname.indexOf('reopen')>-1){
@@ -144,6 +146,15 @@ const NewRoom = () => {
             setEndDate(dayjs(startDate).add(14, 'week'));
         } else if (selectValue === 4) {
             setEndDate(dayjs(startDate).add(7, 'month'));
+            if(dayjs(startDate).format('DD') === '31') {
+                setEndDate(dayjs(startDate).add(10, 'month'));
+            }
+        }
+
+        if(selectValue === 4 && dayjs(startDate).format('DD') === '31' && monthCount === 6) {
+            setEndDate(dayjs(startDate).add(11, 'month'));
+        } else if (selectValue === 4 && dayjs(startDate).format('DD') === '31') {
+            setEndDate(dayjs(startDate).add(10, 'month'));
         }
     },[startDate])
 
@@ -206,15 +217,15 @@ const NewRoom = () => {
 
     const select1_opiton = [
         { value: "00", label: "00", idx:"00"},
-        { value: "1", label: "01", idx:"01"},
-        { value: "2", label: "02", idx:"02"},
-        { value: "3", label: "03", idx:"03"},
-        { value: "4", label: "04", idx:"04"},
-        { value: "5", label: "05", idx:"05"},
-        { value: "6", label: "06", idx:"06"},
-        { value: "7", label: "07", idx:"07"},
-        { value: "8", label: "08", idx:"08"},
-        { value: "9", label: "09", idx:"09"},
+        { value: "01", label: "01", idx:"01"},
+        { value: "02", label: "02", idx:"02"},
+        { value: "03", label: "03", idx:"03"},
+        { value: "04", label: "04", idx:"04"},
+        { value: "05", label: "05", idx:"05"},
+        { value: "06", label: "06", idx:"06"},
+        { value: "07", label: "07", idx:"07"},
+        { value: "08", label: "08", idx:"08"},
+        { value: "09", label: "09", idx:"09"},
         { value: "10", label: "10", idx:"10"},
         { value: "11", label: "11", idx:"11"},
         { value: "12", label: "12", idx:"12"},
@@ -242,15 +253,15 @@ const NewRoom = () => {
 
     const select3_opiton = [
         { value: "00", label: "00", idx:"00"},
-        { value: "1", label: "01", idx:"01"},
-        { value: "2", label: "02", idx:"02"},
-        { value: "3", label: "03", idx:"03"},
-        { value: "4", label: "04", idx:"04"},
-        { value: "5", label: "05", idx:"05"},
-        { value: "6", label: "06", idx:"06"},
-        { value: "7", label: "07", idx:"07"},
-        { value: "8", label: "08", idx:"08"},
-        { value: "9", label: "09", idx:"09"},
+        { value: "01", label: "01", idx:"01"},
+        { value: "02", label: "02", idx:"02"},
+        { value: "03", label: "03", idx:"03"},
+        { value: "04", label: "04", idx:"04"},
+        { value: "05", label: "05", idx:"05"},
+        { value: "06", label: "06", idx:"06"},
+        { value: "07", label: "07", idx:"07"},
+        { value: "08", label: "08", idx:"08"},
+        { value: "09", label: "09", idx:"09"},
         { value: "10", label: "10", idx:"10"},
         { value: "11", label: "11", idx:"11"},
         { value: "12", label: "12", idx:"12"},
