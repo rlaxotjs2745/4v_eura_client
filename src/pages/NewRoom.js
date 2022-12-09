@@ -982,7 +982,7 @@ const NewRoom = () => {
 
         // 되풀이미팅 반복주기 변경시 매월 값 현재 날짜 값으로 초기화
         const firstDay = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-        setRadioSelectedValue(new Date().getDate())
+        setRadioSelectedValue(("00"+new Date().getDate().toString()).slice(-2))
         setRadioSelectedValue2(Math.min(5, Math.ceil(((new Date() - firstDay) / 86400000 + firstDay.getDay()) / 7))); // 5이상인 번째 ex)6주 나오면 5번째로 바꿔주기
         // setRadioSelectedValue2(Math.ceil(((new Date() - firstDay) / 86400000 + firstDay.getDay()) / 7));
         setRadioSelectedValue3(new Date().getDay() + 1);
@@ -1092,8 +1092,6 @@ const NewRoom = () => {
         }
         return nthDay;
     } // 사용할 함수
-
-
 
     return (
         <div className="room">
