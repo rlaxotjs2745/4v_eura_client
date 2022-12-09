@@ -83,12 +83,12 @@ const NewRoom = () => {
             curTIme.setMinutes(curTIme.getMinutes() + (10 - curTIme.getMinutes() % 10) ); // 분을 다시 설정함, 현재
         }
 
-        setSelected1(dayjs(curTIme).format('hh'))
+        setSelected1(dayjs(curTIme).format('HH'))
         setSelected2(curTIme.getMinutes());
 
         curTIme.setMinutes(curTIme.getMinutes() + 30);
 
-        setSelected3(dayjs(curTIme).format('hh'))
+        setSelected3(dayjs(curTIme).format('HH'))
         setSelected4(curTIme.getMinutes());
 
         if(pathname.indexOf('reopen')>-1){
