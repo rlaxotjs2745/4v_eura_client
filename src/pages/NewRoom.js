@@ -83,14 +83,12 @@ const NewRoom = () => {
             curTIme.setMinutes(curTIme.getMinutes() + (10 - curTIme.getMinutes() % 10) ); // 분을 다시 설정함, 현재
         }
 
-        // setSelected1(curTIme.getHours());
-        setSelected1(("00"+new Date().getHours().toString()).slice(-2))
+        setSelected1(dayjs(curTIme).format('hh'))
         setSelected2(curTIme.getMinutes());
 
         curTIme.setMinutes(curTIme.getMinutes() + 30);
 
-        // setSelected3(curTIme.getHours());
-        setSelected3(("00"+new Date().getHours().toString()).slice(-2))
+        setSelected3(dayjs(curTIme).format('hh'))
         setSelected4(curTIme.getMinutes());
 
         if(pathname.indexOf('reopen')>-1){
@@ -654,7 +652,7 @@ const NewRoom = () => {
     }
 
     const handleSubmit = () => {
-        console.log(remindCount, '카운트 제대로 가나 확인')
+        // console.log(remindCount, '카운트 제대로 가나 확인')
 
         if($('#make_new').val() == ''){
             return alert('미팅 이름을 입력해주세요.')
@@ -993,7 +991,7 @@ const NewRoom = () => {
 
         // 되풀이미팅 반복주기 변경시 매월 값 현재 날짜 값으로 초기화
         const firstDay = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-        setRadioSelectedValue(("00"+new Date().getDate().toString()).slice(-2))
+        setRadioSelectedValue(dayjs(today).format('DD'))
         setRadioSelectedValue2(Math.min(5, Math.ceil(((new Date() - firstDay) / 86400000 + firstDay.getDay()) / 7))); // 5이상인 번째 ex)6주 나오면 5번째로 바꿔주기
         // setRadioSelectedValue2(Math.ceil(((new Date() - firstDay) / 86400000 + firstDay.getDay()) / 7));
         setRadioSelectedValue3(new Date().getDay() + 1);
