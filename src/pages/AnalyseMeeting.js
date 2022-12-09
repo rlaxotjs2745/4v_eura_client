@@ -29,6 +29,7 @@ const AnalyseMeeting = (props) => {
     const [oneUserResult, setOneUserResult] = useState([]);
     const [oneUserResultab, setOneUserResultab] = useState({})
     const [allUserBool, setAllUserBool] = useState(false);
+    const [curVideo, setCurVideo] = useState(0);
     const player = useRef();
     // const vLine = useRef();
 
@@ -56,8 +57,9 @@ const AnalyseMeeting = (props) => {
         $(".v-box").css({left:$(".video-react-play-progress.video-react-slider-bar").width()})
     }
 
-    const thisPlayer = (_no) => {
+    const thisPlayer = (_no, idx) => {
         // setMevieNo(_no)
+        setCurVideo(idx);
         setMovieSrc(moviefile[_no-1].fileUrl)
     }
 
@@ -202,9 +204,14 @@ const AnalyseMeeting = (props) => {
                                                 <span className="file__name">미팅에 업로드 된 파일이 없습니다.</span>
                                             </a>
                                             :
-                                            lecture.mtMovieFiles.map(file => {
+                                            lecture.mtMovieFiles.map((file, idx) => {
+                                                if(idx === curVideo){
+                                                    return (
+                                                        <a href="#" onClick={() => thisPlayer(file.fileNo, idx)} className="file__anchor is-active" title={file.filename}><span>{file.fileNo}</span></a>
+                                                    )
+                                                }
                                                 return (
-                                                    <a href="#" onClick={() => thisPlayer(file.fileNo)} className="file__anchor" title={file.filename}><span>{file.fileNo}</span></a>
+                                                    <a href="#" onClick={() => thisPlayer(file.fileNo, idx)} className="file__anchor" title={file.filename}><span>{file.fileNo}</span></a>
                                                 )
                                             })
                                     }
@@ -266,9 +273,9 @@ const AnalyseMeeting = (props) => {
                         lecture.is_host ?
                             null
                             :
-                            <InviteMyAnalPieGraphCard isJoin={lecture.join} oneUserResult={oneUserResult} oneUserResultab={oneUserResultab} />
+                            !oneUserResult || !oneUserResult.length ? null :
+                            <InviteMyAnalPieGraphCard isJoin={lecture.join} oneUserResult={!oneUserResult || !oneUserResult.length ? null : oneUserResult[0]} oneUserResultab={!oneUserResultab || !oneUserResultab.length ? null : oneUserResultab[0]} />
                     }
-
                     {
                         lecture.is_host ?
                             <>
