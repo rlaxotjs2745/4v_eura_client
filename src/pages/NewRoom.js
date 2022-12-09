@@ -799,11 +799,10 @@ const NewRoom = () => {
             return alert('미팅 정보가 입력되지 않았습니다.');
         }
 
-
         const formData = new FormData();
         formData.append('mt_name', title);
-        formData.append('mt_start_dt',  `${startDate} ${Selected1}:${Selected2}:00`);
-        formData.append('mt_end_dt',   `${startDate} ${Selected3}:${Selected4}:00`);
+        formData.append('mt_start_dt',  `${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`);
+        formData.append('mt_end_dt',   `${dayjs(startDate).format('YYYY-MM-DD')} ${Selected3}:${Selected4}:00`);
         formData.append('mt_info', meetingInfo);
         formData.append('mt_invite_email', invites.map(inv => inv.email).join());
         for (let i = 0; i < uploadedFiles.length; i++) {
@@ -815,9 +814,21 @@ const NewRoom = () => {
             if(selectValue == 2){
                 formData.append('mt_remind_week', weekday.join());
             }
-            formData.append('mt_remind_end', endDate);
+            if(selectValue == 3){
+                formData.append('mt_remind_week', weekday.join());
+            }
+            if(selectValue === 4 ) {
+                formData.append('mt_remind_monthType', radioSelectType)
+            }
+            if(selectValue === 4 && radioChecked){
+                formData.append('mt_remind_monthDay', radioSelectedValue1);
+            }
+            if(selectValue === 4 && radioChecked2){
+                formData.append('mt_remind_sequence', parseInt(radioSelectedValue2));
+                formData.append('mt_remind_week', parseInt(radioSelectedValue3));
+            }
+            formData.append('mt_remind_end', dayjs(endDate).format('YYYY-MM-DD'));
         } else {
-            // console.log('되풀이 미팅 체크 안된것으로 봄')
             formData.append('mt_remind_type', 0);
         }
 
