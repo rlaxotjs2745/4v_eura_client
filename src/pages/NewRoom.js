@@ -1402,6 +1402,9 @@ const NewRoom = () => {
                                 재개설
                             </a>
                             :
+                            isNew === 0 ?
+                            <div onClick={handleSubmit} className="btn btn__able">저장</div>
+                                :
                             <div onClick={modifyBool ? openConfirmModal : handleSubmit} className="btn btn__able">저장</div>
                         }
 

@@ -4106,8 +4106,27 @@ html.js-overflow {
 
 .result_all_levels {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.result__one_user_data{
+    width: 93%;
+    height: 20%;
+    margin-top: 11px;
+    text-align: start;
+    display: flex;
+    align-items: center;
+}
+
+.result__one_user_graph {
+    width: 100%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
 }
 
 .result_all_levels span {
@@ -4137,6 +4156,9 @@ html.js-overflow {
     opacity: 0.4;
 }
 
+.result__all_user_graph {
+    flex-direction: row;
+}
 
 .result__user {
     clear: both;
@@ -4197,6 +4219,41 @@ html.js-overflow {
 .me_box .team__badge {position: absolute; bottom: -5px; right: -5px; width: 24px; height: 24px;}
 .watch__td > .flex {display: flex; align-items: center;}
 .watch__td > .flex > img {display: inline-block; width: 13px; height: 11px; margin-left:3px;}
+
+.result__one_user_data .me_box {
+    display: flex;
+}
+
+.one_user_me {
+    position: absolute;
+    bottom: -2px;
+    right: -3px;
+    width: 18px;
+    height: 18px;
+}
+
+.result__one_user_data .me_box figure {
+    width: 30px;
+    height: 30px;
+}
+
+.host_badge {
+    width: 18px;
+    height: 15px;
+    margin-right: 3px;
+}
+
+.one_user_data_obj {
+    margin-right: 5px;
+}
+
+.one_user_data_name {
+    font-weight: 700;
+}
+
+.one_user_email {
+    font-weight: 400;
+}
 
 .result__user .result__watch ul li figure {
     display: table-cell;
@@ -4387,6 +4444,9 @@ html.js-overflow {
 .pieImage {
     z-index: 1000;
 }
+
+/*.result__one_user_graph{*/
+/*}*/
 
 .result__analysis {
     /*clear: both;*/
@@ -5039,6 +5099,7 @@ html.js-overflow {
     left: 0px;
     top: 0px;
     border-radius: 5px;
+    cursor: pointer;
 
 
     background: #E0E2EB;

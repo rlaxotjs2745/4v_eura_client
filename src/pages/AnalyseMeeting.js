@@ -98,7 +98,7 @@ const AnalyseMeeting = (props) => {
                     }
                     setMiddata(_data.mtAnalyMid ? [{longP:_maxmid ? _maxmid : 100, longM:_maxmid ? (_maxmid * -1) : 100},..._data.mtAnalyMid] : []);
                     setBtmdata(_data.mtData0 ? _data.mtData0.map((dt, idx) => {
-                        return [{longP: maxbtmArr[idx] ? maxbtmArr[idx] : 100, longM: maxbtmArr[idx] ? (maxbtmArr[idx] * -1) : 100}, ...dt.list]
+                        return {...dt, list:[{longP: maxbtmArr[idx] ? maxbtmArr[idx] : 100, longM: maxbtmArr[idx] ? (maxbtmArr[idx] * -1) : 100}, ...dt.list]}
                         })
                         : [])
 
@@ -118,7 +118,6 @@ const AnalyseMeeting = (props) => {
                         { name: "Camera off", value: _data.mtAnalyTop.off },
                     ])
                     setOneUserResult(_data.mtData1 ? _data.mtData1.map(dt => {
-                        console.log(dt);
                         return [
                             { name: "Good", value: dt.good },
                             { name: "Bad", value: dt.bad },
@@ -279,7 +278,8 @@ const AnalyseMeeting = (props) => {
                                 </div>
                             </>
                             :
-                            <OneUserBarGraph btmdata={btmdata[0]} isJoin={lecture.join} />
+                            !btmdata || !btmdata[0] || !btmdata[0].list ? null :
+                            <OneUserBarGraph btmdata={btmdata[0].list} isJoin={lecture.join} />
                     }
                     {
                         allUserBool ?
