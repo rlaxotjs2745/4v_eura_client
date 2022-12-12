@@ -1,5 +1,5 @@
 import {Cell, Pie, PieChart, ResponsiveContainer} from "recharts";
-import React, {useEffect, useState} from "react";
+import React from "react";
 
 
 const MeetingAnalysisPieGraph = ({data}) => {

@@ -13,10 +13,8 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
     const [schedule, setSchedule] = useState([]);
     const [meeting, setMeeting] = useState({});
     const [lastMeeting, setLastMeeting] = useState([]);
-    const [modal, setModalOpen] = useState(false);
     const [curMeeting, setCurMeeting] = useState(false)
     const [curEvent, setCurEvent] = useState(true);
-    const [eventNow, setEventNow] = useState(0);
     const [tcurPage, settCurPage] = useState(1);
     const [tcurLastPage, settCurLastPage] = useState(1);
     const [tcurSort, settCurSort] = useState(curSort);

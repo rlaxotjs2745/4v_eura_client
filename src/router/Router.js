@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Route, Routes} from "react-router-dom";
 import LayoutType2 from "../Layout/LayoutType2";
 import LayoutType1 from "../Layout/LayoutType1";

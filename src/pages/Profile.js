@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react';
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axios from 'axios';
 import {useCookies} from "react-cookie";
-import {SERVER_URL2, AXIOS_OPTION, SERVER_URL, AXIOS_FORM_DATA_OPTION} from "../util/env";
-import {setCookie, getCookie} from "../util/cookie";
+import { AXIOS_OPTION, SERVER_URL } from "../util/env";
+import {getCookie} from "../util/cookie";
 import $ from "jquery";
 
 const Profile = () => {
