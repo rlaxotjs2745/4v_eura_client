@@ -7,7 +7,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {SERVER_URL, AXIOS_OPTION} from "../util/env";
 import $ from "jquery";
 
-const Home = ({curSort, setCurSort, curLastSort, setCurLastSort, curPage, curLastPage, setCurPage, setCurLastPage}) => {
+const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
     const navigate = useNavigate();
     const [user, setUser] = useState({});
     const [schedule, setSchedule] = useState([]);
@@ -17,10 +17,10 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort, curPage, curLas
     const [curMeeting, setCurMeeting] = useState(false)
     const [curEvent, setCurEvent] = useState(true);
     const [eventNow, setEventNow] = useState(0);
-    // const [curPage, setCurPage] = useState(1);
-    // const [curLastPage, setCurLastPage] = useState(1);
-    // const [curSort, setCurSort] = useState(2);
-    // const [curLastSort, setCurLastSort] = useState(2);
+    const [tcurPage, settCurPage] = useState(1);
+    const [tcurLastPage, settCurLastPage] = useState(1);
+    const [tcurSort, settCurSort] = useState(curSort);
+    const [tcurLastSort, settCurLastSort] = useState(curLastSort);
     const [morePageBool, setMorePageBool] = useState(true);
     const [moreLastPageBool, setMoreLastPageBool] = useState(true);
 
@@ -36,32 +36,35 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort, curPage, curLas
         getMain();
         getMainList();
         getMainEndList();
+        $('#shade2').removeClass('is-on');
     }, []);
 
-    useEffect(() => {
-        getMain();
-        $('#shade2').removeClass('is-on');
-    }, [])
 
     const pageSort = (where, sort) => {
         let endPoint;
         let resMtd;
         if(where == 'lastMeetSort'){
-            endPoint = `/meet/main/endlist?pageSort=${sort}&currentPage=${curPage}`;
+            endPoint = `/meet/main/endlist?pageSort=${sort}&currentPage=1`;
             resMtd = (res) => setLastMeeting(res);
         } else {
-            endPoint = `/meet/main/list?pageSort=${sort}&currentPage=${curLastPage}`;
+            endPoint = `/meet/main/list?pageSort=${sort}&currentPage=1`;
             resMtd = (res) => setMeeting(res);
         }
         axios.get(SERVER_URL + endPoint, AXIOS_OPTION)
             .then(res => {
                 resMtd(res.data.data);
                 if(where == 'lastMeetSort'){
+                    settCurLastSort(sort);
                     setCurLastSort(sort);
+                    settCurLastPage(1);
                     sortLastMouseOut();
+                    setMoreLastPageBool(true);
                 } else {
+                    settCurSort(sort);
                     setCurSort(sort);
+                    settCurPage(1);
                     sortMouseOut();
+                    setMorePageBool(true);
                 }
             })
     }
@@ -156,22 +159,22 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort, curPage, curLas
 
     const getMeetMore = (when) => {
         if(when === 'now'){
-            axios.get(SERVER_URL + `/meet/main/list?currentPage=${curPage+1}&pageSort=${curSort}`, AXIOS_OPTION)
+            axios.get(SERVER_URL + `/meet/main/list?currentPage=${tcurPage+1}&pageSort=${tcurSort}`, AXIOS_OPTION)
                 .then(res => {
                     if(!res.data || !res.data.data || !res.data.data.mt_meetMyList || res.data.data.mt_meetMyList.length === 0 || (meeting.mt_meetMyList.length+res.data.data.mt_meetMyList.length) >= res.data.data.mt_meetMyListCount){
                         setMorePageBool(false);
                     }
                     setMeeting({...meeting, mt_meetMyList: [...meeting.mt_meetMyList, ...res.data.data.mt_meetMyList]});
-                    setCurPage(curPage+1);
+                    settCurPage(tcurPage+1);
                 })
         } else if(when === 'last'){
-            axios.get(SERVER_URL + `/meet/main/endlist?currentPage=${curLastPage+1}&pageSort=${curLastSort}`, AXIOS_OPTION)
+            axios.get(SERVER_URL + `/meet/main/endlist?currentPage=${tcurLastPage+1}&pageSort=${tcurLastSort}`, AXIOS_OPTION)
                 .then(res => {
                     if(!res.data || !res.data.data || !res.data.data.mt_meetEndMyList || res.data.data.mt_meetEndMyList.length === 0 || (lastMeeting.mt_meetEndMyList.length+res.data.data.mt_meetEndMyList.length) >= res.data.data.mt_meetMyListCount){
                         setMoreLastPageBool(false);
                     }
                     setLastMeeting({...lastMeeting, mt_meetEndMyList: [...lastMeeting.mt_meetEndMyList, ...res.data.data.mt_meetEndMyList]});
-                    setCurLastPage(curLastPage +1);
+                    settCurLastPage(tcurLastPage +1);
                 })
         }
     }
@@ -206,7 +209,7 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort, curPage, curLas
 
     };
     async function getMainList() {
-        axios.get(SERVER_URL + `/meet/main/list?currentPage=1&pageSort=${curSort}`, AXIOS_OPTION)
+        axios.get(SERVER_URL + `/meet/main/list?currentPage=1&pageSort=${tcurSort}`, AXIOS_OPTION)
         .then(res => {
             if(!res.data || !res.data.data || !res.data.data.mt_meetMyList || res.data.data.mt_meetMyList.length === 0 || 8 > res.data.data.mt_meetMyListCount){
                 setMorePageBool(false);
@@ -218,7 +221,7 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort, curPage, curLas
         })
     };
     async function getMainEndList() {
-        axios.get(SERVER_URL + `/meet/main/endlist?currentPage=1&pageSort=${curLastSort}`, AXIOS_OPTION)
+        axios.get(SERVER_URL + `/meet/main/endlist?currentPage=1&pageSort=${tcurLastSort}`, AXIOS_OPTION)
         .then(res => {
             if(!res.data || !res.data.data || !res.data.data.mt_meetEndMyList || res.data.data.mt_meetEndMyList.length === 0 || 8 > res.data.data.mt_meetMyListCount){
                 setMoreLastPageBool(false);
@@ -249,11 +252,11 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort, curPage, curLas
                         <Link to="/newroom" className="btn btn__make"><img src={require('../assets/image/ic_plus.png')} alt=""/>새 미팅룸 만들기</Link>
                         <div className="sorting" onMouseOver={sortMouseOver} onMouseOut={sortMouseOut}>
                             <div className="meet_sort_select">
-                                <span>{allSort.filter(sort => sort.value == curSort)[0].label}</span>
+                                <span>{allSort.filter(sort => sort.value == tcurSort)[0].label}</span>
                                 <div id="cur_meet_sort" className="meet_sort_select__anchor meet_sort_select_hide">
                                     <ul>
                                         {
-                                            allSort.filter(aSort => aSort.value != curSort).map(sort => <li onClick={() => pageSort('curSort', sort.value)}>{sort.label}</li>)
+                                            allSort.filter(aSort => aSort.value != tcurSort).map(sort => <li onClick={() => pageSort('curSort', sort.value)}>{sort.label}</li>)
                                         }
                                     </ul>
                                 </div>
@@ -292,11 +295,11 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort, curPage, curLas
                     <h3><img src="" alt=""/><img src={require('../assets/image/ic_last.png')} alt=""/> 지난 미팅 <em>{lastMeeting && lastMeeting.mt_meetMyListCount ? lastMeeting.mt_meetMyListCount : 0}</em>
                         <div className="sorting" onMouseOver={sortLastMouseOver} onMouseOut={sortLastMouseOut}>
                             <div className="meet_sort_select">
-                                <span>{allSort.filter(sort => sort.value == curLastSort)[0].label}</span>
+                                <span>{allSort.filter(sort => sort.value == tcurLastSort)[0].label}</span>
                                 <div id="last_meet_sort" className="meet_sort_select__anchor meet_sort_select_hide">
                                     <ul>
                                         {
-                                            allSort.filter(aSort => aSort.value != curLastSort).map(sort => <li onClick={() => pageSort('lastMeetSort', sort.value)}>{sort.label}</li>)
+                                            allSort.filter(aSort => aSort.value != tcurLastSort).map(sort => <li onClick={() => pageSort('lastMeetSort', sort.value)}>{sort.label}</li>)
                                         }
                                     </ul>
                                 </div>
@@ -323,7 +326,7 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort, curPage, curLas
                             !lastMeeting ||
                             !lastMeeting.mt_meetEndMyList ||
                             lastMeeting.mt_meetMyListCount === 0 ||
-                            lastMeeting.mt_meetMyListCount % 8 === 0 || !moreLastPageBool ? '' :
+                            !moreLastPageBool ? '' :
                                 <div className="btn__group">
                                     <button onClick={() => getMeetMore('last')} className="btn btn__more">더 보기</button>
                                 </div>

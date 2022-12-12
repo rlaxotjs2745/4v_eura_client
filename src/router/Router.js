@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Route, Routes} from "react-router-dom";
 import LayoutType2 from "../Layout/LayoutType2";
 import LayoutType1 from "../Layout/LayoutType1";
@@ -19,8 +19,6 @@ const Routers = () => {
 
     const [curSort, setCurSort] = useState(2);
     const [curLastSort, setCurLastSort] = useState(2);
-    const [curPage, setCurPage] = useState(1);
-    const [curLastPage, setCurLastPage] = useState(1);
 
 
     return (
@@ -35,10 +33,7 @@ const Routers = () => {
                         setCurLastSort={setCurLastSort}
                         curSort={curSort}
                         setCurSort={setCurSort}
-                        curPage={curPage}
-                        curLastPage={curLastPage}
-                        setCurPage={setCurPage}
-                        setCurLastPage={setCurLastPage} />}/>
+                    />}/>
                 <Route path="/profile" element={<Profile/>} />
                 <Route path="/meetingroom/:idx" element={<MeetingRoom />} />
                 <Route path="/newroom" element={<NewRoom />} />
