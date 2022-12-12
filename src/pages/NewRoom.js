@@ -1132,7 +1132,7 @@ const NewRoom = () => {
                 <div className="room__box">
                     <div className="input__group ">
                         <label htmlFor="make_new">미팅 이름</label>
-                        <input type="text" className="text" id="make_new" maxlength="100" onChange={makeTitle} placeholder="미팅 이름을 입력해주세요." defaultValue={isNew === 0 ? '' : roomInfo.mt_name}/>
+                        <input type="text" className="text" id="make_new" maxLength="100" onChange={makeTitle} placeholder="미팅 이름을 입력해주세요." defaultValue={isNew === 0 ? '' : roomInfo.mt_name}/>
                         <hr />
 
 
@@ -1368,7 +1368,7 @@ const NewRoom = () => {
 
                     <div className="input__group">
                         <label htmlFor="make_room">미팅 정보</label>
-                        <textarea name="" id="make_room" cols="10" rows="3" placeholder="미팅정보를 입력해주세요." maxlength="3000" onChange={makeMeetingInfo} value={meetingInfo}></textarea>
+                        <textarea name="" id="make_room" cols="10" rows="3" placeholder="미팅정보를 입력해주세요." maxLength="3000" onChange={makeMeetingInfo} value={meetingInfo}></textarea>
                     </div>
 
                     <div className="input__group">
