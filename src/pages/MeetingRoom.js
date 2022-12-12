@@ -203,7 +203,7 @@ const MeetingRoom = (props) => {
                             </div>
                             <dl className="type__host">
                                 <dt>미팅내용</dt>
-                                <dd>{roomInfo.mt_info}</dd>
+                                <dd title={roomInfo.mt_info}>{roomInfo.mt_info}</dd>
                             </dl>
                             <dl className="">
                                 <dt>호스트 이름</dt>
