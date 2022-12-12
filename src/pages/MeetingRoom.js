@@ -186,7 +186,8 @@ const MeetingRoom = (props) => {
                     </h3>
                     <div className="casing">
                         <div className="case-1">
-                            <div className="case__title">{roomInfo.mt_name}
+                            <div className="case__title">
+                                <span className="overflow_elipsis" title={roomInfo.mt_name}>{roomInfo.mt_name}</span>
                                 {
                                     roomInfo.mt_ishost === '1' && roomInfo.mt_live !== 1 ?
                                     <Link to={

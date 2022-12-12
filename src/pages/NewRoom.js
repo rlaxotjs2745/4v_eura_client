@@ -741,6 +741,8 @@ const NewRoom = () => {
             formData.append('idx_meeting', window.location.pathname.split('/')[window.location.pathname.split('/').length-1]);
             if(delFiles.length > 0){
                 formData.append('file_del', delFiles.join());
+            } else {
+                formData.append('ori_file', )
             }
             if(delUser.length > 0){
                 formData.append('invite_del', delUser);
@@ -1198,7 +1200,7 @@ const NewRoom = () => {
                                             {
                                                 selectValue === 1 ? `매일, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'day')}개 되풀이 항목` :
                                                     selectValue === 2 ? `매주 ${weekdayArrNew}, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayCount}개 되풀이 항목` :
-                                                        selectValue === 3 ? `매 2주마다, ${weekdayArrNew} ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${weekCount}개 되풀이 항목` :
+                                                        selectValue === 3 ? `매 2주 마다 ${weekdayArrNew} ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${weekCount}개 되풀이 항목` :
                                                             selectValue === 4 && radioChecked ?
                                                                 `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${monthCount}개 되풀이 항목` :
                                                                 selectValue === 4 && radioChecked2 && week11 !== '5' ?

@@ -2488,8 +2488,11 @@ td {
 .case-1 .case__title {
     font-size: 20px;
     color: #17171a;
-    font-weight: 700
+    font-weight: 700;
+    display: flex; align-items: center;
 }
+
+.overflow_elipsis {display: block; max-width: 700px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
 
 .case-1 dl {
     float: left;
@@ -5229,3 +5232,7 @@ input[type=date].under-scope, input[type=time].under-scope {cursor: pointer}
 .checkbox.login_checkbox label:before {width: 18px; height: 18px; background:url("./assets/image/ico_checkbox_login_off.png") no-repeat center / 18px 18px; margin-top: 0; transform: translateY(-50%);}
 .checkbox.login_checkbox input[type=checkbox]:checked + label:before {background-image: url("./assets/image/ico_checkbox_login_on.png")}
 .checkbox.login_checkbox input[type=checkbox]:checked + label:after {content: none;}
+
+.flex_right {display: flex; align-items: center;}
+.flex_right .btn__delete {margin-top: 0 !important;}
+.flex_align_center {display: flex; align-items: center;}

@@ -7,15 +7,17 @@ const ModifyRoomUser = ({user, excludeUser, isSearch}) => {
         <li>
             {
                 user.unknownUser ?
-                    <div>
+                    <div className="flex_align_center">
                         <figure>
                             <img src={require('../../assets/image/image_profile_unknown.png')} alt=""/>
                         </figure>
-                        <span className="team__user">
-                            <em>{user.email}</em>
-                                    </span>
-                        <div className="btn btn__delete" onClick={() => excludeUser(user, isSearch)}>
-                            <img src={require('../../assets/image/ic_cancle-circle_18.png')} alt="삭제"/>
+                        <div className="flex_right">
+                            <span className="team__user">
+                                <em>{user.email}</em>
+                                        </span>
+                            <div className="btn btn__delete" onClick={() => excludeUser(user, isSearch)}>
+                                <img src={require('../../assets/image/ic_cancle-circle_18.png')} alt="삭제"/>
+                            </div>
                         </div>
                     </div>
                     :
