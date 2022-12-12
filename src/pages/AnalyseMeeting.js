@@ -144,8 +144,6 @@ const AnalyseMeeting = (props) => {
 
     }, [])
 
-    useEffect(() => {console.log(oneUserResult)}, [oneUserResult, oneUserResultab])
-
     const showAllUserGraph = () => {
         $('#show_all_user_graph').hide();
         setAllUserBool(true);

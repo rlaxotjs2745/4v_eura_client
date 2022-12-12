@@ -5076,7 +5076,7 @@ html.js-overflow {
 }
 
 .calendar__etc {
-    color: #3377ff;
+    color: #3377ff !important;
     /*font-*/
 }
 
