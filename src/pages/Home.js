@@ -206,7 +206,7 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort, curPage, curLas
 
     };
     async function getMainList() {
-        axios.get(SERVER_URL + `/meet/main/list?currentPage=1&pageSort=2`, AXIOS_OPTION)
+        axios.get(SERVER_URL + `/meet/main/list?currentPage=1&pageSort=${curSort}`, AXIOS_OPTION)
         .then(res => {
             if(!res.data || !res.data.data || !res.data.data.mt_meetMyList || res.data.data.mt_meetMyList.length === 0 || 8 > res.data.data.mt_meetMyListCount){
                 setMorePageBool(false);
@@ -218,7 +218,7 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort, curPage, curLas
         })
     };
     async function getMainEndList() {
-        axios.get(SERVER_URL + '/meet/main/endlist?currentPage=1&pageSort=2', AXIOS_OPTION)
+        axios.get(SERVER_URL + `/meet/main/endlist?currentPage=1&pageSort=${curLastSort}`, AXIOS_OPTION)
         .then(res => {
             if(!res.data || !res.data.data || !res.data.data.mt_meetEndMyList || res.data.data.mt_meetEndMyList.length === 0 || 8 > res.data.data.mt_meetMyListCount){
                 setMoreLastPageBool(false);
