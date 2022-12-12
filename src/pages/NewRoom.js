@@ -157,7 +157,7 @@ const NewRoom = () => {
     },[startDate])
 
     useEffect(()=> {
-        setWeekdayArrNew(weekday.map((value, index, array) => weekdayArr[value - 1]).join())
+        setWeekdayArrNew(weekday.sort().map((value, index, array) => weekdayArr[value - 1]).join())
         setWeekdayMinus1(weekday.map(day => day - 1))
 
     }, [weekday])
