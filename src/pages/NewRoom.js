@@ -938,6 +938,7 @@ const NewRoom = () => {
 
     const startDate2 = new Date(startDate);
     const endDate2 = new Date(endDate);
+    const endDate3 = endDate2.setDate(endDate2.getDate() - 1);
     const days = weekdayMinus1;
 
     const getDayCountBetweenDates = (startDate, endDate, days) => {
@@ -992,7 +993,7 @@ const NewRoom = () => {
     useEffect(()=> {
         setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
         setWeekCount(getWeekdayCountBetweenDates(startDate2, endDate2, days))
-    },[weekdayMinus1, endDate, startDate])
+    },[weekdayMinus1, endDate2, startDate2])
 
     useEffect(() => {
         if(selectValue === 4 || selectValue === 1) {
@@ -1070,6 +1071,7 @@ const NewRoom = () => {
     const radioSelected3 = (e) => {
         setRadioSelectedValue3(e.target.value);
     };
+
     function countSpecificDates(startDate, endDate, specificDates) {
         const dates = [];
         let currentDate = new Date(startDate);
@@ -1120,7 +1122,6 @@ const NewRoom = () => {
     } // 사용할 함수
 
 
-    console.log()
     return (
         <div className="room">
             <h2>
@@ -1248,21 +1249,21 @@ const NewRoom = () => {
                                             <dl className="inline__type">
                                                 <dt><label htmlFor="월">반복 요일</label></dt>
                                                 <dd>
-                                                    {weekdays.map((weekday, index) => (
-                                                        <div className="checkbox type__square" key={weekday}>
-                                                            <input
-                                                                type="checkbox"
-                                                                name="weekday"
-                                                                className="checkbox checkDisabledCheck"
-                                                                id={`week_${index + 1}`}
-                                                                value={index}
-                                                                onChange={() => getWeekDay(index + 1)}
-                                                                defaultChecked={todayWeekday === weekday}
-                                                                disabled={selected.length < 2 && selected.includes(index + 1)}
-                                                            />
-                                                            <label htmlFor={`week_${index + 1}`}>{weekday}</label>
-                                                        </div>
-                                                    ))}
+                                                {weekdays.map((weekday, index) => (
+                                                    <div className="checkbox type__square" key={weekday}>
+                                                        <input
+                                                            type="checkbox"
+                                                            name="weekday"
+                                                            className="checkbox checkDisabledCheck"
+                                                            id={`week_${index + 1}`}
+                                                            value={index}
+                                                            onChange={() => getWeekDay(index + 1)}
+                                                            defaultChecked={todayWeekday === weekday}
+                                                            disabled={selected.length < 2 && selected.includes(index + 1)}
+                                                        />
+                                                        <label htmlFor={`week_${index + 1}`}>{weekday}</label>
+                                                    </div>
+                                                ))}
                                                 </dd>
                                             </dl>
                                         </> :
