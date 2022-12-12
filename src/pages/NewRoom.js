@@ -537,6 +537,7 @@ const NewRoom = () => {
     const compareInvites = (arr) => {
         const compareInv = arr.sort((a,b) => a.email > b.email);
             let compareBool = false;
+        // if(compareInv.length !== prevInvites.mt_invites.length){
         if(compareInv.length !== prevInvites.mt_invites.length){
             compareBool = true;
         } else {
@@ -739,10 +740,10 @@ const NewRoom = () => {
                 }).catch(res => console.log(res))
         } else {
             formData.append('idx_meeting', window.location.pathname.split('/')[window.location.pathname.split('/').length-1]);
-            if(delFiles.length > 0){
+            if(uploadedFilesPlus.length > 0 ) {
+                formData.append('ori_file', uploadedFilesPlus.map((value, index, array)=>{return value.idx}))
+            }            if(delFiles.length > 0){
                 formData.append('file_del', delFiles.join());
-            } else {
-                formData.append('ori_file', )
             }
             if(delUser.length > 0){
                 formData.append('invite_del', delUser);
@@ -851,6 +852,9 @@ const NewRoom = () => {
                 }).catch(res => console.log(res))
         } else {
             formData.append('idx_meeting', window.location.pathname.split('/')[window.location.pathname.split('/').length-1]);
+            if(uploadedFilesPlus.length > 0 ) {
+                formData.append('ori_file', uploadedFilesPlus.map((value, index, array)=>{return value.idx}))
+            }
             if(delFiles.length > 0){
                 formData.append('file_del', delFiles.join());
             }
@@ -1115,6 +1119,8 @@ const NewRoom = () => {
         return nthDay;
     } // 사용할 함수
 
+
+    console.log()
     return (
         <div className="room">
             <h2>
