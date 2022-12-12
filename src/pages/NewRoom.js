@@ -538,7 +538,7 @@ const NewRoom = () => {
         const compareInv = arr.sort((a,b) => a.email > b.email);
             let compareBool = false;
         // if(compareInv.length !== prevInvites.mt_invites.length){
-        if(compareInv.length !== prevInvites.mt_invites.length){
+        if(compareInv.length !== prevInvites.mt_invites){
             compareBool = true;
         } else {
             for(let i = 0; i < compareInv.length; i++){

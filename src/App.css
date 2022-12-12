@@ -5233,6 +5233,6 @@ input[type=date].under-scope, input[type=time].under-scope {cursor: pointer}
 .checkbox.login_checkbox input[type=checkbox]:checked + label:before {background-image: url("./assets/image/ico_checkbox_login_on.png")}
 .checkbox.login_checkbox input[type=checkbox]:checked + label:after {content: none;}
 
-.flex_right {display: flex; align-items: center;}
+.flex_right {display: flex; align-items: center; justify-content: space-between;}
 .flex_right .btn__delete {margin-top: 0 !important;}
-.flex_align_center {display: flex; align-items: center;}
+.flex_align_center {display: flex; align-items: center; justify-content: start;}
