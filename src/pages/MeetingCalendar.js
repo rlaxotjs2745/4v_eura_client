@@ -56,9 +56,9 @@ const MeetingCalendar = () => {
                 && date.getFullYear() === year
                 && date.getMonth() === month
                 && date.getDate() === thisDay){
-                    if(resultArr.length > 1){
+                    if(resultArr.length > 2){
                         num++;
-                    } else resultArr.push(<div><span>• </span>{day && day.mt_name && day.mt_name.length > 10 ? day.mt_name.slice(0,8) + '..' : day.mt_name}</div>);
+                    } else resultArr.push(<div><span>• </span>{day.mt_name}</div>);
                 }
 
             }
