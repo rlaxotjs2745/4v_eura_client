@@ -239,7 +239,7 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
     return (
         <>
             <div className="page">
-                <div className="eura_down_link">EURA를 사용하기 위해 파일 설치가 필요해요. <a download href="https://file.eura.site/upload/Setup_Eura_v1.0.5.msi">설치 파일 다운로드</a></div>
+                <div className="eura_down_link">EURA를 사용하기 위해 파일 설치가 필요해요. <a download href="https://file.eura.site/upload/Setup_Eura_v1.0.6.msi">설치 파일 다운로드</a></div>
                 <MainTimer user={user} />
 
                 <MainSchedule schedule={schedule} />
