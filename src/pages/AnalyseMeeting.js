@@ -47,22 +47,6 @@ const AnalyseMeeting = (props) => {
         $('.graph_on_seek').show();
     }, [movieSrc])
 
-    const handleStateChange = (state, prev) => {
-        // if(!_mplay && !!state.duration){
-            // _mplay = true;
-            // _getMeetResult(pathSplit, movieNo, Math.ceil(state.duration))
-        // }
-
-        $(".v-line").css({left:$(".video-react-play-progress.video-react-slider-bar").width()})
-        $(".v-box").css({left:$(".video-react-play-progress.video-react-slider-bar").width()})
-    }
-
-    const thisPlayer = (_no, idx) => {
-        // setMevieNo(_no)
-        setCurVideo(idx);
-        setMovieSrc(moviefile[_no-1].fileUrl)
-    }
-
     useEffect(() => {
         axios.get(SERVER_URL + `/meet/result/meeting?idx_meeting=${pathSplit}&fileno=1`, AXIOS_OPTION)
             .then(res => {
@@ -143,6 +127,28 @@ const AnalyseMeeting = (props) => {
         });
 
     }, [])
+
+    useEffect(()=>{
+        console.log(btmdata);
+    },[btmdata])
+
+
+    const handleStateChange = (state, prev) => {
+        // if(!_mplay && !!state.duration){
+            // _mplay = true;
+            // _getMeetResult(pathSplit, movieNo, Math.ceil(state.duration))
+        // }
+
+        $(".v-line").css({left:$(".video-react-play-progress.video-react-slider-bar").width()})
+        $(".v-box").css({left:$(".video-react-play-progress.video-react-slider-bar").width()})
+    }
+
+    const thisPlayer = (_no, idx) => {
+        // setMevieNo(_no)
+        setCurVideo(idx);
+        setMovieSrc(moviefile[_no-1].fileUrl)
+    }
+
 
     const showAllUserGraph = () => {
         $('#show_all_user_graph').hide();
@@ -285,8 +291,7 @@ const AnalyseMeeting = (props) => {
                                 </div>
                             </>
                             :
-                            !btmdata || !btmdata[0] || !btmdata[0].list ? null :
-                            <OneUserBarGraph btmdata={btmdata[0].list} isJoin={lecture.join} />
+                            <OneUserBarGraph btmdata={!btmdata || !btmdata[0] || !btmdata[0].list ? null : btmdata[0].list} isJoin={lecture.join} />
                     }
                     {
                         allUserBool ?
