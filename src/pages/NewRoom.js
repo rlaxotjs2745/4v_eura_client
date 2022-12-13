@@ -1205,7 +1205,15 @@ const NewRoom = () => {
                                             {
                                                 selectValue === 1 ? `매일, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'day')}개 되풀이 항목` :
                                                     selectValue === 2 ? `매주 ${weekdayArrNew}, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayCount}개 되풀이 항목` :
-                                                        selectValue === 3 ? `매 2주 마다 ${weekdayArrNew} ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${weekCount}개 되풀이 항목` :
+                                                        selectValue === 3 ? `매 2주 ${weekdayArrNew.split(',')} 마다 ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${weekCount}개 되풀이 항목` :
+                                                        // selectValue === 3 ? `매 2주
+                                                        // ${weekday.includes(2) ? '월' :  ''}
+                                                        // ${weekday.includes(3) && !weekday.includes(2) ? '화' : weekday.includes(3) && weekday.includes(2) ? ',화' : ''}
+                                                        // ${weekday.includes(4) ? ',수' :  ''}
+                                                        // ${weekday.includes(5) ? ',목' :  ''}
+                                                        // ${weekday.includes(6) ? ',금' :  ''}
+                                                        // ${weekday.includes(7) ? ',토' :  ''}
+                                                        // ${weekday.includes(1) ? ',일' :  ''}마다 ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${weekCount}개 되풀이 항목` :
                                                             selectValue === 4 && radioChecked ?
                                                                 `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${monthCount}개 되풀이 항목` :
                                                                 selectValue === 4 && radioChecked2 && week11 !== '5' ?
