@@ -670,6 +670,8 @@ const NewRoom = () => {
         if($('#make_date').val() == ''){
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
+        const tenMinutesAgo = new Date();
+        tenMinutesAgo.setMinutes(tenMinutesAgo.getMinutes() - 10);
 
         if(isNew === 0) {
             if(Selected1 < new Date().getHours() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
@@ -679,7 +681,9 @@ const NewRoom = () => {
             if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
                 return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
             }
-        } // 생성하기 일때만 시작 시간 유효성 검사
+        } else if(isNew !== 0 && Selected1 <= new Date().getHours() && Selected2 <  dayjs(new Date(new Date().getTime() - 10 * 60 * 1000)).format('mm') && startDate === dayjs(new Date()).format('YYYY-MM-DD')) {
+            return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
+        } // 새 미팅룸 만들기가 아니고(수정하기, 재개설하기) 현재 시간 이전이고 설정한 분이 10분 이전보다 작고, 오늘과 날짜가 같을 경우 alert 생성
 
         if(new Date(endTime) <= new Date(startTime)){
             return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
@@ -794,7 +798,10 @@ const NewRoom = () => {
             if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
                 return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
             }
-        } // 생성하기 일때만 시작 시간 유효성 검사
+        } else if(isNew !== 0 && Selected1 <= new Date().getHours() && Selected2 <  dayjs(new Date(new Date().getTime() - 10 * 60 * 1000)).format('mm') && startDate === dayjs(new Date()).format('YYYY-MM-DD')) {
+            return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
+        } // 새 미팅룸 만들기가 아니고(수정하기, 재개설하기) 현재 시간 이전이고 설정한 분이 10분 이전보다 작고, 오늘과 날짜가 같을 경우 alert 생성
+
 
 
         if(new Date(endTime) <= new Date(startTime)){
@@ -940,6 +947,7 @@ const NewRoom = () => {
         navigate('/');
     })
 
+    // console.log('현재 시간보다 10분 이전의 시간 ',dayjs(new Date(new Date().getTime() - 10 * 60 * 1000)).format('mm'))
 
     // console.log(dayjs(endDate).diff(startDate, 'day'), '는 뭔가요')
     // console.log(dayjs(endDate).day(), '는 무슨요일')
