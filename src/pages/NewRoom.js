@@ -82,12 +82,12 @@ const NewRoom = () => {
         }
 
         setSelected1(dayjs(curTIme).format('HH'))
-        setSelected2(curTIme.getMinutes());
+        setSelected2(dayjs(curTIme).format('mm'));
 
         curTIme.setMinutes(curTIme.getMinutes() + 30);
 
         setSelected3(dayjs(curTIme).format('HH'))
-        setSelected4(curTIme.getMinutes());
+        setSelected4(dayjs(curTIme).format('mm'));
 
         if(pathname.indexOf('reopen')>-1){
             setIsNew(2);
@@ -355,6 +355,7 @@ const NewRoom = () => {
         setSelected4(e.target.value);
         compareDateTime();
     };
+
 
 
 
@@ -1108,7 +1109,6 @@ const NewRoom = () => {
     useEffect(()=>{
         setMonthCount(countSpecificDates(startDate2, endDate2, radioSelectedValue1))
         setMonthCount2(getNthWeekNthDay(startDate2, endDate2, week11, dayOfWeek11))
-        console.log(monthCount2);
     }, [radioSelectedValue1, startDate2, endDate2])
 
     const week11 = radioSelectedValue2   ; // n번째 주
