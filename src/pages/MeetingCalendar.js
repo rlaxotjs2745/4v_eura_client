@@ -123,6 +123,7 @@ const MeetingCalendar = () => {
                     navigationLabel={({ date, label }) => getMonthMeetingList(date, label)}
                     onClickDay={(value) => getDayMeetingInfo(new Date(value))}
                     showNeighboringMonth={false}
+                    formatDay={(locale, date) => date.getDate()}
                 />
             </div>
             {
