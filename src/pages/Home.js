@@ -281,8 +281,8 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
                     </div>
                     {
                         !meeting ||
-                        !meeting.mt_meetMyList || meeting.mt_meetMyList.length === 0 ||
-                        meeting.mt_meetMyListCount % 8 === 0 || !morePageBool ? '' :
+                        !meeting.mt_meetMyList || meeting.mt_meetMyList.length === 0 || meeting.mt_meetMyListCount === meeting.mt_meetMyList.length ||
+                        !morePageBool ? '' :
                             <div className="btn__group">
                                 <button onClick={() => getMeetMore('now')} className="btn btn__more">더 보기</button>
                             </div>
@@ -323,7 +323,7 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
                         {
                             !lastMeeting ||
                             !lastMeeting.mt_meetEndMyList ||
-                            lastMeeting.mt_meetMyListCount === 0 ||
+                            lastMeeting.mt_meetMyListCount === 0 || lastMeeting.mt_meetMyListCount === lastMeeting.mt_meetEndMyList.length ||
                             !moreLastPageBool ? '' :
                                 <div className="btn__group">
                                     <button onClick={() => getMeetMore('last')} className="btn btn__more">더 보기</button>
