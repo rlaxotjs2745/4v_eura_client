@@ -213,11 +213,11 @@ const AnalyseMeeting = (props) => {
                                             lecture.mtMovieFiles.map((file, idx) => {
                                                 if(idx === curVideo){
                                                     return (
-                                                        <a href="#" onClick={() => thisPlayer(file.fileNo, idx)} className="file__anchor is-active" title={file.filename}><span>{file.fileNo}</span></a>
+                                                        <a key={file.idx} href="#" onClick={() => thisPlayer(file.fileNo, idx)} className="file__anchor is-active" title={file.filename}><span>{file.fileNo}</span></a>
                                                     )
                                                 }
                                                 return (
-                                                    <a href="#" onClick={() => thisPlayer(file.fileNo, idx)} className="file__anchor" title={file.filename}><span>{file.fileNo}</span></a>
+                                                    <a key={file.idx} href="#" onClick={() => thisPlayer(file.fileNo, idx)} className="file__anchor" title={file.filename}><span>{file.fileNo}</span></a>
                                                 )
                                             })
                                     }
