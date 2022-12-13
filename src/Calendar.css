@@ -257,10 +257,13 @@
 }
 
 .react-calendar__tile--now abbr {
-    background-color: #8e57ff;
+    /*background-color: #8e57ff;*/
+    position: relative;
     color: #f3ebfe;
-    border-radius: 50%;
+    z-index: 9;
+    /*border-radius: 50%;*/
 }
+.react-calendar__tile--now abbr:before {content:''; display: block; position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); background: #8e57ff; border-radius: 50%; aspect-ratio: 100/100; width: 22px; z-index: -1;}
 
 .react-calendar__tile div {
     justify-self: start;
