@@ -123,7 +123,7 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
                                 newMeeting.push(cur);
                             }
                         }
-                        setMeeting({...meeting, mt_meetMyList: newMeeting});
+                        // setMeeting({...meeting, mt_meetMyList: newMeeting});
 
                         modalClose();
                         getMain();
