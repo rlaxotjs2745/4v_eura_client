@@ -24,7 +24,7 @@ const AnalysisUserList = ({lecture ,userList, clickUser, isHost}) => {
                                             </div>
                                             {
                                                 member.is_iam || member.value !== null && isHost ?
-                                                    <div className="watch__percent is-good">{Math.round(member.value)}%</div>
+                                                    <div className="watch__percent is-good">{member.join ? Math.round(member.value) + '%' : '-'}</div>
                                                     : ""
                                             }
                                         </button>
