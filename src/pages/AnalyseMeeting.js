@@ -82,7 +82,7 @@ const AnalyseMeeting = (props) => {
                             maxbtmArr.push(_maxbtm);
                         }
                     }
-                    setMiddata(_data.mtAnalyMid ? [{longP:_maxmid ? _maxmid : 100, longM:_maxmid ? (_maxmid * -1) : 100},..._data.mtAnalyMid] : []);
+                    setMiddata(_data.mtAnalyMid ? [{longP:_maxmid ? _maxmid : 100, longM:_maxmid ? (_maxmid * -1) : -100},..._data.mtAnalyMid] : []);
                     setBtmdata(_data.mtData0 ? _data.mtData0.map((dt, idx) => {
                         return {...dt, list:[{longP: maxbtmArr[idx] ? maxbtmArr[idx] : 100, longM: maxbtmArr[idx] ? (maxbtmArr[idx] * -1) : 100}, ...dt.list]}
                         })
