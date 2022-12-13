@@ -337,19 +337,23 @@ const NewRoom = () => {
 
 
     const handleSelect1 = (e) => {
-        setSelected1(e.target.value);
+        setSelected1(e.target.value)
+        compareDateTime();
     };
 
     const handleSelect2 = (e) => {
         setSelected2(e.target.value);
+        compareDateTime();
     };
 
     const handleSelect3 = (e) => {
         setSelected3(e.target.value);
+        compareDateTime();
     };
 
     const handleSelect4 = (e) => {
         setSelected4(e.target.value);
+        compareDateTime();
     };
 
 
@@ -533,8 +537,11 @@ const NewRoom = () => {
     }
 
     const compareInvites = (arr) => {
+        if(modifyBool === true){
+            return;
+        }
+        let compareBool = false;
         const compareInv = arr.sort((a,b) => a.email > b.email);
-            let compareBool = false;
         // if(compareInv.length !== prevInvites.mt_invites.length){
         if(compareInv.length !== prevInvites.mt_invites){
             compareBool = true;
@@ -551,13 +558,15 @@ const NewRoom = () => {
     }
 
     const compareDateTime = () => {
+        if(modifyBool === true){
+            return;
+        }
         let compareBool = false;
 
         if(!prevRoom.mt_start_dt && !prevRoom.mt_end_dt && !!Selected1 && !!Selected2 && !!Selected3 && !!Selected4){
             compareBool = true;
         }
 
-        console.log(prevRoom);
         if(!!prevRoom.mt_start_dt && !!prevRoom.mt_end_dt){
             if(
                 Selected1 !== prevRoom.mt_start_dt.split(' ')[1].split(':')[0] ||
