@@ -12,7 +12,7 @@ const AnalysisUserList = ({lecture ,userList, clickUser, isHost}) => {
                             :
                             userList.map(member => {
                                 return (
-                                    <li key={member.idx} className={member.join ? 'analyse_join_person' : 'analyse_not_join_person'}>
+                                    <li key={member.idx} className={member.join && member.join !== 2 ? 'analyse_join_person' : 'analyse_not_join_person'}>
                                         <button onClick={() => clickUser(member.idx)}>
                                             <div className="me_box">
                                                 <figure><img src={member.upic?member.upic: require('../../assets/image/image_profile.png')} alt=""/></figure>
@@ -23,7 +23,7 @@ const AnalysisUserList = ({lecture ,userList, clickUser, isHost}) => {
                                                 <div>{member.uemail}</div>
                                             </div>
                                             {
-                                                member.is_iam || member.value !== null && isHost?
+                                                member.is_iam || member.value !== null && isHost ?
                                                     <div className="watch__percent is-good">{Math.round(member.value)}%</div>
                                                     : ""
                                             }

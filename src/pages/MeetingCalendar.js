@@ -23,6 +23,7 @@ const MeetingCalendar = () => {
             .then(res => {
                 setMeeting(res.data.data.mt_meetMyList);
             })
+        // console.log(thisMonth, '이번달 몇월??')
     }, [thisMonth, thisYear])
 
 

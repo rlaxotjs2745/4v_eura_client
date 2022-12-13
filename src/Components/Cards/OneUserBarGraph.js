@@ -1,5 +1,5 @@
 import {Bar, BarChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis} from "recharts";
-import React from "react";
+import React, {useEffect} from "react";
 
 
 const OneUserBarGraph = ({userData, btmdata, isJoin}) => {
@@ -23,7 +23,7 @@ const OneUserBarGraph = ({userData, btmdata, isJoin}) => {
                 }
                 <div className="result__one_user_graph">
                     {
-                        !isJoin ?
+                        !isJoin || isJoin === 2 ?
                             <span>미참석한 미팅입니다.</span>
                             :
                             <>
@@ -40,7 +40,7 @@ const OneUserBarGraph = ({userData, btmdata, isJoin}) => {
                                             </div>
                                     <ResponsiveContainer width="92%" height="100%">
                                     <BarChart
-                                    data={btmdata}
+                                    data={btmdata ? btmdata : []}
                                     stackOffset={"sign"}
                                     margin={{
                                     top: 5,
