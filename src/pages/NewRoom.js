@@ -671,14 +671,15 @@ const NewRoom = () => {
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
 
-        if(Selected1 < new Date().getHours() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
-            return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
-        }
-
-        // 오늘 날짜와 같고, 현재시간이랑 같거나 낮고, 현재 분 보다 낮을때
-        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
-            return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
-        }
+        if(isNew === 0) {
+            if(Selected1 < new Date().getHours() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
+                return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
+            }
+            // 오늘 날짜와 같고, 현재시간이랑 같거나 낮고, 현재 분 보다 낮을때
+            if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
+                return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
+            }
+        } // 생성하기 일때만 시작 시간 유효성 검사
 
         if(new Date(endTime) <= new Date(startTime)){
             return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
@@ -785,14 +786,16 @@ const NewRoom = () => {
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
 
-        if(Selected1 < new Date().getHours() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
-            return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
-        }
+        if(isNew === 0) {
+            if(Selected1 < new Date().getHours() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
+                return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
+            }
+            // 오늘 날짜와 같고, 현재시간이랑 같거나 낮고, 현재 분 보다 낮을때
+            if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
+                return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
+            }
+        } // 생성하기 일때만 시작 시간 유효성 검사
 
-        // 오늘 날짜와 같고, 현재시간이랑 같거나 낮고, 현재 분 보다 낮을때
-        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
-            return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
-        }
 
         if(new Date(endTime) <= new Date(startTime)){
             return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
