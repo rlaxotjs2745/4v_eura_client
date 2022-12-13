@@ -23,6 +23,7 @@ const MeetingCalendar = () => {
             .then(res => {
                 setMeeting(res.data.data.mt_meetMyList);
             })
+        console.log(thisMonth, '이번달 몇월??')
     }, [thisMonth, thisYear])
 
 
@@ -76,11 +77,22 @@ const MeetingCalendar = () => {
     }
 
     $('.react-calendar__navigation__next-button').click(() => {
-        setThisMonth(thisMonth + 1);
+        if(thisMonth === 12) {
+            setThisMonth(1);
+            setThisYear(thisYear + 1);
+        } else {
+            setThisMonth(thisMonth + 1);
+        }
     })
 
     $('.react-calendar__navigation__prev-button').click(() => {
-        setThisMonth(thisMonth - 1);
+        if(thisMonth === 1) {
+            setThisMonth(12);
+            setThisYear(thisYear - 1);
+        } else {
+            setThisMonth(thisMonth - 1);
+        }
+
     })
 
     $('.react-calendar__navigation__next2-button').click(() => {
