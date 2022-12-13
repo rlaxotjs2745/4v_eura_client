@@ -3689,7 +3689,8 @@ html.js-overflow {
 .room .room__box .list__guest ul li {
     float: left;
     width: calc(50% - 15px);
-    margin: 6px 15px 6px 0
+    margin: 6px 15px 6px 0;
+    min-height:42px;
 }
 
 .room .room__box .list__guest ul li figure {
