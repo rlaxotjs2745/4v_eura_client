@@ -174,10 +174,10 @@ const SignUp = () => {
         if (data.user_phone !== null) {
             formData.append('user_phone', data.user_phone)
         }
-        else if (data.eq_type01 !== null) {
+        if (data.eq_type01 !== null) {
             formData.append('eq_type01', data.eq_type01)
         }
-        else if (data.eq_type02 !== null) {
+        if (data.eq_type02 !== null) {
             formData.append('eq_type02', data.eq_type02)
         }
         formData.append('privacy_terms', data.privacy_terms)
