@@ -295,7 +295,7 @@ const AnalyseMeeting = (props) => {
                     }
                     {
                         allUserBool ?
-                            <AnalyseAllUserGraphRow hideAllUserGraph={hideAllUserGraph} btmdata={btmdata} isJoin={lecture.join} oneUserResult={oneUserResult} oneUserResultab={oneUserResultab} />
+                            <AnalyseAllUserGraphRow hideAllUserGraph={hideAllUserGraph} btmdata={btmdata} oneUserResult={oneUserResult} oneUserResultab={oneUserResultab} />
                             : null
                     }
 

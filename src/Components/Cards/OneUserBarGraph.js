@@ -23,7 +23,7 @@ const OneUserBarGraph = ({userData, btmdata, isJoin}) => {
                 }
                 <div className="result__one_user_graph">
                     {
-                        !isJoin || isJoin === 2 ?
+                        !isJoin || isJoin === 2 || !userData.join ?
                             <span>미참석한 미팅입니다.</span>
                             :
                             <>

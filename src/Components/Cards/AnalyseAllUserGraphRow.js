@@ -3,7 +3,7 @@ import React from "react";
 import InviteMyAnalPieGraphCard from "./InviteMyAnalPieGraphCard";
 
 
-const AnalyseAllUserGraphRow = ({btmdata, isJoin, oneUserResult, oneUserResultab, hideAllUserGraph}) => {
+const AnalyseAllUserGraphRow = ({btmdata, oneUserResult, oneUserResultab, hideAllUserGraph}) => {
 
     return (
         <>
@@ -11,8 +11,8 @@ const AnalyseAllUserGraphRow = ({btmdata, isJoin, oneUserResult, oneUserResultab
                 btmdata.map((a, idx) => {
                     return (
                         <div key={idx}>
-                            <InviteMyAnalPieGraphCard isJoin={isJoin} oneUserResult={oneUserResult[idx]} oneUserResultab={oneUserResultab[idx]} />
-                            <OneUserBarGraph btmdata={btmdata[idx].list} userData={btmdata[idx]} isJoin={isJoin} />
+                            <InviteMyAnalPieGraphCard isJoin={btmdata[idx].join} oneUserResult={oneUserResult[idx]} oneUserResultab={oneUserResultab[idx]} />
+                            <OneUserBarGraph btmdata={btmdata[idx].list} userData={btmdata[idx]} isJoin={btmdata[idx].join} />
                         </div>
                     )
                 })
