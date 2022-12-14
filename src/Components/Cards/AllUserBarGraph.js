@@ -10,8 +10,8 @@ const AllUserBarGraph = ({middata}) => {
                 !middata || !middata.length ?'':
                     <>
                         <div className="emotion__wraper">
-                            <div><img src={require('../../assets/image/icon_smile.png')}/></div>
-                            <div><img src={require('../../assets/image/icon_angry.png')}/></div>
+                            <div><img src={require('../../assets/image/icon_smile.png')} alt=""/></div>
+                            <div><img src={require('../../assets/image/icon_angry.png')} alt=""/></div>
                         </div>
                         <ResponsiveContainer width="92%" height="100%">
                             <BarChart

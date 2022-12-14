@@ -515,7 +515,7 @@ const NewRoom = () => {
 
             let targetIdx;
         searchUser.forEach((us, idx) => {
-            if(us.idx == user.idx){
+            if(us.idx === user.idx){
                 targetIdx = idx;
             }
         })

@@ -1,10 +1,5 @@
-// import axios from "axios";
-
 const React = require("react");
 const {useState} = require("react");
-// const {useEffect} = require("react");
-
-
 
 const MainTimer = ({user}) => {
     const [timer, setTimer] = useState("00:00");

@@ -1,15 +1,7 @@
 import {Link} from "react-router-dom";
 const React = require("react");
 
-
-
 const MainSchedule = ({schedule}) => {
-
-    // const navigate = useNavigate();
-    // const dayClick = () => {
-    //     navigate(`/meetingroom/${schedule[0].mt_idx}`, {state:schedule[0].mt_idx})
-    // }
-
     return (
         <div className="main__schedule">
             <h2>다음일정</h2>

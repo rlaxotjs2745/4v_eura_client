@@ -1,5 +1,5 @@
 import {Bar, BarChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis} from "recharts";
-import React, {useEffect} from "react";
+import React from "react";
 
 
 const OneUserBarGraph = ({userData, btmdata, isJoin, isHost}) => {
@@ -23,7 +23,7 @@ const OneUserBarGraph = ({userData, btmdata, isJoin, isHost}) => {
                 }
                 <div className="result__one_user_graph">
                     {
-                        isHost === false && !isJoin || isJoin === 2 ?
+                        ((isHost === false && !isJoin) || isJoin === 2) ?
                             <span>미참석한 미팅입니다.</span>
                             : !isJoin || isJoin === 2 ?
                             <span>미참석자 입니다.</span> :
@@ -37,8 +37,8 @@ const OneUserBarGraph = ({userData, btmdata, isJoin, isHost}) => {
                                     //     '' :
                                         <>
                                             <div className="emotion__wraper">
-                                                <div><img src={require('../../assets/image/icon_smile.png')}/></div>
-                                                <div><img src={require('../../assets/image/icon_angry.png')}/></div>
+                                                <div><img src={require('../../assets/image/icon_smile.png')} alt=""/></div>
+                                                <div><img src={require('../../assets/image/icon_angry.png')} alt=""/></div>
                                             </div>
                                             <ResponsiveContainer width="92%" height="100%">
                                                 <BarChart
