@@ -44,6 +44,7 @@ const MeetingAnalysisPieGraph = ({data}) => {
                     </PieChart>
                 </ResponsiveContainer>
             </div>
+
             <div className="analysis_sumup">
                 <div className="analysis_sum__title">분석 요약</div>
                 {
