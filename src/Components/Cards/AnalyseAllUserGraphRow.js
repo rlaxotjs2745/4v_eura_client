@@ -12,7 +12,7 @@ const AnalyseAllUserGraphRow = ({btmdata, oneUserResult, oneUserResultab, hideAl
                     return (
                         <div key={idx}>
                             <InviteMyAnalPieGraphCard isJoin={btmdata[idx].join} oneUserResult={oneUserResult[idx]} oneUserResultab={oneUserResultab[idx]} />
-                            <OneUserBarGraph btmdata={btmdata[idx].list} userData={btmdata[idx]} isJoin={btmdata[idx].join} />
+                            <OneUserBarGraph btmdata={btmdata[idx].list} userData={btmdata[idx]} isJoin={btmdata[idx].join} isHost={true} />
                         </div>
                     )
                 })

@@ -274,14 +274,6 @@ const AnalyseMeeting = (props) => {
                         </Player>
                     }
                     </div>
-
-                    {
-                        lecture.is_host ?
-                            null
-                            :
-                            !oneUserResult || !oneUserResult.length ? null :
-                            <InviteMyAnalPieGraphCard isJoin={lecture.join} oneUserResult={!oneUserResult || !oneUserResult.length ? null : oneUserResult[0]} oneUserResultab={!oneUserResultab || !oneUserResultab.length ? null : oneUserResultab[0]} />
-                    }
                     {
                         lecture.is_host ?
                             <>
@@ -291,7 +283,13 @@ const AnalyseMeeting = (props) => {
                                 </div>
                             </>
                             :
-                            <OneUserBarGraph btmdata={!btmdata || !btmdata[0] || !btmdata[0].list ? null : btmdata[0].list} isJoin={lecture.join} />
+                            <>
+                                {
+                                    !oneUserResult || !oneUserResult.length ? null :
+                                        <InviteMyAnalPieGraphCard isJoin={lecture.join} oneUserResult={!oneUserResult || !oneUserResult.length ? null : oneUserResult[0]} oneUserResultab={!oneUserResultab || !oneUserResultab.length ? null : oneUserResultab[0]} />
+                                }
+                                <OneUserBarGraph btmdata={!btmdata || !btmdata[0] || !btmdata[0].list ? null : btmdata[0].list} isJoin={lecture.join} isHost={false} />
+                            </>
                     }
                     {
                         allUserBool ?
