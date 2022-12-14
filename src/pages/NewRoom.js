@@ -710,9 +710,10 @@ const NewRoom = () => {
             }
         }
 
-        if(isNew === 1 && startDate === dayjs(new Date()).format('YYYY-MM-DD') && new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000)) {
-            return alert(`미팅 시작시간은 미팅 생성시간 10분전까지만 수정이 가능합니다.\n미팅 생성시간은 ${validationStartTime} 입니다.`);
-        } // 수정하기 일 경우 현재 시간 이전이고 설정한 분이 생성시간 10분 이전보다 크고, 오늘과 날짜가 같을 경우 alert 실행
+        // 수정하기 일 경우 현재 시간 이전이고 설정한 분이 생성시간 10분 이전보다 크고, 오늘과 날짜가 같을 경우 alert 실행
+        // if(isNew === 1 && startDate === dayjs(new Date()).format('YYYY-MM-DD') && new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000)) {
+        //     return alert(`미팅 시작시간은 미팅 생성시간 10분전까지만 수정이 가능합니다.\n미팅 생성시간은 ${validationStartTime} 입니다.`);
+        // }
 
         if(new Date(endTime) <= new Date(startTime)){
             return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
@@ -790,9 +791,9 @@ const NewRoom = () => {
             if(delUser.length > 0){
                 formData.append('invite_del', delUser);
             }
-            for(let i of formData){
+            // for(let i of formData){
                 // console.log(i);
-            }
+            // }
             axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_OPTION)
                 .then(res => {
                     if(res.data.result_code === 'SUCCESS'){
@@ -806,11 +807,11 @@ const NewRoom = () => {
     }
 
     const openConfirmModal = () => {
-        if($('#make_new').val() == ''){
+        if($('#make_new').val() === ''){
             return alert('미팅 이름을 입력해주세요.')
         }
 
-        if($('#make_date').val() == ''){
+        if($('#make_date').val() === ''){
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
         const tenMinutesAgo = new Date();
@@ -830,23 +831,24 @@ const NewRoom = () => {
             return alert('미팅 시작 날짜는 오늘 날짜 이전일 수 없습니다.')
         }
 
-        if(isNew === 1 && startDate === dayjs(new Date()).format('YYYY-MM-DD') && new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000)) {
-            return alert(`미팅 시작시간은 미팅 생성시간 10분전까지만 수정이 가능합니다.\n미팅 생성시간은 ${validationStartTime} 입니다.`);
-        } // 수정하기 일 경우 현재 시간 이전이고 설정한 분이 생성시간 10분 이전보다 크고, 오늘과 날짜가 같을 경우 alert 실행
+        // 수정하기 일 경우 현재 시간 이전이고 설정한 분이 생성시간 10분 이전보다 크고, 오늘과 날짜가 같을 경우 alert 실행
+        // if(isNew === 1 && startDate === dayjs(new Date()).format('YYYY-MM-DD') && new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000)) {
+        //     return alert(`미팅 시작시간은 미팅 생성시간 10분전까지만 수정이 가능합니다.\n미팅 생성시간은 ${validationStartTime} 입니다.`);
+        // }
 
         if(new Date(endTime) <= new Date(startTime)){
             return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
         }
 
-        if($('#make_time1').val() == ''){
+        if($('#make_time1').val() === ''){
             return alert('미팅 시작 시간이 입력되지 않았습니다.')
         }
 
-        if($('#make_time2').val() == ''){
+        if($('#make_time2').val() === ''){
             return alert('미팅 종료 시간이 입력되지 않았습니다.')
         }
 
-        if($('#make_room').val() == ''){
+        if($('#make_room').val() === ''){
             return alert('미팅 정보가 입력되지 않았습니다.');
         }
 
@@ -856,11 +858,11 @@ const NewRoom = () => {
     }
 
     const openModal = () => {
-        if($('#make_new').val() == ''){
+        if($('#make_new').val() === ''){
             return alert('미팅 이름을 입력해주세요.')
         }
 
-        if($('#make_date').val() == ''){
+        if($('#make_date').val() === ''){
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
 
@@ -878,15 +880,15 @@ const NewRoom = () => {
             return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
         }
 
-        if($('#make_time1').val() == ''){
+        if($('#make_time1').val() === ''){
             return alert('미팅 시작 시간이 입력되지 않았습니다.')
         }
 
-        if($('#make_time2').val() == ''){
+        if($('#make_time2').val() === ''){
             return alert('미팅 종료 시간이 입력되지 않았습니다.')
         }
 
-        if($('#make_room').val() == ''){
+        if($('#make_room').val() === ''){
             return alert('미팅 정보가 입력되지 않았습니다.');
         }
 
@@ -902,10 +904,10 @@ const NewRoom = () => {
         if(remindBool){
             formData.append('mt_remind_type', parseInt(selectValue));
             formData.append('mt_remind_count', remindCount);
-            if(selectValue == 2){
+            if(selectValue === 2){
                 formData.append('mt_remind_week', weekday.join());
             }
-            if(selectValue == 3){
+            if(selectValue === 3){
                 formData.append('mt_remind_week', weekday.join());
             }
             if(selectValue === 4 ) {
@@ -949,9 +951,9 @@ const NewRoom = () => {
             if(delUser.length > 0){
                 formData.append('invite_del', delUser);
             }
-            for(let i of formData){
+            // for(let i of formData){
                 // console.log(i);
-            }
+            // }
             axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_OPTION)
                 .then(res => {
                     if(res.data.result_code === 'SUCCESS'){
@@ -1027,7 +1029,7 @@ const NewRoom = () => {
 
     const startDate2 = new Date(startDate);
     const endDate2 = new Date(endDate);
-    const endDate3 = endDate2.setDate(endDate2.getDate() - 1);
+    // const endDate3 = endDate2.setDate(endDate2.getDate() - 1);
     const days = weekdayMinus1;
 
     const getDayCountBetweenDates = (startDate, endDate, days) => {

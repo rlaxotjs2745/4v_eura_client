@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 
 const AnalysisUserList = ({lecture ,userList, clickUser, isHost}) => {
     return (

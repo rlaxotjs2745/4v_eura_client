@@ -6,9 +6,9 @@ const React = require("react");
 const MainSchedule = ({schedule}) => {
 
     const navigate = useNavigate();
-    const dayClick = () => {
-        navigate(`/meetingroom/${schedule[0].mt_idx}`, {state:schedule[0].mt_idx})
-    }
+    // const dayClick = () => {
+    //     navigate(`/meetingroom/${schedule[0].mt_idx}`, {state:schedule[0].mt_idx})
+    // }
 
     return (
         <div className="main__schedule">

@@ -217,13 +217,13 @@ const SignUp = () => {
         let join_password = $('#join_password')
         let join_password2 = $('#join_password2')
 
-        if(user_name.val() == '') {
+        if(user_name.val() === '') {
             alert('이름을 입력해주세요.')
-        } else if (user_id.val() == '' || user_id.parent().hasClass('is-alert')) {
+        } else if (user_id.val() === '' || user_id.parent().hasClass('is-alert')) {
             alert('아이디(이메일) 입력 사항을 확인해주세요.')
-        } else if (join_password.val() == '' || join_password.parent().hasClass('is-alert')) {
+        } else if (join_password.val() === '' || join_password.parent().hasClass('is-alert')) {
             alert('비밀번호 입력 사항을 확인해주세요.')
-        } else if (join_password2.val() == '' || join_password2.parent().hasClass('is-alert')) {
+        } else if (join_password2.val() === '' || join_password2.parent().hasClass('is-alert')) {
             alert('비밀번호 확인 입력 사항을 확인해주세요.')
         } else if (signUp !== '사용 가능한 아이디 입니다.') {
             alert('아이디 중복체크를 진행해주세요.')
