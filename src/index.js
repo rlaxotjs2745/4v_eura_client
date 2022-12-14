@@ -21,6 +21,7 @@ root.render(
                   <App />
                   <div id="shade"></div>
                   <div id="shade2"></div>
+                  <div id="shade3"></div>
               </BrowserRouter>
           </StyledEngineProvider>
       </CookiesProvider>

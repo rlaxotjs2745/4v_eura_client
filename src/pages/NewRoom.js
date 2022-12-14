@@ -797,6 +797,8 @@ const NewRoom = () => {
                 .then(res => {
                     if(res.data.result_code === 'SUCCESS'){
                         alert('미팅룸을 수정했습니다.');
+                        // $('#popup__notice').addClass('is-on');
+                        $('#shade3').removeClass('is-on');
                         navigate('/');
                     }else{
                         alert(res.data.result_str);
@@ -852,7 +854,7 @@ const NewRoom = () => {
 
 
         $('#popup__notice').addClass('is-on');
-        $('#shade2').addClass('is-on');
+        $('#shade3').addClass('is-on');
     }
 
     const openModal = () => {
@@ -969,11 +971,18 @@ const NewRoom = () => {
     const modalClose = () => {
         $('#popup__notice').removeClass('is-on');
         $('#shade2').removeClass('is-on');
+
         if(isNew === 2){
             alert('미팅룸을 비공개상태로 수정하였습니다.');
             navigate('/');
         }
     }
+
+    const modalClose2 = () => {
+        $('#popup__notice').removeClass('is-on');
+        $('#shade3').removeClass('is-on');
+    }
+
 
     const changeMeetingStatus2 = () => {
         axios.put(SERVER_URL + '/meet/room/open', {"idx_meeting": window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}, AXIOS_OPTION)
@@ -1622,7 +1631,7 @@ const NewRoom = () => {
                         </>
                     :
                         <>
-                            <div onClick={modalClose} className="btn__close js-modal-close">
+                            <div onClick={modalClose2} className="btn__close js-modal-close">
                                 <img src={require('../assets/image/ic_close_24.png')} alt=""/>
                             </div>
                             <div className="popup__cnt">
@@ -1634,7 +1643,7 @@ const NewRoom = () => {
                                     </div>
                                 </div>
                                 <div className="btn__group">
-                                    <button onClick={modalClose} className="btn btn__normal btn__s js-modal-close">수정취소</button>
+                                    <button onClick={modalClose2} className="btn btn__normal btn__s js-modal-close">수정취소</button>
                                     <button onClick={handleSubmit} className="btn btn__able btn__s">메일발송</button>
                                 </div>
                             </div>
