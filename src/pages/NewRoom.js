@@ -710,7 +710,7 @@ const NewRoom = () => {
             }
         }
 
-        if(isNew === 1 && startDate === dayjs(new Date()).format('YYYY-MM-DD') && new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000)) {
+        if(isNew === 1 && startDate === dayjs(new Date()).format('YYYY-MM-DD') && new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date(validationStartTime).getTime() + 10 * 60 * 1000)) {
             return alert(`미팅 시작시간은 미팅 생성시간 10분전까지만 수정이 가능합니다.\n미팅 생성시간은 ${validationStartTime} 입니다.`);
         } // 수정하기 일 경우 현재 시간 이전이고 설정한 분이 생성시간 10분 이전보다 크고, 오늘과 날짜가 같을 경우 alert 실행
 
@@ -830,7 +830,7 @@ const NewRoom = () => {
             return alert('미팅 시작 날짜는 오늘 날짜 이전일 수 없습니다.')
         }
 
-        if(isNew === 1 && startDate === dayjs(new Date()).format('YYYY-MM-DD') && new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000)) {
+        if(isNew === 1 && startDate === dayjs(new Date()).format('YYYY-MM-DD') && new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date(validationStartTime).getTime() + 10 * 60 * 1000)) {
             return alert(`미팅 시작시간은 미팅 생성시간 10분전까지만 수정이 가능합니다.\n미팅 생성시간은 ${validationStartTime} 입니다.`);
         } // 수정하기 일 경우 현재 시간 이전이고 설정한 분이 생성시간 10분 이전보다 크고, 오늘과 날짜가 같을 경우 alert 실행
 
