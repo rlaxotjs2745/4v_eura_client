@@ -104,7 +104,7 @@ const NewRoom = () => {
             setIsNew(1);
 
         } else return;
-        console.log('dUdksn')
+
         axios.get(SERVER_URL +
             `/meet/room/info?idx_meeting=${pathSplit}`,
             AXIOS_OPTION)
@@ -673,7 +673,9 @@ const NewRoom = () => {
     }
 
     const handleSubmit = () => {
-        // console.log(new Date(new Date(validationStartTime).getTime()), '현재 시간')
+        // console.log(new Date(new Date().getTime()), '현재 시간')
+        // console.log(new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`), '설정 시간')
+
         // console.log(new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`), '생성하려고 하는시간 확인')
         // console.log(new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000), '미팅 생성했던 시간')
 
@@ -703,8 +705,8 @@ const NewRoom = () => {
                 return alert('미팅 시작 날짜는 오늘 날짜 이전일 수 없습니다.');
             }
 
-            if(new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date(validationStartTime).getTime())){
-                return alert('미팅 시작 시간은 현재 시간 이경전일 수 없습니다.');
+            if(new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date().getTime())){
+                return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
             }
         }
 
