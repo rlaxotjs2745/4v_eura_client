@@ -75,6 +75,8 @@ const NewRoom = () => {
 
     const [validationStartTime, setValidationStartTime] = useState(new Date())
 
+    const [roomStatus, setRoomState] = useState(false)
+
 
     useEffect(() => {
         let curTIme = new Date();
@@ -119,7 +121,9 @@ const NewRoom = () => {
                 setSelected3(room.mt_end_dt.split(' ')[1].split(':')[0])
                 setSelected4(room.mt_end_dt.split(' ')[1].split(':')[1])
                 setValidationStartTime(room.mt_start_dt)
-
+                if(room.mt_status === 0) {
+                    setRoomState(true)
+                }
                 if(room.mt_remind_week !== null) {
                     setWeekday(room.mt_remind_week.split(','));
                 }
@@ -541,6 +545,7 @@ const NewRoom = () => {
     }
 
     const compareInvites = (arr) => {
+
         if(modifyBool === true || isNew === 2){
             return;
         }
@@ -1146,6 +1151,17 @@ const NewRoom = () => {
         return nthDay;
     } // 사용할 함수
 
+    useEffect(()=> {
+        compareDateTime()
+    },[Selected1, Selected2, Selected3, Selected4])
+
+    // console.log(roomStatus, '룸 스테이터스(비공개면 트루)')
+
+    useEffect(()=> {
+        if(roomStatus === true) {
+            setModifyBool(false);
+        }
+    })
 
     return (
         <div className="room">
