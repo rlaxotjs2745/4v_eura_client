@@ -250,11 +250,11 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
                         <Link to="/newroom" className="btn btn__make"><img src={require('../assets/image/ic_plus.png')} alt=""/>새 미팅룸 만들기</Link>
                         <div className="sorting" onMouseOver={sortMouseOver} onMouseOut={sortMouseOut}>
                             <div className="meet_sort_select">
-                                <span>{allSort.filter(sort => sort.value === tcurSort)[0].label}</span>
+                                <span>{allSort.filter(sort => sort.value == tcurSort)[0].label}</span>
                                 <div id="cur_meet_sort" className="meet_sort_select__anchor meet_sort_select_hide">
                                     <ul>
                                         {
-                                            allSort.filter(aSort => aSort.value !== tcurSort).map(sort => <li onClick={() => pageSort('curSort', sort.value)}>{sort.label}</li>)
+                                            allSort.filter(aSort => aSort.value != tcurSort).map(sort => <li onClick={() => pageSort('curSort', sort.value)}>{sort.label}</li>)
                                         }
                                     </ul>
                                 </div>
@@ -293,11 +293,11 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
                     <h3><img src="" alt=""/><img src={require('../assets/image/ic_last.png')} alt=""/> 지난 미팅 <em>{lastMeeting && lastMeeting.mt_meetMyListCount ? lastMeeting.mt_meetMyListCount : 0}</em>
                         <div className="sorting" onMouseOver={sortLastMouseOver} onMouseOut={sortLastMouseOut}>
                             <div className="meet_sort_select">
-                                <span>{allSort.filter(sort => sort.value === tcurLastSort)[0].label}</span>
+                                <span>{allSort.filter(sort => sort.value == tcurLastSort)[0].label}</span>
                                 <div id="last_meet_sort" className="meet_sort_select__anchor meet_sort_select_hide">
                                     <ul>
                                         {
-                                            allSort.filter(aSort => aSort.value !== tcurLastSort).map(sort => <li onClick={() => pageSort('lastMeetSort', sort.value)}>{sort.label}</li>)
+                                            allSort.filter(aSort => aSort.value != tcurLastSort).map(sort => <li onClick={() => pageSort('lastMeetSort', sort.value)}>{sort.label}</li>)
                                         }
                                     </ul>
                                 </div>
