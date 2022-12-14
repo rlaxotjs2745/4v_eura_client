@@ -664,6 +664,7 @@ const NewRoom = () => {
     }
 
     const handleSubmit = () => {
+        console.log(dayjs(startDate).format('YYYY-MM-DD'))
         // console.log(new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`), '생성하려고 하는시간 확인')
         // console.log(new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000), '미팅 생성했던 시간')
 
@@ -685,6 +686,10 @@ const NewRoom = () => {
             if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
                 return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
             }
+        }
+
+        if(dayjs(startDate).format('YYYY-MM-DD') < dayjs(new Date()).format('YYYY-MM-DD')) {
+            return alert('미팅 시작 날짜는 오늘 날짜 이전일 수 없습니다.')
         }
 
         if(isNew === 1 && startDate === dayjs(new Date()).format('YYYY-MM-DD') && new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000)) {
