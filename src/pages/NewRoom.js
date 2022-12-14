@@ -788,6 +788,51 @@ const NewRoom = () => {
     }
 
     const openConfirmModal = () => {
+        if($('#make_new').val() == ''){
+            return alert('미팅 이름을 입력해주세요.')
+        }
+
+        if($('#make_date').val() == ''){
+            return alert('미팅 일자가 입력되지 않았습니다.')
+        }
+        const tenMinutesAgo = new Date();
+        tenMinutesAgo.setMinutes(tenMinutesAgo.getMinutes() - 10);
+
+        if(isNew === 0) {
+            if(Selected1 < new Date().getHours() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
+                return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
+            }
+            // 오늘 날짜와 같고, 현재시간이랑 같거나 낮고, 현재 분 보다 낮을때
+            if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
+                return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
+            }
+        }
+
+        if(dayjs(startDate).format('YYYY-MM-DD') < dayjs(new Date()).format('YYYY-MM-DD')) {
+            return alert('미팅 시작 날짜는 오늘 날짜 이전일 수 없습니다.')
+        }
+
+        if(isNew === 1 && startDate === dayjs(new Date()).format('YYYY-MM-DD') && new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000)) {
+            return alert(`미팅 시작시간은 미팅 생성시간 10분전까지만 수정이 가능합니다.\n미팅 생성시간은 ${validationStartTime} 입니다.`);
+        } // 수정하기 일 경우 현재 시간 이전이고 설정한 분이 생성시간 10분 이전보다 크고, 오늘과 날짜가 같을 경우 alert 실행
+
+        if(new Date(endTime) <= new Date(startTime)){
+            return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
+        }
+
+        if($('#make_time1').val() == ''){
+            return alert('미팅 시작 시간이 입력되지 않았습니다.')
+        }
+
+        if($('#make_time2').val() == ''){
+            return alert('미팅 종료 시간이 입력되지 않았습니다.')
+        }
+
+        if($('#make_room').val() == ''){
+            return alert('미팅 정보가 입력되지 않았습니다.');
+        }
+
+
         $('#popup__notice').addClass('is-on');
         $('#shade2').addClass('is-on');
     }
