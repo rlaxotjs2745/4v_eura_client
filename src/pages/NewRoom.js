@@ -78,6 +78,9 @@ const NewRoom = () => {
     const [roomStatus, setRoomState] = useState(false)
     const [rendered, setRendered] = useState(0);
 
+    const [startDateChange, setStartDateChange] = useState(false)
+
+    const [dummySelectValue, setDummySelectValue] = useState(false)
 
     useEffect(() => {
         let curTIme = new Date();
@@ -96,6 +99,7 @@ const NewRoom = () => {
 
         if(pathname.indexOf('reopen')>-1){
             setIsNew(2);
+            setRoomState(true)
         }else if(pathname.indexOf('/newroom/')>-1){
             setIsNew(1);
 
@@ -655,6 +659,7 @@ const NewRoom = () => {
     const makeDate = (newValue) => {
         setStartDate(newValue);
         compareDateTime();
+        setStartDateChange(true)
     }
 
     const makeEndDate = (e) => {
@@ -668,7 +673,7 @@ const NewRoom = () => {
     }
 
     const handleSubmit = () => {
-        console.log(dayjs(startDate).format('YYYY-MM-DD'))
+        // console.log(new Date(new Date(validationStartTime).getTime()), '현재 시간')
         // console.log(new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`), '생성하려고 하는시간 확인')
         // console.log(new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000), '미팅 생성했던 시간')
 
@@ -692,8 +697,15 @@ const NewRoom = () => {
             }
         }
 
-        if(dayjs(startDate).format('YYYY-MM-DD') < dayjs(new Date()).format('YYYY-MM-DD')) {
-            return alert('미팅 시작 날짜는 오늘 날짜 이전일 수 없습니다.')
+        // 비공개상태로 시간이 지난 이후 공개하기를 하려고 할때 이전시간인 경우 유효성 검사 체크
+        if(location.state !== null && location.state.resultCode === 'FAIL01') {
+            if(dayjs(startDate).format('YYYY-MM-DD') < dayjs(new Date()).format('YYYY-MM-DD')) {
+                return alert('미팅 시작 날짜는 오늘 날짜 이전일 수 없습니다.');
+            }
+
+            if(new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date(validationStartTime).getTime())){
+                return alert('미팅 시작 시간은 현재 시간 이경전일 수 없습니다.');
+            }
         }
 
         if(isNew === 1 && startDate === dayjs(new Date()).format('YYYY-MM-DD') && new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000)) {
@@ -812,7 +824,7 @@ const NewRoom = () => {
             }
         }
 
-        if(dayjs(startDate).format('YYYY-MM-DD') < dayjs(new Date()).format('YYYY-MM-DD')) {
+        if(setStartDateChange === true && dayjs(startDate).format('YYYY-MM-DD') < dayjs(new Date()).format('YYYY-MM-DD')) {
             return alert('미팅 시작 날짜는 오늘 날짜 이전일 수 없습니다.')
         }
 
@@ -1197,7 +1209,7 @@ const NewRoom = () => {
 
     useEffect(()=> {
         compareDateTime()
-    },[Selected1, Selected2, Selected3, Selected4])
+    },[startDate, Selected1, Selected2, Selected3, Selected4])
 
     // console.log(roomStatus, '룸 스테이터스(비공개면 트루)')
 
@@ -1206,6 +1218,8 @@ const NewRoom = () => {
             setModifyBool(false);
         }
     })
+
+
 
     return (
         <div className="room">
