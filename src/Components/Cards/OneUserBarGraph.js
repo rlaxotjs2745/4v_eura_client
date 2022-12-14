@@ -2,7 +2,7 @@ import {Bar, BarChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis} from 
 import React, {useEffect} from "react";
 
 
-const OneUserBarGraph = ({userData, btmdata, isJoin}) => {
+const OneUserBarGraph = ({userData, btmdata, isJoin, isHost}) => {
 
 
     return (
@@ -23,9 +23,10 @@ const OneUserBarGraph = ({userData, btmdata, isJoin}) => {
                 }
                 <div className="result__one_user_graph">
                     {
-                        !isJoin || isJoin === 2 || !userData.join ?
-                            <span>미참석한 미팅입니다.</span>
-                            :
+                        !isJoin || isJoin === 2 || !userData.join && isHost ?
+                            <span>미참석자입니다.</span>
+                            : !isJoin || isJoin === 2 || !userData.join ?
+                            <span>미참석한 미팅입니다.</span> :
                             <>
                             <div className="graph_on_seek">
                                 <div className="v-line"></div>
