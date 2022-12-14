@@ -4,15 +4,15 @@ import $ from "jquery";
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {useState, useEffect} from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {Link} from "react-router-dom";
-import {SERVER_URL, AXIOS_OPTION, AXIOS_FORM_DATA_OPTION_NOUSER} from "../util/env";
+import {SERVER_URL, AXIOS_OPTION} from "../util/env";
 
 const SignUp = () => {
     const [userId, setUserId] = useState('');
     const [userName, setUserName] = useState('')
-    const [userEmail, setUserEmail] = useState('')
+    // const [userEmail, setUserEmail] = useState('')
     const [userPwd, setUserPwd] = useState('')
     const [userPwdChk, setUserPwdChk] = useState('')
     const [userDisabled, setUserDisabled] = useState(false)
@@ -29,9 +29,9 @@ const SignUp = () => {
         }
     }
 
-    const handleUserEmail = (e) => {
-        setUserEmail(e.target.value);
-    }
+    // const handleUserEmail = (e) => {
+    //     setUserEmail(e.target.value);
+    // }
 
     const handleUserPwd = (e) => {
         setUserPwd(e.target.value);
@@ -138,10 +138,8 @@ const SignUp = () => {
     const {
         register,
         handleSubmit,
-        handleBlur,
-        setError,
         watch,
-        formState: { errors, isSubmitted, isSubmitting, isDirty },
+        formState: { errors, isSubmitting },
         // isSubmitting 은 양식 제출 중 disabled 처리 하게 함.
     } = useForm({
         mode: 'onChange',
@@ -279,10 +277,10 @@ const SignUp = () => {
         $('#step2').addClass('active')
     }
 
-    const Sign_prev4 = () => {
-        $('#step4').removeClass('active')
-        $('#step3').addClass('active')
-    }
+    // const Sign_prev4 = () => {
+    //     $('#step4').removeClass('active')
+    //     $('#step3').addClass('active')
+    // }
 
     const reMailSubmit = (data) => {
         let formData = new FormData();

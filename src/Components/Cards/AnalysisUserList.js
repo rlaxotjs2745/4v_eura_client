@@ -23,7 +23,7 @@ const AnalysisUserList = ({lecture ,userList, clickUser, isHost}) => {
                                                 <div>{member.uemail}</div>
                                             </div>
                                             {
-                                                member.is_iam || member.value !== null && isHost ?
+                                                member.is_iam || (member.value !== null && isHost) ?
                                                     <div className="watch__percent is-good">{member.join ? Math.round(member.value) + '%' : '-'}</div>
                                                     : ""
                                             }

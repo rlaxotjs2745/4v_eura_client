@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Bar, BarChart, ReferenceArea, ReferenceLine, ResponsiveContainer, XAxis, Tooltip} from "recharts";
+import React from 'react';
+import {Bar, BarChart, ReferenceLine, ResponsiveContainer, XAxis, Tooltip} from "recharts";
 
 
 const AllUserBarGraph = ({middata}) => {
