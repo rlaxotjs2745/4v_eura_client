@@ -223,13 +223,13 @@ const MeetingRoom = (props) => {
                                 roomInfo.mt_live ? startTimer() : ''
                             }
                             {
-                                roomInfo.mt_status == 0 ?
+                                roomInfo.mt_status === 0 ?
                                     <div className="case__message is-late">비공개 상태</div>
-                                    : roomInfo.mt_status == 2 ?
+                                    : roomInfo.mt_status === 2 ?
                                     <div className="case__message is-cancel">취소된 상태</div>
-                                    : roomInfo.mt_status == 1 && !roomInfo.mt_live && new Date() > new Date(roomInfo.mt_start_dt) ?
+                                    : roomInfo.mt_status === 1 && !roomInfo.mt_live && new Date() > new Date(roomInfo.mt_start_dt) ?
                                     <div className="case__message is-late">호스트가 미팅을 시작하기 전 입니다.</div>
-                                    : roomInfo.mt_status == 1 && !roomInfo.mt_live ?
+                                    : roomInfo.mt_status === 1 && !roomInfo.mt_live ?
                                     <div className="case__message is-ready">미팅 시작 전</div>
                                     : roomInfo.mt_live ?
                                     <div className="case__message is-live"><img src={require('../assets/image/ic_time-record_24.png')} alt="" />{timer}</div>
@@ -283,19 +283,19 @@ const MeetingRoom = (props) => {
                         </Swiper>
                         <div className="btn__group">
                             {
-                                roomInfo.mt_ishost == '0' ?
+                                roomInfo.mt_ishost === '0' ?
                                     <div onClick={startMeeting} className="btn btn__able btn__xl">참여하기</div> //게스트, 시작된 미팅
                                     :
-                                    roomInfo.mt_ishost == '0' ?
+                                    roomInfo.mt_ishost === '0' ?
                                         <div className="btn btn__disable btn__xl">참여하기</div> // 게스트, 시작 전 미팅
                                         :
-                                        roomInfo.mt_ishost == '1' && roomInfo.mt_status === 1?
+                                        roomInfo.mt_ishost === '1' && roomInfo.mt_status === 1?
                                     <div onClick={startMeeting} className="btn btn__able btn__xl">시작하기</div> // 호스트, 시작 전 미팅
                                             :
-                                            roomInfo.mt_ishost == '1' ?
+                                            roomInfo.mt_ishost === '1' ?
                                                 <div className="btn btn__disable btn__xl">시작하기</div> //호스트, 시작된 미팅
                                                 :
-                                                roomInfo.mt_ishost == '1' && roomInfo.mt_status !== 1 ?
+                                                roomInfo.mt_ishost === '1' && roomInfo.mt_status !== 1 ?
                                                     <div className="btn btn__disable btn__xl">시작하기</div>
                                                     : ''
                             }
