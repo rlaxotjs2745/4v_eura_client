@@ -19,6 +19,10 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
     }
 
 
+    const week = ['일', '월', '화', '수', '목', '금', '토'];
+    const dayOfWeek = week[new Date(room.mt_start_dt.split(' ')[0]).getDay()];
+
+
     return (
         <div
             className={
@@ -80,7 +84,7 @@ const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, m
 
             <dl>
                 <dt>날짜</dt>
-                <dd>{room.mt_start_dt.split(' ')[0]}</dd>
+                <dd>{room.mt_start_dt.split(' ')[0]} ({dayOfWeek})</dd>
             </dl>
             <dl>
                 <dt>시간</dt>
