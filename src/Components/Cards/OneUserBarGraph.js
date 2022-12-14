@@ -23,10 +23,10 @@ const OneUserBarGraph = ({userData, btmdata, isJoin, isHost}) => {
                 }
                 <div className="result__one_user_graph">
                     {
-                        !isJoin || isJoin === 2 || !userData.join && isHost ?
-                            <span>미참석자입니다.</span>
-                            : !isJoin || isJoin === 2 || !userData.join ?
-                            <span>미참석한 미팅입니다.</span> :
+                        isHost === false && !isJoin || isJoin === 2 ?
+                            <span>미참석한 미팅입니다.</span>
+                            : !isJoin || isJoin === 2 ?
+                            <span>미참석자 입니다.</span> :
                             <>
                             <div className="graph_on_seek">
                                 <div className="v-line"></div>
