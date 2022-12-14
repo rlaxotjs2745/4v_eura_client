@@ -541,7 +541,7 @@ const NewRoom = () => {
     }
 
     const compareInvites = (arr) => {
-        if(modifyBool === true){
+        if(modifyBool === true || isNew === 2){
             return;
         }
         let compareBool = false;
@@ -562,7 +562,7 @@ const NewRoom = () => {
     }
 
     const compareDateTime = () => {
-        if(modifyBool === true){
+        if(modifyBool === true || isNew === 2){
             return;
         }
         let compareBool = false;

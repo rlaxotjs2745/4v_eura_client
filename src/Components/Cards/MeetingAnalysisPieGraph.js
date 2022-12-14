@@ -7,7 +7,7 @@ const MeetingAnalysisPieGraph = ({data}) => {
     const COLORS = [
         '#3377ff',
         '#ffc633',
-        'gray'
+        '#b4b6bf'
     ];
 
     const RADIAN = Math.PI / 180;

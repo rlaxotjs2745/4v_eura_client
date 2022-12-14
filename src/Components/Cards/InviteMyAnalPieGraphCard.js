@@ -33,7 +33,7 @@ const InviteMyAnalPieGraphCard = ({oneUserResult, oneUserResultab, isJoin}) => {
     const COLORS = [
         '#3377ff',
         '#ffc633',
-        'gray'
+        '#b4b6bf'
     ];
 
             return (
