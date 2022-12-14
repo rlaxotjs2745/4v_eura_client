@@ -76,6 +76,7 @@ const NewRoom = () => {
     const [validationStartTime, setValidationStartTime] = useState(new Date())
 
     const [roomStatus, setRoomState] = useState(false)
+    const [rendered, setRendered] = useState(0);
 
 
     useEffect(() => {
@@ -99,7 +100,7 @@ const NewRoom = () => {
             setIsNew(1);
 
         } else return;
-
+        console.log('dUdksn')
         axios.get(SERVER_URL +
             `/meet/room/info?idx_meeting=${pathSplit}`,
             AXIOS_OPTION)
@@ -128,6 +129,7 @@ const NewRoom = () => {
                     setWeekday(room.mt_remind_week.split(','));
                 }
                 setPrevRoom({...room, mt_remind_week :room.mt_remind_week !== null ? room.mt_remind_week.split(',').sort() : null});
+                setRendered(1);
             })
         axios.get(SERVER_URL +
             `/meet/room/invite?idx_meeting=${pathSplit}`,
@@ -545,7 +547,6 @@ const NewRoom = () => {
     }
 
     const compareInvites = (arr) => {
-
         if(modifyBool === true || isNew === 2){
             return;
         }
@@ -562,12 +563,11 @@ const NewRoom = () => {
                 }
             }
         }
-
         setModifyBool(compareBool);
     }
 
     const compareDateTime = () => {
-        if(modifyBool === true || isNew === 2){
+        if(modifyBool === true || isNew === 2 || rendered == 0){
             return;
         }
         let compareBool = false;
@@ -594,7 +594,6 @@ const NewRoom = () => {
         if(prevRoom.mt_remind_type !== selectValue){
             compareBool = true;
         }
-
         setModifyBool(compareBool);
     }
 
