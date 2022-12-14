@@ -73,6 +73,8 @@ const NewRoom = () => {
 
     const [modifyBool, setModifyBool] = useState(false);
 
+    const [validationStartTime, setValidationStartTime] = useState(new Date())
+
 
     useEffect(() => {
         let curTIme = new Date();
@@ -116,6 +118,7 @@ const NewRoom = () => {
                 setSelected2(room.mt_start_dt.split(' ')[1].split(':')[1])
                 setSelected3(room.mt_end_dt.split(' ')[1].split(':')[0])
                 setSelected4(room.mt_end_dt.split(' ')[1].split(':')[1])
+                setValidationStartTime(room.mt_start_dt)
 
                 if(room.mt_remind_week !== null) {
                     setWeekday(room.mt_remind_week.split(','));
@@ -662,6 +665,9 @@ const NewRoom = () => {
 
     const handleSubmit = () => {
         // console.log(remindCount, '카운트 제대로 가나 확인')
+        console.log(validationStartTime, '미팅 시작시간')
+        console.log(new Date(validationStartTime), '미팅 시작시간')
+        console.log(dayjs(new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000)).format('mm'), 'isNew값')
 
         if($('#make_new').val() == ''){
             return alert('미팅 이름을 입력해주세요.')
@@ -681,8 +687,10 @@ const NewRoom = () => {
             if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
                 return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
             }
-        } else if(isNew !== 0 && Selected1 <= new Date().getHours() && Selected2 <  dayjs(new Date(new Date().getTime() - 10 * 60 * 1000)).format('mm') && startDate === dayjs(new Date()).format('YYYY-MM-DD')) {
-            return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
+        }
+
+        if(isNew === 1 && Selected1 <= new Date().getHours() && Selected2 <  dayjs(new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000)).format('mm') && startDate === dayjs(new Date()).format('YYYY-MM-DD')) {
+            return alert(`미팅 시작시간은 미팅 생성시간 10분전까지만 가능합니다.\n미팅 생성시간은 ${validationStartTime} 입니다.`);
         } // 새 미팅룸 만들기가 아니고(수정하기, 재개설하기) 현재 시간 이전이고 설정한 분이 10분 이전보다 작고, 오늘과 날짜가 같을 경우 alert 생성
 
         if(new Date(endTime) <= new Date(startTime)){
@@ -790,17 +798,13 @@ const NewRoom = () => {
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
 
-        if(isNew === 0) {
-            if(Selected1 < new Date().getHours() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
-                return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
-            }
-            // 오늘 날짜와 같고, 현재시간이랑 같거나 낮고, 현재 분 보다 낮을때
-            if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
-                return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
-            }
-        } else if(isNew !== 0 && Selected1 <= new Date().getHours() && Selected2 <  dayjs(new Date(new Date().getTime() - 10 * 60 * 1000)).format('mm') && startDate === dayjs(new Date()).format('YYYY-MM-DD')) {
+        if(Selected1 < new Date().getHours() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
             return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
-        } // 새 미팅룸 만들기가 아니고(수정하기, 재개설하기) 현재 시간 이전이고 설정한 분이 10분 이전보다 작고, 오늘과 날짜가 같을 경우 alert 생성
+        }
+        // 오늘 날짜와 같고, 현재시간이랑 같거나 낮고, 현재 분 보다 낮을때
+        if( Selected1 <= new Date().getHours() && Selected2 < new Date().getMinutes() && startDate === dayjs(new Date()).format('YYYY-MM-DD')){
+            return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
+        }
 
 
 
