@@ -691,7 +691,7 @@ const NewRoom = () => {
 
         if(isNew === 1 && Selected1 <= new Date().getHours() && Selected2 <  dayjs(new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000)).format('mm') && startDate === dayjs(new Date()).format('YYYY-MM-DD')) {
             return alert(`미팅 시작시간은 미팅 생성시간 10분전까지만 가능합니다.\n미팅 생성시간은 ${validationStartTime} 입니다.`);
-        } // 새 미팅룸 만들기가 아니고(수정하기, 재개설하기) 현재 시간 이전이고 설정한 분이 10분 이전보다 작고, 오늘과 날짜가 같을 경우 alert 생성
+        } // 수정하기 일 경우 현재 시간 이전이고 설정한 분이 생성시간 10분 이전보다 크고, 오늘과 날짜가 같을 경우 alert 실행
 
         if(new Date(endTime) <= new Date(startTime)){
             return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
