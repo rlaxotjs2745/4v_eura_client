@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
     Pie, PieChart, Cell, Sector
 } from 'recharts';
@@ -29,7 +29,7 @@ const renderActiveShape = props => {
 };
 
 const InviteMyAnalPieGraphCard = ({oneUserResult, oneUserResultab, isJoin}) => {
-    const [initialState, setInitialState] = useState({activeIndex: 0});
+    const initialState = {activeIndex: 0}
     const COLORS = [
         '#3377ff',
         '#ffc633',
@@ -66,16 +66,16 @@ const InviteMyAnalPieGraphCard = ({oneUserResult, oneUserResultab, isJoin}) => {
                                 oneUserResultab.off === 100 || !isJoin || isJoin === 2 ?
                                     null :
                                     <div className="one_user_graph_image">
-                                        {isJoin ? <img className="pie_graph_image" src={require(oneUserResultab.good >= 60 ? '../../assets/image/icon_one_user_good.png' : '../../assets/image/icon_one_user_bad.png')}/> : null}
+                                        {isJoin ? <img className="pie_graph_image" src={require(oneUserResultab.good >= 60 ? '../../assets/image/icon_one_user_good.png' : '../../assets/image/icon_one_user_bad.png')} alt=""/> : null}
                                         {isJoin ? <div className={oneUserResultab.good >= 60 ? 'pie_graph_word imotion_good' : 'pie_graph_word imotion_bad'}>{oneUserResultab.good >= 60 ? 'GOOD' : 'BAD'}</div>: null}
                                     </div>
                             }
                         </div>
                         <div className="one_user_graph_sum_box">
                             <div className="one_user_graph_sum_category_box">
-                                <div className="good_sum one_user_graph_sum_category"><span>Good</span><span>{isJoin && isJoin != 2 ? oneUserResultab.good + '%' : '-'}</span></div>
-                                <div className="bad_sum one_user_graph_sum_category"><span>Bad</span><span>{isJoin && isJoin != 2 ? oneUserResultab.bad + '%' : '-'}</span></div>
-                                <div className="camera_off_sum one_user_graph_sum_category"><span>Camera Off</span><span>{isJoin && isJoin != 2 ? oneUserResultab.off + '%' : '-'}</span></div>
+                                <div className="good_sum one_user_graph_sum_category"><span>Good</span><span>{isJoin && isJoin !== 2 ? oneUserResultab.good + '%' : '-'}</span></div>
+                                <div className="bad_sum one_user_graph_sum_category"><span>Bad</span><span>{isJoin && isJoin !== 2 ? oneUserResultab.bad + '%' : '-'}</span></div>
+                                <div className="camera_off_sum one_user_graph_sum_category"><span>Camera Off</span><span>{isJoin && isJoin !== 2 ? oneUserResultab.off + '%' : '-'}</span></div>
                             </div>
                         </div>
                     </div>

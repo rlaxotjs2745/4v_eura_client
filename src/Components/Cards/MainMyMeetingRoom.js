@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {useNavigate} from "react-router-dom";
 
 const MainMyMeetingRoom = ({room, modalOpen, navigateToMeetingRoom, mouseOver, mouseOut, isLast, idx}) => {

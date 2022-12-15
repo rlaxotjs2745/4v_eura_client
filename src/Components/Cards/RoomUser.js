@@ -1,15 +1,15 @@
-import {Swiper, SwiperSlide} from "swiper/react";
-import {Navigation, Pagination} from "swiper";
-import "swiper/swiper.min.css";
-import "swiper/swiper-bundle.min.css"
+// import {Swiper, SwiperSlide} from "swiper/react";
+// import {Navigation, Pagination} from "swiper";
+// import "swiper/swiper.min.css";
+// import "swiper/swiper-bundle.min.css"
 const React = require("react");
-const {useState} = require("react");
+// const {useState} = require("react");
 
 
 
 const RoomUser = ({inv, roomInfo}) => {
         return inv.is_host || inv.is_iam ? null :
-            !roomInfo.mt_live || roomInfo.mt_live && inv.is_status === 0 ?
+            !roomInfo.mt_live || (roomInfo.mt_live && inv.is_status === 0) ?
             <li className='user is-disabled'>
                     <>
                             <figure><img

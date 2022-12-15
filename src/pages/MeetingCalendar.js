@@ -6,7 +6,7 @@ import {AXIOS_OPTION, SERVER_URL} from "../util/env";
 import {useNavigate} from "react-router-dom";
 import $ from "jquery";
 
-const dateObj = {};
+// const dateObj = {};
 
 const MeetingCalendar = () => {
 

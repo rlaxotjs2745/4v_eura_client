@@ -4,7 +4,7 @@ import MainTimer from "../Components/Cards/MainTimer";
 import MainSchedule from "../Components/Cards/MainSchedule";
 import MainMyMeetingRoom from "../Components/Cards/MainMyMeetingRoom";
 import {Link, useNavigate} from "react-router-dom";
-import {SERVER_URL, AXIOS_OPTION, REACT_APP_SDK} from "../util/env";
+import {SERVER_URL, AXIOS_OPTION, EURA_DOWNLOAD_URL} from "../util/env";
 import $ from "jquery";
 
 const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
@@ -29,6 +29,11 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
         { value: '3', label: '비공개 미팅 순'},
         { value: '4', label: '취소된 미팅 순'}
     ];
+
+    const endListAllSort = [
+        { value: '2', label: '최근 미팅 순'},
+        { value: '1', label: '지난 미팅순'}
+    ];
     useEffect(() => {
         modalClose();
         getMain();
@@ -41,7 +46,7 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
     const pageSort = (where, sort) => {
         let endPoint;
         let resMtd;
-        if(where == 'lastMeetSort'){
+        if(where === 'lastMeetSort'){
             endPoint = `/meet/main/endlist?pageSort=${sort}&currentPage=1`;
             resMtd = (res) => setLastMeeting(res);
         } else {
@@ -51,7 +56,7 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
         axios.get(SERVER_URL + endPoint, AXIOS_OPTION)
             .then(res => {
                 resMtd(res.data.data);
-                if(where == 'lastMeetSort'){
+                if(where === 'lastMeetSort'){
                     settCurLastSort(sort);
                     setCurLastSort(sort);
                     settCurLastPage(1);
@@ -69,7 +74,7 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
 
     const modalOpen = (meet) => {
         setCurMeeting(meet);
-        if(meet.mt_status == 0){
+        if(meet.mt_status === 0){
             $('#mt_status_0').show();
         } else {
             $('#mt_status_2').show();
@@ -239,7 +244,7 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
     return (
         <>
             <div className="page">
-                <div className="eura_down_link">EURA를 사용하기 위해 파일 설치가 필요해요. <a download href={REACT_APP_SDK}>설치 파일 다운로드</a></div>
+                <div className="eura_down_link">EURA를 사용하기 위해 파일 설치가 필요해요. <a download href={EURA_DOWNLOAD_URL}>설치 파일 다운로드</a></div>
                 <MainTimer user={user} />
 
                 <MainSchedule schedule={schedule} />
@@ -293,11 +298,11 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
                     <h3><img src="" alt=""/><img src={require('../assets/image/ic_last.png')} alt=""/> 지난 미팅 <em>{lastMeeting && lastMeeting.mt_meetMyListCount ? lastMeeting.mt_meetMyListCount : 0}</em>
                         <div className="sorting" onMouseOver={sortLastMouseOver} onMouseOut={sortLastMouseOut}>
                             <div className="meet_sort_select">
-                                <span>{allSort.filter(sort => sort.value == tcurLastSort)[0].label}</span>
+                                <span>{endListAllSort.filter(sort => sort.value == tcurLastSort)[0].label}</span>
                                 <div id="last_meet_sort" className="meet_sort_select__anchor meet_sort_select_hide">
                                     <ul>
                                         {
-                                            allSort.filter(aSort => aSort.value != tcurLastSort).map(sort => <li onClick={() => pageSort('lastMeetSort', sort.value)}>{sort.label}</li>)
+                                            endListAllSort.filter(aSort => aSort.value != tcurLastSort).map(sort => <li onClick={() => pageSort('lastMeetSort', sort.value)}>{sort.label}</li>)
                                         }
                                     </ul>
                                 </div>

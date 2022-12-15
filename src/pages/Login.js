@@ -1,14 +1,13 @@
 import {Link, useNavigate} from "react-router-dom";
 import { useState, useEffect } from 'react';
-import {setCookie, getCookie} from "../util/cookie";
+import {setCookie} from "../util/cookie";
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {SERVER_URL, AXIOS_OPTION, COOKIE_DOMAIN} from "../util/env";
+import {SERVER_URL} from "../util/env";
 import axios from 'axios';
 import queryString from 'query-string'
-import $ from "jquery";
 
 const Login = () => {
     const userParam = queryString.parse(window.location.search);
@@ -124,23 +123,12 @@ const Login = () => {
 
     axios.defaults.withCredentials = true; // withCredentials 전역 설정
     const [inputId, setInputId] = useState('')
-    const [inputPw, setInputPw] = useState('')
     const [inputChk, setinputChk] = useState(false)
 
-    function onChange(newName) {
-        setCookie('name', newName, { path: '/' });
-    }
     const handleInputId = (e) => {
         setInputId(e.target.value)
     }
 
-    const handleInputPw = (e) => {
-        setInputPw(e.target.value)
-    }
-
-    const handleInputChk = (target) => {
-        setinputChk(!inputChk);
-    }
     const navigate = useNavigate();
 
 

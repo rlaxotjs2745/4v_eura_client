@@ -50,11 +50,11 @@ const MeetingAnalysisPieGraph = ({data}) => {
                 {
                     data.map(d => {
                         return (
-                            d.name == 'Good' ?
+                            d.name === 'Good' ?
                                 <div className="good_sum analysis_sum_category"><span>Good</span><span>{Math.round(d.value)}%</span></div>
-                                : d.name == 'Bad' ?
+                                : d.name === 'Bad' ?
                                 <div className="bad_sum analysis_sum_category"><span>Bad</span><span>{Math.round(d.value)}%</span></div>
-                                : d.name == 'Camera off' ?
+                                : d.name === 'Camera off' ?
                                 <div className="camera_off_sum analysis_sum_category"><span>Camera Off</span><span>{Math.round(d.value)}%</span></div>
                                     : null
                         )

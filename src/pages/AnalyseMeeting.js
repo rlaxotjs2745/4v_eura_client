@@ -146,7 +146,7 @@ const AnalyseMeeting = (props) => {
     const thisPlayer = (_no, idx) => {
         // setMevieNo(_no)
         setCurVideo(idx);
-        setMovieSrc(moviefile[_no-1].fileUrl)
+        isSafari ? setMovieSrc(moviefile[_no-1].fileUrl) : setMovieSrc(moviefile[_no-1].fileUrl2);
     }
 
 
@@ -161,7 +161,7 @@ const AnalyseMeeting = (props) => {
     }
 
 
-    const clickUser = (idx) => {
+    // const clickUser = (idx) => {
         // if(lecture.is_host){
         //     axios.get(SERVER_URL + `/meet/result/mtinviteinfo?idx_meeting=${pathSplit}&idx_user=${idx}`, AXIOS_OPTION)
         //         .then(res => {
@@ -184,7 +184,7 @@ const AnalyseMeeting = (props) => {
         //             setOneUserBool(true);
         //         })
         // }
-    }
+    // }
 
     return (
         <>
@@ -245,7 +245,7 @@ const AnalyseMeeting = (props) => {
                             }
                         </div>
                     </div>
-                        <AnalysisUserList lecture={lecture} userList={userList} clickUser={clickUser} isHost={lecture.is_host} />
+                        <AnalysisUserList lecture={lecture} userList={userList} isHost={lecture.is_host} />
 
                     <div className="result__mov" title="영상자리 (860 x 407)">
                     {

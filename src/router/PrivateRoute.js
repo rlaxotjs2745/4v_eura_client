@@ -1,10 +1,7 @@
 import React from 'react';
-import {Navigate, useNavigate} from 'react-router-dom';
+import {Navigate} from 'react-router-dom';
 
 const PrivateRoute = ({ children }) => {
-
-    const navigate = useNavigate()
-
     function get_cookie(name) {
         let value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
         if(value){

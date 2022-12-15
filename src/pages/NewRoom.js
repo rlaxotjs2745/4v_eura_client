@@ -80,8 +80,6 @@ const NewRoom = () => {
 
     const [startDateChange, setStartDateChange] = useState(false)
 
-    const [dummySelectValue, setDummySelectValue] = useState(false)
-
     useEffect(() => {
         let curTIme = new Date();
 
@@ -423,7 +421,7 @@ const NewRoom = () => {
         let uploaded = [...uploadedFiles]
         let indexNumber = e.target.parentNode.parentNode
         let i = 0;
-        while( indexNumber = indexNumber.previousSibling ) {
+        while( indexNumber === indexNumber.previousSibling ) {
             if( indexNumber.nodeType === 1 ) {
                 i++;
             }
@@ -437,7 +435,7 @@ const NewRoom = () => {
         let uploaded = [...uploadedFilesPlus]
         let indexNumber = e.target.parentNode.parentNode
         let i = 0;
-        while( indexNumber = indexNumber.previousSibling ) {
+        while( indexNumber === indexNumber.previousSibling ) {
             if( indexNumber.nodeType === 1 ) {
                 i++;
             }
@@ -474,7 +472,7 @@ const NewRoom = () => {
     }
 
     const deleteGroupInvites = (inv) => {
-        setGroupInvites(groupInvites.filter(gInv => gInv != inv));
+        setGroupInvites(groupInvites.filter(gInv => gInv !== inv));
     }
 
     const excludeUser = (user, isSearch) => {
@@ -482,7 +480,7 @@ const NewRoom = () => {
             if(user.email === getCookie('user_id')){
                 return alert('호스트는 제거할 수 없습니다.');
             }
-            const newUserList = invites.filter(inv => inv.email != user.email);
+            const newUserList = invites.filter(inv => inv.email !== user.email);
             setInvites(newUserList);
             compareInvites(newUserList)
             if(delUser === ''){
@@ -491,7 +489,7 @@ const NewRoom = () => {
                 setDelUser(delUser + ',' + user.email);
             }
         } else {
-            setGroupSearchUser(groupSearchUser.filter(inv => inv.email != user.email));
+            setGroupSearchUser(groupSearchUser.filter(inv => inv.email !== user.email));
         }
     }
 
@@ -515,7 +513,7 @@ const NewRoom = () => {
 
             let targetIdx;
         searchUser.forEach((us, idx) => {
-            if(us.idx == user.idx){
+            if(us.idx === user.idx){
                 targetIdx = idx;
             }
         })
@@ -571,7 +569,7 @@ const NewRoom = () => {
     }
 
     const compareDateTime = () => {
-        if(modifyBool === true || isNew === 2 || rendered == 0){
+        if(modifyBool === true || isNew === 2 || rendered === 0){
             return;
         }
         let compareBool = false;
@@ -673,17 +671,12 @@ const NewRoom = () => {
     }
 
     const handleSubmit = () => {
-        // console.log(new Date(new Date().getTime()), '현재 시간')
-        // console.log(new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`), '설정 시간')
 
-        // console.log(new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`), '생성하려고 하는시간 확인')
-        // console.log(new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000), '미팅 생성했던 시간')
-
-        if($('#make_new').val() == ''){
+        if($('#make_new').val() === ''){
             return alert('미팅 이름을 입력해주세요.')
         }
 
-        if($('#make_date').val() == ''){
+        if($('#make_date').val() === ''){
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
         const tenMinutesAgo = new Date();
@@ -710,23 +703,19 @@ const NewRoom = () => {
             }
         }
 
-        if(isNew === 1 && startDate === dayjs(new Date()).format('YYYY-MM-DD') && new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000)) {
-            return alert(`미팅 시작시간은 미팅 생성시간 10분전까지만 수정이 가능합니다.\n미팅 생성시간은 ${validationStartTime} 입니다.`);
-        } // 수정하기 일 경우 현재 시간 이전이고 설정한 분이 생성시간 10분 이전보다 크고, 오늘과 날짜가 같을 경우 alert 실행
-
         if(new Date(endTime) <= new Date(startTime)){
             return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
         }
 
-        if($('#make_time1').val() == ''){
+        if($('#make_time1').val() === ''){
             return alert('미팅 시작 시간이 입력되지 않았습니다.')
         }
 
-        if($('#make_time2').val() == ''){
+        if($('#make_time2').val() === ''){
             return alert('미팅 종료 시간이 입력되지 않았습니다.')
         }
 
-        if($('#make_room').val() == ''){
+        if($('#make_room').val() === ''){
             return alert('미팅 정보가 입력되지 않았습니다.');
         }
 
@@ -744,10 +733,10 @@ const NewRoom = () => {
         if(remindBool){
             formData.append('mt_remind_type', parseInt(selectValue));
             formData.append('mt_remind_count', remindCount);
-            if(selectValue == 2){
+            if(selectValue === 2){
                 formData.append('mt_remind_week', weekday.join());
             }
-            if(selectValue == 3){
+            if(selectValue === 3){
                 formData.append('mt_remind_week', weekday.join());
             }
             if(selectValue === 4 ) {
@@ -779,7 +768,7 @@ const NewRoom = () => {
                     }else{
                         alert(res.data.result_str);
                     }
-                }).catch(res => console.log(res))
+                }).catch()
         } else {
             formData.append('idx_meeting', window.location.pathname.split('/')[window.location.pathname.split('/').length-1]);
             if(uploadedFilesPlus.length > 0 ) {
@@ -790,27 +779,28 @@ const NewRoom = () => {
             if(delUser.length > 0){
                 formData.append('invite_del', delUser);
             }
-            for(let i of formData){
+            // for(let i of formData){
                 // console.log(i);
-            }
+            // }
             axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_OPTION)
                 .then(res => {
                     if(res.data.result_code === 'SUCCESS'){
                         alert('미팅룸을 수정했습니다.');
+                        $('#shade3').removeClass('is-on');
                         navigate('/');
                     }else{
                         alert(res.data.result_str);
                     }
-                }).catch(res => console.log(res))
+                }).catch()
         }
     }
 
     const openConfirmModal = () => {
-        if($('#make_new').val() == ''){
+        if($('#make_new').val() === ''){
             return alert('미팅 이름을 입력해주세요.')
         }
 
-        if($('#make_date').val() == ''){
+        if($('#make_date').val() === ''){
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
         const tenMinutesAgo = new Date();
@@ -830,37 +820,33 @@ const NewRoom = () => {
             return alert('미팅 시작 날짜는 오늘 날짜 이전일 수 없습니다.')
         }
 
-        if(isNew === 1 && startDate === dayjs(new Date()).format('YYYY-MM-DD') && new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000)) {
-            return alert(`미팅 시작시간은 미팅 생성시간 10분전까지만 수정이 가능합니다.\n미팅 생성시간은 ${validationStartTime} 입니다.`);
-        } // 수정하기 일 경우 현재 시간 이전이고 설정한 분이 생성시간 10분 이전보다 크고, 오늘과 날짜가 같을 경우 alert 실행
-
         if(new Date(endTime) <= new Date(startTime)){
             return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
         }
 
-        if($('#make_time1').val() == ''){
+        if($('#make_time1').val() === ''){
             return alert('미팅 시작 시간이 입력되지 않았습니다.')
         }
 
-        if($('#make_time2').val() == ''){
+        if($('#make_time2').val() === ''){
             return alert('미팅 종료 시간이 입력되지 않았습니다.')
         }
 
-        if($('#make_room').val() == ''){
+        if($('#make_room').val() === ''){
             return alert('미팅 정보가 입력되지 않았습니다.');
         }
 
 
         $('#popup__notice').addClass('is-on');
-        $('#shade2').addClass('is-on');
+        $('#shade3').addClass('is-on');
     }
 
     const openModal = () => {
-        if($('#make_new').val() == ''){
+        if($('#make_new').val() === ''){
             return alert('미팅 이름을 입력해주세요.')
         }
 
-        if($('#make_date').val() == ''){
+        if($('#make_date').val() === ''){
             return alert('미팅 일자가 입력되지 않았습니다.')
         }
 
@@ -878,15 +864,15 @@ const NewRoom = () => {
             return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
         }
 
-        if($('#make_time1').val() == ''){
+        if($('#make_time1').val() === ''){
             return alert('미팅 시작 시간이 입력되지 않았습니다.')
         }
 
-        if($('#make_time2').val() == ''){
+        if($('#make_time2').val() === ''){
             return alert('미팅 종료 시간이 입력되지 않았습니다.')
         }
 
-        if($('#make_room').val() == ''){
+        if($('#make_room').val() === ''){
             return alert('미팅 정보가 입력되지 않았습니다.');
         }
 
@@ -902,10 +888,10 @@ const NewRoom = () => {
         if(remindBool){
             formData.append('mt_remind_type', parseInt(selectValue));
             formData.append('mt_remind_count', remindCount);
-            if(selectValue == 2){
+            if(selectValue === 2){
                 formData.append('mt_remind_week', weekday.join());
             }
-            if(selectValue == 3){
+            if(selectValue === 3){
                 formData.append('mt_remind_week', weekday.join());
             }
             if(selectValue === 4 ) {
@@ -949,9 +935,7 @@ const NewRoom = () => {
             if(delUser.length > 0){
                 formData.append('invite_del', delUser);
             }
-            for(let i of formData){
-                // console.log(i);
-            }
+
             axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_OPTION)
                 .then(res => {
                     if(res.data.result_code === 'SUCCESS'){
@@ -973,6 +957,11 @@ const NewRoom = () => {
             alert('미팅룸을 비공개상태로 수정하였습니다.');
             navigate('/');
         }
+    }
+
+    const modalClose2 = () => {
+        $('#popup__notice').removeClass('is-on');
+        $('#shade3').removeClass('is-on');
     }
 
     const changeMeetingStatus2 = () => {
@@ -1017,17 +1006,8 @@ const NewRoom = () => {
         navigate('/');
     })
 
-    // console.log('현재 시간보다 10분 이전의 시간 ',dayjs(new Date(new Date().getTime() - 10 * 60 * 1000)).format('mm'))
-
-    // console.log(dayjs(endDate).diff(startDate, 'day'), '는 뭔가요')
-    // console.log(dayjs(endDate).day(), '는 무슨요일')
-    // console.log('몇일차이', dayjs(endDate).diff(startDate, 'day'))
-    // console.log('remount카운트 몇개', remindCount)
-
-
     const startDate2 = new Date(startDate);
     const endDate2 = new Date(endDate);
-    const endDate3 = endDate2.setDate(endDate2.getDate() - 1);
     const days = weekdayMinus1;
 
     const getDayCountBetweenDates = (startDate, endDate, days) => {
@@ -1100,7 +1080,6 @@ const NewRoom = () => {
         const firstDay = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
         setRadioSelectedValue(dayjs(today).format('DD'))
         setRadioSelectedValue2(Math.min(5, Math.ceil(((new Date() - firstDay) / 86400000 + firstDay.getDay()) / 7))); // 5이상인 번째 ex)6주 나오면 5번째로 바꿔주기
-        // setRadioSelectedValue2(Math.ceil(((new Date() - firstDay) / 86400000 + firstDay.getDay()) / 7));
         setRadioSelectedValue3(new Date().getDay() + 1);
 
     }, [selectValue]);
@@ -1213,8 +1192,6 @@ const NewRoom = () => {
         compareDateTime()
     },[startDate, Selected1, Selected2, Selected3, Selected4])
 
-    // console.log(roomStatus, '룸 스테이터스(비공개면 트루)')
-
     useEffect(()=> {
         if(roomStatus === true) {
             setModifyBool(false);
@@ -1309,14 +1286,6 @@ const NewRoom = () => {
                                                 selectValue === 1 ? `매일, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'day')}개 되풀이 항목` :
                                                     selectValue === 2 ? `매주 ${weekdayArrNew}, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayCount}개 되풀이 항목` :
                                                         selectValue === 3 ? `매 2주 ${weekdayArrNew.split(',')} 마다 ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${weekCount}개 되풀이 항목` :
-                                                        // selectValue === 3 ? `매 2주
-                                                        // ${weekday.includes(2) ? '월' :  ''}
-                                                        // ${weekday.includes(3) && !weekday.includes(2) ? '화' : weekday.includes(3) && weekday.includes(2) ? ',화' : ''}
-                                                        // ${weekday.includes(4) ? ',수' :  ''}
-                                                        // ${weekday.includes(5) ? ',목' :  ''}
-                                                        // ${weekday.includes(6) ? ',금' :  ''}
-                                                        // ${weekday.includes(7) ? ',토' :  ''}
-                                                        // ${weekday.includes(1) ? ',일' :  ''}마다 ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${weekCount}개 되풀이 항목` :
                                                             selectValue === 4 && radioChecked ?
                                                                 `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${monthCount}개 되풀이 항목` :
                                                                 selectValue === 4 && radioChecked2 && week11 !== '5' ?
@@ -1458,7 +1427,6 @@ const NewRoom = () => {
                                                 // label="Basic example"
                                                 value={endDate}
                                                 minDate={dayjs(startDate)}
-                                                // minDate={dayjs(startDate).add(7, 'day')}
                                                 mask={"____-__-__"}
                                                 maxDate={maxDate}
                                                 inputFormat="YYYY-MM-DD"
@@ -1466,7 +1434,6 @@ const NewRoom = () => {
                                                 renderInput={(params) => <TextField {...params} />}
                                             />
                                         </LocalizationProvider>
-                                        {/*<input id="meeting_end_date" type="date" onChange={makeEndDate} min={dt2} className="text under-scope" />*/}
                                     </dd>
                                 </dl>
                             </div>
@@ -1497,7 +1464,6 @@ const NewRoom = () => {
                     </div>
 
                     <div className="input__group" id="hahhhoho">
-                        {/*<label htmlFor="make_team">참석자 추가</label>*/}
                         <label>참석자 추가</label>
                         <div className="list__count"><a onClick={() => window.open('https://file.eura.site/upload/EURA_%EB%AF%B8%ED%8C%85_%EC%B0%B8%EC%84%9D%EC%9E%90_%EB%8B%A8%EC%B2%B4_%EC%B6%94%EA%B0%80_%EC%96%91%EC%8B%9D.csv')} className="btn btn__download">엑셀 양식 다운로드</a></div>
                         <div className="flow_box input__inline">
@@ -1622,7 +1588,7 @@ const NewRoom = () => {
                         </>
                     :
                         <>
-                            <div onClick={modalClose} className="btn__close js-modal-close">
+                            <div onClick={modalClose2} className="btn__close js-modal-close">
                                 <img src={require('../assets/image/ic_close_24.png')} alt=""/>
                             </div>
                             <div className="popup__cnt">
@@ -1634,7 +1600,7 @@ const NewRoom = () => {
                                     </div>
                                 </div>
                                 <div className="btn__group">
-                                    <button onClick={modalClose} className="btn btn__normal btn__s js-modal-close">수정취소</button>
+                                    <button onClick={modalClose2} className="btn btn__normal btn__s js-modal-close">수정취소</button>
                                     <button onClick={handleSubmit} className="btn btn__able btn__s">메일발송</button>
                                 </div>
                             </div>
