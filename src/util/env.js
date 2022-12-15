@@ -1,7 +1,6 @@
 
 import {getCookie} from "./cookie";
 
-export const EURA_DOWNLOAD_URL = "https://file.eura.site/upload/Setup_Eura_v1.0.6.msi"
 export const EURA_VERSION = "1.0.6"
 
 export const SERVER_URL = "http://api.eura.site"
