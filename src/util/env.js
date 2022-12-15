@@ -1,9 +1,9 @@
 
 import {getCookie} from "./cookie";
 
-export const EURA_VERSION = "1.0.6"
+export const EURA_VERSION = "1.0.5"
 
-export const SERVER_URL = "http://api.eura.site"
+export const SERVER_URL = "https://api.eura.site"
 // export const SERVER_URL = "http://localhost:10000"
 
 const userid = getCookie('user_id')
