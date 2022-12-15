@@ -29,6 +29,11 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
         { value: '3', label: '비공개 미팅 순'},
         { value: '4', label: '취소된 미팅 순'}
     ];
+
+    const endListAllSort = [
+        { value: '2', label: '최근 미팅 순'},
+        { value: '1', label: '지난 미팅순'}
+    ];
     useEffect(() => {
         modalClose();
         getMain();
@@ -293,11 +298,11 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
                     <h3><img src="" alt=""/><img src={require('../assets/image/ic_last.png')} alt=""/> 지난 미팅 <em>{lastMeeting && lastMeeting.mt_meetMyListCount ? lastMeeting.mt_meetMyListCount : 0}</em>
                         <div className="sorting" onMouseOver={sortLastMouseOver} onMouseOut={sortLastMouseOut}>
                             <div className="meet_sort_select">
-                                <span>{allSort.filter(sort => sort.value == tcurLastSort)[0].label}</span>
+                                <span>{endListAllSort.filter(sort => sort.value == tcurLastSort)[0].label}</span>
                                 <div id="last_meet_sort" className="meet_sort_select__anchor meet_sort_select_hide">
                                     <ul>
                                         {
-                                            allSort.filter(aSort => aSort.value != tcurLastSort).map(sort => <li onClick={() => pageSort('lastMeetSort', sort.value)}>{sort.label}</li>)
+                                            endListAllSort.filter(aSort => aSort.value != tcurLastSort).map(sort => <li onClick={() => pageSort('lastMeetSort', sort.value)}>{sort.label}</li>)
                                         }
                                     </ul>
                                 </div>

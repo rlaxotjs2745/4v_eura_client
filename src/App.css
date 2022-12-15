@@ -1584,7 +1584,7 @@ td {
     border-radius: 8px;
     box-shadow: 0 3px 20px rgba(177, 206, 248, .3);
     width: 109px;
-    height: 112px;
+    height: auto;
     position: relative;
     z-index: 99;
 }
@@ -1603,7 +1603,7 @@ td {
     text-align: center;
     justify-content: center;
     width: 100%;
-    height: 33%;
+    height: 40px;
     border-bottom: 1px #E0E2EB solid;
 }
 

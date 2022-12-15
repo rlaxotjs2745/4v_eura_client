@@ -80,8 +80,6 @@ const NewRoom = () => {
 
     const [startDateChange, setStartDateChange] = useState(false)
 
-    const [dummySelectValue, setDummySelectValue] = useState(false)
-
     useEffect(() => {
         let curTIme = new Date();
 
@@ -673,11 +671,6 @@ const NewRoom = () => {
     }
 
     const handleSubmit = () => {
-        // console.log(new Date(new Date().getTime()), '현재 시간')
-        // console.log(new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`), '설정 시간')
-
-        // console.log(new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`), '생성하려고 하는시간 확인')
-        // console.log(new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000), '미팅 생성했던 시간')
 
         if($('#make_new').val() === ''){
             return alert('미팅 이름을 입력해주세요.')
@@ -709,11 +702,6 @@ const NewRoom = () => {
                 return alert('미팅 시작 시간은 현재 시간 이전일 수 없습니다.');
             }
         }
-
-        // 수정하기 일 경우 현재 시간 이전이고 설정한 분이 생성시간 10분 이전보다 크고, 오늘과 날짜가 같을 경우 alert 실행
-        // if(isNew === 1 && startDate === dayjs(new Date()).format('YYYY-MM-DD') && new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000)) {
-        //     return alert(`미팅 시작시간은 미팅 생성시간 10분전까지만 수정이 가능합니다.\n미팅 생성시간은 ${validationStartTime} 입니다.`);
-        // }
 
         if(new Date(endTime) <= new Date(startTime)){
             return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
@@ -832,11 +820,6 @@ const NewRoom = () => {
             return alert('미팅 시작 날짜는 오늘 날짜 이전일 수 없습니다.')
         }
 
-        // 수정하기 일 경우 현재 시간 이전이고 설정한 분이 생성시간 10분 이전보다 크고, 오늘과 날짜가 같을 경우 alert 실행
-        // if(isNew === 1 && startDate === dayjs(new Date()).format('YYYY-MM-DD') && new Date(`${dayjs(startDate).format('YYYY-MM-DD')} ${Selected1}:${Selected2}:00`) < new Date(new Date(validationStartTime).getTime() - 10 * 60 * 1000)) {
-        //     return alert(`미팅 시작시간은 미팅 생성시간 10분전까지만 수정이 가능합니다.\n미팅 생성시간은 ${validationStartTime} 입니다.`);
-        // }
-
         if(new Date(endTime) <= new Date(startTime)){
             return alert('미팅 종료 시간은 시작 시간보다 이를 수 없습니다.');
         }
@@ -952,9 +935,7 @@ const NewRoom = () => {
             if(delUser.length > 0){
                 formData.append('invite_del', delUser);
             }
-            // for(let i of formData){
-                // console.log(i);
-            // }
+
             axios.post(SERVER_URL + '/meet/modify', formData, AXIOS_OPTION)
                 .then(res => {
                     if(res.data.result_code === 'SUCCESS'){
@@ -1025,17 +1006,8 @@ const NewRoom = () => {
         navigate('/');
     })
 
-    // console.log('현재 시간보다 10분 이전의 시간 ',dayjs(new Date(new Date().getTime() - 10 * 60 * 1000)).format('mm'))
-
-    // console.log(dayjs(endDate).diff(startDate, 'day'), '는 뭔가요')
-    // console.log(dayjs(endDate).day(), '는 무슨요일')
-    // console.log('몇일차이', dayjs(endDate).diff(startDate, 'day'))
-    // console.log('remount카운트 몇개', remindCount)
-
-
     const startDate2 = new Date(startDate);
     const endDate2 = new Date(endDate);
-    // const endDate3 = endDate2.setDate(endDate2.getDate() - 1);
     const days = weekdayMinus1;
 
     const getDayCountBetweenDates = (startDate, endDate, days) => {
@@ -1108,7 +1080,6 @@ const NewRoom = () => {
         const firstDay = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
         setRadioSelectedValue(dayjs(today).format('DD'))
         setRadioSelectedValue2(Math.min(5, Math.ceil(((new Date() - firstDay) / 86400000 + firstDay.getDay()) / 7))); // 5이상인 번째 ex)6주 나오면 5번째로 바꿔주기
-        // setRadioSelectedValue2(Math.ceil(((new Date() - firstDay) / 86400000 + firstDay.getDay()) / 7));
         setRadioSelectedValue3(new Date().getDay() + 1);
 
     }, [selectValue]);
@@ -1221,8 +1192,6 @@ const NewRoom = () => {
         compareDateTime()
     },[startDate, Selected1, Selected2, Selected3, Selected4])
 
-    // console.log(roomStatus, '룸 스테이터스(비공개면 트루)')
-
     useEffect(()=> {
         if(roomStatus === true) {
             setModifyBool(false);
@@ -1317,14 +1286,6 @@ const NewRoom = () => {
                                                 selectValue === 1 ? `매일, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'day')}개 되풀이 항목` :
                                                     selectValue === 2 ? `매주 ${weekdayArrNew}, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayCount}개 되풀이 항목` :
                                                         selectValue === 3 ? `매 2주 ${weekdayArrNew.split(',')} 마다 ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${weekCount}개 되풀이 항목` :
-                                                        // selectValue === 3 ? `매 2주
-                                                        // ${weekday.includes(2) ? '월' :  ''}
-                                                        // ${weekday.includes(3) && !weekday.includes(2) ? '화' : weekday.includes(3) && weekday.includes(2) ? ',화' : ''}
-                                                        // ${weekday.includes(4) ? ',수' :  ''}
-                                                        // ${weekday.includes(5) ? ',목' :  ''}
-                                                        // ${weekday.includes(6) ? ',금' :  ''}
-                                                        // ${weekday.includes(7) ? ',토' :  ''}
-                                                        // ${weekday.includes(1) ? ',일' :  ''}마다 ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${weekCount}개 되풀이 항목` :
                                                             selectValue === 4 && radioChecked ?
                                                                 `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${monthCount}개 되풀이 항목` :
                                                                 selectValue === 4 && radioChecked2 && week11 !== '5' ?
@@ -1466,7 +1427,6 @@ const NewRoom = () => {
                                                 // label="Basic example"
                                                 value={endDate}
                                                 minDate={dayjs(startDate)}
-                                                // minDate={dayjs(startDate).add(7, 'day')}
                                                 mask={"____-__-__"}
                                                 maxDate={maxDate}
                                                 inputFormat="YYYY-MM-DD"
@@ -1474,7 +1434,6 @@ const NewRoom = () => {
                                                 renderInput={(params) => <TextField {...params} />}
                                             />
                                         </LocalizationProvider>
-                                        {/*<input id="meeting_end_date" type="date" onChange={makeEndDate} min={dt2} className="text under-scope" />*/}
                                     </dd>
                                 </dl>
                             </div>
@@ -1505,7 +1464,6 @@ const NewRoom = () => {
                     </div>
 
                     <div className="input__group" id="hahhhoho">
-                        {/*<label htmlFor="make_team">참석자 추가</label>*/}
                         <label>참석자 추가</label>
                         <div className="list__count"><a onClick={() => window.open('https://file.eura.site/upload/EURA_%EB%AF%B8%ED%8C%85_%EC%B0%B8%EC%84%9D%EC%9E%90_%EB%8B%A8%EC%B2%B4_%EC%B6%94%EA%B0%80_%EC%96%91%EC%8B%9D.csv')} className="btn btn__download">엑셀 양식 다운로드</a></div>
                         <div className="flow_box input__inline">
