@@ -4,7 +4,7 @@ import MainTimer from "../Components/Cards/MainTimer";
 import MainSchedule from "../Components/Cards/MainSchedule";
 import MainMyMeetingRoom from "../Components/Cards/MainMyMeetingRoom";
 import {Link, useNavigate} from "react-router-dom";
-import {SERVER_URL, AXIOS_OPTION} from "../util/env";
+import {SERVER_URL, AXIOS_OPTION, EURA_DOWNLOAD_URL} from "../util/env";
 import $ from "jquery";
 
 const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
@@ -244,7 +244,7 @@ const Home = ({curSort, setCurSort, curLastSort, setCurLastSort}) => {
     return (
         <>
             <div className="page">
-                <div className="eura_down_link">EURA를 사용하기 위해 파일 설치가 필요해요. <a download href="https://file.eura.site/upload/Setup_Eura_v1.0.6.msi">설치 파일 다운로드</a></div>
+                <div className="eura_down_link">EURA를 사용하기 위해 파일 설치가 필요해요. <a download href={EURA_DOWNLOAD_URL}>설치 파일 다운로드</a></div>
                 <MainTimer user={user} />
 
                 <MainSchedule schedule={schedule} />
