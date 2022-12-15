@@ -128,10 +128,6 @@ const AnalyseMeeting = (props) => {
 
     }, [])
 
-    useEffect(()=>{
-        console.log(btmdata);
-    },[btmdata])
-
 
     const handleStateChange = (state, prev) => {
         // if(!_mplay && !!state.duration){
