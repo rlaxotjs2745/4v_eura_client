@@ -29,3 +29,5 @@ export const AXIOS_FORM_DATA_OPTION_NOUSER = {
 
 export const COOKIE_DOMAIN = "eura.site";
 // export const COOKIE_DOMAIN = "localhost";
+
+export const REACT_APP_SDK = "https://file.eura.site/upload/Setup_Eura_v1.0.6.msi"
