@@ -28,10 +28,6 @@ const OneUserBarGraph = ({userData, btmdata, isJoin, isHost}) => {
                             : !isJoin || isJoin === 2 ?
                             <span>미참석자 입니다.</span> :
                             <>
-                            <div className="graph_on_seek">
-                                <div className="v-line"></div>
-                                <div className="v-box"></div>
-                            </div>
                                 {
                                     // !btmdata || !btmdata.length ?
                                     //     '' :

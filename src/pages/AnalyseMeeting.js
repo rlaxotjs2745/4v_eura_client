@@ -146,6 +146,7 @@ const AnalyseMeeting = (props) => {
     const thisPlayer = (_no, idx) => {
         // setMevieNo(_no)
         setCurVideo(idx);
+        getResultData(_no);
         isSafari ? setMovieSrc(moviefile[_no-1].fileUrl) : setMovieSrc(moviefile[_no-1].fileUrl2);
     }
 
@@ -158,6 +159,53 @@ const AnalyseMeeting = (props) => {
     const hideAllUserGraph = () => {
         $('#show_all_user_graph').show();
         setAllUserBool(false);
+    }
+
+    const getResultData = (_fileno) => {
+        axios.get(SERVER_URL + `/meet/result/meeting?idx_meeting=${pathSplit}&fileno=` + _fileno, AXIOS_OPTION)
+            .then(res => {
+                if(res.data.result_code === 'SUCCESS'){
+                    let _data = res.data.data;
+                    let _maxmid = 0;
+                    if(!!_data.mtAnalyMid){
+                        for(let i=0;i<_data.mtAnalyMid.length;i++){
+                            let data = _data.mtAnalyMid[i];
+                            if(_maxmid < parseInt(data.Good)){
+                                _maxmid = parseInt(data.Good);
+                            }
+                            if(_maxmid < Math.abs(data.Bad)){
+                                _maxmid = Math.abs(data.Bad);
+                            }
+                        }
+                    }
+                    const maxbtmArr = [];
+                    if(!!_data.mtData0){
+                        let _maxbtm = 0;
+                        for(let i=0;i<_data.mtData0.length;i++){
+                            let user = _data.mtData0[i];
+                            for(let j=0;j<user.list.length;j++){
+                                let data2 = user.list[j];
+                                if(_maxbtm < parseInt(data2.good)){
+                                    _maxbtm = parseInt(data2.good);
+                                }
+                                if(_maxbtm < Math.abs(data2.bad)){
+                                    _maxbtm = Math.abs(data2.bad);
+                                }
+                            }
+                            maxbtmArr.push(_maxbtm);
+                        }
+                    }
+                    setMiddata(_data.mtAnalyMid ? [{longP:_maxmid ? _maxmid : 100, longM:_maxmid ? (_maxmid * -1) : -100},..._data.mtAnalyMid] : []);
+                    setBtmdata(_data.mtData0 ? _data.mtData0.map((dt, idx) => {
+                        return {...dt, list:[{longP: maxbtmArr[idx] ? maxbtmArr[idx] : 100, longM: maxbtmArr[idx] ? (maxbtmArr[idx] * -1) : 100}, ...dt.list]}
+                        })
+                        : [])
+                }else{
+                    alert(res.data.result_str);
+                }
+            }).catch((error)=>{
+            console.log(error);
+        });
     }
 
 
