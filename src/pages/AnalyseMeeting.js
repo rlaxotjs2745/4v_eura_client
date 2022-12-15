@@ -146,7 +146,7 @@ const AnalyseMeeting = (props) => {
     const thisPlayer = (_no, idx) => {
         // setMevieNo(_no)
         setCurVideo(idx);
-        setMovieSrc(moviefile[_no-1].fileUrl)
+        isSafari ? setMovieSrc(moviefile[_no-1].fileUrl) : setMovieSrc(moviefile[_no-1].fileUrl2);
     }
 
 
