@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {AXIOS_OPTION, SERVER_URL} from "../util/env";
+import {AXIOS_OPTION, EURA_VERSION, SERVER_URL} from "../util/env";
 import $ from "jquery";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation, Pagination} from "swiper";
@@ -147,7 +147,7 @@ const MeetingRoom = (props) => {
                 if(res.data.result_code === 'SUCCESS'){
                     const mcid = res.data.data.mcid;
                     const token = res.data.data.token;
-                    window.location.href = `EuraEmotionService://mcid=${mcid},token=${token}`;
+                    window.location.href = `EuraEmotionService://mcid=${mcid},token=${token},appVersion=${EURA_VERSION}`;
                     setTimeout(function(){window.location.reload();},5000);
                 }else{
                     alert(res.data.result_str);

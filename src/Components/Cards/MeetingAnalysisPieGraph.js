@@ -48,14 +48,14 @@ const MeetingAnalysisPieGraph = ({data}) => {
             <div className="analysis_sumup">
                 <div className="analysis_sum__title">분석 요약</div>
                 {
-                    data.map(d => {
+                    data.map((d,idx) => {
                         return (
                             d.name === 'Good' ?
-                                <div className="good_sum analysis_sum_category"><span>Good</span><span>{Math.round(d.value)}%</span></div>
+                                <div key={idx} className="good_sum analysis_sum_category"><span>Good</span><span>{Math.round(d.value)}%</span></div>
                                 : d.name === 'Bad' ?
-                                <div className="bad_sum analysis_sum_category"><span>Bad</span><span>{Math.round(d.value)}%</span></div>
+                                <div key={idx} className="bad_sum analysis_sum_category"><span>Bad</span><span>{Math.round(d.value)}%</span></div>
                                 : d.name === 'Camera off' ?
-                                <div className="camera_off_sum analysis_sum_category"><span>Camera Off</span><span>{Math.round(d.value)}%</span></div>
+                                <div key={idx} className="camera_off_sum analysis_sum_category"><span>Camera Off</span><span>{Math.round(d.value)}%</span></div>
                                     : null
                         )
                     })
