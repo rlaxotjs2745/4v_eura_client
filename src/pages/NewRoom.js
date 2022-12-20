@@ -204,7 +204,6 @@ const NewRoom = () => {
 
     }, [endDate, startDate])
 
-    // useEffect(())
 
     const remindCountEffectAfter = new Date(remindCountEffect); // useEffect 안에 if문이 해당 값이 변경 되고 나서 실행하게 하기 위해 더미로 넣음. 꼭 필요함.
 
@@ -215,24 +214,10 @@ const NewRoom = () => {
         }
         if (selectValue === 4 && radioChecked2) {
             setRemindCount(dayjs(endDate).diff(startDate, 'month'));
-            setEndDateWhenRemindStandardWeekday();
             // console.log('요일 기준 체크 된거 실행중')
         }
     }, [radioChecked, radioChecked2, remindCountEffectAfter])
 
-    const setEndDateWhenRemindStandardWeekday = () => {
-        let curDate = new Date(endDate).setDate(1);
-        let bool = false;
-        while(!bool){
-            if(new Date(curDate).getDay() + 1 == radioSelectedValue3){
-                curDate = new Date(curDate).setDate(new Date(curDate).setDate(new Date(curDate).getDate + 7 * radioSelectedValue2));
-                bool = true;
-                break;
-            }
-            new Date(curDate).setDate(new Date(curDate).getDate() + 1);
-        }
-        setEndDate(dayjs(curDate));
-    }
 
 
 

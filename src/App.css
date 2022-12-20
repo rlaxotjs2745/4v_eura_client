@@ -3568,9 +3568,9 @@ html.js-overflow {
     border-radius: 8px
 }
 
-.result__user .result__watch ul li button:focus, .result__user .result__watch ul li button:hover {
-    background: rgba(121, 76, 255, .15)
-}
+/*.result__user .result__watch ul li button:focus, .result__user .result__watch ul li button:hover {*/
+/*    background: rgba(121, 76, 255, .15)*/
+/*}*/
 
 .me_box {position: relative;}
 .me_box .team__badge {position: absolute; bottom: -5px; right: -5px; width: 24px; height: 24px;}
