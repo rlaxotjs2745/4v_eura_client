@@ -3565,7 +3565,8 @@ html.js-overflow {
     padding: 7px 0 7px 6px;
     display: flex;
     align-items: center;
-    border-radius: 8px
+    border-radius: 8px;
+    cursor: default;
 }
 
 /*.result__user .result__watch ul li button:focus, .result__user .result__watch ul li button:hover {*/
