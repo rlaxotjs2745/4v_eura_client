@@ -166,10 +166,11 @@ const NewRoom = () => {
     },[startDate])
 
     useEffect(()=> {
+
         setWeekdayArrNew(weekday.sort().map((value, index, array) => weekdayArr[value - 1]).join())
         setWeekdayMinus1(weekday.map(day => day - 1))
 
-    }, [weekday])
+    }, [weekday, selectValue])
 
 
     useEffect(()=> {
@@ -1076,16 +1077,18 @@ const NewRoom = () => {
     },[weekdayMinus1, endDate2, startDate2, Selected1, Selected2, Selected3, Selected4])
 
     useEffect(() => {
-        if(selectValue === 4 || selectValue === 1) {
-            setWeekdayArrNew([]) // 배열 초기화
-            setWeekday([]) // 배열 초기화
-        }
 
         const today = new Date();
         const index = weekdays.indexOf(todayWeekday);
 
+
         setTodayWeekday(weekdays[today.getDay()]);
         setWeekDay(index + 1);
+
+        if(selectValue === 4 || selectValue === 1) {
+            setWeekdayArrNew([]) // 배열 초기화
+            setWeekday([]) // 배열 초기화
+        }
 
         // 되풀이미팅 반복주기 변경시 매월 값 현재 날짜 값으로 초기화
         const firstDay = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
