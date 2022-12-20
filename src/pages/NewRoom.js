@@ -204,6 +204,7 @@ const NewRoom = () => {
 
     }, [endDate, startDate])
 
+
     const remindCountEffectAfter = new Date(remindCountEffect); // useEffect 안에 if문이 해당 값이 변경 되고 나서 실행하게 하기 위해 더미로 넣음. 꼭 필요함.
 
     useLayoutEffect(()=> {
@@ -212,10 +213,11 @@ const NewRoom = () => {
             // console.log('종료 날짜 체크 된거 실행중')
         }
         if (selectValue === 4 && radioChecked2) {
-            setRemindCount(dayjs(endDate).diff(startDate, 'month'))
+            setRemindCount(dayjs(endDate).diff(startDate, 'month'));
             // console.log('요일 기준 체크 된거 실행중')
         }
     }, [radioChecked, radioChecked2, remindCountEffectAfter])
+
 
 
 
@@ -1022,6 +1024,10 @@ const NewRoom = () => {
             date.setDate(date.getDate() + 1);
         }
 
+        if (days.includes(date.getDay())) {
+            count++;
+        }
+
         return count;
     }
 
@@ -1048,6 +1054,10 @@ const NewRoom = () => {
             }
         }
 
+        if (days.includes(date.getDay())) {
+            count++;
+        }
+
         return count;
     };
 
@@ -1063,7 +1073,7 @@ const NewRoom = () => {
     useEffect(()=> {
         setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
         setWeekCount(getWeekdayCountBetweenDates(startDate2, endDate2, days))
-    },[weekdayMinus1, endDate2, startDate2])
+    },[weekdayMinus1, endDate2, startDate2, Selected1, Selected2, Selected3, Selected4])
 
     useEffect(() => {
         if(selectValue === 4 || selectValue === 1) {
@@ -1143,22 +1153,25 @@ const NewRoom = () => {
 
     function countSpecificDates(startDate, endDate, specificDates) {
         const dates = [];
+        let count = 0;
         let currentDate = new Date(startDate);
+
         while (currentDate <= new Date(endDate)) {
-            dates.push(currentDate);
+            // dates.push(currentDate);
+            if (currentDate.getDate() === Number(specificDates)) {
+                count += 1;
+            }
             currentDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
         } // 시작 날짜와 종료 날짜 사이에 있는 날짜를 전부 dates 배열에 담는다.
 
-
-        let count = 0;
-
-        // dates 배열에서 각 요소를 하나씩 꺼내서 date 변수에 담아서 반복문 실행
-        for (let date of dates) {
-            // date 변수의 값의 날짜가 인자값으로 받은 문자열 값을 정수형으로 반환한 값과 일치 할 경우 개수를 반환한다.
-            if (date.getDate() === Number(specificDates)) {
-                count += 1;
-            }
+        if (currentDate.getDate() === Number(specificDates)) {
+            count += 1;
         }
+
+        // // dates 배열에서 각 요소를 하나씩 꺼내서 date 변수에 담아서 반복문 실행
+        // for (let date of dates) {
+        //     // date 변수의 값의 날짜가 인자값으로 받은 문자열 값을 정수형으로 반환한 값과 일치 할 경우 개수를 반환한다.
+        // }
 
         // 찾은 특정 날짜의 개수를 반환한다.
         return count;
@@ -1170,7 +1183,7 @@ const NewRoom = () => {
     useEffect(()=>{
         setMonthCount(countSpecificDates(startDate2, endDate2, radioSelectedValue1))
         setMonthCount2(getNthWeekNthDay(startDate2, endDate2, week11, dayOfWeek11))
-    }, [radioSelectedValue1, startDate2, endDate2])
+    }, [radioSelectedValue1, startDate2, endDate2, Selected1, Selected2, Selected3, Selected4])
 
     const week11 = radioSelectedValue2   ; // n번째 주
     const dayOfWeek11 = radioSelectedValue3 - 1; // n요일
@@ -1186,6 +1199,10 @@ const NewRoom = () => {
             }
             currentDate.setDate(currentDate.getDate() + 1);
         }
+
+        if (currentDate.getDay() === dayOfWeek && currentDate.getDate() >= week * 7 - 6 && currentDate.getDate() <= week * 7) {
+            nthDay++;
+        }
         return nthDay;
     } // 사용할 함수
 
@@ -1197,7 +1214,7 @@ const NewRoom = () => {
         if(roomStatus === true) {
             setModifyBool(false);
         }
-    })
+    }, []);
 
 
 
