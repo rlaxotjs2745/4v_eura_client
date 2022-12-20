@@ -1036,7 +1036,7 @@ const NewRoom = () => {
         let count = 0;
         let skipWeek = false;
 
-        while (date <= endDate) {
+        while (date <= endDate -1) {
             if (skipWeek) {
                 date.setDate(date.getDate() + 1);
                 skipWeek = !skipWeek;
@@ -1072,7 +1072,7 @@ const NewRoom = () => {
 
     useEffect(()=> {
         setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
-        setWeekCount(getWeekdayCountBetweenDates(startDate2, endDate2, days))
+        setWeekCount(getWeekdayCountBetweenDates(startDate, endDate, days))
     },[weekdayMinus1, endDate2, startDate2, Selected1, Selected2, Selected3, Selected4])
 
     useEffect(() => {
