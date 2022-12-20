@@ -190,7 +190,7 @@ const NewRoom = () => {
 
     useEffect(()=> {
         if(selectValue === 1) {
-            setRemindCount(dayjs(endDate).diff(startDate, 'day'))
+            setRemindCount(dayjs(endDate).diff(startDate, 'day') + 1)
             setMaxDate(dayjs(startDate).add(29, 'day'))
         } else if (selectValue === 2) {
             setRemindCount(dayjs(endDate).diff(startDate, 'week') + 1)
@@ -213,7 +213,7 @@ const NewRoom = () => {
             // console.log('종료 날짜 체크 된거 실행중')
         }
         if (selectValue === 4 && radioChecked2) {
-            setRemindCount(dayjs(endDate).diff(startDate, 'month'));
+            setRemindCount(dayjs(endDate).diff(startDate, 'month') + 1);
             // console.log('요일 기준 체크 된거 실행중')
         }
     }, [radioChecked, radioChecked2, remindCountEffectAfter])
@@ -1193,6 +1193,7 @@ const NewRoom = () => {
     function getNthWeekNthDay(startDate, endDate, week, dayOfWeek) {
         let nthDay = 0;
         let currentDate = startDate;
+
         while (currentDate <= endDate) {
             if (currentDate.getDay() === dayOfWeek && currentDate.getDate() >= week * 7 - 6 && currentDate.getDate() <= week * 7) {
                 nthDay++;
@@ -1309,7 +1310,7 @@ const NewRoom = () => {
                                                                 selectValue === 4 && radioChecked2 && week11 !== '5' ?
                                                                     `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${monthCount2}개 되풀이 항목` :
                                                                     selectValue === 4 && radioChecked2 && week11 === '5' ?
-                                                                        `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'month')}개 되풀이 항목` : ''
+                                                                        `매월2, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'month') + 1}개 되풀이 항목` : ''
                                             }
                                         </> : ''
                                         }
