@@ -146,7 +146,7 @@ const NewRoom = () => {
 
     useEffect(()=> {
         if(selectValue === 1) {
-            setEndDate(dayjs(startDate).add(7, 'day'));
+            setEndDate(dayjs(startDate).add(6, 'day'));
         } else if (selectValue === 2) {
             setEndDate(dayjs(startDate).add(7, 'week'));
         } else if (selectValue === 3) {
@@ -174,32 +174,32 @@ const NewRoom = () => {
 
     useEffect(()=> {
         if(selectValue === 1) {
-            setEndDate(dayjs(startDate).add(7, 'day'));
-            setMaxDate(dayjs(startDate).add(30, 'day'))
+            setEndDate(dayjs(startDate).add(6, 'day'));
+            setMaxDate(dayjs(startDate).add(29, 'day'))
         } else if (selectValue === 2) {
-            setEndDate(dayjs(startDate).add(7, 'week'));
-            setMaxDate(dayjs(startDate).add(12, 'week'))
+            setEndDate(dayjs(startDate).add(6, 'week'));
+            setMaxDate(dayjs(startDate).add(11, 'week'))
         } else if (selectValue === 3) {
-            setEndDate(dayjs(startDate).add(14, 'week'));
-            setMaxDate(dayjs(startDate).add(24, 'week'))
+            setEndDate(dayjs(startDate).add(12, 'week'));
+            setMaxDate(dayjs(startDate).add(23, 'week'))
         } else if (selectValue === 4) {
-            setEndDate(dayjs(startDate).add(7, 'month'));
-            setMaxDate(dayjs(startDate).add(12, 'month'))
+            setEndDate(dayjs(startDate).add(6, 'month'));
+            setMaxDate(dayjs(startDate).add(11, 'month'))
         }
     },[selectValue])
 
     useEffect(()=> {
         if(selectValue === 1) {
             setRemindCount(dayjs(endDate).diff(startDate, 'day'))
-            setMaxDate(dayjs(startDate).add(30, 'day'))
+            setMaxDate(dayjs(startDate).add(29, 'day'))
         } else if (selectValue === 2) {
             setRemindCount(dayjs(endDate).diff(startDate, 'week') + 1)
-            setMaxDate(dayjs(startDate).add(12, 'week'))
+            setMaxDate(dayjs(startDate).add(11, 'week'))
         } else if (selectValue === 3) {
             setRemindCount(Math.floor(dayjs(endDate).diff(startDate, 'week')/2) + 1)
-            setMaxDate(dayjs(startDate).add(24, 'week'))
+            setMaxDate(dayjs(startDate).add(23, 'week'))
         } else if (selectValue === 4) {
-            setMaxDate(dayjs(startDate).add(12, 'month'))
+            setMaxDate(dayjs(startDate).add(11, 'month'))
         }
 
     }, [endDate, startDate])
@@ -1008,6 +1008,7 @@ const NewRoom = () => {
 
     const startDate2 = new Date(startDate);
     const endDate2 = new Date(endDate);
+    endDate2.setDate(endDate2.getDate() + 1);
     const days = weekdayMinus1;
 
     const getDayCountBetweenDates = (startDate, endDate, days) => {
@@ -1283,7 +1284,7 @@ const NewRoom = () => {
                                         {remindBool && remindShowBool ?
                                             <>
                                             {
-                                                selectValue === 1 ? `매일, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'day')}개 되풀이 항목` :
+                                                selectValue === 1 ? `매일, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'day') + 1}개 되풀이 항목` :
                                                     selectValue === 2 ? `매주 ${weekdayArrNew}, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayCount}개 되풀이 항목` :
                                                         selectValue === 3 ? `매 2주 ${weekdayArrNew.split(',')} 마다 ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${weekCount}개 되풀이 항목` :
                                                             selectValue === 4 && radioChecked ?
