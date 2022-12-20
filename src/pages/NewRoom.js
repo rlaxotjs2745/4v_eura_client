@@ -152,7 +152,7 @@ const NewRoom = () => {
         } else if (selectValue === 3) {
             setEndDate(dayjs(startDate).add(14, 'week'));
         } else if (selectValue === 4) {
-            setEndDate(dayjs(startDate).add(7, 'month'));
+            setEndDate(dayjs(startDate).add(6, 'month'));
             if(dayjs(startDate).format('DD') === '31') {
                 setEndDate(dayjs(startDate).add(10, 'month'));
             }
