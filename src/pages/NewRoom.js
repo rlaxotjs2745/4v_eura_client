@@ -1240,7 +1240,7 @@ const NewRoom = () => {
     useEffect(()=>{
         setMonthCount(countSpecificDates(startDate, endDate, radioSelectedValue1))
         setMonthCount2(getNthWeekNthDay(startDate, endDate, week11, dayOfWeek11))
-    }, [radioSelectedValue1, startDate, endDate, Selected1, Selected2, Selected3, Selected4])
+    }, [radioSelectedValue1, radioSelectedValue2, radioSelectedValue3, startDate, endDate, Selected1, Selected2, Selected3, Selected4])
 
     const week11 = radioSelectedValue2   ; // n번째 주
     const dayOfWeek11 = radioSelectedValue3 - 1; // n요일
@@ -1251,7 +1251,7 @@ const NewRoom = () => {
         let nthDay = 0;
         let currentDate = new Date(startDate);
 
-        while (currentDate <= endDate) {
+        while (currentDate <= endDate - 1) {
             if (currentDate.getDay() === dayOfWeek && currentDate.getDate() >= week * 7 - 6 && currentDate.getDate() <= week * 7) {
                 nthDay++;
             }
@@ -1367,7 +1367,7 @@ const NewRoom = () => {
                                                                 selectValue === 4 && radioChecked2 && week11 !== '5' ?
                                                                     `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${monthCount2}개 되풀이 항목` :
                                                                     selectValue === 4 && radioChecked2 && week11 === '5' ?
-                                                                        `매월2, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'month') + 1}개 되풀이 항목` : ''
+                                                                        `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'month') + 1}개 되풀이 항목` : ''
                                             }
                                         </> : ''
                                         }
