@@ -1229,7 +1229,7 @@ const NewRoom = () => {
         for (let date of dates) {
             // date 변수의 값의 날짜가 인자값으로 받은 문자열 값을 정수형으로 반환한 값과 일치 할 경우 개수를 반환한다.
             if (date.getDate() === Number(specificDates)) {
-                console.log(dayjs(date).format('YYYY-MM-DD'), '카운트 날짜')
+                // console.log(dayjs(date).format('YYYY-MM-DD'), '카운트 날짜')
                 count += 1;
             }
         }
