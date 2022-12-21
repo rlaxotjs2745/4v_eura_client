@@ -168,10 +168,16 @@ const NewRoom = () => {
         }
     },[startDate])
 
+
+
     useEffect(()=> {
 
         setWeekdayArrNew(weekday.sort().map((value, index, array) => weekdayArr[value - 1]).join())
-        setWeekdayArrNew2(weekday22.sort().map((value, index, array) => weekdayArr22[value - 1]).join())
+        setWeekdayArrNew2(weekday22.filter(number => number !== 0).sort().map((value, index, array) => weekdayArr22[value - 1]).join())
+
+        console.log(weekdayArrNew2, 'weekdayArrNew2')
+        console.log(weekday22, 'weekday22')
+        console.log(weekdayArr22, 'weekdayArr22')
 
         setWeekdayMinus1(weekday.map(day => day - 1))
         setWeekdayMinus2(weekday22.map(day => day - 1))
