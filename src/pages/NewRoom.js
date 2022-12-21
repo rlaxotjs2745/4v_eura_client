@@ -110,6 +110,9 @@ const NewRoom = () => {
             `/meet/room/info?idx_meeting=${pathSplit}`,
             AXIOS_OPTION)
             .then(res => {
+                if(res.data.result_code === 'FAIL'){
+                    alert(res.data.result_str);
+                }
                 const room = res.data.data;
                 setTitle(room.mt_name);
                 setStartDate(dayjs(new Date(room.mt_start_dt.split(' ')[0])).format('YYYY-MM-DD'));
@@ -140,6 +143,9 @@ const NewRoom = () => {
             `/meet/room/invite?idx_meeting=${pathSplit}`,
             AXIOS_OPTION)
             .then(res => {
+                if(res.data.result_code === 'FAIL'){
+                    alert(res.data.result_str);
+                }
                 setInvCount(res.data.data.mt_invites.length);
                 setInvites(res.data.data.mt_invites);
                 setPrevInvites({...res.data.data, mt_invites: res.data.data.mt_invites.sort((a,b) =>  a.email > b.email)});
