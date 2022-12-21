@@ -1238,8 +1238,8 @@ const NewRoom = () => {
     const [monthCount2, setMonthCount2] = useState(0)
 
     useEffect(()=>{
-        setMonthCount(countSpecificDates(startDate2, endDate2, radioSelectedValue1))
-        setMonthCount2(getNthWeekNthDay(startDate2, endDate2, week11, dayOfWeek11))
+        setMonthCount(countSpecificDates(startDate, endDate, radioSelectedValue1))
+        setMonthCount2(getNthWeekNthDay(startDate, endDate, week11, dayOfWeek11))
     }, [radioSelectedValue1, startDate2, endDate2, Selected1, Selected2, Selected3, Selected4])
 
     const week11 = radioSelectedValue2   ; // n번째 주
