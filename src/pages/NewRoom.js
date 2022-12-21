@@ -1085,7 +1085,7 @@ const NewRoom = () => {
     const weekdays22 = ['일', '월', '화', '수', '목', '금', '토'];
 
     useEffect(()=> {
-        setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
+        setdayCount(getDayCountBetweenDates(startDate, endDate, days));
         setWeekCount(getWeekdayCountBetweenDates(startDate, endDate, days2))
     },[weekdayMinus1, weekdayMinus2, endDate2, startDate2, startDate, endDate, Selected1, Selected2, Selected3, Selected4])
 
@@ -1214,7 +1214,10 @@ const NewRoom = () => {
     function countSpecificDates(startDate, endDate, specificDates) {
         const dates = [];
         let currentDate = new Date(startDate);
-        while (currentDate <= new Date(endDate)) {
+        let currentEndDate = new Date(endDate)
+        currentEndDate.setDate(currentEndDate.getDate() + 1);;
+
+        while (currentDate <= currentEndDate) {
             dates.push(currentDate);
             currentDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
         } // 시작 날짜와 종료 날짜 사이에 있는 날짜를 전부 dates 배열에 담는다.
@@ -1226,6 +1229,7 @@ const NewRoom = () => {
         for (let date of dates) {
             // date 변수의 값의 날짜가 인자값으로 받은 문자열 값을 정수형으로 반환한 값과 일치 할 경우 개수를 반환한다.
             if (date.getDate() === Number(specificDates)) {
+                console.log(dayjs(date).format('YYYY-MM-DD'), '카운트 날짜')
                 count += 1;
             }
         }
