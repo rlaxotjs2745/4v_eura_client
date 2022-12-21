@@ -1215,7 +1215,7 @@ const NewRoom = () => {
         const dates = [];
         let currentDate = new Date(startDate);
         let currentEndDate = new Date(endDate)
-        currentEndDate.setDate(currentEndDate.getDate() + 1);;
+        currentEndDate.setDate(currentEndDate.getDate());
 
         while (currentDate <= currentEndDate) {
             dates.push(currentDate);
