@@ -177,7 +177,8 @@ const NewRoom = () => {
 
         console.log(weekdayArrNew2, 'weekdayArrNew2')
         console.log(weekday22, 'weekday22')
-        console.log(weekdayArr22, 'weekdayArr22')
+        console.log(selected22, 'selected22')
+
 
         setWeekdayMinus1(weekday.map(day => day - 1))
         setWeekdayMinus2(weekday22.map(day => day - 1))
@@ -1100,9 +1101,6 @@ const NewRoom = () => {
         const index = weekdays.indexOf(todayWeekday);
         const index22 = weekdays22.indexOf(todayWeekday22);
 
-
-
-
         if(selectValue === 4 || selectValue === 1) {
             setWeekdayArrNew([]) // 배열 초기화
             setWeekday([]) // 배열 초기화
@@ -1134,6 +1132,9 @@ const NewRoom = () => {
 
     }, [selectValue]);
 
+    useEffect(()=> {
+
+    },[setSelectValue])
 
     function setWeekDay(day) {
         if (!weekday.includes(day)) {
@@ -1440,13 +1441,13 @@ const NewRoom = () => {
                                                         <div className="checkbox type__square" key={weekday22}>
                                                             <input
                                                                 type="checkbox"
-                                                                name="weekday22"
+                                                                name="weekday"
                                                                 className="checkbox checkDisabledCheck"
                                                                 id={`week22_${index22 + 1}`}
                                                                 value={index22}
                                                                 onChange={() => getWeekDay22(index22 + 1)}
                                                                 defaultChecked={todayWeekday22 === weekday22}
-                                                                disabled={selected22.length < 2 && selected22.includes(index22 + 1)}
+                                                                disabled={selected22.filter(number => number !== 0).length < 2 && selected22.includes(index22 + 1)}
                                                             />
                                                             <label htmlFor={`week22_${index22 + 1}`}>{weekday22}</label>
                                                         </div>
