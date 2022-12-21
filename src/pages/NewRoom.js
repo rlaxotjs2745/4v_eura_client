@@ -179,7 +179,6 @@ const NewRoom = () => {
         console.log(weekday22, 'weekday22')
         console.log(selected22, 'selected22')
 
-
         setWeekdayMinus1(weekday.map(day => day - 1))
         setWeekdayMinus2(weekday22.map(day => day - 1))
 
@@ -754,7 +753,7 @@ const NewRoom = () => {
                 formData.append('mt_remind_week', weekday.join());
             }
             if(selectValue === 3){
-                formData.append('mt_remind_week', weekday22.join());
+                formData.append('mt_remind_week', weekday22.filter(number => number !== 0).join());
             }
             if(selectValue === 4 ) {
                 formData.append('mt_remind_monthType', radioSelectType)
@@ -909,7 +908,7 @@ const NewRoom = () => {
                 formData.append('mt_remind_week', weekday.join());
             }
             if(selectValue === 3){
-                formData.append('mt_remind_week', weekday22.join());
+                formData.append('mt_remind_week', weekday22.filter(number => number !== 0).join());
             }
             if(selectValue === 4 ) {
                 formData.append('mt_remind_monthType', radioSelectType)
