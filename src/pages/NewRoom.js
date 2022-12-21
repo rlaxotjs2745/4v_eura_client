@@ -1085,7 +1085,7 @@ const NewRoom = () => {
     useEffect(()=> {
         setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
         setWeekCount(getWeekdayCountBetweenDates(startDate, endDate, days2))
-    },[weekdayMinus1, endDate2, startDate2, Selected1, Selected2, Selected3, Selected4])
+    },[weekdayMinus1, weekdayMinus2, endDate2, startDate2, Selected1, Selected2, Selected3, Selected4])
 
 
     useEffect(() => {
