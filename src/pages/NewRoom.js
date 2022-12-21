@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useLayoutEffect} from "react";
+import React, {useEffect, useState, useLayoutEffect, useReducer, useCallback} from "react";
 import axios from "axios";
 import {AXIOS_OPTION, SERVER_URL} from "../util/env";
 import ModifyRoomUser from "../Components/Cards/ModifyRoomUser";
@@ -51,9 +51,12 @@ const NewRoom = () => {
     const [Selected4, setSelected4] = useState('00');
     const [maxDate, setMaxDate] = useState('')
     const [weekday, setWeekday] = useState([]);
+    const [weekday22, setWeekday22] = useState([]);
     const [weekdayMinus1, setWeekdayMinus1] = useState([])
-    const [weekdayArrNew, setWeekdayArrNew] = useState([])
+    const [weekdayMinus2, setWeekdayMinus2] = useState([])
 
+    const [weekdayArrNew, setWeekdayArrNew] = useState([])
+    const [weekdayArrNew2, setWeekdayArrNew2] = useState([])
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [uploadedFilesPlus, setUploadedFilesPlus] = useState([]);
     const [delFiles, setDelFiles] = useState([]);
@@ -168,9 +171,12 @@ const NewRoom = () => {
     useEffect(()=> {
 
         setWeekdayArrNew(weekday.sort().map((value, index, array) => weekdayArr[value - 1]).join())
-        setWeekdayMinus1(weekday.map(day => day - 1))
+        setWeekdayArrNew2(weekday22.sort().map((value, index, array) => weekdayArr22[value - 1]).join())
 
-    }, [weekday, selectValue])
+        setWeekdayMinus1(weekday.map(day => day - 1))
+        setWeekdayMinus2(weekday22.map(day => day - 1))
+
+    }, [weekday, selectValue, weekday22])
 
 
     useEffect(()=> {
@@ -224,6 +230,7 @@ const NewRoom = () => {
 
 
     const weekdayArr = ['일','월','화','수','목','금','토']
+    const weekdayArr22 = ['일','월','화','수','목','금','토']
 
     const select1_opiton = [
         { value: "00", label: "00", idx:"00"},
@@ -740,7 +747,7 @@ const NewRoom = () => {
                 formData.append('mt_remind_week', weekday.join());
             }
             if(selectValue === 3){
-                formData.append('mt_remind_week', weekday.join());
+                formData.append('mt_remind_week', weekday22.join());
             }
             if(selectValue === 4 ) {
                 formData.append('mt_remind_monthType', radioSelectType)
@@ -895,7 +902,7 @@ const NewRoom = () => {
                 formData.append('mt_remind_week', weekday.join());
             }
             if(selectValue === 3){
-                formData.append('mt_remind_week', weekday.join());
+                formData.append('mt_remind_week', weekday22.join());
             }
             if(selectValue === 4 ) {
                 formData.append('mt_remind_monthType', radioSelectType)
@@ -1013,6 +1020,7 @@ const NewRoom = () => {
     const endDate2 = new Date(endDate);
     endDate2.setDate(endDate2.getDate() + 1);
     const days = weekdayMinus1;
+    const days2 = weekdayMinus2;
 
     const getDayCountBetweenDates = (startDate, endDate, days) => {
         let date = new Date(startDate);
@@ -1065,30 +1073,52 @@ const NewRoom = () => {
 
 
     const [selected, setSelected] = useState([]);
+    const [selected22, setSelected22] = useState([]);
     const [dayCount, setdayCount] = useState(0)
     const [weekCount, setWeekCount] = useState(0)
     const [todayWeekday, setTodayWeekday] = useState(null);
+    const [todayWeekday22, setTodayWeekday22] = useState(null);
 
     const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+    const weekdays22 = ['일', '월', '화', '수', '목', '금', '토'];
 
     useEffect(()=> {
         setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
-        setWeekCount(getWeekdayCountBetweenDates(startDate, endDate, days))
+        setWeekCount(getWeekdayCountBetweenDates(startDate, endDate, days2))
     },[weekdayMinus1, endDate2, startDate2, Selected1, Selected2, Selected3, Selected4])
+
 
     useEffect(() => {
 
         const today = new Date();
         const index = weekdays.indexOf(todayWeekday);
+        const index22 = weekdays22.indexOf(todayWeekday22);
 
 
-        setTodayWeekday(weekdays[today.getDay()]);
-        setWeekDay(index + 1);
+
 
         if(selectValue === 4 || selectValue === 1) {
             setWeekdayArrNew([]) // 배열 초기화
             setWeekday([]) // 배열 초기화
+            setWeekdayArrNew2([]) // 배열 초기화
+            setWeekday22([]) // 배열 초기화
         }
+
+        if(selectValue === 2) {
+            setWeekdayArrNew2([]) // 배열 초기화
+            setWeekday22([]) // 배열 초기화
+        }
+
+        setTodayWeekday(weekdays[today.getDay()]);
+        setWeekDay(index + 1);
+
+        if(selectValue === 3) {
+            setWeekdayArrNew([]) // 배열 초기화
+            setWeekday([]) // 배열 초기화
+        }
+
+        setTodayWeekday22(weekdays22[today.getDay()]);
+        setWeekDay22(index22 + 1);
 
         // 되풀이미팅 반복주기 변경시 매월 값 현재 날짜 값으로 초기화
         const firstDay = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
@@ -1097,6 +1127,7 @@ const NewRoom = () => {
         setRadioSelectedValue3(new Date().getDay() + 1);
 
     }, [selectValue]);
+
 
     function setWeekDay(day) {
         if (!weekday.includes(day)) {
@@ -1122,6 +1153,30 @@ const NewRoom = () => {
         }
     };
 
+
+    function setWeekDay22(day) {
+        if (!weekday22.includes(day)) {
+            setWeekday22([...weekday22, day]);
+            setSelected22([...weekday22, day]);
+        }
+    }
+
+    const getWeekDay22 = day => {
+        let bool = false;
+        weekday22.forEach(d => {
+            if (d === day) {
+                bool = true;
+            }
+        });
+
+        if (!bool) {
+            setWeekday22([...new Set([...weekday22, day])]);
+            setSelected22([...new Set([...selected22, day])]);
+        } else {
+            setWeekday22(weekday22.filter(d => d !== day));
+            setSelected22(selected22.filter((option) => option !== day));
+        }
+    };
 
 
     const [radioSelectType, setRadioSelectType] = useState(1)
@@ -1306,8 +1361,8 @@ const NewRoom = () => {
                                             <>
                                             {
                                                 selectValue === 1 ? `매일, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayjs(endDate).diff(startDate, 'day') + 1}개 되풀이 항목` :
-                                                    selectValue === 2 ? `매주 ${weekdayArrNew}, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayCount}개 되풀이 항목` :
-                                                        selectValue === 3 ? `매 2주 ${weekdayArrNew.split(',')} 마다 ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${weekCount}개 되풀이 항목` :
+                                                    selectValue === 2 ? `매주 ${weekdayArrNew} ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${dayCount}개 되풀이 항목` :
+                                                        selectValue === 3 ? `매 2주 ${weekdayArrNew2} 마다 ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${weekCount}개 되풀이 항목` :
                                                             selectValue === 4 && radioChecked ?
                                                                 `매월, ${dayjs(endDate).format('YYYY년 MM월 DD일')}까지, ${monthCount}개 되풀이 항목` :
                                                                 selectValue === 4 && radioChecked2 && week11 !== '5' ?
@@ -1366,32 +1421,34 @@ const NewRoom = () => {
                                                 ))}
                                                 </dd>
                                             </dl>
-                                        </> :
-                                        selectValue === 3 ?
-                                            <>
-                                                <hr />
-                                                <dl className="inline__type">
-                                                     <dt><label htmlFor="월">반복 요일</label></dt>
-                                                    <dd>
-                                                        {weekdays.map((weekday, index) => (
-                                                            <div className="checkbox type__square" key={weekday}>
-                                                                <input
-                                                                    type="checkbox"
-                                                                    name="weekday"
-                                                                    className="checkbox checkDisabledCheck"
-                                                                    id={`week_${index + 1}`}
-                                                                    value={index}
-                                                                    onChange={() => getWeekDay(index + 1)}
-                                                                    defaultChecked={todayWeekday === weekday}
-                                                                    disabled={selected.length < 2 && selected.includes(index + 1)}
-                                                                />
-                                                                <label htmlFor={`week_${index + 1}`}>{weekday}</label>
-                                                            </div>
-                                                        ))}
-                                                    </dd>
-                                                </dl>
-                                            </>
-                                        : null
+                                        </> : null
+                                }
+                                {
+                                    selectValue === 3 ?
+                                        <>
+                                            <hr />
+                                            <dl className="inline__type">
+                                                 <dt><label htmlFor="월">반복 요일</label></dt>
+                                                <dd>
+                                                    {weekdays22.map((weekday22, index22) => (
+                                                        <div className="checkbox type__square" key={weekday22}>
+                                                            <input
+                                                                type="checkbox"
+                                                                name="weekday22"
+                                                                className="checkbox checkDisabledCheck"
+                                                                id={`week22_${index22 + 1}`}
+                                                                value={index22}
+                                                                onChange={() => getWeekDay22(index22 + 1)}
+                                                                defaultChecked={todayWeekday22 === weekday22}
+                                                                disabled={selected22.length < 2 && selected22.includes(index22 + 1)}
+                                                            />
+                                                            <label htmlFor={`week22_${index22 + 1}`}>{weekday22}</label>
+                                                        </div>
+                                                    ))}
+                                                </dd>
+                                            </dl>
+                                        </>
+                                    : null
                                 }
                                 <hr />
                                 { selectValue === 4 ?
