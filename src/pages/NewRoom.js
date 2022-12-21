@@ -1215,13 +1215,14 @@ const NewRoom = () => {
         const dates = [];
         let currentDate = new Date(startDate);
         let currentEndDate = new Date(endDate)
-        currentEndDate.setDate(currentEndDate.getDate());
+        currentEndDate.setDate(currentEndDate.getDate() + 1);
 
-        while (currentDate <= currentEndDate) {
+        while (currentDate < currentEndDate) {
             dates.push(currentDate);
             currentDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
         } // 시작 날짜와 종료 날짜 사이에 있는 날짜를 전부 dates 배열에 담는다.
 
+        console.log(dates)
 
         let count = 0;
 
@@ -1229,7 +1230,7 @@ const NewRoom = () => {
         for (let date of dates) {
             // date 변수의 값의 날짜가 인자값으로 받은 문자열 값을 정수형으로 반환한 값과 일치 할 경우 개수를 반환한다.
             if (date.getDate() === Number(specificDates)) {
-                // console.log(dayjs(date).format('YYYY-MM-DD'), '카운트 날짜')
+                console.log(dayjs(date).format('YYYY-MM-DD'), '카운트 날짜')
                 count += 1;
             }
         }
