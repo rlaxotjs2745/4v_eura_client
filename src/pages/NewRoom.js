@@ -175,10 +175,6 @@ const NewRoom = () => {
         setWeekdayArrNew(weekday.sort().map((value, index, array) => weekdayArr[value - 1]).join())
         setWeekdayArrNew2(weekday22.filter(number => number !== 0).sort().map((value, index, array) => weekdayArr22[value - 1]).join())
 
-        console.log(weekdayArrNew2, 'weekdayArrNew2')
-        console.log(weekday22, 'weekday22')
-        console.log(selected22, 'selected22')
-
         setWeekdayMinus1(weekday.map(day => day - 1))
         setWeekdayMinus2(weekday22.map(day => day - 1))
 
@@ -1217,25 +1213,22 @@ const NewRoom = () => {
 
     function countSpecificDates(startDate, endDate, specificDates) {
         const dates = [];
-        let count = 0;
         let currentDate = new Date(startDate);
-
         while (currentDate <= new Date(endDate)) {
-            // dates.push(currentDate);
-            if (currentDate.getDate() === Number(specificDates)) {
-                count += 1;
-            }
+            dates.push(currentDate);
             currentDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
         } // 시작 날짜와 종료 날짜 사이에 있는 날짜를 전부 dates 배열에 담는다.
 
-        if (currentDate.getDate() === Number(specificDates)) {
-            count += 1;
-        }
 
-        // // dates 배열에서 각 요소를 하나씩 꺼내서 date 변수에 담아서 반복문 실행
-        // for (let date of dates) {
-        //     // date 변수의 값의 날짜가 인자값으로 받은 문자열 값을 정수형으로 반환한 값과 일치 할 경우 개수를 반환한다.
-        // }
+        let count = 0;
+
+        // dates 배열에서 각 요소를 하나씩 꺼내서 date 변수에 담아서 반복문 실행
+        for (let date of dates) {
+            // date 변수의 값의 날짜가 인자값으로 받은 문자열 값을 정수형으로 반환한 값과 일치 할 경우 개수를 반환한다.
+            if (date.getDate() === Number(specificDates)) {
+                count += 1;
+            }
+        }
 
         // 찾은 특정 날짜의 개수를 반환한다.
         return count;
