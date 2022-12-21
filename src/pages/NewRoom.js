@@ -2,7 +2,7 @@ import React, {useEffect, useState, useLayoutEffect, useReducer, useCallback} fr
 import axios from "axios";
 import {AXIOS_OPTION, SERVER_URL} from "../util/env";
 import ModifyRoomUser from "../Components/Cards/ModifyRoomUser";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useHi} from "react-router-dom";
 import $ from "jquery";
 import AddMeetingUser from "../Components/Cards/AddMeetingUser";
 import {getCookie} from "../util/cookie";
@@ -110,8 +110,10 @@ const NewRoom = () => {
             `/meet/room/info?idx_meeting=${pathSplit}`,
             AXIOS_OPTION)
             .then(res => {
+
                 if(res.data.result_code === 'FAIL'){
                     alert(res.data.result_str);
+                    navigate('/');
                 }
                 const room = res.data.data;
                 setTitle(room.mt_name);
@@ -145,6 +147,7 @@ const NewRoom = () => {
             .then(res => {
                 if(res.data.result_code === 'FAIL'){
                     alert(res.data.result_str);
+                    navigate('/');
                 }
                 setInvCount(res.data.data.mt_invites.length);
                 setInvites(res.data.data.mt_invites);
@@ -1026,7 +1029,9 @@ const NewRoom = () => {
 
     const startDate2 = new Date(startDate);
     const endDate2 = new Date(endDate);
-    endDate2.setDate(endDate2.getDate() + 1);
+    endDate2.setDate(endDate2.getDate() - 1);
+
+
     const days = weekdayMinus1;
     const days2 = weekdayMinus2;
 
@@ -1048,12 +1053,47 @@ const NewRoom = () => {
         return count;
     }
 
+    // const getWeekdayCountBetweenDates = (startDate, endDate, days) => {
+    //     let date = new Date(startDate);
+    //     let count = 0;
+    //     let skipWeek = false;
+    //
+    //     while (date <= endDate) {
+    //         if (skipWeek) {
+    //             date.setDate(date.getDate() + 1);
+    //             skipWeek = !skipWeek;
+    //         }
+    //
+    //         if (days.includes(date.getDay())) {
+    //             count++;
+    //         }
+    //
+    //         if (date.getDay() === 0) { // 일요일이면서 첫주차가 아닌경우
+    //             date.setDate(date.getDate() + 7); // date2의
+    //             skipWeek = !skipWeek; // skipWeek의 값을 반전시킵니다.
+    //         } else if (!skipWeek) {
+    //             date.setDate(date.getDate() + 1);
+    //         }
+    //     }
+    //
+    //     if (days.includes(date.getDay())) {
+    //         count++;
+    //     }
+    //
+    //     return count;
+    // };
+
     const getWeekdayCountBetweenDates = (startDate, endDate, days) => {
         let date = new Date(startDate);
         let count = 0;
         let skipWeek = false;
 
-        while (date <= endDate -1) {
+        // 시작 날짜가 일요일인 경우 첫주차 체크를 하지 않음
+        if (date.getDay() === 0) {
+            skipWeek = true;
+        }
+
+        while (date <= endDate) {
             if (skipWeek) {
                 date.setDate(date.getDate() + 1);
                 skipWeek = !skipWeek;
@@ -1063,7 +1103,7 @@ const NewRoom = () => {
                 count++;
             }
 
-            if (date.getDay() === 0 && count !== 0) { // 일요일이면서 첫주차가 아닌경우
+            if (date.getDay() === 0) { // 일요일이면서 첫주차가 아닌경우
                 date.setDate(date.getDate() + 7); // date2의
                 skipWeek = !skipWeek; // skipWeek의 값을 반전시킵니다.
             } else if (!skipWeek) {
@@ -1092,7 +1132,7 @@ const NewRoom = () => {
 
     useEffect(()=> {
         setdayCount(getDayCountBetweenDates(startDate, endDate, days));
-        setWeekCount(getWeekdayCountBetweenDates(startDate, endDate, days2))
+        setWeekCount(getWeekdayCountBetweenDates(startDate, endDate2, days2))
     },[weekdayMinus1, weekdayMinus2, endDate2, startDate2, startDate, endDate, Selected1, Selected2, Selected3, Selected4])
 
 
@@ -1228,15 +1268,13 @@ const NewRoom = () => {
             currentDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
         } // 시작 날짜와 종료 날짜 사이에 있는 날짜를 전부 dates 배열에 담는다.
 
-        console.log(dates)
-
         let count = 0;
 
         // dates 배열에서 각 요소를 하나씩 꺼내서 date 변수에 담아서 반복문 실행
         for (let date of dates) {
             // date 변수의 값의 날짜가 인자값으로 받은 문자열 값을 정수형으로 반환한 값과 일치 할 경우 개수를 반환한다.
             if (date.getDate() === Number(specificDates)) {
-                console.log(dayjs(date).format('YYYY-MM-DD'), '카운트 날짜')
+
                 count += 1;
             }
         }
