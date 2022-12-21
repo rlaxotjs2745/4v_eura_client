@@ -1087,7 +1087,7 @@ const NewRoom = () => {
     useEffect(()=> {
         setdayCount(getDayCountBetweenDates(startDate2, endDate2, days));
         setWeekCount(getWeekdayCountBetweenDates(startDate, endDate, days2))
-    },[weekdayMinus1, weekdayMinus2, endDate2, startDate2, Selected1, Selected2, Selected3, Selected4])
+    },[weekdayMinus1, weekdayMinus2, endDate2, startDate2, startDate, endDate, Selected1, Selected2, Selected3, Selected4])
 
 
     useEffect(() => {
@@ -1240,7 +1240,7 @@ const NewRoom = () => {
     useEffect(()=>{
         setMonthCount(countSpecificDates(startDate, endDate, radioSelectedValue1))
         setMonthCount2(getNthWeekNthDay(startDate, endDate, week11, dayOfWeek11))
-    }, [radioSelectedValue1, startDate2, endDate2, Selected1, Selected2, Selected3, Selected4])
+    }, [radioSelectedValue1, startDate, endDate, Selected1, Selected2, Selected3, Selected4])
 
     const week11 = radioSelectedValue2   ; // n번째 주
     const dayOfWeek11 = radioSelectedValue3 - 1; // n요일
@@ -1249,7 +1249,7 @@ const NewRoom = () => {
 
     function getNthWeekNthDay(startDate, endDate, week, dayOfWeek) {
         let nthDay = 0;
-        let currentDate = startDate;
+        let currentDate = new Date(startDate);
 
         while (currentDate <= endDate) {
             if (currentDate.getDay() === dayOfWeek && currentDate.getDate() >= week * 7 - 6 && currentDate.getDate() <= week * 7) {
