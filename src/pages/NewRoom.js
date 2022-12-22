@@ -1084,7 +1084,10 @@ const NewRoom = () => {
     // };
 
     const getWeekdayCountBetweenDates = (startDate, endDate, days) => {
+
         let date = new Date(startDate);
+        let endDateWeek = new Date(endDate);
+        endDateWeek.setDate(endDateWeek.getDate() + 1);
         let count = 0;
         let skipWeek = false;
 
@@ -1093,13 +1096,15 @@ const NewRoom = () => {
             skipWeek = true;
         }
 
-        while (date <= endDate) {
+        while (date < endDateWeek) {
+
             if (skipWeek) {
                 date.setDate(date.getDate() + 1);
                 skipWeek = !skipWeek;
             }
 
             if (days.includes(date.getDay())) {
+                console.log(dayjs(date).format('YYYY-MM-DD'))
                 count++;
             }
 
@@ -1109,10 +1114,6 @@ const NewRoom = () => {
             } else if (!skipWeek) {
                 date.setDate(date.getDate() + 1);
             }
-        }
-
-        if (days.includes(date.getDay())) {
-            count++;
         }
 
         return count;
@@ -1132,7 +1133,7 @@ const NewRoom = () => {
 
     useEffect(()=> {
         setdayCount(getDayCountBetweenDates(startDate, endDate, days));
-        setWeekCount(getWeekdayCountBetweenDates(startDate, endDate2, days2))
+        setWeekCount(getWeekdayCountBetweenDates(startDate, endDate, days2))
     },[weekdayMinus1, weekdayMinus2, endDate2, startDate2, startDate, endDate, Selected1, Selected2, Selected3, Selected4])
 
 
