@@ -1108,9 +1108,9 @@ const NewRoom = () => {
                 count++;
             }
 
-            if (date.getDay() === 0) { // 일요일이면서 첫주차가 아닌경우
-                date.setDate(date.getDate() + 7); // date2의
-                skipWeek = !skipWeek; // skipWeek의 값을 반전시킵니다.
+            if (date.getDay() === 6) {
+                date.setDate(date.getDate() + 7);
+                skipWeek = !skipWeek;
             } else if (!skipWeek) {
                 date.setDate(date.getDate() + 1);
             }
