@@ -1096,10 +1096,6 @@ const NewRoom = () => {
         let count = 0;
         let skipWeek = false;
 
-        // if (date.getDay() === 0) {
-        //     skipWeek = true;
-        // }
-
         while (date < endDateWeek) {
 
             if (skipWeek) {
@@ -1108,7 +1104,7 @@ const NewRoom = () => {
             }
 
             if (days.includes(date.getDay())) {
-                console.log(dayjs(date).format('YYYY-MM-DD'))
+                // console.log(dayjs(date).format('YYYY-MM-DD'))
                 count++;
             }
 
