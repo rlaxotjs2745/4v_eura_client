@@ -1096,10 +1096,9 @@ const NewRoom = () => {
         let count = 0;
         let skipWeek = false;
 
-        // 시작 날짜가 일요일인 경우 첫주차 체크를 하지 않음 수정
-        if (date.getDay() === 0) {
-            skipWeek = true;
-        }
+        // if (date.getDay() === 0) {
+        //     skipWeek = true;
+        // }
 
         while (date < endDateWeek) {
 
