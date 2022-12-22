@@ -1087,11 +1087,16 @@ const NewRoom = () => {
 
         let date = new Date(startDate);
         let endDateWeek = new Date(endDate);
-        endDateWeek.setDate(endDateWeek.getDate() + 1);
+        if(endDateWeek.getDay() === 6) {
+            endDateWeek.setDate(endDateWeek.getDate());
+        } else {
+            endDateWeek.setDate(endDateWeek.getDate() + 1);
+        }
+
         let count = 0;
         let skipWeek = false;
 
-        // 시작 날짜가 일요일인 경우 첫주차 체크를 하지 않음
+        // 시작 날짜가 일요일인 경우 첫주차 체크를 하지 않음 수정
         if (date.getDay() === 0) {
             skipWeek = true;
         }
