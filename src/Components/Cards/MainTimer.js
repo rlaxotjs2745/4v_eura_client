@@ -2,7 +2,7 @@ const React = require("react");
 const {useState} = require("react");
 
 const MainTimer = ({user}) => {
-    const [timer, setTimer] = useState("00:00");
+    const [timer, setTimer] = useState("");
     const [day, setDay] = useState("")
 
     const weekdayArr = ['일','월','화','수','목','금','토']
@@ -22,6 +22,7 @@ const MainTimer = ({user}) => {
     }
 
     const startTimer = () => {
+        setTimeout(currentTimer, 0);
         setInterval(currentTimer, 1000);
     }
     startTimer();
