@@ -67,7 +67,7 @@ const InviteMyAnalPieGraphCard = ({oneUserResult, oneUserResultab, isJoin}) => {
                                     null :
                                     <div className="one_user_graph_image">
                                         {isJoin ? <img className="pie_graph_image" src={require(oneUserResultab.good >= oneUserResultab.bad ? '../../assets/image/icon_one_user_good.png' : '../../assets/image/icon_one_user_bad.png')} alt=""/> : null}
-                                        {isJoin ? <div className={oneUserResultab.good >= oneUserResultab.bad ? 'pie_graph_word imotion_good' : 'pie_graph_word imotion_bad'}>{oneUserResultab.good >= 60 ? 'GOOD' : 'BAD'}</div>: null}
+                                        {isJoin ? <div className={oneUserResultab.good >= oneUserResultab.bad ? 'pie_graph_word imotion_good' : 'pie_graph_word imotion_bad'}>{oneUserResultab.good >= oneUserResultab.bad ? 'GOOD' : 'BAD'}</div>: null}
                                     </div>
                             }
                         </div>
