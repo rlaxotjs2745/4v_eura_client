@@ -22,6 +22,7 @@ const Profile = () => {
     const [characterVisible, setCharacterVisible] = useState(false)
     const [passwordAlert, setPasswordAlert] = useState('')
 
+    const [profilePic, setProfilePic] = useState(0)
     const [profile, setProfile] = useState('../assets/image/image_profile.png')
     const [userName, setUserName] = useState('')
     const [userPhone, setUserPhone] = useState('01012345678')
@@ -112,7 +113,23 @@ const Profile = () => {
             ).then(res => {
                 if(res.data.result_code === 'FAIL'){
                     alert(res.data.result_str)
-                } else if(res.data.result_code === 'SUCCESS02'){
+                } else if(res.data.result_code === 'SUCCESS'){
+                    window.location.reload();
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+        }
+    }
+
+    const profileReset = () => {
+        if(window.confirm("프로필 사진을 초기화 하시겠습니까?")){
+            axios.post(SERVER_URL + '/reset_profile'
+                , AXIOS_OPTION
+            ).then(res => {
+                if(res.data.result_code === 'FAIL'){
+                    alert(res.data.result_str)
+                } else {
                     window.location.reload();
                 }
             }).catch(err => {
@@ -238,6 +255,7 @@ const Profile = () => {
             if (res.data.result_code === 'SUCCESS' && res.data.data.user_pic.length > 0) {
                 setProfile(res.data.data.user_pic);
                 setImagePreview(res.data.data.user_pic)
+                setProfilePic(1)
             }
 
         }).catch(err => {
@@ -267,7 +285,7 @@ const Profile = () => {
                     {/* 프로필사진 변경 */}
                     {profileVisible ?
                         <div className="input__group">
-                            <label htmlFor="join_name">프로필사진</label>
+                            <label htmlFor="join_name" className="width100">프로필사진</label>
                             <form onSubmit={handleSubmit(profileEditSubmit, onError)}>
                             <label className="input__group upload__type">
                                 <input
@@ -279,15 +297,20 @@ const Profile = () => {
                                 <div className="upload__image"><img id="preview" alt="sample" src={imagePreview} style={{ margin: "auto" }} /></div>
                                 {errors.file && <div className="error_tip">{errors.file.message}</div>}
                             </label>
-                            <div className="modify__box">
-                                <button onClick={profileEditSubmit} className="btn btn__able btn__s">변경하기</button>
-                                <button onClick={profileEditCancle} className="btn btn__normal btn__s">취소</button>
+                            <div className="modify__box modify__box2">
+                                {
+                                    profilePic === 1 ? 
+                                    <span onClick={profileReset} className="btn btn__able btn__s">초기화</span>
+                                     : null 
+                                }
+                                &nbsp;<button onClick={profileEditSubmit} className="btn btn__able btn__s">변경하기</button>
+                                &nbsp;<button onClick={profileEditCancle} className="btn btn__normal btn__s">취소</button>
                             </div>
                             </form>
                         </div>
                         :
                         <div className="input__group">
-                            <label htmlFor="join_name">프로필사진</label>
+                            <label htmlFor="join_name" className="width100">프로필사진</label>
                             <div className="input__group upload__type">
                                 <input type="file" {...register("file")} className="upload__btn"/>
                                 <div className="upload__image" onClick={()=> {setProfileVisible(!profileVisible)}}>

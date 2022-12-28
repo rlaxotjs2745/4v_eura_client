@@ -2838,10 +2838,13 @@ html.js-overflow {
     margin-top: 38px !important
 }
 
+.width100{width:100%}
+
 .my .my__box .upload__type {
     padding: 5px 0 5px 0;
     text-align: left;
     cursor: pointer;
+    width: 50%;
 }
 
 .my .my__box .upload__type .upload__btn {
@@ -2876,6 +2879,10 @@ html.js-overflow {
     left: 120px;
     top: 45px;
     cursor: pointer
+}
+
+.my .my__box .modify__box2 {
+    margin-top: 78px !important;
 }
 
 .my .my__box .modify__box {

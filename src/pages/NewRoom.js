@@ -570,54 +570,58 @@ const NewRoom = () => {
     }
 
     const compareInvites = (arr) => {
-        if(modifyBool === true || isNew === 2){
-            return;
-        }
-        let compareBool = false;
-        const compareInv = arr.sort((a,b) => a.email > b.email);
-        // if(compareInv.length !== prevInvites.mt_invites.length){
-        if(compareInv.length !== prevInvites.mt_invites){
-            compareBool = true;
-        } else {
-            for(let i = 0; i < compareInv.length; i++){
-                if(compareInv[i].email !== prevInvites.mt_invites[i].email){
-                    compareBool = true;
-                    break;
+        if(roomStatus === false) {
+            if(modifyBool === true || isNew === 2){
+                return;
+            }
+            let compareBool = false;
+            const compareInv = arr.sort((a,b) => a.email > b.email);
+            // if(compareInv.length !== prevInvites.mt_invites.length){
+            if(compareInv.length !== prevInvites.mt_invites){
+                compareBool = true;
+            } else {
+                for(let i = 0; i < compareInv.length; i++){
+                    if(compareInv[i].email !== prevInvites.mt_invites[i].email){
+                        compareBool = true;
+                        break;
+                    }
                 }
             }
+            setModifyBool(compareBool);
         }
-        setModifyBool(compareBool);
     }
 
     const compareDateTime = () => {
-        if(modifyBool === true || isNew === 2 || rendered === 0){
-            return;
-        }
-        let compareBool = false;
+        if(roomStatus === false) {
+            if(modifyBool === true || isNew === 2 || rendered === 0){
+                return;
+            }
+            let compareBool = false;
 
-        if(!prevRoom.mt_start_dt && !prevRoom.mt_end_dt && !!Selected1 && !!Selected2 && !!Selected3 && !!Selected4){
-            compareBool = true;
-        }
-
-        if(!!prevRoom.mt_start_dt && !!prevRoom.mt_end_dt){
-            if(
-                Selected1 !== prevRoom.mt_start_dt.split(' ')[1].split(':')[0] ||
-                Selected2 !== prevRoom.mt_start_dt.split(' ')[1].split(':')[1] ||
-                Selected3 !== prevRoom.mt_end_dt.split(' ')[1].split(':')[0] ||
-                Selected4 !== prevRoom.mt_end_dt.split(' ')[1].split(':')[1]
-            ){
+            if(!prevRoom.mt_start_dt && !prevRoom.mt_end_dt && !!Selected1 && !!Selected2 && !!Selected3 && !!Selected4){
                 compareBool = true;
             }
 
-            if(prevRoom.mt_start_dt.split(' ')[0] !==  dayjs(new Date(startDate)).format('YYYY-MM-DD')){ // 맨 먼저 저장되는
+            if(!!prevRoom.mt_start_dt && !!prevRoom.mt_end_dt){
+                if(
+                    Selected1 !== prevRoom.mt_start_dt.split(' ')[1].split(':')[0] ||
+                    Selected2 !== prevRoom.mt_start_dt.split(' ')[1].split(':')[1] ||
+                    Selected3 !== prevRoom.mt_end_dt.split(' ')[1].split(':')[0] ||
+                    Selected4 !== prevRoom.mt_end_dt.split(' ')[1].split(':')[1]
+                ){
+                    compareBool = true;
+                }
+
+                if(prevRoom.mt_start_dt.split(' ')[0] !==  dayjs(new Date(startDate)).format('YYYY-MM-DD')){ // 맨 먼저 저장되는
+                    compareBool = true;
+                }
+            }
+
+            if(prevRoom.mt_remind_type !== selectValue){
                 compareBool = true;
             }
+            setModifyBool(compareBool);
         }
-
-        if(prevRoom.mt_remind_type !== selectValue){
-            compareBool = true;
-        }
-        setModifyBool(compareBool);
     }
 
     const pressEnterKey = (e) => {

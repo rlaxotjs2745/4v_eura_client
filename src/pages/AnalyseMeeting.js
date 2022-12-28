@@ -246,12 +246,12 @@ const AnalyseMeeting = (props) => {
                                 <dd>{lecture.mtMeetiTime}</dd>
                                 <dt>소요 시간</dt>
                                 <dd>{lecture.mtMeetTimer}</dd>
-                                <dt className="th__file">저장된 파일</dt>
+                                <dt className="th__file">회의 기록</dt>
                                 <dd className="td__file moveFilelist">
                                     {
                                         !lecture.mtMovieFiles || !lecture.mtMovieFiles.length ?
                                             <a>
-                                                <span className="file__name">미팅에 업로드 된 파일이 없습니다.</span>
+                                                <span className="file__name">저장된 회의 기록이 없습니다.</span>
                                             </a>
                                             :
                                             lecture.mtMovieFiles.map((file, idx) => {

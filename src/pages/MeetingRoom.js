@@ -48,19 +48,29 @@ const MeetingRoom = (props) => {
 
     const openModal = () => {
         // setModal(true);
-        $('.pop__detail').addClass('is-on');
+        $('#popup__cancel').addClass('is-on');
         $('#shade').addClass('is-on');
     }
 
     const closeModal = () => {
         // setModal(false);
-        $('.pop__detail').removeClass('is-on');
+        $('#popup__cancel').removeClass('is-on');
         $('#shade').removeClass('is-on');
     }
 
     $('#shade').click(() => {
         closeModal();
     })
+
+    const openAlertModal = () => {
+        $('#popup__alert').addClass('is-on');
+        $('#shade').addClass('is-on');
+    }
+
+    const closeAlertModal = () => {
+        $('#popup__alert').removeClass('is-on');
+        $('#shade').removeClass('is-on');
+    }
 
     const cancelMeeting = () => {
         if(roomInfo.mt_status === 2){
@@ -141,14 +151,14 @@ const MeetingRoom = (props) => {
     }
 
     const startMeeting = () => {
-
         axios.post(SERVER_URL + '/meet/room/start', {idx_meeting : window.location.pathname.split('/')[window.location.pathname.split('/').length-1]}, AXIOS_OPTION)
             .then(res => {
                 if(res.data.result_code === 'SUCCESS'){
                     const mcid = res.data.data.mcid;
                     const token = res.data.data.token;
                     window.location.href = `EuraEmotionService://mcid=${mcid},token=${token},appVersion=${EURA_VERSION}`;
-                    setTimeout(function(){window.location.reload();},5000);
+                    alert(res.data.result_str);
+                    setTimeout(function(){window.location.reload();},100);
                 }else{
                     alert(res.data.result_str);
                 }
@@ -284,13 +294,13 @@ const MeetingRoom = (props) => {
                         <div className="btn__group">
                             {
                                 roomInfo.mt_ishost === '0' ?
-                                    <div onClick={startMeeting} className="btn btn__able btn__xl">참여하기</div> //게스트, 시작된 미팅
+                                    <div onClick={openAlertModal} className="btn btn__able btn__xl">참여하기</div> //게스트, 시작된 미팅
                                     :
                                     roomInfo.mt_ishost === '0' ?
                                         <div className="btn btn__disable btn__xl">참여하기</div> // 게스트, 시작 전 미팅
                                         :
                                         roomInfo.mt_ishost === '1' && roomInfo.mt_status === 1?
-                                    <div onClick={startMeeting} className="btn btn__able btn__xl">시작하기</div> // 호스트, 시작 전 미팅
+                                    <div onClick={openAlertModal} className="btn btn__able btn__xl">시작하기</div> // 호스트, 시작 전 미팅
                                             :
                                             roomInfo.mt_ishost === '1' ?
                                                 <div className="btn btn__disable btn__xl">시작하기</div> //호스트, 시작된 미팅
@@ -330,6 +340,26 @@ const MeetingRoom = (props) => {
                             <div className="btn__group">
                                 <a onClick={cancelMeeting} className="btn btn__able btn__s js-modal-alert">예</a>
                                 <a onClick={closeModal} className="btn btn__normal btn__s js-modal-close">아니오</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="popup__alert" className="pop__detail">
+                        <a className="btn__close js-modal-close" onClick={closeAlertModal}><img src={require('../assets/image/ic_close_24.png')} alt="" /></a>
+                        <div className="popup__cnt">
+                            {
+                                    roomInfo.mt_ishost === '1' ?
+                                        <div className="pop__message">
+                                            <strong>미팅을 시작하시겠습니까?</strong>
+                                        </div>
+                                        :
+                                        <div className="pop__message">
+                                            <strong>미팅에 참여하시겠습니까?</strong>
+                                        </div>
+                            }
+                            <div className="btn__group">
+                                <a onClick={startMeeting} className="btn btn__able btn__s js-modal-alert">예</a>
+                                <a onClick={closeAlertModal} className="btn btn__normal btn__s js-modal-close">아니오</a>
                             </div>
                         </div>
                     </div>
