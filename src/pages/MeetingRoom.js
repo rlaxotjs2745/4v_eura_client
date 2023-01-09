@@ -33,6 +33,9 @@ const MeetingRoom = (props) => {
                     navigate('/');
                 }
                 setRoomInfo(res.data.data);
+                if(res.data.data.mt_live === 1){
+                    setInterval(_chkInviteStatus, 3000);
+                }
             }).catch(res => console.log(res))
 
          axios.get(SERVER_URL +
@@ -42,8 +45,17 @@ const MeetingRoom = (props) => {
                 setInvCount(res.data.data.mt_invites.length);
                 makeInviteTag(res.data.data.mt_invites);
             })
-
     }, [])
+
+    const _chkInviteStatus = () => {
+        axios.get(SERVER_URL +
+            `/meet/room/invite?idx_meeting=${pathSplit}`,
+            AXIOS_OPTION)
+            .then(res => {
+                setInvCount(res.data.data.mt_invites.length);
+                makeInviteTag(res.data.data.mt_invites);
+            })
+    }
 
 
     const openModal = () => {
@@ -131,6 +143,7 @@ const MeetingRoom = (props) => {
     }
 
     const startTimer = () => {
+        setTimeout(getMeetingRunningTime, 0);
         setInterval(getMeetingRunningTime, 1000);
     }
 
@@ -164,6 +177,7 @@ const MeetingRoom = (props) => {
                 }
             })
     }
+    
 
 
 
@@ -188,6 +202,7 @@ const MeetingRoom = (props) => {
                                             </a> :
                                             roomInfo.mt_status === 3 ?
                                                 "" :
+                                                roomInfo.mt_live ? "" : 
                                 <a onClick={openModal} className="btn btn-modify js-modal-alert">
                                     <img src={require('../assets/image/ic_close_16.png')} alt=""/>미팅 취소하기
                                 </a>

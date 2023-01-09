@@ -124,7 +124,10 @@ const Profile = () => {
 
     const profileReset = () => {
         if(window.confirm("프로필 사진을 초기화 하시겠습니까?")){
+            const formData = new FormData();
+            formData.append("reset","1");
             axios.post(SERVER_URL + '/reset_profile'
+                , formData
                 , AXIOS_OPTION
             ).then(res => {
                 if(res.data.result_code === 'FAIL'){
