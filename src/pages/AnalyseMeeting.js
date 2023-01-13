@@ -271,7 +271,13 @@ const AnalyseMeeting = (props) => {
                         {
                             lecture.is_host === 1 && lecture.join ?
                         <MeetingAnalysisPieGraph data={piedata} />
-                        : "" }
+                        :
+                        <div className="summary__graph" title="">
+                            <div className="analysis_info">
+                                <img src="../assets/image/graph_attend.png" alt="" /> 감정분석 인식 실패 데이터도 Camera Off에 포함됩니다.
+                            </div>
+                        </div>
+                        }
                     </div>
                     <div className="result__download">
                         <h4 className="result__title">첨부파일({!lecture || !lecture.mtAttachedFiles ? '0' : [...lecture.mtAttachedFiles].length})</h4>
