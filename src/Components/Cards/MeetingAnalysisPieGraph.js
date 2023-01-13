@@ -61,6 +61,9 @@ const MeetingAnalysisPieGraph = ({data}) => {
                     })
                 }
             </div>
+            <div className="analysis_info">
+                <img src="../assets/image/graph_attend.png" alt="" /> 감정분석 인식 실패 데이터도 Camera Off에 포함됩니다.
+            </div>
         </div>
     )
 }

@@ -3344,11 +3344,27 @@ html.js-overflow {
     display: flex;
     align-items: center;
     justify-content: center;
-
+    position: relative;
 }
 
 .result__dash .summary__graph .all_user_pie_graph {
     margin-top: 84px;
+}
+
+.result__dash .summary__graph .analysis_info {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+    letter-spacing: 0.5px;
+    position: absolute;
+    bottom: 5px;
+    left: 0px;
+    color: #B4B6BF;
+    width: 100%;
+}
+
+.result__dash .summary__graph .analysis_info img{
+    margin-top: 2px;
 }
 
 .result__dash .summary__graph .analysis_sumup {
