@@ -9,9 +9,9 @@ const Footer = () => {
                                                                          className="anchor__quick">개인정보처리방침</a>
                 </div>
                 <div className="footer__info">
-                    <span className="address">(37673) 경상북도 포항시 남구 청암로 77(효자동 산31)</span>
-                    <span className="tel">TEL. 054-279-0114</span>
-                    <span className="email">E-Mail. webmaster@postech.ac.kr</span>
+                    <span className="address">주소: (37673) 경상북도 남구 청암로 77 무은재기념관 미래도시연구센터</span>
+                    <span className="tel">Tel: 054) 279 - 9151</span>
+                    <span className="email">E-mail: pofoic@gmail.com</span>
                     <span className="copyright">Copyright © Pohang University of Science and Technology, Inc. All rights reserved.</span>
                 </div>
             </div>
