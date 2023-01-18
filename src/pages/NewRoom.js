@@ -1597,7 +1597,7 @@ const NewRoom = () => {
 
                     <div className="input__group" id="hahhhoho">
                         <label>참석자 추가</label>
-                        <div className="list__count"><a onClick={() => window.open('https://file.eura.site/upload/EURA_%EB%AF%B8%ED%8C%85_%EC%B0%B8%EC%84%9D%EC%9E%90_%EB%8B%A8%EC%B2%B4_%EC%B6%94%EA%B0%80_%EC%96%91%EC%8B%9D.csv')} className="btn btn__download">엑셀 양식 다운로드</a></div>
+                        <div className="list__count"><a onClick={() => window.open('https://eura-server.s3.ap-northeast-2.amazonaws.com/upload/EURA_%EB%AF%B8%ED%8C%85_%EC%B0%B8%EC%84%9D%EC%9E%90_%EB%8B%A8%EC%B2%B4_%EC%B6%94%EA%B0%80_%EC%96%91%EC%8B%9D.csv')} className="btn btn__download">엑셀 양식 다운로드</a></div>
                         <div className="flow_box input__inline">
                             <input type="hidden"/>
                             <input id="make_team" type="text" autoComplete="off" className="text" placeholder="이메일 또는 이름을 입력해 참석자를 추가하세요." onChange={searchInviteUserList} onKeyPress={pressEnterKey}/>
